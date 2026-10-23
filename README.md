@@ -25,9 +25,52 @@ nix-build /path/to/project/nix-build -A default
 
 Flags must precede the package argument. `-tags` and `-ldflags` pass through to Go. `-out` selects the export directory (default `.drvgo`); `-o` selects the Nix result symlink (default `result`). Both are relative to `-C`. The result is a directory with `bin/<command>`, not a single executable file.
 
-The generated directory contains `default.nix`, `toolchain.nix`, `builder.sh`, `scripts.nix`, `graph.json`, `evaluation.json`, `resolved-toolchain.nix`, and `sources/`. It can be moved or checked in and built without the original checkout, Go module cache, or this CLI. Its toolchain pin supports fetching the same tools on another machine. Nix's result symlink roots the built output against garbage collection.
+The generated directory contains `default.nix`, `toolchain.nix`, `toolchain-builder.nix`, `builder.sh`, `scripts.nix`, `graph.json`, `evaluation.json`, `resolved-toolchain.nix`, and `sources/`. It can be moved or checked in and built without the original checkout, Go module cache, or this CLI. Its toolchain pin supports fetching the same tools on another machine. Nix's result symlink roots the built output against garbage collection.
 
 The project also includes `devenv.nix`/`devenv.yaml`. The tested `nix-shell` entry point and generated builds use the same immutable nixpkgs revision. No directory trust or shell hooks are changed automatically.
+
+## Consume as a Nix flake
+
+The flake provides `packages.<system>.drvgo` (also `default`),
+`apps.<system>.drvgo` (also `default`), and `lib.mkGoPackage` for
+`x86_64-linux` and `aarch64-linux`.
+
+```sh
+nix run github:ryantm/drvgo/v0.1.0 -- export -C /path/to/project .
+nix profile install github:ryantm/drvgo/v0.1.0
+```
+
+Add drvgo as an input to build your project directly:
+
+```nix
+{
+  inputs.drvgo.url = "github:ryantm/drvgo/v0.1.0";
+
+  outputs = { self, drvgo }: {
+    packages.x86_64-linux.default = drvgo.lib.mkGoPackage {
+      system = "x86_64-linux";
+      src = self;
+      package = "./cmd/my-app";
+      name = "my-app";
+      # null for vendored projects or projects without external modules.
+      # Otherwise supply the module-proxy hash described below.
+      vendorHash = null;
+    };
+  };
+}
+```
+
+The CLI package builds with ordinary Nix flakes enabled. Calling `mkGoPackage`
+uses dynamic derivations and requires the client/daemon features documented in
+[Source-only dynamic builds](#source-only-nix-builds-with-dynamic-derivations). It accepts the same
+arguments as `nix/dynamic.nix`, plus an explicit native `system`. Keep drvgo's
+nixpkgs input pinned: its Go dry-run parser requires Go 1.26.5.
+
+Releases are published to [FlakeHub](https://flakehub.com/flake/ryantm/drvgo)
+and [Flakestry](https://flakestry.dev/flake/ryantm/drvgo). For FlakeHub, replace the
+input URL with `https://flakehub.com/f/ryantm/drvgo/0.1.0.tar.gz`.
+The GitHub Actions workflow checks the flake before publishing `v*.*.*` tags to
+both registries using OIDC; no registry secrets are required.
 
 ## Embedded files
 

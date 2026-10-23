@@ -1,21 +1,12 @@
 # Source-only, package-granular Go builds. Requires dynamic-derivations,
 # ca-derivations and recursive-nix in both the client and build daemon.
-{ toolchain ? import ../internal/export/templates/toolchain.nix }:
+{ toolchain ? import ../internal/export/templates/toolchain.nix
+, drvgo ? import ./package.nix { pkgs = toolchain.pkgs; }
+}:
 { src, package ? ".", vendorHash ? null, tags ? "", ldflags ? "", name ? "drvgo" }:
 let
   pkgs = toolchain.pkgs;
   inherit (pkgs) lib;
-  drvgo = pkgs.buildGoModule {
-    pname = "drvgo";
-    version = "0.1.0";
-    src = lib.fileset.toSource {
-      root = ../.;
-      fileset = lib.fileset.unions [ ../go.mod ../cmd ../internal ];
-    };
-    vendorHash = null;
-    subPackages = [ "cmd/drvgo" ];
-    doCheck = false;
-  };
   modules = (pkgs.buildGoModule {
     pname = "drvgo-modules";
     version = "0";

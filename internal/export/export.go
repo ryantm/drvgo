@@ -58,7 +58,9 @@ func run(dir string, env []string, name string, args ...string) ([]byte, error) 
 
 func Toolchain() (string, error) {
 	b, _ := templates.ReadFile("templates/toolchain.nix")
-	out, err := run("", os.Environ(), "nix-build", "--no-out-link", "--expr", string(b))
+	builder, _ := templates.ReadFile("templates/toolchain-builder.nix")
+	expression := strings.Replace(string(b), "import ./toolchain-builder.nix", "("+string(builder)+")", 1)
+	out, err := run("", os.Environ(), "nix-build", "--no-out-link", "--expr", expression)
 	return strings.TrimSpace(string(out)), err
 }
 
@@ -222,7 +224,7 @@ func Generate(o Options) (*Graph, error) {
 		binaryName = filepath.Base(target.Target)
 	}
 	graph := &Graph{SourceHashes: sourceHashes, System: arch + "-linux", GoRoot: ge["GOROOT"], GoOS: ge["GOOS"], GoArch: ge["GOARCH"], CGO: "1", GoVersion: ge["GOVERSION"], BinaryName: binaryName, Root: root, Units: units}
-	for _, name := range []string{"default.nix", "toolchain.nix", "builder.sh"} {
+	for _, name := range []string{"default.nix", "toolchain.nix", "toolchain-builder.nix", "builder.sh"} {
 		b, _ := templates.ReadFile("templates/" + name)
 		if err = os.WriteFile(filepath.Join(staging, name), b, 0644); err != nil {
 			return nil, err
