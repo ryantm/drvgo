@@ -1,0 +1,8 @@
+/.devenv*
+/devenv.local.nix
+/bin/
+result
+result-*
+.libnix*/
+/examples/upm/work/
+.drvgo*/
