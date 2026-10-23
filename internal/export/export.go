@@ -128,7 +128,9 @@ func Generate(o Options) (*Graph, error) {
 	// graph, work that the subsequent dry run already performs.
 	args := append([]string{"list", "-deps", "-json=Dir,ImportPath,Name,Target,Standard,DepOnly,Module,GoFiles,CgoFiles,CFiles,CXXFiles,MFiles,HFiles,FFiles,SFiles,SysoFiles,EmbedFiles,CgoPkgConfig,SwigFiles,SwigCXXFiles"}, flags...)
 	args = append(args, o.Package)
-	data, err := run(dir, env, goBin, args...)
+	buildArgs := append([]string{"build", "-n", "-a", "-work", "-p", "1"}, flags...)
+	buildArgs = append(buildArgs, "-o", "/LIBNIX_OUTPUT", o.Package)
+	data, trace, err := discover(dir, env, goBin, args, buildArgs)
 	if err != nil {
 		return nil, err
 	}
@@ -162,17 +164,7 @@ func Generate(o Options) (*Graph, error) {
 	if target == nil || target.Name != "main" {
 		return nil, fmt.Errorf("select one main package")
 	}
-	args = append([]string{"build", "-n", "-a", "-work", "-p", "1"}, flags...)
-	args = append(args, "-o", "/LIBNIX_OUTPUT", o.Package)
-	c := exec.Command(goBin, args...)
-	c.Dir = dir
-	c.Env = env
-	var trace bytes.Buffer
-	c.Stderr = &trace
-	if err = c.Run(); err != nil {
-		return nil, fmt.Errorf("go build planning: %w\n%s", err, trace.String())
-	}
-	units, err := plan.Parse(trace.String(), dir)
+	units, err := plan.Parse(string(trace), dir)
 	if err != nil {
 		return nil, err
 	}
@@ -244,6 +236,12 @@ func Generate(o Options) (*Graph, error) {
 		return nil, err
 	}
 	if err = os.WriteFile(filepath.Join(staging, "graph.json"), b, 0644); err != nil {
+		return nil, err
+	}
+	if err = writeEvaluationMetadata(staging, graph); err != nil {
+		return nil, err
+	}
+	if err = writeResolvedToolchain(staging, tc); err != nil {
 		return nil, err
 	}
 	if err = os.WriteFile(filepath.Join(staging, ".drvgo"), []byte("1\n"), 0644); err != nil {

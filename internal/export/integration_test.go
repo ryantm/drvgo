@@ -78,6 +78,28 @@ func TestEmbeddedAssetsAndCacheIsolation(t *testing.T) {
 	}
 	generate()
 	before := derivations()
+	// A moved export must produce the same recipes using the pinned fallback.
+	resolvedFile := filepath.Join(out, "resolved-toolchain.nix")
+	resolved, err := os.ReadFile(resolvedFile)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(resolved), "builtins.appendContext") {
+		t.Fatal("resolved toolchain fast path was not generated")
+	}
+	fallback := strings.Replace(string(resolved), "if builtins.pathExists path && builtins.pathExists drv then", "if false then", 1)
+	if err = os.WriteFile(resolvedFile, []byte(fallback), 0644); err != nil {
+		t.Fatal(err)
+	}
+	for id, d := range derivations() {
+		if before[id] != d {
+			t.Fatalf("toolchain fallback changed %s", id)
+		}
+	}
+	if err = os.WriteFile(resolvedFile, resolved, 0644); err != nil {
+		t.Fatal(err)
+	}
+
 	first := build()
 	if got := output(first); got != "hello embedded world\nstable\nnested asset\n01 02 ff\nhidden asset\n" {
 		t.Fatalf("unexpected embedded output: %q", got)

@@ -25,7 +25,7 @@ nix-build /path/to/project/nix-build -A default
 
 Flags must precede the package argument. `-tags` and `-ldflags` pass through to Go. `-out` selects the export directory (default `.drvgo`); `-o` selects the Nix result symlink (default `result`). Both are relative to `-C`. The result is a directory with `bin/<command>`, not a single executable file.
 
-The generated directory contains `default.nix`, `toolchain.nix`, `builder.sh`, `scripts.nix`, `graph.json`, and `sources/`. It can be moved or checked in and built without the original checkout, Go module cache, or this CLI. Its toolchain pin supports fetching the same tools on another machine. Nix's result symlink roots the built output against garbage collection.
+The generated directory contains `default.nix`, `toolchain.nix`, `builder.sh`, `scripts.nix`, `graph.json`, `evaluation.json`, `resolved-toolchain.nix`, and `sources/`. It can be moved or checked in and built without the original checkout, Go module cache, or this CLI. Its toolchain pin supports fetching the same tools on another machine. Nix's result symlink roots the built output against garbage collection.
 
 The project also includes `devenv.nix`/`devenv.yaml`. The tested `nix-shell` entry point and generated builds use the same immutable nixpkgs revision. No directory trust or shell hooks are changed automatically.
 
@@ -196,8 +196,33 @@ reused its previous output and passed version/help smoke tests.
 Export directories are generated, content-pinned artifacts. Change the original
 project and rerun `drvgo export`; manually editing `sources/` without regenerating
 its recorded hashes can reuse the previously pinned store contents or fail hash
-verification. Keep `scripts.nix`, `graph.json`, and snapshots together when moving
-an export to another machine.
+verification. Keep the entire generated directory together when moving an export to another
+machine.
+
+The third round runs `go list` and dry-run planning concurrently, cancelling and
+joining the sibling process on failure. `evaluation.json` contains only the
+metadata Nix consumes, while `graph.json` retains the full diagnostic graph.
+`resolved-toolchain.nix` reuses the already resolved toolchain with its original
+derivation output context. If its output or derivation is unavailable, evaluation
+falls back to the pinned `toolchain.nix`. An explicit Nix `toolchain` argument
+still takes precedence. The existing CLI `-toolchain` option additionally avoids
+the initial toolchain resolution during export; dynamic builds already use it.
+
+On October 23, three alternating warm trials against `c5b2418` measured:
+
+| Target | Export before / after | Evaluation before / after | Total before / after |
+| --- | --- | --- | --- |
+| Kubernetes API server | 1.27 / 1.19 s | 0.50 / 0.34 s | 1.79 / 1.52 s |
+| Mattermost server | 0.87 / 0.83 s | 0.35 / 0.19 s | 1.22 / 1.02 s |
+
+This is approximately 15–16% less export-plus-evaluation time. Compare within
+this session: absolute timings differ from earlier rounds. Compilation is
+excluded. All 2,079 Kubernetes and 1,086 Mattermost package derivations were
+unchanged. Tests cover the toolchain fallback, concurrent process startup and
+cancellation, embed invalidation, and race detection. Dynamic fixture and
+Kubernetes builds passed with IFD disabled; Kubernetes reused the same output
+and passed version/help smoke tests.
+See [third-round measurements](benchmarks/planning-round3-2026-10-23.json).
 
 To measure export plus Nix evaluation against another drvgo executable:
 
