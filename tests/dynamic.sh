@@ -8,7 +8,7 @@ cp -R tests/fixture "$work/source"
 chmod -R u+w "$work/source"
 # NIX_REMOTE may select a test daemon; ordinary use requires daemon features.
 flags=(--extra-experimental-features 'ca-derivations dynamic-derivations recursive-nix'
-  --option allow-import-from-derivation false --max-jobs 4)
+  --option allow-import-from-derivation false --max-jobs 4 --cores 2)
 build() {
   nix-build "${flags[@]}" --out-link "$work/result" --expr \
     "(import $root/nix/dynamic.nix {}) { name = \"drvgo-fixture\"; src = $work/source; }"

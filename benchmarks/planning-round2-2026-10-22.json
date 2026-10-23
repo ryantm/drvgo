@@ -1,0 +1,434 @@
+{
+  "scope": "Second optimization round, compared with the first-round optimized executable; warm export plus evaluation only. No compilation or realization in timings.",
+  "host": "replit1; Linux amd64; Intel Core i7-1280P",
+  "go": "go1.26.5",
+  "binaries": {
+    "before": "67182c17f2b1d6206714750358f756e5724367d16f8b6a6d771f60dd4cbfac99",
+    "after": "957ed9fa0753757685811a2ca9b3b7b9b296bbe5ea01d1e5f236a29442410d10"
+  },
+  "results": {
+    "kubernetes": {
+      "scope": "export + evaluation only; no realization",
+      "source": "/tmp/drvgo-kubernetes.r0UUC9/source",
+      "package": "./cmd/kube-apiserver",
+      "tags": "",
+      "ldflags": "",
+      "nix": "nix (Determinate Nix 3.24.0) 2.35.3",
+      "records": [
+        {
+          "builder": "before",
+          "trial": "warmup",
+          "warmup": true,
+          "command": [
+            "/tmp/drvgo-round2/before",
+            "export",
+            "-C",
+            "/tmp/drvgo-kubernetes.r0UUC9/source",
+            "-out",
+            "/tmp/drvgo-round2/final-kubernetes/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "./cmd/kube-apiserver"
+          ],
+          "export": 1.7362374120857567,
+          "evaluation": 2.5944159040227532,
+          "total": 4.33065331610851,
+          "derivation": "/nix/store/550pqdl53bqqqp4jrcxsbssg5k0wyjsb-go-k8s.io-kubernetes-cmd-kube-apiserver.drv"
+        },
+        {
+          "builder": "after",
+          "trial": "warmup",
+          "warmup": true,
+          "command": [
+            "/tmp/drvgo-round2/after",
+            "export",
+            "-C",
+            "/tmp/drvgo-kubernetes.r0UUC9/source",
+            "-out",
+            "/tmp/drvgo-round2/final-kubernetes/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "./cmd/kube-apiserver"
+          ],
+          "export": 1.7377060279250145,
+          "evaluation": 0.7803002311848104,
+          "total": 2.518006259109825,
+          "derivation": "/nix/store/550pqdl53bqqqp4jrcxsbssg5k0wyjsb-go-k8s.io-kubernetes-cmd-kube-apiserver.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 1,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2/before",
+            "export",
+            "-C",
+            "/tmp/drvgo-kubernetes.r0UUC9/source",
+            "-out",
+            "/tmp/drvgo-round2/final-kubernetes/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "./cmd/kube-apiserver"
+          ],
+          "export": 1.8772922959178686,
+          "evaluation": 2.7584004590753466,
+          "total": 4.635692754993215,
+          "derivation": "/nix/store/550pqdl53bqqqp4jrcxsbssg5k0wyjsb-go-k8s.io-kubernetes-cmd-kube-apiserver.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 1,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2/after",
+            "export",
+            "-C",
+            "/tmp/drvgo-kubernetes.r0UUC9/source",
+            "-out",
+            "/tmp/drvgo-round2/final-kubernetes/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "./cmd/kube-apiserver"
+          ],
+          "export": 1.926052822964266,
+          "evaluation": 0.8232767458539456,
+          "total": 2.7493295688182116,
+          "derivation": "/nix/store/550pqdl53bqqqp4jrcxsbssg5k0wyjsb-go-k8s.io-kubernetes-cmd-kube-apiserver.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 2,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2/after",
+            "export",
+            "-C",
+            "/tmp/drvgo-kubernetes.r0UUC9/source",
+            "-out",
+            "/tmp/drvgo-round2/final-kubernetes/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "./cmd/kube-apiserver"
+          ],
+          "export": 1.917675358010456,
+          "evaluation": 0.7912696138955653,
+          "total": 2.7089449719060212,
+          "derivation": "/nix/store/550pqdl53bqqqp4jrcxsbssg5k0wyjsb-go-k8s.io-kubernetes-cmd-kube-apiserver.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 2,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2/before",
+            "export",
+            "-C",
+            "/tmp/drvgo-kubernetes.r0UUC9/source",
+            "-out",
+            "/tmp/drvgo-round2/final-kubernetes/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "./cmd/kube-apiserver"
+          ],
+          "export": 1.9491973670665175,
+          "evaluation": 2.7620426339562982,
+          "total": 4.711240001022816,
+          "derivation": "/nix/store/550pqdl53bqqqp4jrcxsbssg5k0wyjsb-go-k8s.io-kubernetes-cmd-kube-apiserver.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 3,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2/before",
+            "export",
+            "-C",
+            "/tmp/drvgo-kubernetes.r0UUC9/source",
+            "-out",
+            "/tmp/drvgo-round2/final-kubernetes/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "./cmd/kube-apiserver"
+          ],
+          "export": 1.9570673720445484,
+          "evaluation": 2.7980245100334287,
+          "total": 4.755091882077977,
+          "derivation": "/nix/store/550pqdl53bqqqp4jrcxsbssg5k0wyjsb-go-k8s.io-kubernetes-cmd-kube-apiserver.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 3,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2/after",
+            "export",
+            "-C",
+            "/tmp/drvgo-kubernetes.r0UUC9/source",
+            "-out",
+            "/tmp/drvgo-round2/final-kubernetes/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "./cmd/kube-apiserver"
+          ],
+          "export": 1.9085201430134475,
+          "evaluation": 0.8321736089419574,
+          "total": 2.740693751955405,
+          "derivation": "/nix/store/550pqdl53bqqqp4jrcxsbssg5k0wyjsb-go-k8s.io-kubernetes-cmd-kube-apiserver.drv"
+        }
+      ],
+      "source_revision": "f78e722310e50bcaca9276be22276d9e91d91308",
+      "medians": {
+        "before": {
+          "export": 1.9491973670665175,
+          "evaluation": 2.7620426339562982,
+          "total": 4.711240001022816
+        },
+        "after": {
+          "export": 1.917675358010456,
+          "evaluation": 0.8232767458539456,
+          "total": 2.740693751955405
+        }
+      },
+      "identical_package_derivations": 2079,
+      "speedup": 1.7189954177337339
+    },
+    "mattermost": {
+      "scope": "export + evaluation only; no realization",
+      "source": "/tmp/drvgo-mattermost.hV5bqi/source/server",
+      "package": "./cmd/mattermost",
+      "tags": "",
+      "ldflags": "",
+      "nix": "nix (Determinate Nix 3.24.0) 2.35.3",
+      "binaries": {
+        "before": {
+          "path": "/tmp/drvgo-round2/before",
+          "sha256": "67182c17f2b1d6206714750358f756e5724367d16f8b6a6d771f60dd4cbfac99"
+        },
+        "after": {
+          "path": "/tmp/drvgo-round2/after",
+          "sha256": "957ed9fa0753757685811a2ca9b3b7b9b296bbe5ea01d1e5f236a29442410d10"
+        }
+      },
+      "records": [
+        {
+          "builder": "before",
+          "trial": "warmup",
+          "warmup": true,
+          "command": [
+            "/tmp/drvgo-round2/before",
+            "export",
+            "-C",
+            "/tmp/drvgo-mattermost.hV5bqi/source/server",
+            "-out",
+            "/tmp/drvgo-round2/final-mattermost/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "./cmd/mattermost"
+          ],
+          "export": 1.2509043239988387,
+          "evaluation": 1.4722087348345667,
+          "total": 2.7231130588334054,
+          "derivation": "/nix/store/7myvnx94c4ca574nmxhiv3ra38l5n6vh-go-github.com-mattermost-mattermost-server-v8-cmd-mattermost.drv"
+        },
+        {
+          "builder": "after",
+          "trial": "warmup",
+          "warmup": true,
+          "command": [
+            "/tmp/drvgo-round2/after",
+            "export",
+            "-C",
+            "/tmp/drvgo-mattermost.hV5bqi/source/server",
+            "-out",
+            "/tmp/drvgo-round2/final-mattermost/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "./cmd/mattermost"
+          ],
+          "export": 1.252317155012861,
+          "evaluation": 0.5604992199223489,
+          "total": 1.8128163749352098,
+          "derivation": "/nix/store/7myvnx94c4ca574nmxhiv3ra38l5n6vh-go-github.com-mattermost-mattermost-server-v8-cmd-mattermost.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 1,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2/before",
+            "export",
+            "-C",
+            "/tmp/drvgo-mattermost.hV5bqi/source/server",
+            "-out",
+            "/tmp/drvgo-round2/final-mattermost/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "./cmd/mattermost"
+          ],
+          "export": 1.3194798750337213,
+          "evaluation": 1.4670752310194075,
+          "total": 2.786555106053129,
+          "derivation": "/nix/store/7myvnx94c4ca574nmxhiv3ra38l5n6vh-go-github.com-mattermost-mattermost-server-v8-cmd-mattermost.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 1,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2/after",
+            "export",
+            "-C",
+            "/tmp/drvgo-mattermost.hV5bqi/source/server",
+            "-out",
+            "/tmp/drvgo-round2/final-mattermost/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "./cmd/mattermost"
+          ],
+          "export": 1.3073193430900574,
+          "evaluation": 0.5587120149284601,
+          "total": 1.8660313580185175,
+          "derivation": "/nix/store/7myvnx94c4ca574nmxhiv3ra38l5n6vh-go-github.com-mattermost-mattermost-server-v8-cmd-mattermost.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 2,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2/after",
+            "export",
+            "-C",
+            "/tmp/drvgo-mattermost.hV5bqi/source/server",
+            "-out",
+            "/tmp/drvgo-round2/final-mattermost/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "./cmd/mattermost"
+          ],
+          "export": 1.344468557043001,
+          "evaluation": 0.5698597950395197,
+          "total": 1.9143283520825207,
+          "derivation": "/nix/store/7myvnx94c4ca574nmxhiv3ra38l5n6vh-go-github.com-mattermost-mattermost-server-v8-cmd-mattermost.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 2,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2/before",
+            "export",
+            "-C",
+            "/tmp/drvgo-mattermost.hV5bqi/source/server",
+            "-out",
+            "/tmp/drvgo-round2/final-mattermost/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "./cmd/mattermost"
+          ],
+          "export": 1.357221590122208,
+          "evaluation": 1.499783013947308,
+          "total": 2.857004604069516,
+          "derivation": "/nix/store/7myvnx94c4ca574nmxhiv3ra38l5n6vh-go-github.com-mattermost-mattermost-server-v8-cmd-mattermost.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 3,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2/before",
+            "export",
+            "-C",
+            "/tmp/drvgo-mattermost.hV5bqi/source/server",
+            "-out",
+            "/tmp/drvgo-round2/final-mattermost/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "./cmd/mattermost"
+          ],
+          "export": 1.3475693890359253,
+          "evaluation": 1.4816293867770582,
+          "total": 2.8291987758129835,
+          "derivation": "/nix/store/7myvnx94c4ca574nmxhiv3ra38l5n6vh-go-github.com-mattermost-mattermost-server-v8-cmd-mattermost.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 3,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2/after",
+            "export",
+            "-C",
+            "/tmp/drvgo-mattermost.hV5bqi/source/server",
+            "-out",
+            "/tmp/drvgo-round2/final-mattermost/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "./cmd/mattermost"
+          ],
+          "export": 1.3179812680464238,
+          "evaluation": 0.5546020918991417,
+          "total": 1.8725833599455655,
+          "derivation": "/nix/store/7myvnx94c4ca574nmxhiv3ra38l5n6vh-go-github.com-mattermost-mattermost-server-v8-cmd-mattermost.drv"
+        }
+      ],
+      "source_revision": "583461af10fc9b2aef2871c722fc4376db695832",
+      "medians": {
+        "before": {
+          "export": 1.3475693890359253,
+          "evaluation": 1.4816293867770582,
+          "total": 2.8291987758129835
+        },
+        "after": {
+          "export": 1.3179812680464238,
+          "evaluation": 0.5587120149284601,
+          "total": 1.8725833599455655
+        }
+      },
+      "identical_package_derivations": 1086,
+      "speedup": 1.5108533143727316
+    }
+  },
+  "validation": {
+    "checks": [
+      "make test integration",
+      "go test -race -tags integration ./internal/export",
+      "./tests/dynamic.sh",
+      "Kubernetes dynamic build with allow-import-from-derivation=false, max-jobs=4, cores=2",
+      "kube-apiserver --version and --help"
+    ],
+    "kubernetes_dynamic_output": "/nix/store/5jafxca6d9kg29s8zznnb6rmw94qr8q8-kube-apiserver",
+    "note": "Same Kubernetes output as before this optimization round; no cluster started. Bookie not measured."
+  }
+}

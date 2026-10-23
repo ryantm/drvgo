@@ -28,14 +28,20 @@ var cgoName = regexp.MustCompile(` -importpath ([^ ]+) `)
 // source arguments are resolved against the working directory cmd/go elides.
 func Parse(raw, cwd string) ([]Unit, error) {
 	var units []Unit
+	var script strings.Builder
 	seen := map[string]bool{}
 	current := -1
 	directory := cwd
 	heredoc := false
 	for _, line := range strings.Split(raw, "\n") {
 		if m := start.FindStringSubmatch(line); m != nil && !seen[m[1]] {
+			if current >= 0 {
+				units[current].Script = script.String()
+			}
+			script.Reset()
+			script.WriteString("cd @WORK@\n")
 			seen[m[1]] = true
-			units = append(units, Unit{ID: m[1], Script: "cd @WORK@\n", Deps: []string{}, Sources: []string{}})
+			units = append(units, Unit{ID: m[1], Deps: []string{}, Sources: []string{}})
 			current = len(units) - 1
 		}
 		if current < 0 {
@@ -80,7 +86,11 @@ func Parse(raw, cwd string) ([]Unit, error) {
 				return nil, fmt.Errorf("tool command: %w", err)
 			}
 		}
-		units[current].Script += line + "\n"
+		script.WriteString(line)
+		script.WriteByte('\n')
+	}
+	if current >= 0 {
+		units[current].Script = script.String()
 	}
 	if len(units) == 0 {
 		return nil, fmt.Errorf("no compilation actions in dry run")

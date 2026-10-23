@@ -2,6 +2,12 @@
 { toolchain ? import ./toolchain.nix }:
 let
   graph = builtins.fromJSON (builtins.readFile ./graph.json);
+  sources = builtins.mapAttrs (id: hash: toString (builtins.path {
+    path = ./sources + "/${id}";
+    name = "go-source";
+    sha256 = hash;
+  })) graph.sourceHashes;
+  scripts = import ./scripts.nix units sources;
   units = builtins.listToAttrs (map (u: {
     name = u.id;
     value = builtins.derivation {
@@ -20,13 +26,7 @@ let
       binaryName = if u.binary then graph.binaryName else "";
       # File-backed scripts avoid Linux's per-argument size limit on large graphs.
       passAsFile = [ "script" ];
-      script = builtins.replaceStrings
-        ((map (id: "@DEP:${id}@") u.deps) ++ (map (id: "@SRC:${id}@") u.sources))
-        ((map (id: "${units.${id}}") u.deps) ++ (map (id: toString (builtins.path {
-          path = ./sources + "/${id}";
-          name = "go-source";
-        })) u.sources))
-        u.script;
+      script = scripts.${u.id};
       # Keep native tools and Go's real GOROOT in the input closure even though
       # the dry-run script refers to their absolute paths through JSON strings.
       toolchainInput = toolchain;

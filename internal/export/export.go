@@ -3,9 +3,7 @@ package export
 
 import (
 	"bytes"
-	"crypto/sha256"
 	"embed"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -14,7 +12,6 @@ import (
 	"os/exec"
 	"path/filepath"
 	"regexp"
-	"sort"
 	"strings"
 
 	"github.com/ryantm/drvgo/internal/plan"
@@ -34,15 +31,16 @@ type Package struct {
 	GoFiles, CgoFiles, CFiles, CXXFiles, MFiles, HFiles, FFiles, SFiles, SysoFiles, EmbedFiles []string
 }
 type Graph struct {
-	System     string      `json:"system"`
-	GoRoot     string      `json:"goroot"`
-	GoOS       string      `json:"goos"`
-	GoArch     string      `json:"goarch"`
-	CGO        string      `json:"cgo"`
-	GoVersion  string      `json:"goVersion"`
-	BinaryName string      `json:"binaryName"`
-	Root       string      `json:"root"`
-	Units      []plan.Unit `json:"units"`
+	SourceHashes map[string]string `json:"sourceHashes"`
+	System       string            `json:"system"`
+	GoRoot       string            `json:"goroot"`
+	GoOS         string            `json:"goos"`
+	GoArch       string            `json:"goarch"`
+	CGO          string            `json:"cgo"`
+	GoVersion    string            `json:"goVersion"`
+	BinaryName   string            `json:"binaryName"`
+	Root         string            `json:"root"`
+	Units        []plan.Unit       `json:"units"`
 }
 
 func run(dir string, env []string, name string, args ...string) ([]byte, error) {
@@ -70,12 +68,12 @@ func controlledEnv(tc string) []string {
 	var env []string
 	for _, e := range os.Environ() {
 		k := strings.SplitN(e, "=", 2)[0]
-		if strings.HasPrefix(k, "GO") || strings.HasPrefix(k, "CGO_") || strings.HasPrefix(k, "NIX_") || k == "CC" || k == "CXX" || k == "PATH" {
+		if (strings.HasPrefix(k, "GO") && k != "GOMAXPROCS") || strings.HasPrefix(k, "CGO_") || strings.HasPrefix(k, "NIX_") || k == "CC" || k == "CXX" || k == "PATH" {
 			continue
 		}
 		env = append(env, e)
 	}
-	return append(env, "PATH="+tc+"/bin:"+os.Getenv("PATH"), "GOENV=off", "GOFLAGS=", "GOTOOLCHAIN=local", "GOMAXPROCS=20", "CGO_ENABLED=1", "CC="+tc+"/bin/gcc", "CXX="+tc+"/bin/g++")
+	return append(env, "PATH="+tc+"/bin:"+os.Getenv("PATH"), "GOENV=off", "GOFLAGS=", "GOTOOLCHAIN=local", "CGO_ENABLED=1", "CC="+tc+"/bin/gcc", "CXX="+tc+"/bin/g++")
 }
 
 var safePath = regexp.MustCompile(`^[a-zA-Z0-9/._@+!,=:~-]+$`)
@@ -126,7 +124,9 @@ func Generate(o Options) (*Graph, error) {
 	if o.LDFlags != "" {
 		flags = append(flags, "-ldflags", o.LDFlags)
 	}
-	args := append([]string{"list", "-deps", "-json"}, flags...)
+	// In particular, do not request Stale: calculating it hashes the build
+	// graph, work that the subsequent dry run already performs.
+	args := append([]string{"list", "-deps", "-json=Dir,ImportPath,Name,Target,Standard,DepOnly,Module,GoFiles,CgoFiles,CFiles,CXXFiles,MFiles,HFiles,FFiles,SFiles,SysoFiles,EmbedFiles,CgoPkgConfig,SwigFiles,SwigCXXFiles"}, flags...)
 	args = append(args, o.Package)
 	data, err := run(dir, env, goBin, args...)
 	if err != nil {
@@ -198,52 +198,19 @@ func Generate(o Options) (*Graph, error) {
 		return nil, err
 	}
 	defer os.RemoveAll(staging)
-	type source struct{ dir, id, suffix string }
-	var sources []source
-	for _, p := range packages {
-		if p.Standard || p.Dir == "" {
-			continue
-		}
-		if !safePath.MatchString(p.Dir) {
-			return nil, fmt.Errorf("unsupported source path %q", p.Dir)
-		}
-		hash := sha256.Sum256([]byte(p.ImportPath))
-		id := hex.EncodeToString(hash[:8])
-		dest := filepath.Join(staging, "sources", id)
-		suffix := ""
-		if len(p.CgoFiles) > 0 && p.Module != nil && p.Module.Dir != "" {
-			rel, relErr := filepath.Rel(p.Module.Dir, p.Dir)
-			if relErr != nil || strings.HasPrefix(rel, "..") {
-				return nil, fmt.Errorf("cgo package escapes module: %s", p.Dir)
-			}
-			if rel != "." {
-				suffix = "/" + filepath.ToSlash(rel)
-			}
-			if err = copyAuxiliary(p.Module.Dir, dest); err != nil {
-				return nil, err
-			}
-		}
-		if err = snapshot(p, dest+suffix); err != nil {
-			return nil, fmt.Errorf("snapshot %s: %w", p.ImportPath, err)
-		}
-		sources = append(sources, source{p.Dir, id, suffix})
+	sources, sourceHashes, err := collectSources(packages, staging)
+	if err != nil {
+		return nil, err
 	}
-	sort.Slice(sources, func(i, j int) bool { return len(sources[i].dir) > len(sources[j].dir) })
+	paths := sourcePaths(sources)
 	root := ""
 	for i := range units {
 		u := &units[i]
 		// No package compilation needs the caller's working directory: source
 		// arguments are absolute. cgo/assembly have explicit package-directory cds.
 		u.Script = strings.ReplaceAll(u.Script, "cd "+dir+"\n", "cd @WORK@\n")
-		for _, s := range sources {
-			replaced := replacePath(u.Script, s.dir, "@SRC:"+s.id+"@"+s.suffix)
-			if replaced != u.Script {
-				u.Script = replaced
-				u.Sources = append(u.Sources, s.id)
-			}
-		}
+		u.Script, u.Sources = paths.rewrite(u.Script)
 		u.Script = normalizeDirectories(u.Script)
-		sort.Strings(u.Sources)
 		if u.Binary {
 			if root != "" {
 				return nil, fmt.Errorf("multiple link actions")
@@ -262,12 +229,15 @@ func Generate(o Options) (*Graph, error) {
 	if target.Target != "" {
 		binaryName = filepath.Base(target.Target)
 	}
-	graph := &Graph{System: arch + "-linux", GoRoot: ge["GOROOT"], GoOS: ge["GOOS"], GoArch: ge["GOARCH"], CGO: "1", GoVersion: ge["GOVERSION"], BinaryName: binaryName, Root: root, Units: units}
+	graph := &Graph{SourceHashes: sourceHashes, System: arch + "-linux", GoRoot: ge["GOROOT"], GoOS: ge["GOOS"], GoArch: ge["GOARCH"], CGO: "1", GoVersion: ge["GOVERSION"], BinaryName: binaryName, Root: root, Units: units}
 	for _, name := range []string{"default.nix", "toolchain.nix", "builder.sh"} {
 		b, _ := templates.ReadFile("templates/" + name)
 		if err = os.WriteFile(filepath.Join(staging, name), b, 0644); err != nil {
 			return nil, err
 		}
+	}
+	if err = os.WriteFile(filepath.Join(staging, "scripts.nix"), []byte(nixScripts(units)), 0644); err != nil {
+		return nil, err
 	}
 	b, err := json.MarshalIndent(graph, "", "  ")
 	if err != nil {
@@ -362,28 +332,6 @@ func copyAuxiliary(root, dest string) error {
 		}
 		return copyFile(path, filepath.Join(dest, rel))
 	})
-}
-
-// Match a directory boundary, so package grpc/version cannot rewrite the
-// distinct source file grpc/version.go in its parent package.
-func replacePath(text, old, replacement string) string {
-	var out strings.Builder
-	for {
-		i := strings.Index(text, old)
-		if i < 0 {
-			out.WriteString(text)
-			break
-		}
-		end := i + len(old)
-		if end == len(text) || strings.ContainsRune("/ \t\n\r\"'=;", rune(text[end])) {
-			out.WriteString(text[:i])
-			out.WriteString(replacement)
-		} else {
-			out.WriteString(text[:end])
-		}
-		text = text[end:]
-	}
-	return out.String()
 }
 
 // cmd/go elides redundant cd commands based on the *whole* build's order.

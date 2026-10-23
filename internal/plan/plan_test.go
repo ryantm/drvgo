@@ -1,9 +1,32 @@
 package plan
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 )
+
+func TestCompilerConcurrency(t *testing.T) {
+	var previous string
+	for _, cores := range []int{1, 2, 20} {
+		flag := ""
+		if cores > 1 {
+			flag = fmt.Sprintf(" -c=%d", cores)
+		}
+		trace := fmt.Sprintf("WORK=/tmp/go\nmkdir -p $WORK/b001/\n#\n# example/main\n#\n/tool/compile -o $WORK/b001/_pkg_.a -p main%s ./main.go\n", flag)
+		units, err := Parse(trace, "/source")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !strings.Contains(units[0].Script, "-c=@CORES@") {
+			t.Fatalf("missing builder budget: %s", units[0].Script)
+		}
+		if previous != "" && previous != units[0].Script {
+			t.Fatal("planner CPU count changed the recipe")
+		}
+		previous = units[0].Script
+	}
+}
 
 func TestParseDependenciesAndEmbedConfig(t *testing.T) {
 	raw := `mkdir -p $WORK/b002/

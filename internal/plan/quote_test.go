@@ -21,6 +21,17 @@ func TestQuoteCommandLiteralArguments(t *testing.T) {
 		t.Fatalf("got %q want %q; %s", out, want, line)
 	}
 }
+
+func TestCompilerBudgetPreservesQuotedFilenames(t *testing.T) {
+	got, err := quoteCommand(`TERM='dumb' /tool/compile -c=20 -o /tmp/pkg.a "/source/file -c=20 name.go"`)
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := "TERM=dumb /tool/compile -c=@CORES@ -o /tmp/pkg.a '/source/file -c=20 name.go'"
+	if got != want {
+		t.Fatalf("got %q; want %q", got, want)
+	}
+}
 func TestCgoFallback(t *testing.T) {
 	script := `TERM='dumb' gcc -o @SELF@/_cgo_.o @SELF@/_x001.o
 gcc -o @SELF@/_cgo_.o @SELF@/_x001.o # test for internal linking errors (succeeded)

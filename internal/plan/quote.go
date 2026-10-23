@@ -9,6 +9,7 @@ import (
 
 var safeWord = regexp.MustCompile(`^[a-zA-Z0-9_./:@%+=,!~-]+$`)
 var assignment = regexp.MustCompile(`^[A-Z_][A-Z0-9_]*=`)
+var compilerConcurrency = regexp.MustCompile(`^-c=[0-9]+$`)
 
 func shellWord(s string) string {
 	// WORK is our own placeholder, substituted before any shell sees the script.
@@ -77,6 +78,24 @@ func quoteCommand(line string) (string, error) {
 			}
 		}
 		words = append(words, word.String())
+	}
+	// Normalize the compiler's scheduling flag after decoding argv, so flag-like
+	// text inside a quoted filename is left intact. cmd/go omits -c on one CPU.
+	for i, w := range words {
+		if assignment.MatchString(w) {
+			continue
+		}
+		if strings.HasSuffix(w, "/compile") {
+			args := append([]string{}, words[:i+1]...)
+			args = append(args, "-c=@CORES@")
+			for _, arg := range words[i+1:] {
+				if !compilerConcurrency.MatchString(arg) {
+					args = append(args, arg)
+				}
+			}
+			words = args
+		}
+		break
 	}
 	for i, w := range words {
 		if assignment.MatchString(w) {

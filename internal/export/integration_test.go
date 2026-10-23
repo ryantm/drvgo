@@ -59,7 +59,7 @@ func TestEmbeddedAssetsAndCacheIsolation(t *testing.T) {
 	}
 	build := func() string {
 		t.Helper()
-		c := exec.Command("nix-build", out, "-A", "default", "--no-out-link", "--max-jobs", "4")
+		c := exec.Command("nix-build", out, "-A", "default", "--no-out-link", "--max-jobs", "4", "--cores", "2")
 		var stderr strings.Builder
 		c.Stderr = &stderr
 		b, err := c.Output()
@@ -91,6 +91,78 @@ func TestEmbeddedAssetsAndCacheIsolation(t *testing.T) {
 	}
 	if got := build(); got != first {
 		t.Fatal("cache miss on unchanged build")
+	}
+	// Scheduling settings and files outside the selected production graph must
+	// not perturb recipes. Re-discovering inputs must still notice new embeds.
+	for _, cores := range []string{"1", "7"} {
+		t.Setenv("GOMAXPROCS", cores)
+		generate()
+		for id, d := range derivations() {
+			if before[id] != d {
+				t.Fatalf("planner GOMAXPROCS=%s changed %s", cores, id)
+			}
+		}
+	}
+	for name, content := range map[string]string{
+		"dep/dep_test.go":     "package dep\n// test-only change\n",
+		"unrelated/unused.go": "package unrelated\nconst Value = 1\n",
+	} {
+		path := filepath.Join(root, name)
+		if err = os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+			t.Fatal(err)
+		}
+		if err = os.WriteFile(path, []byte(content), 0644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	generate()
+	for id, d := range derivations() {
+		if before[id] != d {
+			t.Fatalf("test/unrelated files changed %s", id)
+		}
+	}
+	// Content hashes must change even when a source edit preserves file size.
+	depPath := filepath.Join(root, "dep/dep.go")
+	original, err := os.ReadFile(depPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	edited := strings.ReplaceAll(string(original), "stable", "edited")
+	if err = os.WriteFile(depPath, []byte(edited), 0644); err != nil {
+		t.Fatal(err)
+	}
+	generate()
+	changedByGo := 0
+	for id, d := range derivations() {
+		if before[id] != d {
+			changedByGo++
+		}
+	}
+	if changedByGo != 2 {
+		t.Fatalf("Go edit changed %d packages; want 2", changedByGo)
+	}
+	if got := output(build()); !strings.Contains(got, "edited\n") {
+		t.Fatalf("Go edit missing: %q", got)
+	}
+	if err = os.WriteFile(depPath, original, 0644); err != nil {
+		t.Fatal(err)
+	}
+	newEmbed := filepath.Join(root, "message/assets/new.txt")
+	if err = os.WriteFile(newEmbed, []byte("new glob match\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	generate()
+	changedByAddition := 0
+	for id, d := range derivations() {
+		if before[id] != d {
+			changedByAddition++
+		}
+	}
+	if changedByAddition != 2 {
+		t.Fatalf("new embed changed %d packages; want 2", changedByAddition)
+	}
+	if err = os.Remove(newEmbed); err != nil {
+		t.Fatal(err)
 	}
 	if err = os.WriteFile(filepath.Join(root, "message/assets/message.txt"), []byte("changed embed\n"), 0644); err != nil {
 		t.Fatal(err)
