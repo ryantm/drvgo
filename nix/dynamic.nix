@@ -7,7 +7,7 @@
 let
   pkgs = toolchain.pkgs;
   inherit (pkgs) lib;
-  modules = (pkgs.buildGoModule {
+  modules = ((pkgs.buildGoModule.override { go = toolchain.go; }) {
     pname = "drvgo-modules";
     version = "0";
     inherit src vendorHash;
