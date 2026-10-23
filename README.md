@@ -67,7 +67,7 @@ arguments as `nix/dynamic.nix`, plus an explicit native `system`. Keep drvgo's
 nixpkgs input pinned: its Go dry-run parser requires Go 1.26.5.
 
 Releases are published to [FlakeHub](https://flakehub.com/flake/ryantm/drvgo)
-and [Flakestry](https://flakestry.dev/flake/ryantm/drvgo). For FlakeHub, replace the
+and [Flakestry](https://flakestry.dev/flake/github/ryantm/drvgo). For FlakeHub, replace the
 input URL with `https://flakehub.com/f/ryantm/drvgo/0.1.0.tar.gz`.
 The GitHub Actions workflow checks the flake before publishing `v*.*.*` tags to
 both registries using OIDC; no registry secrets are required.
