@@ -63,14 +63,111 @@ Add drvgo as an input to build your project directly:
 The CLI package builds with ordinary Nix flakes enabled. Calling `mkGoPackage`
 uses dynamic derivations and requires the client/daemon features documented in
 [Source-only dynamic builds](#source-only-nix-builds-with-dynamic-derivations). It accepts the same
-arguments as `nix/dynamic.nix`, plus an explicit native `system`. Keep drvgo's
-nixpkgs input pinned: its Go dry-run parser requires Go 1.26.5.
+arguments as `nix/dynamic.nix`, plus an explicit native `system`. Select a tested Go version as described below; keep the compiler itself pinned.
 
 Releases are published to [FlakeHub](https://flakehub.com/flake/ryantm/drvgo)
 and [Flakestry](https://flakestry.dev/flake/github/ryantm/drvgo). For FlakeHub, replace the
 input URL with `https://flakehub.com/f/ryantm/drvgo/0.1.0.tar.gz`.
 The GitHub Actions workflow checks the flake before publishing `v*.*.*` tags to
 both registries using OIDC; no registry secrets are required.
+
+## Go version compatibility
+
+The compiler used to build the drvgo CLI is separate from the compiler used for
+its target. Each target toolchain builds `buildid` and `pack` with that same Go
+version. Tested versions are an explicit allowlist, not a promise that all patch
+releases or future minors have identical dry-run formats.
+
+| Target Go | Flake toolchain output | Adapter | Local validation |
+| --- | --- | --- | --- |
+| 1.25.12 | `toolchain-go1_25` | `cmd-go-1.25` | Linux amd64 |
+| 1.26.5 (default) | `toolchain-go1_26` | `cmd-go-1.26` | Linux amd64 |
+| 1.26.6 | `toolchain-go1_26_6` | `cmd-go-1.26` | Linux amd64 |
+
+These outputs and the selectable `go` argument are newer than v0.1.0. From a
+checkout containing this change:
+
+```sh
+tc=$(nix build .#toolchain-go1_25 --no-link --print-out-paths)
+./bin/drvgo export -C /path/to/project -toolchain "$tc" .
+```
+
+For a flake consumer, pass a Go derivation to `mkGoPackage`, for example:
+
+```nix
+drvgo.lib.mkGoPackage {
+  system = "x86_64-linux";
+  go = drvgo.packages.x86_64-linux.toolchain-go1_25.go;
+  src = self;
+  package = "./cmd/my-app";
+  vendorHash = null;
+}
+```
+
+`drvgo.lib.mkToolchain { system = "x86_64-linux"; go = pkgs.go_1_25; }`
+also constructs a bundle directly. Any Go derivation may be supplied, but its
+reported version must pass the tested-version policy. Use CLI `-experimental-go`
+or `mkGoPackage { experimentalGo = true; ... }` to try an untested numbered
+release >= 1.23, including prereleases. The graph records that it is experimental
+and the CLI reports it; parser checks remain enabled. Development snapshots with
+unparseable version strings are rejected.
+
+Go commands run with `GOTOOLCHAIN=local`. drvgo checks the main module's and
+active workspace's `go` minimums and explains when the selected compiler is too
+old. A newer `toolchain` suggestion is reported without silently downloading or
+switching compilers. The workspace's suggestion takes precedence over the
+module's; cmd/go still validates full module/workspace syntax and dependency
+requirements. Keep project files stable while exporting.
+
+Changing compilers produces different package derivations. A standalone export
+using a custom compiler needs that toolchain's output and derivation on the
+receiving machine, or an explicit `toolchain` argument supplied when importing
+it. If they are unavailable, the exporter will not substitute Go 1.26.5. Flake
+consumers should select their compiler declaratively through `mkGoPackage`.
+
+The compatibility suite compares normal `go build` runtime output against drvgo
+for cgo with cross-package native symbols, embedded files, assembly, build tags,
+linker flags, workspaces, and offline vendoring. It also checks unchanged-build
+reuse, Go edits, test-only/unrelated files, new/changed embeds, standalone exports,
+and dynamic builds with IFD disabled. Recorded compressed traces and expected
+normalized-plan hashes protect each adapter against regressions. In particular,
+Go 1.25 prints action headers before `mkdir`, unlike Go 1.26; the adapter
+normalizes that boundary before using the shared parser.
+
+To reproduce one matrix row:
+
+```sh
+nix-shell --run 'make build; go test -c -tags integration -o /tmp/drvgo-integration.test ./internal/export'
+tc=$(nix build .#toolchain-go1_25 --no-link --print-out-paths)
+python3 tests/compatibility.py --toolchain "$tc" --drvgo bin/drvgo \
+  --integration-test /tmp/drvgo-integration.test --flake-toolchain toolchain-go1_25
+```
+
+The dynamic portion requires the features documented below. CI is configured for
+all three versions on Linux amd64 and arm64 and gates future registry releases
+on those jobs. [Local results](tests/compatibility-results-2026-10-23.json) include
+15 cross-version case comparisons with no shared package derivations. Arm64
+execution has not been verified locally. To add a release,
+pin its compiler, add an adapter/policy entry, run the matrix with
+`--record-traces`, review the generated trace, then deliberately regenerate the
+expected plan with `DRVGO_UPDATE_TRACES=1 go test ./internal/plan -run TestRecordedDrivers`.
+
+### Toward an upstream build-plan interface
+
+The long-term replacement for dry-run parsing would be a versioned, machine-readable
+cmd/go planning API. This is a design target, not an API drvgo currently relies on
+or an upstream proposal that has been submitted. It would need:
+
+- Stable action IDs, dependency edges, and exact compiler/toolchain identity.
+- Selected source files, resolved embeds, module/workspace inputs, and build settings.
+- Structured argv/environment/working-directory fields and generated file contents.
+- Explicit conditional operations for cases such as cgo's failed preliminary link.
+- Versioned capability negotiation and deterministic plans that can be replayed offline.
+
+An adapter would translate this representation into drvgo's existing package
+graph, alongside the trace adapters. `go build -json` currently reports build
+output and failures; it is not that complete replayable interface. This direction
+should preserve cmd/go's source selection rather than reimplementing it in drvgo.
 
 ## Embedded files
 
@@ -87,7 +184,7 @@ Changing an embedded file changes the embedding package's derivation and its dep
 5. Emit one Nix derivation per package. Dependency archive references become Nix output paths; each package compiles once. The command package also links its executable. Scripts are passed as files to avoid large environment-argument limits.
 6. Build with Nix. The sandbox has no source checkout or module cache and needs no module-download network access. Planning may download modules through Go's usual checksum-verifying machinery.
 
-The dry-run format is **not a stable Go API**, so the driver is deliberately pinned to Go 1.26.5. The translator handles embedded JSON heredocs, Go-style argument quoting, and cgo's dynamic-import fallback. The latter packs Go's `dynimportfail` marker when preliminary native linking fails, allowing the final link to resolve symbols across packages.
+The dry-run format is **not a stable Go API**. drvgo selects a tested version-specific adapter; Go 1.26.5 remains the default. The translator handles embedded JSON heredocs, Go-style argument quoting, and cgo's dynamic-import fallback. The latter packs Go's `dynimportfail` marker when preliminary native linking fails, allowing the final link to resolve symbols across packages.
 
 ## Verification
 
@@ -106,7 +203,7 @@ See [the UPM example](examples/upm/README.md) for the tested revision and result
 ## Current boundaries
 
 - One native Linux main package per invocation. amd64 was tested; arm64 is accepted but untested. Cross-compilation, Darwin, race/coverage modes, test binaries, shared-library modes, and install commands are not implemented.
-- Requires the pinned compiler. Changing compiler versions needs translator regression testing, not just a version-string edit.
+- Requires a tested compiler or an explicit experimental override. New versions need translator and differential-build testing, not just a version-string edit.
 - cgo uses the pinned GCC toolchain. System libraries and `pkg-config` dependency injection are not implemented. SWIG and Fortran are unsupported. Native sources that require undeclared files outside their module cannot build.
 - cgo snapshots include auxiliary module files, so native-package invalidation is coarser than pure-Go package invalidation. Arbitrary native build generators are not run automatically.
 - Project and module-cache directory names containing shell-special characters or spaces are rejected. Embedded asset names are recorded as JSON and do not have this directory-name restriction. Symlink source files are rejected.
@@ -247,7 +344,8 @@ joining the sibling process on failure. `evaluation.json` contains only the
 metadata Nix consumes, while `graph.json` retains the full diagnostic graph.
 `resolved-toolchain.nix` reuses the already resolved toolchain with its original
 derivation output context. If its output or derivation is unavailable, evaluation
-falls back to the pinned `toolchain.nix`. An explicit Nix `toolchain` argument
+falls back to the pinned `toolchain.nix` only when it resolves to the same
+compiler. Custom compilers are never silently replaced. An explicit Nix `toolchain` argument
 still takes precedence. The existing CLI `-toolchain` option additionally avoids
 the initial toolchain resolution during export; dynamic builds already use it.
 

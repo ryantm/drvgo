@@ -20,7 +20,10 @@ import (
 //go:embed templates/*
 var templates embed.FS
 
-type Options struct{ Dir, Out, Package, Tags, LDFlags, Toolchain, ModuleProxy string }
+type Options struct {
+	Dir, Out, Package, Tags, LDFlags, Toolchain, ModuleProxy string
+	ExperimentalGo                                           bool
+}
 type Module struct{ Dir string }
 
 type Package struct {
@@ -31,16 +34,19 @@ type Package struct {
 	GoFiles, CgoFiles, CFiles, CXXFiles, MFiles, HFiles, FFiles, SFiles, SysoFiles, EmbedFiles []string
 }
 type Graph struct {
-	SourceHashes map[string]string `json:"sourceHashes"`
-	System       string            `json:"system"`
-	GoRoot       string            `json:"goroot"`
-	GoOS         string            `json:"goos"`
-	GoArch       string            `json:"goarch"`
-	CGO          string            `json:"cgo"`
-	GoVersion    string            `json:"goVersion"`
-	BinaryName   string            `json:"binaryName"`
-	Root         string            `json:"root"`
-	Units        []plan.Unit       `json:"units"`
+	Driver         string            `json:"driver"`
+	ExperimentalGo bool              `json:"experimentalGo,omitempty"`
+	Diagnostics    []string          `json:"diagnostics,omitempty"`
+	SourceHashes   map[string]string `json:"sourceHashes"`
+	System         string            `json:"system"`
+	GoRoot         string            `json:"goroot"`
+	GoOS           string            `json:"goos"`
+	GoArch         string            `json:"goarch"`
+	CGO            string            `json:"cgo"`
+	GoVersion      string            `json:"goVersion"`
+	BinaryName     string            `json:"binaryName"`
+	Root           string            `json:"root"`
+	Units          []plan.Unit       `json:"units"`
 }
 
 func run(dir string, env []string, name string, args ...string) ([]byte, error) {
@@ -115,9 +121,13 @@ func Generate(o Options) (*Graph, error) {
 	if err = json.Unmarshal(eb, &ge); err != nil {
 		return nil, err
 	}
-	// Pin the format we parse, rather than quietly misbuilding with a new driver.
-	if ge["GOVERSION"] != "go1.26.5" {
-		return nil, fmt.Errorf("unsupported dry-run driver %s; expected go1.26.5", ge["GOVERSION"])
+	driver, err := plan.SelectDriver(ge["GOVERSION"], o.ExperimentalGo)
+	if err != nil {
+		return nil, err
+	}
+	diagnostics, err := checkRequirements(dir, ge["GOVERSION"])
+	if err != nil {
+		return nil, err
 	}
 	flags := []string{"-trimpath", "-buildvcs=false"}
 	if o.Tags != "" {
@@ -128,7 +138,7 @@ func Generate(o Options) (*Graph, error) {
 	}
 	// In particular, do not request Stale: calculating it hashes the build
 	// graph, work that the subsequent dry run already performs.
-	args := append([]string{"list", "-deps", "-json=Dir,ImportPath,Name,Target,Standard,DepOnly,Module,GoFiles,CgoFiles,CFiles,CXXFiles,MFiles,HFiles,FFiles,SFiles,SysoFiles,EmbedFiles,CgoPkgConfig,SwigFiles,SwigCXXFiles"}, flags...)
+	args := append(driver.ListArgs(), flags...)
 	args = append(args, o.Package)
 	buildArgs := append([]string{"build", "-n", "-a", "-work", "-p", "1"}, flags...)
 	buildArgs = append(buildArgs, "-o", "/LIBNIX_OUTPUT", o.Package)
@@ -166,7 +176,7 @@ func Generate(o Options) (*Graph, error) {
 	if target == nil || target.Name != "main" {
 		return nil, fmt.Errorf("select one main package")
 	}
-	units, err := plan.Parse(string(trace), dir)
+	units, err := driver.Parse(string(trace), dir)
 	if err != nil {
 		return nil, err
 	}
@@ -223,7 +233,7 @@ func Generate(o Options) (*Graph, error) {
 	if target.Target != "" {
 		binaryName = filepath.Base(target.Target)
 	}
-	graph := &Graph{SourceHashes: sourceHashes, System: arch + "-linux", GoRoot: ge["GOROOT"], GoOS: ge["GOOS"], GoArch: ge["GOARCH"], CGO: "1", GoVersion: ge["GOVERSION"], BinaryName: binaryName, Root: root, Units: units}
+	graph := &Graph{Driver: driver.Family, ExperimentalGo: driver.Experimental, Diagnostics: diagnostics, SourceHashes: sourceHashes, System: arch + "-linux", GoRoot: ge["GOROOT"], GoOS: ge["GOOS"], GoArch: ge["GOARCH"], CGO: "1", GoVersion: ge["GOVERSION"], BinaryName: binaryName, Root: root, Units: units}
 	for _, name := range []string{"default.nix", "toolchain.nix", "toolchain-builder.nix", "builder.sh"} {
 		b, _ := templates.ReadFile("templates/" + name)
 		if err = os.WriteFile(filepath.Join(staging, name), b, 0644); err != nil {

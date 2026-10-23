@@ -29,6 +29,7 @@ func run(args []string) error {
 	out := f.String("out", ".drvgo", "export directory (relative to project)")
 	output := f.String("o", "result", "Nix output symlink (relative to project)")
 	toolchain := f.String("toolchain", "", "prebuilt pinned toolchain path")
+	experimentalGo := f.Bool("experimental-go", false, "try an untested numbered Go toolchain (no compatibility guarantee)")
 	moduleProxy := f.String("module-proxy", "", "explicit module proxy (off or file:// path for offline planning)")
 	tags := f.String("tags", "", "Go build tags")
 	ldflags := f.String("ldflags", "", "Go linker flags")
@@ -55,9 +56,15 @@ func run(args []string) error {
 	if !filepath.IsAbs(exportDir) {
 		exportDir = filepath.Join(abs, exportDir)
 	}
-	graph, err := exporter.Generate(exporter.Options{Dir: abs, Out: exportDir, Package: pkg, Tags: *tags, LDFlags: *ldflags, Toolchain: *toolchain, ModuleProxy: *moduleProxy})
+	graph, err := exporter.Generate(exporter.Options{Dir: abs, Out: exportDir, Package: pkg, Tags: *tags, LDFlags: *ldflags, Toolchain: *toolchain, ModuleProxy: *moduleProxy, ExperimentalGo: *experimentalGo})
 	if err != nil {
 		return err
+	}
+	if graph.ExperimentalGo {
+		fmt.Fprintf(os.Stderr, "drvgo: experimental Go driver %s; compatibility is unverified\n", graph.GoVersion)
+	}
+	for _, diagnostic := range graph.Diagnostics {
+		fmt.Fprintln(os.Stderr, "drvgo:", diagnostic)
 	}
 	fmt.Fprintf(os.Stderr, "Exported %d package derivations to %s\n", len(graph.Units), exportDir)
 	if command == "export" {

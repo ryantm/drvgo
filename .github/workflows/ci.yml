@@ -26,9 +26,33 @@ jobs:
       - run: nix flake show --all-systems
       - run: nix flake check -L
 
+  compatibility:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-latest, ubuntu-24.04-arm]
+        toolchain: [toolchain-go1_25, toolchain-go1_26, toolchain-go1_26_6]
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+      - uses: DeterminateSystems/determinate-nix-action@f296148a827001a9a82d3685b53210c06e5d3b67 # v3
+        with:
+          extra-conf: |
+            extra-experimental-features = ca-derivations dynamic-derivations recursive-nix
+            extra-system-features = recursive-nix ca-derivations
+      - name: Differential builds, cache invalidation, and dynamic integration
+        env:
+          TOOLCHAIN_ATTR: ${{ matrix.toolchain }}
+        run: |
+          tc=$(nix build ".#$TOOLCHAIN_ATTR" --no-link --print-out-paths --max-jobs 2 --cores 2)
+          export DRVGO_MATRIX_TC="$tc"
+          nix-shell --run 'set -e; make build; go test -c -tags integration -o /tmp/drvgo-integration.test ./internal/export; python3 tests/compatibility.py --toolchain "$DRVGO_MATRIX_TC" --drvgo bin/drvgo --integration-test /tmp/drvgo-integration.test --flake-toolchain "$TOOLCHAIN_ATTR"'
+
   flakehub:
     if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
-    needs: check
+    needs: [check, compatibility]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -47,7 +71,7 @@ jobs:
 
   flakestry:
     if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
-    needs: check
+    needs: [check, compatibility]
     runs-on: ubuntu-latest
     permissions:
       contents: read

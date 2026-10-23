@@ -40,7 +40,7 @@ func TestEmbeddedAssetsAndCacheIsolation(t *testing.T) {
 	out := filepath.Join(root, "export")
 	generate := func() {
 		t.Helper()
-		if _, err := Generate(Options{Dir: root, Out: out, Package: "."}); err != nil {
+		if _, err := Generate(Options{Dir: root, Out: out, Package: ".", Toolchain: os.Getenv("DRVGO_TEST_TOOLCHAIN")}); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -91,9 +91,21 @@ func TestEmbeddedAssetsAndCacheIsolation(t *testing.T) {
 	if err = os.WriteFile(resolvedFile, []byte(fallback), 0644); err != nil {
 		t.Fatal(err)
 	}
-	for id, d := range derivations() {
-		if before[id] != d {
-			t.Fatalf("toolchain fallback changed %s", id)
+	defaultTC, err := Toolchain()
+	if err != nil {
+		t.Fatal(err)
+	}
+	selectedTC := os.Getenv("DRVGO_TEST_TOOLCHAIN")
+	if selectedTC == "" || selectedTC == defaultTC {
+		for id, d := range derivations() {
+			if before[id] != d {
+				t.Fatalf("toolchain fallback changed %s", id)
+			}
+		}
+	} else {
+		b, err := exec.Command("nix-instantiate", out, "-A", "default").CombinedOutput()
+		if err == nil || !strings.Contains(string(b), "Refusing to substitute") {
+			t.Fatalf("custom toolchain fallback: %v\n%s", err, b)
 		}
 	}
 	if err = os.WriteFile(resolvedFile, resolved, 0644); err != nil {

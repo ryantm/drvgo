@@ -27,6 +27,11 @@ var cgoName = regexp.MustCompile(` -importpath ([^ ]+) `)
 // Parse splits at the first creation of each action directory. Relative compiler
 // source arguments are resolved against the working directory cmd/go elides.
 func Parse(raw, cwd string) ([]Unit, error) {
+	d, _ := SelectDriver("go1.26.5", false)
+	return d.Parse(raw, cwd)
+}
+
+func parse(raw, cwd string, driver Driver) ([]Unit, error) {
 	var units []Unit
 	var script strings.Builder
 	seen := map[string]bool{}
@@ -81,7 +86,7 @@ func Parse(raw, cwd string) ([]Unit, error) {
 		}
 		if !heredoc && (strings.HasPrefix(line, "/") || strings.HasPrefix(line, "TERM=") || strings.HasPrefix(line, "GOROOT=") || strings.HasPrefix(line, "go tool ")) {
 			var err error
-			line, err = quoteCommand(line)
+			line, err = driver.quoteCommand(line)
 			if err != nil {
 				return nil, fmt.Errorf("tool command: %w", err)
 			}
@@ -125,7 +130,7 @@ func Parse(raw, cwd string) ([]Unit, error) {
 		u.Script = strings.ReplaceAll(u.Script, "go tool buildid ", "libnix-buildid ")
 		u.Script = strings.ReplaceAll(u.Script, "go tool pack ", "libnix-pack ")
 		var err error
-		u.Script, err = normalizeCgo(u.Script)
+		u.Script, err = driver.normalizeCgo(u.Script)
 		if err != nil {
 			return nil, fmt.Errorf("%s: %w", u.Name, err)
 		}

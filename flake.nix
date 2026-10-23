@@ -17,6 +17,12 @@
       packages = forAllSystems (system: rec {
         drvgo = import ./nix/package.nix { pkgs = packageSets.${system}; };
         default = drvgo;
+        toolchain-go1_25 = self.lib.mkToolchain { inherit system; go = packageSets.${system}.go_1_25; };
+        toolchain-go1_26 = toolchains.${system};
+        toolchain-go1_26_6 = self.lib.mkToolchain {
+          inherit system;
+          go = import ./nix/go-1.26.6.nix { pkgs = packageSets.${system}; };
+        };
       });
       apps = forAllSystems (system: rec {
         drvgo = {
@@ -31,10 +37,15 @@
       });
       # Call with { system; src; package; vendorHash; ... }.
       # Only invoking this helper requires the dynamic Nix features.
-      lib.mkGoPackage = { system, ... }@args:
+      lib.mkToolchain = { system, go ? packageSets.${system}.go }:
+        import ./internal/export/templates/toolchain-builder.nix {
+          pkgs = packageSets.${system};
+          inherit go;
+        };
+      lib.mkGoPackage = { system, go ? packageSets.${system}.go, ... }@args:
         (import ./nix/dynamic.nix {
-          toolchain = toolchains.${system};
+          toolchain = self.lib.mkToolchain { inherit system go; };
           drvgo = self.packages.${system}.drvgo;
-        }) (builtins.removeAttrs args [ "system" ]);
+        }) (builtins.removeAttrs args [ "system" "go" ]);
     };
 }

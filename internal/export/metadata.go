@@ -30,9 +30,12 @@ func writeEvaluationMetadata(dir string, g *Graph) error {
 
 // Preserve the derivation output context rather than treating the toolchain as
 // a plain store source (which changes every package derivation). A portable
-// export falls back to its pinned recipe if this machine lacks the store paths.
+// default export can recreate its pinned recipe. Custom toolchains must be
+// supplied explicitly if their store paths are unavailable.
 func writeResolvedToolchain(dir, tc string) error {
-	expression := "import ./toolchain.nix\n"
+	// Recursive Nix may not permit querying derivation bindings. Its caller
+	// already supplies an explicit toolchain. Never silently use another one.
+	expression := "throw " + nixString("Cannot recover selected drvgo toolchain "+tc+"; import this export with an explicit toolchain argument built by drvgo.lib.mkToolchain.") + "\n"
 	path, err := filepath.EvalSymlinks(tc)
 	if err == nil {
 		drvBytes, queryErr := run("", os.Environ(), "nix-store", "--query", "--deriver", path)
@@ -43,7 +46,9 @@ func writeResolvedToolchain(dir, tc string) error {
 				expression = "let path = " + nixString(path) + "; drv = " + nixString(drv) + "; in\n" +
 					"if builtins.pathExists path && builtins.pathExists drv then\n" +
 					"  builtins.appendContext path { ${drv} = { outputs = [ \"out\" ]; }; }\n" +
-					"else import ./toolchain.nix\n"
+					"else let fallback = import ./toolchain.nix; in\n" +
+					"  if toString fallback == path then fallback else\n" +
+					"  throw " + nixString("Selected drvgo toolchain "+path+" is unavailable; rebuild it or pass the same toolchain explicitly. Refusing to substitute the default compiler.") + "\n"
 			}
 		}
 	}

@@ -1,0 +1,247 @@
+{
+  "date": "2026-10-23",
+  "platform": "x86_64-linux",
+  "drvgo_sha256": "8afbc3a716bfb22af587dddfcc1af1ae6e9055ee0636a626fca8e43dc7b0db42",
+  "scope": "Native fixture differential runtime tests against ordinary Go, plus incremental invalidation and IFD-disabled dynamic builds. Not a performance benchmark or broad application certification. ARM64 not executed locally.",
+  "rows": [
+    {
+      "go": "go1.25.12",
+      "toolchain": "/nix/store/k6fjk7yxgi93dbqsfngi9rlhlvm9sjkq-go-libnix-toolchain",
+      "cases": [
+        {
+          "name": "embed-cgo",
+          "output": "hello embedded world\nstable\nnested asset\n01 02 ff\nhidden asset\n",
+          "units": 66
+        },
+        {
+          "name": "assembly",
+          "output": "42 default dev\n",
+          "units": 61
+        },
+        {
+          "name": "tags-ldflags",
+          "output": "42 tagged matrix\n",
+          "units": 61
+        },
+        {
+          "name": "workspace",
+          "output": "workspace\n",
+          "units": 61
+        },
+        {
+          "name": "vendored",
+          "output": "vendored\n",
+          "units": 61
+        }
+      ],
+      "nix": "nix (Determinate Nix 3.24.0) 2.35.3",
+      "dynamic_ifd_disabled": "passed",
+      "incremental_cache_and_embeds": "passed"
+    },
+    {
+      "go": "go1.26.5",
+      "toolchain": "/nix/store/lwv9qsxvxpzyf3214h1bncajmf5v5mvb-go-libnix-toolchain",
+      "cases": [
+        {
+          "name": "embed-cgo",
+          "output": "hello embedded world\nstable\nnested asset\n01 02 ff\nhidden asset\n",
+          "units": 67
+        },
+        {
+          "name": "assembly",
+          "output": "42 default dev\n",
+          "units": 62
+        },
+        {
+          "name": "tags-ldflags",
+          "output": "42 tagged matrix\n",
+          "units": 62
+        },
+        {
+          "name": "workspace",
+          "output": "workspace\n",
+          "units": 62
+        },
+        {
+          "name": "vendored",
+          "output": "vendored\n",
+          "units": 62
+        }
+      ],
+      "nix": "nix (Determinate Nix 3.24.0) 2.35.3",
+      "dynamic_ifd_disabled": "passed",
+      "incremental_cache_and_embeds": "passed"
+    },
+    {
+      "go": "go1.26.6",
+      "toolchain": "/nix/store/pipwh3dhrpng0xabg9b310vc2rrfyll5-go-libnix-toolchain",
+      "cases": [
+        {
+          "name": "embed-cgo",
+          "output": "hello embedded world\nstable\nnested asset\n01 02 ff\nhidden asset\n",
+          "units": 67
+        },
+        {
+          "name": "assembly",
+          "output": "42 default dev\n",
+          "units": 62
+        },
+        {
+          "name": "tags-ldflags",
+          "output": "42 tagged matrix\n",
+          "units": 62
+        },
+        {
+          "name": "workspace",
+          "output": "workspace\n",
+          "units": 62
+        },
+        {
+          "name": "vendored",
+          "output": "vendored\n",
+          "units": 62
+        }
+      ],
+      "nix": "nix (Determinate Nix 3.24.0) 2.35.3",
+      "dynamic_ifd_disabled": "passed",
+      "incremental_cache_and_embeds": "passed"
+    }
+  ],
+  "cross_version_isolation": [
+    {
+      "versions": [
+        "go1.25.12",
+        "go1.26.5"
+      ],
+      "case": "embed-cgo",
+      "common_packages": 63,
+      "shared_derivations": 0
+    },
+    {
+      "versions": [
+        "go1.25.12",
+        "go1.26.5"
+      ],
+      "case": "assembly",
+      "common_packages": 58,
+      "shared_derivations": 0
+    },
+    {
+      "versions": [
+        "go1.25.12",
+        "go1.26.5"
+      ],
+      "case": "tags-ldflags",
+      "common_packages": 58,
+      "shared_derivations": 0
+    },
+    {
+      "versions": [
+        "go1.25.12",
+        "go1.26.5"
+      ],
+      "case": "workspace",
+      "common_packages": 58,
+      "shared_derivations": 0
+    },
+    {
+      "versions": [
+        "go1.25.12",
+        "go1.26.5"
+      ],
+      "case": "vendored",
+      "common_packages": 58,
+      "shared_derivations": 0
+    },
+    {
+      "versions": [
+        "go1.25.12",
+        "go1.26.6"
+      ],
+      "case": "embed-cgo",
+      "common_packages": 63,
+      "shared_derivations": 0
+    },
+    {
+      "versions": [
+        "go1.25.12",
+        "go1.26.6"
+      ],
+      "case": "assembly",
+      "common_packages": 58,
+      "shared_derivations": 0
+    },
+    {
+      "versions": [
+        "go1.25.12",
+        "go1.26.6"
+      ],
+      "case": "tags-ldflags",
+      "common_packages": 58,
+      "shared_derivations": 0
+    },
+    {
+      "versions": [
+        "go1.25.12",
+        "go1.26.6"
+      ],
+      "case": "workspace",
+      "common_packages": 58,
+      "shared_derivations": 0
+    },
+    {
+      "versions": [
+        "go1.25.12",
+        "go1.26.6"
+      ],
+      "case": "vendored",
+      "common_packages": 58,
+      "shared_derivations": 0
+    },
+    {
+      "versions": [
+        "go1.26.5",
+        "go1.26.6"
+      ],
+      "case": "embed-cgo",
+      "common_packages": 67,
+      "shared_derivations": 0
+    },
+    {
+      "versions": [
+        "go1.26.5",
+        "go1.26.6"
+      ],
+      "case": "assembly",
+      "common_packages": 62,
+      "shared_derivations": 0
+    },
+    {
+      "versions": [
+        "go1.26.5",
+        "go1.26.6"
+      ],
+      "case": "tags-ldflags",
+      "common_packages": 62,
+      "shared_derivations": 0
+    },
+    {
+      "versions": [
+        "go1.26.5",
+        "go1.26.6"
+      ],
+      "case": "workspace",
+      "common_packages": 62,
+      "shared_derivations": 0
+    },
+    {
+      "versions": [
+        "go1.26.5",
+        "go1.26.6"
+      ],
+      "case": "vendored",
+      "common_packages": 62,
+      "shared_derivations": 0
+    }
+  ]
+}
