@@ -1202,5 +1202,6 @@
         "identical": true
       }
     ]
-  }
+  },
+  "later_compatibility_change": "Older Nix clients retry without the unsupported --json-format selector. The measured Nix 2.34/2.35 query path is unchanged; measurements retain their recorded baseline and implementation commits."
 }
