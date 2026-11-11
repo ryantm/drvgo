@@ -3,60 +3,161 @@
 package export
 
 import (
+	"bytes"
+	"debug/macho"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 	"runtime"
 	"strings"
 	"testing"
 )
 
 func TestCompressedNativeSources(t *testing.T) {
-	src := writeTestProject(t, map[string]string{
-		"go.mod": "module example.com/compressednative\ngo 1.25\n",
-		"main.go": `package main
+	for _, padding := range []struct {
+		name        string
+		repetitions int
+	}{{"raw", 0}, {"compressed", 600}} {
+		t.Run(padding.name, func(t *testing.T) {
+			src := writeTestProject(t, map[string]string{
+				"go.mod": "module example.com/compressednative\ngo 1.25\n",
+				"main.go": `package main
 // #include "answer.h"
 import "C"
 import "fmt"
 func main() { fmt.Println(C.answer()) }
 `,
-		"answer.h": "/*" + strings.Repeat("native source fixture ", 600) + "*/\nstatic int answer(void) { return 42; }\n",
-	})
-	out := filepath.Join(t.TempDir(), "export")
-	cgo := true
-	g, err := Generate(Options{Dir: src, Out: out, Package: ".", Toolchain: testToolchain(t), CGOEnabled: &cgo})
-	if err != nil {
-		t.Fatal(err)
+				"answer.h": "/*" + strings.Repeat("native source fixture ", padding.repetitions) + "*/\nstatic int answer(void) { return 42; }\n",
+			})
+			out := filepath.Join(t.TempDir(), "export")
+			cgo := true
+			g, err := Generate(Options{Dir: src, Out: out, Package: ".", Toolchain: testToolchain(t), CGOEnabled: &cgo})
+			if err != nil {
+				t.Fatal(err)
+			}
+			compressed := false
+			for _, unit := range g.Units {
+				if unit.Name == "example.com/compressednative" {
+					compressed = strings.Contains(unit.Script, "drvgo-source-zlib")
+				}
+			}
+			if compressed != (padding.repetitions != 0) {
+				t.Fatalf("native source compressed = %v", compressed)
+			}
+			if err := os.RemoveAll(src); err != nil {
+				t.Fatal(err)
+			}
+			args := []string{out, "-A", "default", "--no-out-link", "--max-jobs", "4", "--cores", "2",
+				"--option", "sandbox", "true", "--option", "sandbox-fallback", "false"}
+			cmd := exec.Command("nix-build", args...)
+			var stderr strings.Builder
+			cmd.Stderr = &stderr
+			result, err := cmd.Output()
+			if err != nil {
+				t.Fatalf("compressed native build: %v\n%s", err, stderr.String())
+			}
+			binary := filepath.Join(strings.TrimSpace(string(result)), "bin", g.BinaryName)
+			if b, err := exec.Command(binary).CombinedOutput(); err != nil || string(b) != "42\n" {
+				t.Fatalf("compressed native run: %v: %s", err, b)
+			}
+			// Moving native headers into the work directory must remain reproducible,
+			// including debug paths on platforms with different sandbox layouts.
+			if b, err := exec.Command("nix-build", append(args, "--check", "--keep-failed")...).CombinedOutput(); err != nil {
+				logBinaryDifferences(t, binary, filepath.Join(strings.TrimSpace(string(result))+".check", "bin", g.BinaryName))
+				t.Fatalf("compressed native reproducibility: %v\n%s", err, b)
+			}
+		})
 	}
-	compressed := false
-	for _, unit := range g.Units {
-		if unit.Name == "example.com/compressednative" {
-			compressed = strings.Contains(unit.Script, "drvgo-source-zlib")
+}
+
+// Keep reproducibility failures actionable on remote workers: identify the
+// differing Mach-O sections and symbols before the ephemeral worker disappears.
+func logBinaryDifferences(t *testing.T, before, after string) {
+	t.Helper()
+	a, err := os.ReadFile(before)
+	if err != nil {
+		t.Logf("read original binary: %v", err)
+		return
+	}
+	b, err := os.ReadFile(after)
+	if err != nil {
+		t.Logf("read rebuilt binary: %v", err)
+		return
+	}
+	t.Logf("binary sizes: %d -> %d", len(a), len(b))
+	logBytes := func(name string, a, b []byte) {
+		if bytes.Equal(a, b) {
+			return
+		}
+		first := 0
+		for first < len(a) && first < len(b) && a[first] == b[first] {
+			first++
+		}
+		start := max(0, first-32)
+		t.Logf("%s: sizes %d -> %d, first difference at %#x: %q -> %q", name, len(a), len(b), first,
+			a[start:min(len(a), first+96)], b[start:min(len(b), first+96)])
+	}
+	logBytes("file", a, b)
+	ma, err := macho.NewFile(bytes.NewReader(a))
+	if err != nil {
+		return
+	}
+	mb, err := macho.NewFile(bytes.NewReader(b))
+	if err != nil {
+		return
+	}
+	for i, load := range ma.Loads {
+		if i < len(mb.Loads) {
+			logBytes("load command", load.Raw(), mb.Loads[i].Raw())
 		}
 	}
-	if !compressed {
-		t.Fatal("native source fixture was not compressed")
+	for _, section := range ma.Sections {
+		other := mb.Section(section.Name)
+		if other == nil {
+			continue
+		}
+		x, err := section.Data()
+		if err != nil {
+			continue
+		}
+		y, err := other.Data()
+		if err != nil {
+			continue
+		}
+		logBytes(section.Seg+"/"+section.Name, x, y)
 	}
-	if err := os.RemoveAll(src); err != nil {
-		t.Fatal(err)
+	if ma.Symtab != nil && mb.Symtab != nil {
+		shown := 0
+		for i, symbol := range ma.Symtab.Syms {
+			if i < len(mb.Symtab.Syms) && symbol != mb.Symtab.Syms[i] {
+				t.Logf("symbol %d: %+v -> %+v", i, symbol, mb.Symtab.Syms[i])
+				shown++
+				if shown == 10 {
+					break
+				}
+			}
+		}
 	}
-	args := []string{out, "-A", "default", "--no-out-link", "--max-jobs", "4", "--cores", "2",
-		"--option", "sandbox", "true", "--option", "sandbox-fallback", "false"}
-	cmd := exec.Command("nix-build", args...)
-	var stderr strings.Builder
-	cmd.Stderr = &stderr
-	result, err := cmd.Output()
-	if err != nil {
-		t.Fatalf("compressed native build: %v\n%s", err, stderr.String())
-	}
-	binary := filepath.Join(strings.TrimSpace(string(result)), "bin", g.BinaryName)
-	if b, err := exec.Command(binary).CombinedOutput(); err != nil || string(b) != "42\n" {
-		t.Fatalf("compressed native run: %v: %s", err, b)
-	}
-	// Moving native headers into the work directory must remain reproducible,
-	// including debug paths on platforms with different sandbox layouts.
-	if b, err := exec.Command("nix-build", append(args, "--check")...).CombinedOutput(); err != nil {
-		t.Fatalf("compressed native reproducibility: %v\n%s", err, b)
+	da, ea := ma.DWARF()
+	db, eb := mb.DWARF()
+	if ea == nil && eb == nil {
+		ra, rb := da.Reader(), db.Reader()
+		shown := 0
+		for {
+			x, ex := ra.Next()
+			y, ey := rb.Next()
+			if ex != nil || ey != nil || x == nil || y == nil {
+				break
+			}
+			if !reflect.DeepEqual(x, y) {
+				t.Logf("DWARF: %+v -> %+v", x, y)
+				shown++
+				if shown == 10 {
+					break
+				}
+			}
+		}
 	}
 }
 
