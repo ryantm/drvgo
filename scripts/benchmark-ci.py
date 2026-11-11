@@ -22,6 +22,8 @@ def main():
     parser.add_argument("--source", type=Path, required=True, help="Go source tree; vendorHash=null")
     parser.add_argument("--package", default=".")
     parser.add_argument("--runs", type=int, default=5)
+    parser.add_argument("--nix-option", nargs=2, action="append", default=[], metavar=("NAME", "VALUE"),
+                        help="per-command Nix setting, applied equally to both revisions")
     parser.add_argument("--out", type=Path)
     args = parser.parse_args()
     if args.runs < 1:
@@ -32,9 +34,11 @@ def main():
         parser.error("--out must be an empty directory")
     flags = ["--extra-experimental-features", "ca-derivations dynamic-derivations recursive-nix",
              "--option", "allow-import-from-derivation", "false", "--max-jobs", "4", "--cores", "2"]
+    for name, value in args.nix_option:
+        flags.extend(["--option", name, value])
     roots = {"before": args.before.resolve(), "after": args.after.resolve()}
     nonce = uuid.uuid4().hex[:12]
-    report = {"scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; no network transfer",
+    report = {"scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
               "source": str(args.source.resolve()), "package": args.package,
               "nix": subprocess.check_output(["nix", "--version"], text=True).strip(),
               "roots": {k: str(v) for k, v in roots.items()}, "flags": flags, "nonce": nonce, "records": []}

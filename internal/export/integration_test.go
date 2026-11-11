@@ -231,6 +231,36 @@ func TestEmbeddedAssetsAndCacheIsolation(t *testing.T) {
 	if err = os.Remove(newEmbed); err != nil {
 		t.Fatal(err)
 	}
+	// Growing an embed across the inline cutoff must preserve its bytes and
+	// invalidate only its package and link action. Shrinking it restores the
+	// original recipes, even after switching source representations twice.
+	messagePath := filepath.Join(root, "message/assets/message.txt")
+	message, err := os.ReadFile(messagePath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, content := range []string{strings.Repeat("x", inlineSourceLimit+1) + "\n", string(message)} {
+		if err = os.WriteFile(messagePath, []byte(content), 0644); err != nil {
+			t.Fatal(err)
+		}
+		generate()
+		changed := 0
+		for id, d := range derivations() {
+			if before[id] != d {
+				changed++
+			}
+		}
+		want := 2
+		if content == string(message) {
+			want = 0
+		}
+		if changed != want {
+			t.Fatalf("inline cutoff transition changed %d units; want %d", changed, want)
+		}
+		if got := output(build()); !strings.HasPrefix(got, content+"stable\n") {
+			t.Fatalf("inline cutoff transition lost embedded contents")
+		}
+	}
 	if err = os.WriteFile(filepath.Join(root, "message/assets/message.txt"), []byte("changed embed\n"), 0644); err != nil {
 		t.Fatal(err)
 	}

@@ -16,14 +16,19 @@ func writeEvaluationMetadata(dir string, g *Graph) error {
 		Native bool   `json:"native"`
 	}
 	var units []unit
+	sourceHashes := make(map[string]string)
 	for _, u := range g.Units {
 		// cgo actions invoke the native compiler; linking may use it too.
 		units = append(units, unit{u.ID, u.Name, u.Binary, (u.Binary && g.NativeLink) || strings.Contains(u.Script, "/cgo ")})
+		for _, id := range u.Sources {
+			sourceHashes[id] = g.SourceHashes[id]
+		}
 	}
 	data, err := json.Marshal(struct {
 		*Graph
-		Units []unit `json:"units"`
-	}{g, units})
+		Units        []unit            `json:"units"`
+		SourceHashes map[string]string `json:"sourceHashes"`
+	}{g, units, sourceHashes})
 	if err != nil {
 		return err
 	}
