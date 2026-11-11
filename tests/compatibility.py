@@ -43,7 +43,8 @@ integration_pattern = '^(TestEmbeddedAssetsAndCacheIsolation|TestNestedCommandWi
 integration_tests = run([a.integration_test.resolve(), '-test.list='+integration_pattern]).stdout.decode().splitlines()
 required_tests = {'TestEmbeddedAssetsAndCacheIsolation', 'TestTestBinaryInternalExternalAndFailure',
                   'TestTestBinaryMainPackage', 'TestTestBinaryRaceAndCGO', 'TestTestBinaryRejectsPackageWithoutTests',
-                  'TestNestedCommandWithoutOriginalSource', 'TestCustomBuildID'}
+                  'TestNestedCommandWithoutOriginalSource', 'TestCustomBuildID',
+                  'TestEmptyTestSelection', 'TestEmptyTestResult', 'TestEmptyTestsRequireTestMode'}
 if not required_tests.issubset(integration_tests):
     raise RuntimeError('Integration binary lacks required tests; compile it with go test -c -tags integration ./internal/export')
 

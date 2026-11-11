@@ -31,7 +31,7 @@ func run(args []string) error {
 	toolchain := f.String("toolchain", "", "prebuilt pinned toolchain path")
 	experimentalGo := f.Bool("experimental-go", false, "try an untested numbered Go toolchain (no compatibility guarantee)")
 	test := f.Bool("test", false, "export one package's test binary")
-allowEmptyTests := f.Bool("allow-empty-tests", false, "emit an explicit empty result for a package with no eligible tests (requires -test)")
+	allowEmptyTests := f.Bool("allow-empty-tests", false, "emit an explicit empty result for a package with no eligible tests (requires -test)")
 	race := f.Bool("race", false, "enable Go's race detector")
 	cgo := f.String("cgo", "", "override cgo: 0 or 1")
 	moduleProxy := f.String("module-proxy", "", "explicit module proxy (off or file:// path for offline planning)")
@@ -68,7 +68,7 @@ allowEmptyTests := f.Bool("allow-empty-tests", false, "emit an explicit empty re
 		value := *cgo == "1"
 		cgoEnabled = &value
 	}
-graph, err := exporter.Generate(exporter.Options{Dir: abs, Out: exportDir, Package: pkg, Tags: *tags, LDFlags: *ldflags, Toolchain: *toolchain, ModuleProxy: *moduleProxy, ExperimentalGo: *experimentalGo, Test: *test, AllowEmptyTests: *allowEmptyTests, Race: *race, CGOEnabled: cgoEnabled})
+	graph, err := exporter.Generate(exporter.Options{Dir: abs, Out: exportDir, Package: pkg, Tags: *tags, LDFlags: *ldflags, Toolchain: *toolchain, ModuleProxy: *moduleProxy, ExperimentalGo: *experimentalGo, Test: *test, AllowEmptyTests: *allowEmptyTests, Race: *race, CGOEnabled: cgoEnabled})
 	if err != nil {
 		return err
 	}
@@ -93,10 +93,10 @@ graph, err := exporter.Generate(exporter.Options{Dir: abs, Out: exportDir, Packa
 		return err
 	}
 	if command == "run" {
-if graph.EmptyTests {
-fmt.Fprintln(os.Stderr, "drvgo: no eligible tests")
-return nil
-}
+		if graph.EmptyTests {
+			fmt.Fprintln(os.Stderr, "drvgo: no eligible tests")
+			return nil
+		}
 		c = exec.Command(filepath.Join(link, "bin", graph.BinaryName), positional...)
 		c.Dir = abs
 		c.Stdin = os.Stdin

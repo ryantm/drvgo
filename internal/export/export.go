@@ -24,7 +24,7 @@ type Options struct {
 	Dir, Out, Package, Tags, LDFlags, Toolchain, ModuleProxy string
 	ExperimentalGo                                           bool
 	Test                                                     bool
-AllowEmptyTests                                          bool
+	AllowEmptyTests                                          bool
 	Race                                                     bool
 	CGOEnabled                                               *bool
 }
@@ -38,7 +38,7 @@ type Package struct {
 	GoFiles, CgoFiles, CFiles, CXXFiles, MFiles, HFiles, FFiles, SFiles, SysoFiles, EmbedFiles []string
 }
 type Graph struct {
-EmptyTests     bool              `json:"emptyTests,omitempty"`
+	EmptyTests     bool              `json:"emptyTests,omitempty"`
 	Driver         string            `json:"driver"`
 	ExperimentalGo bool              `json:"experimentalGo,omitempty"`
 	Diagnostics    []string          `json:"diagnostics,omitempty"`
@@ -119,9 +119,9 @@ func nixSystem(goos, goarch string) (string, error) {
 var safePath = regexp.MustCompile(`^[a-zA-Z0-9/._@+!,=:~-]+$`)
 
 func Generate(o Options) (*Graph, error) {
-if o.AllowEmptyTests && !o.Test {
-return nil, fmt.Errorf("allow-empty-tests requires test mode")
-}
+	if o.AllowEmptyTests && !o.Test {
+		return nil, fmt.Errorf("allow-empty-tests requires test mode")
+	}
 	if o.Race && o.CGOEnabled != nil && !*o.CGOEnabled {
 		return nil, fmt.Errorf("-race requires cgo; remove -cgo 0 or use -cgo 1")
 	}
@@ -188,15 +188,19 @@ return nil, fmt.Errorf("allow-empty-tests requires test mode")
 	if o.LDFlags != "" {
 		flags = append(flags, "-ldflags", o.LDFlags)
 	}
-if o.AllowEmptyTests {
-empty, err := emptyTestSelection(dir, env, goBin, flags, o)
-if err != nil {
-return nil, err
-}
-if empty {
-return exportEmptyTests(o.Out, tc, system, ge["GOVERSION"])
-}
-}
+	graph := &Graph{Driver: driver.Family, ExperimentalGo: driver.Experimental, Diagnostics: diagnostics, System: system, GoRoot: ge["GOROOT"], GoOS: ge["GOOS"], GoArch: ge["GOARCH"], CGO: "1", GoVersion: ge["GOVERSION"]}
+	if o.CGOEnabled != nil && !*o.CGOEnabled {
+		graph.CGO = "0"
+	}
+	if o.AllowEmptyTests {
+		empty, err := emptyTestSelection(dir, env, goBin, flags, o)
+		if err != nil {
+			return nil, err
+		}
+		if empty {
+			return exportEmptyTests(o.Out, tc, graph)
+		}
+	}
 	// In particular, do not request Stale: calculating it hashes the build
 	// graph, work that the subsequent dry run already performs.
 	args := append(driver.ListArgs(), flags...)
@@ -330,10 +334,11 @@ return exportEmptyTests(o.Out, tc, system, ge["GOVERSION"])
 	if target.Target != "" {
 		binaryName = filepath.Base(target.Target)
 	}
-	graph := &Graph{Driver: driver.Family, ExperimentalGo: driver.Experimental, Diagnostics: diagnostics, SourceHashes: sourceHashes, System: system, GoRoot: ge["GOROOT"], GoOS: ge["GOOS"], GoArch: ge["GOARCH"], CGO: "1", NativeLink: nativeLink, GoVersion: ge["GOVERSION"], BinaryName: binaryName, Root: root, Units: units}
-	if o.CGOEnabled != nil && !*o.CGOEnabled {
-		graph.CGO = "0"
-	}
+	graph.SourceHashes = sourceHashes
+	graph.NativeLink = nativeLink
+	graph.BinaryName = binaryName
+	graph.Root = root
+	graph.Units = units
 	for _, name := range []string{"default.nix", "toolchain.nix", "toolchain-builder.nix", "runner.go", "buildid.go"} {
 		b, _ := templates.ReadFile("templates/" + name)
 		if err = os.WriteFile(filepath.Join(staging, name), b, 0644); err != nil {
