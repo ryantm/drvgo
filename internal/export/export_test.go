@@ -9,7 +9,7 @@ import (
 )
 
 func TestControlledEnvUsesPinnedCompilerAndSDK(t *testing.T) {
-	for _, key := range []string{"CC", "CXX", "GOOS", "GOARCH", "SDKROOT", "DEVELOPER_DIR", "DEVELOPER_DIR_aarch64_apple_darwin", "MACOSX_DEPLOYMENT_TARGET"} {
+	for _, key := range []string{"CC", "CXX", "GOOS", "GOARCH", "SDKROOT", "DEVELOPER_DIR", "DEVELOPER_DIR_aarch64_apple_darwin", "MACOSX_DEPLOYMENT_TARGET", "MACOSX_DEPLOYMENT_TARGET_aarch64_apple_darwin"} {
 		t.Setenv(key, "ambient-setting")
 	}
 	env := map[string]string{}

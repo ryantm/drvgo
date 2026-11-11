@@ -85,7 +85,7 @@ func controlledEnv(tc string) []string {
 		}
 		// Use the Nix compiler wrapper's pinned SDK and deployment target,
 		// including outside a Nix build or inside an unrelated dev shell.
-		if k == "SDKROOT" || k == "MACOSX_DEPLOYMENT_TARGET" || k == "DEVELOPER_DIR" || strings.HasPrefix(k, "DEVELOPER_DIR_") {
+		if k == "SDKROOT" || k == "MACOSX_DEPLOYMENT_TARGET" || strings.HasPrefix(k, "MACOSX_DEPLOYMENT_TARGET_") || k == "DEVELOPER_DIR" || strings.HasPrefix(k, "DEVELOPER_DIR_") {
 			continue
 		}
 		env = append(env, e)

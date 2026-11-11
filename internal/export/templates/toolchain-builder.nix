@@ -1,5 +1,15 @@
 { pkgs, go ? pkgs.go }:
 let
+  # Nixpkgs ships the Darwin resolver separately from the SDK. Our builders
+  # do not source stdenv setup, so make its search path part of the compiler
+  # wrapper itself, for both planning and replay (including Go's net package).
+  cc = if pkgs.stdenv.hostPlatform.isDarwin then
+    pkgs.stdenv.cc.override (old: {
+      extraBuildCommands = (old.extraBuildCommands or "") + ''
+        echo '-L${pkgs.lib.getLib pkgs.libresolv}/lib' >> $out/nix-support/cc-ldflags
+      '';
+    })
+  else pkgs.stdenv.cc;
   helpers = pkgs.runCommand "go-libnix-helpers" { nativeBuildInputs = [ go ]; } ''
     export HOME=$TMPDIR GOCACHE=$TMPDIR/cache GOTOOLCHAIN=local
     mkdir -p $out/bin
@@ -15,7 +25,7 @@ let
 in pkgs.symlinkJoin {
   name = "go-libnix-toolchain";
   passthru = { inherit pkgs go compile; };
-  paths = [ compile pkgs.stdenv.cc pkgs.findutils pkgs.pkg-config ];
+  paths = [ compile cc pkgs.findutils pkgs.pkg-config ];
   postBuild = ''
     mkdir -p $out/nix-support
     echo ${compile} > $out/nix-support/drvgo-compile-toolchain

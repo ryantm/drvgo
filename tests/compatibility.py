@@ -23,7 +23,7 @@ repo = Path(__file__).resolve().parent.parent
 out = (a.out or Path(tempfile.mkdtemp(prefix='drvgo-compat-'))).resolve()
 out.mkdir(parents=True, exist_ok=True)
 tc, cli = a.toolchain.resolve(), a.drvgo.resolve()
-env = {k:v for k,v in os.environ.items() if not (k.startswith(('GO','CGO_','NIX_','DEVELOPER_DIR_')) or k in ('CC','CXX','PATH','SDKROOT','DEVELOPER_DIR','MACOSX_DEPLOYMENT_TARGET'))}
+env = {k:v for k,v in os.environ.items() if not (k.startswith(('GO','CGO_','NIX_','DEVELOPER_DIR_','MACOSX_DEPLOYMENT_TARGET_')) or k in ('CC','CXX','PATH','SDKROOT','DEVELOPER_DIR','MACOSX_DEPLOYMENT_TARGET'))}
 cc, cxx = ('clang', 'clang++') if platform.system() == 'Darwin' else ('gcc', 'g++')
 env.update(PATH=str(tc/'bin')+':'+os.environ['PATH'], GOENV='off', GOFLAGS='', GOTOOLCHAIN='local', CGO_ENABLED='1',
            GOMAXPROCS='2', GOPROXY='off', CC=str(tc/'bin'/cc), CXX=str(tc/'bin'/cxx))

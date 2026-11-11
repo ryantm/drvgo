@@ -58,15 +58,18 @@ The flake provides `packages.<system>.drvgo` (also `default`),
 `x86_64-linux`, `aarch64-linux`, and `aarch64-darwin`.
 
 ```sh
-nix run github:ryantm/drvgo/v0.1.0 -- export -C /path/to/project .
-nix profile install github:ryantm/drvgo/v0.1.0
+nix run github:ryantm/drvgo -- export -C /path/to/project .
+nix profile install github:ryantm/drvgo
 ```
+
+Apple Silicon support requires a revision newer than v0.1.0. The commands above
+use the current default branch; a flake lockfile pins the selected revision.
 
 Add drvgo as an input to build your project directly:
 
 ```nix
 {
-  inputs.drvgo.url = "github:ryantm/drvgo/v0.1.0";
+  inputs.drvgo.url = "github:ryantm/drvgo";
 
   outputs = { self, drvgo }: {
     packages.x86_64-linux.default = drvgo.lib.mkGoPackage {
@@ -81,6 +84,8 @@ Add drvgo as an input to build your project directly:
   };
 }
 ```
+
+For Apple Silicon, use `aarch64-darwin` in both system positions above.
 
 The CLI package builds with ordinary Nix flakes enabled. Calling `mkGoPackage`
 uses dynamic derivations and requires the client/daemon features documented in
