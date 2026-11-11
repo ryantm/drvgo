@@ -12,6 +12,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"strings"
 
 	"github.com/ryantm/drvgo/internal/plan"
@@ -82,9 +83,31 @@ func controlledEnv(tc string) []string {
 		if (strings.HasPrefix(k, "GO") && k != "GOMAXPROCS") || strings.HasPrefix(k, "CGO_") || strings.HasPrefix(k, "NIX_") || k == "CC" || k == "CXX" || k == "PATH" {
 			continue
 		}
+		// Use the Nix compiler wrapper's pinned SDK and deployment target,
+		// including outside a Nix build or inside an unrelated dev shell.
+		if k == "SDKROOT" || k == "MACOSX_DEPLOYMENT_TARGET" || k == "DEVELOPER_DIR" || strings.HasPrefix(k, "DEVELOPER_DIR_") {
+			continue
+		}
 		env = append(env, e)
 	}
-	return append(env, "PATH="+tc+"/bin:"+os.Getenv("PATH"), "GOENV=off", "GOFLAGS=", "GOTOOLCHAIN=local", "CGO_ENABLED=1", "CC="+tc+"/bin/gcc", "CXX="+tc+"/bin/g++")
+	cc, cxx := "gcc", "g++"
+	if runtime.GOOS == "darwin" {
+		cc, cxx = "clang", "clang++"
+	}
+	return append(env, "PATH="+tc+"/bin:"+os.Getenv("PATH"), "GOENV=off", "GOFLAGS=", "GOTOOLCHAIN=local", "CGO_ENABLED=1", "CC="+tc+"/bin/"+cc, "CXX="+tc+"/bin/"+cxx)
+}
+
+func nixSystem(goos, goarch string) (string, error) {
+	switch goos + "/" + goarch {
+	case "linux/amd64":
+		return "x86_64-linux", nil
+	case "linux/arm64":
+		return "aarch64-linux", nil
+	case "darwin/arm64":
+		return "aarch64-darwin", nil
+	default:
+		return "", fmt.Errorf("unsupported platform %s/%s; supported platforms: linux/amd64, linux/arm64, darwin/arm64", goos, goarch)
+	}
 }
 
 var safePath = regexp.MustCompile(`^[a-zA-Z0-9/._@+!,=:~-]+$`)
@@ -132,6 +155,10 @@ func Generate(o Options) (*Graph, error) {
 	}
 	ge := map[string]string{}
 	if err = json.Unmarshal(eb, &ge); err != nil {
+		return nil, err
+	}
+	system, err := nixSystem(ge["GOOS"], ge["GOARCH"])
+	if err != nil {
 		return nil, err
 	}
 	driver, err := plan.SelectDriver(ge["GOVERSION"], o.ExperimentalGo)
@@ -266,15 +293,11 @@ func Generate(o Options) (*Graph, error) {
 	if root == "" {
 		return nil, fmt.Errorf("missing link action")
 	}
-	arch := map[string]string{"amd64": "x86_64", "arm64": "aarch64"}[ge["GOARCH"]]
-	if arch == "" || ge["GOOS"] != "linux" {
-		return nil, fmt.Errorf("supported platforms: amd64-linux and arm64-linux")
-	}
 	binaryName := filepath.Base(target.ImportPath)
 	if target.Target != "" {
 		binaryName = filepath.Base(target.Target)
 	}
-	graph := &Graph{Driver: driver.Family, ExperimentalGo: driver.Experimental, Diagnostics: diagnostics, SourceHashes: sourceHashes, System: arch + "-linux", GoRoot: ge["GOROOT"], GoOS: ge["GOOS"], GoArch: ge["GOARCH"], CGO: "1", GoVersion: ge["GOVERSION"], BinaryName: binaryName, Root: root, Units: units}
+	graph := &Graph{Driver: driver.Family, ExperimentalGo: driver.Experimental, Diagnostics: diagnostics, SourceHashes: sourceHashes, System: system, GoRoot: ge["GOROOT"], GoOS: ge["GOOS"], GoArch: ge["GOARCH"], CGO: "1", GoVersion: ge["GOVERSION"], BinaryName: binaryName, Root: root, Units: units}
 	if o.CGOEnabled != nil && !*o.CGOEnabled {
 		graph.CGO = "0"
 	}

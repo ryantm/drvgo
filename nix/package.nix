@@ -19,7 +19,7 @@ pkgs.buildGoModule {
     description = "Package-granular Go builds with Nix";
     homepage = "https://github.com/ryantm/drvgo";
     license = pkgs.lib.licenses.cc0;
-    platforms = [ "x86_64-linux" "aarch64-linux" ];
+    platforms = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ];
     mainProgram = "drvgo";
   };
 }

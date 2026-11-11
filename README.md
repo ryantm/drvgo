@@ -8,7 +8,7 @@ This is a standalone Go CLI, not a fork of `cmd/go` or bindings to Nix's C++ lib
 
 ## Use
 
-Prerequisites: Linux, Nix with `nix-command` and `flakes` enabled, and access to a Nix store that can build derivations. The tested platform is x86_64-linux. A pinned Go 1.26.5/C toolchain is built or downloaded automatically; it does not install anything system-wide.
+Prerequisites: Linux (amd64 or arm64) or macOS on Apple Silicon (M series), Nix with `nix-command` and `flakes` enabled, and access to a Nix store that can build derivations. A pinned Go 1.26.5/C toolchain is built or downloaded automatically; it does not install anything system-wide.
 
 ```sh
 nix-shell --run 'go build -o bin/drvgo ./cmd/drvgo'
@@ -55,7 +55,7 @@ Coverage and multi-package test runners are not implemented.
 
 The flake provides `packages.<system>.drvgo` (also `default`),
 `apps.<system>.drvgo` (also `default`), and `lib.mkGoPackage` for
-`x86_64-linux` and `aarch64-linux`.
+`x86_64-linux`, `aarch64-linux`, and `aarch64-darwin`.
 
 ```sh
 nix run github:ryantm/drvgo/v0.1.0 -- export -C /path/to/project .
@@ -172,10 +172,11 @@ python3 tests/compatibility.py --toolchain "$tc" --drvgo bin/drvgo \
 ```
 
 The dynamic portion requires the features documented below. CI is configured for
-all three versions on Linux amd64 and arm64 and gates future registry releases
-on those jobs. [Local results](tests/compatibility-results-2026-10-23.json) include
-15 cross-version case comparisons with no shared package derivations. Arm64
-execution has not been verified locally. To add a release,
+all three versions on Linux amd64 and arm64 and Apple Silicon macOS (`macos-15`),
+and gates future registry releases on those jobs. macOS builds use Nix’s Clang
+and pinned Apple SDK. The matrix also exercises C++ compilation and, on macOS,
+SDK framework linking and native arm64 Mach-O output. [Local results](tests/compatibility-results-2026-10-23.json) include
+15 cross-version case comparisons with no shared package derivations. To add a release,
 pin its compiler, add an adapter/policy entry, run the matrix with
 `--record-traces`, review the generated trace, then deliberately regenerate the
 expected plan with `DRVGO_UPDATE_TRACES=1 go test ./internal/plan -run TestRecordedDrivers`.
@@ -230,9 +231,9 @@ See [the UPM example](examples/upm/README.md) for the tested revision and result
 
 ## Current boundaries
 
-- One native Linux main package or test binary per invocation. amd64 was tested; arm64 is accepted but untested. Cross-compilation, Darwin, coverage modes, shared-library modes, and install commands are not implemented.
+- One native main package or test binary per invocation on Linux amd64/arm64 or Apple Silicon macOS. Cross-compilation, Intel macOS, coverage modes, shared-library modes, and install commands are not implemented.
 - Requires a tested compiler or an explicit experimental override. New versions need translator and differential-build testing, not just a version-string edit.
-- cgo uses the pinned GCC toolchain. System libraries and `pkg-config` dependency injection are not implemented. SWIG and Fortran are unsupported. Native sources that require undeclared files outside their module cannot build.
+- cgo uses pinned GCC on Linux and Clang with the pinned Apple SDK on macOS. Apple SDK frameworks are available; additional system libraries and `pkg-config` dependency injection are not implemented. SWIG and Fortran are unsupported. Native sources that require undeclared files outside their module cannot build.
 - cgo snapshots include auxiliary module files, so native-package invalidation is coarser than pure-Go package invalidation. Arbitrary native build generators are not run automatically.
 - Project and module-cache directory names containing shell-special characters or spaces are rejected. Embedded asset names are recorded as JSON and do not have this directory-name restriction. Symlink source files are rejected.
 - Each export copies sources locally, then Nix imports content-addressed source snapshots. Registry fetch derivations and direct libnix bindings are future work.

@@ -6,7 +6,7 @@ let
     go build -trimpath -o $out/bin/libnix-buildid cmd/buildid
     go build -trimpath -o $out/bin/libnix-pack cmd/pack
   '';
-  # Most package actions only invoke Go tools. Keep GCC and its development
+  # Most package actions only invoke Go tools. Keep the C compiler and its development
   # closure off those builders, particularly when copying inputs remotely.
   compile = pkgs.symlinkJoin {
     name = "go-libnix-compile-toolchain";
