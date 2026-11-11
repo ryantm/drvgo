@@ -89,7 +89,17 @@ def main():
 
     def exported(label, selected_cache=cache):
         graph = out / (label + "-export")
-        run([cli, "export", "-C", source, "-out", graph, "-toolchain", tc, "-module-cache", selected_cache, "."], label + "-export")
+        export_env = None
+        module_args = ["-module-cache", selected_cache]
+        if selected_cache is None:
+            # An isolated GOPATH proves the proxy is extracted at a different
+            # location, without accidentally reusing a process-global cache.
+            temporary = out / (label + "-temporary")
+            temporary.mkdir()
+            export_env = dict(os.environ, TMPDIR=str(temporary))
+            module_args = ["-module-proxy", proxy.as_uri()]
+        run([cli, "export", "-C", source, "-out", graph, "-toolchain", tc, *module_args, "."],
+            label + "-export", env=export_env)
         result = run(["nix-build", *flags, "--no-out-link", graph, "-A", "default"], label + "-build")
         paths = json.loads(run(["nix-instantiate", *features, "--eval", "--strict", "--json", "--expr",
                                f'builtins.mapAttrs (_: d: d.drvPath) (import {graph} {{}}).units'], label + "-units"))
@@ -103,6 +113,9 @@ def main():
     alternate, alternate_units = exported("alternate-cache", alternate_cache)
     assert alternate_units == units and alternate == original, "module-cache relocation changed recipes"
     report["module_cache_relocation"] = True
+    from_proxy, proxy_units = exported("fresh-proxy", None)
+    assert proxy_units == units and from_proxy == original, "fresh proxy extraction changed recipes"
+    report["proxy_prepared_cache_reuse"] = True
     # Explicit cache overrides work with vendorHash=null and prepareModules=false.
     dynamic_expr = (f'import ./tests/dynamic-compatibility.nix {{ system = {nix_string(system)}; '
                     f'toolchainAttr = {nix_string(args.flake_toolchain)}; src = {source}; '
