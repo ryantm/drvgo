@@ -35,19 +35,26 @@ func parse(raw, cwd string, driver Driver) ([]Unit, error) {
 	var units []Unit
 	var script strings.Builder
 	seen := map[string]bool{}
+	indices := map[string]int{}
 	current := -1
 	directory := cwd
 	heredoc := false
 	for _, line := range strings.Split(raw, "\n") {
-		if m := start.FindStringSubmatch(line); m != nil && !seen[m[1]] {
+		if m := start.FindStringSubmatch(line); m != nil && (current < 0 || units[current].ID != m[1]) {
 			if current >= 0 {
 				units[current].Script = script.String()
 			}
 			script.Reset()
 			script.WriteString("cd @WORK@\n")
-			seen[m[1]] = true
-			units = append(units, Unit{ID: m[1], Deps: []string{}, Sources: []string{}})
-			current = len(units) - 1
+			if index, ok := indices[m[1]]; ok {
+				current = index
+				script.WriteString(units[current].Script)
+			} else {
+				seen[m[1]] = true
+				units = append(units, Unit{ID: m[1], Deps: []string{}, Sources: []string{}})
+				current = len(units) - 1
+				indices[m[1]] = current
+			}
 		}
 		if current < 0 {
 			if strings.TrimSpace(line) == "" || strings.HasPrefix(line, "WORK=") || strings.HasPrefix(line, "go: downloading ") {

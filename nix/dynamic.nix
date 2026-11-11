@@ -3,7 +3,7 @@
 { toolchain ? import ../internal/export/templates/toolchain.nix
 , drvgo ? import ./package.nix { pkgs = toolchain.pkgs; }
 }:
-{ src, package ? ".", vendorHash ? null, tags ? "", ldflags ? "", name ? "drvgo", experimentalGo ? false }:
+{ src, package ? ".", vendorHash ? null, tags ? "", ldflags ? "", name ? "drvgo", experimentalGo ? false, test ? false, race ? false, cgoEnabled ? null }:
 let
   pkgs = toolchain.pkgs;
   inherit (pkgs) lib;
@@ -67,6 +67,8 @@ let
     export NIX_CONFIG='extra-experimental-features = nix-command ca-derivations dynamic-derivations recursive-nix
     allow-import-from-derivation = false'
     drvgo export -C "$src" -out "$TMPDIR/graph" ${lib.optionalString experimentalGo "-experimental-go"} \
+      ${lib.optionalString test "-test"} ${lib.optionalString race "-race"} \
+      ${lib.optionalString (cgoEnabled != null) "-cgo ${if cgoEnabled then "1" else "0"}"} \
       -toolchain ${toolchain} \
       -module-proxy ${lib.escapeShellArg (if modules == null then "off" else "file://${modules}")} \
       -tags ${lib.escapeShellArg tags} -ldflags ${lib.escapeShellArg ldflags} \

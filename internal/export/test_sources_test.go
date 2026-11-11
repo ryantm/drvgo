@@ -1,0 +1,39 @@
+package export
+
+import (
+	"strings"
+	"testing"
+)
+
+func TestPrepareTestSources(t *testing.T) {
+	target := Package{Dir: "/project/p", ImportPath: "example/p.test", Name: "main", GoFiles: []string{"/cache/generated-main"}}
+	packages := []Package{
+		{Dir: "/project/p", ImportPath: "example/p", GoFiles: []string{"p.go"}},
+		{Dir: "/project/p", ImportPath: "example/p [example/p.test]", GoFiles: []string{"p.go", "p_test.go"}, EmbedFiles: []string{"fixture.txt"}},
+		{Dir: "/project/p", ImportPath: "example/p_test [example/p.test]", GoFiles: []string{"external_test.go"}},
+		target,
+	}
+	trace := []byte("mkdir -p $WORK/b001/\n#\n# example/p.test\n#\ncompile $WORK/b001/_testmain.go\nlink -o $WORK/b001/p.test\n")
+	got, raw, err := prepareTestSources(packages, target, trace)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(got) != 2 || strings.Join(got[0].GoFiles, ",") != "p.go,p_test.go,external_test.go" {
+		t.Fatalf("merged sources: %#v", got)
+	}
+	if len(got[0].EmbedFiles) != 1 || got[1].Dir != "/cache" {
+		t.Fatalf("missing generated or embedded sources: %#v", got)
+	}
+	for _, want := range []string{"compile /cache/generated-main", "link -o $WORK/b001/exe/a.out"} {
+		if !strings.Contains(string(raw), want) {
+			t.Fatalf("missing %q in %s", want, raw)
+		}
+	}
+}
+
+func TestPrepareTestSourcesRejectsMissingGeneratedMain(t *testing.T) {
+	_, _, err := prepareTestSources(nil, Package{}, nil)
+	if err == nil {
+		t.Fatal("accepted missing generated test main")
+	}
+}

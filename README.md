@@ -31,6 +31,20 @@ The project also includes `devenv.nix`/`devenv.yaml`. The tested `nix-shell` ent
 
 ## Consume as a Nix flake
 
+### Test binaries and build modes
+
+`drvgo export -test ./pkg/example` exports one package's test executable,
+using cmd/go's generated test main. Run the resulting `bin/<package>.test`
+from the package's source directory so relative fixtures remain available.
+Internal tests, external tests, and test embeds are included. This compiles
+tests; it does not run them or silently replace cmd/go's test harness.
+Select a package with tests; packages without tests are rejected.
+
+`-race` enables the race detector and `-cgo 0` or `-cgo 1` explicitly selects
+cgo. The flake helper accepts `test`, `race`, and `cgoEnabled` respectively.
+Its dynamic planner still performs discovery at build time with IFD disabled.
+Coverage and multi-package test runners are not implemented.
+
 The flake provides `packages.<system>.drvgo` (also `default`),
 `apps.<system>.drvgo` (also `default`), and `lib.mkGoPackage` for
 `x86_64-linux` and `aarch64-linux`.
@@ -202,7 +216,7 @@ See [the UPM example](examples/upm/README.md) for the tested revision and result
 
 ## Current boundaries
 
-- One native Linux main package per invocation. amd64 was tested; arm64 is accepted but untested. Cross-compilation, Darwin, race/coverage modes, test binaries, shared-library modes, and install commands are not implemented.
+- One native Linux main package or test binary per invocation. amd64 was tested; arm64 is accepted but untested. Cross-compilation, Darwin, coverage modes, shared-library modes, and install commands are not implemented.
 - Requires a tested compiler or an explicit experimental override. New versions need translator and differential-build testing, not just a version-string edit.
 - cgo uses the pinned GCC toolchain. System libraries and `pkg-config` dependency injection are not implemented. SWIG and Fortran are unsupported. Native sources that require undeclared files outside their module cannot build.
 - cgo snapshots include auxiliary module files, so native-package invalidation is coarser than pure-Go package invalidation. Arbitrary native build generators are not run automatically.
