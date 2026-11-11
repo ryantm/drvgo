@@ -22,6 +22,13 @@ var storeReference = regexp.MustCompile(`/nix/store/[0123456789abcdfghijklmnpqrs
 const maxStoreReference = len("/nix/store/") + 32 + 1 + 211
 const storeReferenceBatch = 256
 
+// Called only for complete regexp matches. Nix rejects these two names before
+// path-info can report a missing path as null.
+func validStoreReference(path string) bool {
+	name := path[len("/nix/store/")+32+1:]
+	return len(path) <= maxStoreReference && name != "." && name != ".."
+}
+
 func collectStoreReferences(dir string, units []plan.Unit) error {
 	snapshots := make(map[string][]string)
 	candidates := make(map[string]bool)
@@ -30,7 +37,7 @@ func collectStoreReferences(dir string, units []plan.Unit) error {
 		u := &units[i]
 		refs := make(map[string]bool)
 		add := func(path string) {
-			if len(path) <= maxStoreReference {
+			if validStoreReference(path) {
 				refs[path] = true
 				candidates[path] = true
 			}
@@ -128,7 +135,10 @@ func scanStoreReferences(r io.Reader, buffer []byte, add func(string)) error {
 				continue // The next chunk may extend this name.
 			}
 			if match[1]-match[0] <= maxStoreReference {
-				add(string(data[match[0]:match[1]]))
+				path := string(data[match[0]:match[1]])
+				if validStoreReference(path) {
+					add(path)
+				}
 			}
 		}
 		if err == io.EOF {

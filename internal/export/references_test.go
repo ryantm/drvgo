@@ -115,7 +115,8 @@ func TestScanStoreReferences(t *testing.T) {
 	path := "/nix/store/" + strings.Repeat("1", 32) + "-" + strings.Repeat("a", 211)
 	// Exercise every possible split through the prefix, hash, name and delimiter.
 	for split := 1; split <= len(path); split++ {
-		input := strings.Repeat(" ", 512-split) + path + "/file " + path + "x " + path
+		prefix := "/nix/store/" + strings.Repeat("1", 32) + "-"
+		input := strings.Repeat(" ", 512-split) + path + "/file " + path + "x " + prefix + ". " + prefix + ".. " + path
 		found := map[string]bool{}
 		err := scanStoreReferences(strings.NewReader(input), make([]byte, 512), func(p string) { found[p] = true })
 		if err != nil || !reflect.DeepEqual(found, map[string]bool{path: true}) {
