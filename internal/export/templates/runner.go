@@ -32,6 +32,31 @@ type action struct {
 var rewriteBuildID func(string) error
 var readBuildID func(string) (string, error)
 var packArchive func([]string) error
+var exportArchive func(string, string) error
+
+// Preserve the selected SDK's export payload exactly. The build ID in its
+// textual object header describes the entire implementation, which consumers
+// do not read. Removing that header line lets an unchanged interface keep its
+// content-addressed output after a private implementation edit.
+func normalizeExportData(data []byte) ([]byte, error) {
+	end := bytes.Index(data, []byte("\n$$B\n"))
+	if !bytes.HasPrefix(data, []byte("go object ")) || end < 0 {
+		return nil, fmt.Errorf("unsupported Go export data header")
+	}
+	var result []byte
+	found := false
+	for _, line := range bytes.SplitAfter(data[:end+1], []byte("\n")) {
+		if bytes.HasPrefix(line, []byte("build id ")) {
+			if found || !bytes.HasPrefix(line, []byte("build id \"")) || !bytes.HasSuffix(line, []byte("\"\n")) {
+				return nil, fmt.Errorf("invalid Go export build ID")
+			}
+			found = true
+			continue
+		}
+		result = append(result, line...)
+	}
+	return append(result, data[end+1:]...), nil
+}
 
 // Hash the Nix-resolved recipe before replacing temporary paths or CPU budgets.
 // Sources/dependencies are already store paths or inline data here; discovery's
@@ -519,6 +544,14 @@ func build() error {
 		return err
 	}
 	src, dst := filepath.Join(tmp, "unit", "_pkg_.a"), filepath.Join(os.Getenv("out"), "_pkg_.a")
+	if api := os.Getenv("api"); api != "" {
+		if exportArchive == nil {
+			return fmt.Errorf("missing pinned export archive writer")
+		}
+		if err := exportArchive(src, filepath.Join(api, "_pkg_.a")); err != nil {
+			return err
+		}
+	}
 	if os.Getenv("isBinary") == "1" {
 		src = filepath.Join(tmp, "unit", "exe", "a.out")
 		dst = filepath.Join(os.Getenv("out"), "bin", os.Getenv("binaryName"))

@@ -23,6 +23,8 @@ def main():
     parser.add_argument("--vendor-hash", help="module proxy hash for sources with external dependencies")
     parser.add_argument("--after-module-cache", type=Path, help="prepared cache for the modified checkout")
     parser.add_argument("--after-prepare-modules", action="store_true", help="enable automatic cache preparation in the modified checkout")
+    parser.add_argument("--after-export-data", action="store_true", help="enable compiler export archives in the modified checkout")
+    parser.add_argument("--after-no-early-cutoff", action="store_true", help="keep interface outputs input-addressed")
     parser.add_argument("--package", default=".")
     parser.add_argument("--cgo", choices=["0", "1"], help="explicitly select cgo mode")
     parser.add_argument("--test", action="store_true", help="export a test binary")
@@ -37,6 +39,8 @@ def main():
         parser.error("--runs must be positive")
     if args.allow_empty_tests and not args.test:
         parser.error("--allow-empty-tests requires --test")
+    if args.after_no_early_cutoff and not args.after_export_data:
+        parser.error("--after-no-early-cutoff requires --after-export-data")
     out = (args.out or Path(tempfile.mkdtemp(prefix="drvgo-ci-benchmark-"))).resolve()
     out.mkdir(parents=True, exist_ok=True)
     if any(out.iterdir()):
@@ -62,6 +66,8 @@ def main():
               "source": str(args.source.resolve()), "package": args.package, "vendor_hash": args.vendor_hash,
               "after_module_cache": str(args.after_module_cache) if args.after_module_cache else None,
               "after_prepare_modules": args.after_prepare_modules,
+              "after_export_data": args.after_export_data,
+              "after_no_early_cutoff": args.after_no_early_cutoff,
               "cgo": args.cgo, "test": args.test, "allow_empty_tests": args.allow_empty_tests, "tags": args.tags,
               "nix": subprocess.check_output(["nix", "--version"], text=True).strip(),
               "roots": {k: str(v) for k, v in roots.items()}, "flags": flags, "nonce": nonce, "records": []}
@@ -73,6 +79,10 @@ def main():
         extra = f" moduleCache = builtins.storePath {nix_string(args.after_module_cache)};" if label == "after" and args.after_module_cache else ""
         if label == "after" and args.after_prepare_modules:
             extra += " prepareModules = true;"
+        if label == "after" and args.after_export_data:
+            extra += " exportData = true;"
+        if label == "after" and args.after_no_early_cutoff:
+            extra += " earlyCutoff = false;"
         expression = (f"(import (builtins.toPath {nix_string(roots[label] / 'nix/dynamic.nix')}) {{}}) {{"
                       f"name = {nix_string(name)}; src = builtins.path {{ path = {nix_string(args.source.resolve())}; name = \"source\"; }}; "
                       f"package = {nix_string(args.package)};{build_options}{extra} }}")
