@@ -29,5 +29,11 @@ in pkgs.symlinkJoin {
   postBuild = ''
     mkdir -p $out/nix-support
     echo ${compile} > $out/nix-support/drvgo-compile-toolchain
+  '' + pkgs.lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
+    # Go invokes these directly after external linking. symlinkJoin does not
+    # follow the compiler's propagated user-environment packages.
+    for tool in dsymutil strip; do
+      ln -s ${pkgs.lib.getBin pkgs.stdenv.cc.bintools.bintools}/bin/$tool $out/bin/$tool
+    done
   '';
 }
