@@ -5,6 +5,7 @@ package export
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -29,15 +30,19 @@ func TestRuntimeStoreReferences(t *testing.T) {
 		t.Run(fmt.Sprintf("padding-%d", padding), func(t *testing.T) {
 			root := writeTestProject(t, map[string]string{
 				"go.mod": "module example.com/runtime-reference\ngo 1.25\n",
-				"main.go": fmt.Sprintf("package main\nimport(\"fmt\";\"os\")\nfunc main(){ b,e:=os.ReadFile(%q);if e!=nil{panic(e)};fmt.Print(string(b)) }\n// %s\n",
+				"main.go": fmt.Sprintf("package main\nimport(\"fmt\";\"os\")\nfunc main(){ b,e:=os.ReadFile(%q);if e!=nil{panic(e)};fmt.Print(string(b)) }\n// /nix/store/00000000000000000000000000000000-missing-example\n// %s\n",
 					dataPath, strings.Repeat("x", padding)),
 			})
 			out := filepath.Join(t.TempDir(), "export")
 			if _, err := Generate(Options{Dir: root, Out: out, Package: ".", Toolchain: tc}); err != nil {
 				t.Fatal(err)
 			}
+			if err := os.RemoveAll(root); err != nil {
+				t.Fatal(err)
+			}
 			cmd := exec.Command("nix-build", out, "-A", "default", "--no-out-link", "--max-jobs", "2", "--cores", "2",
-				"--option", "allow-import-from-derivation", "false")
+				"--option", "allow-import-from-derivation", "false",
+				"--option", "sandbox", "true", "--option", "sandbox-fallback", "false")
 			var stderr strings.Builder
 			cmd.Stderr = &stderr
 			b, err := cmd.Output()
@@ -67,6 +72,17 @@ func TestRuntimeStoreReferences(t *testing.T) {
 			b, err = exec.Command(filepath.Join(result, "bin", "runtime-reference")).CombinedOutput()
 			if err != nil || string(b) != "runtime data" {
 				t.Fatalf("runtime read: %q %v", b, err)
+			}
+			// Copy the complete closure to a fresh binary cache and verify the
+			// runtime data travels with it, without collecting the host store.
+			cache := "file://" + t.TempDir()
+			b, err = exec.Command("nix", "--extra-experimental-features", "nix-command", "copy", "--to", cache, result).CombinedOutput()
+			if err != nil {
+				t.Fatalf("copy closure: %v\n%s", err, b)
+			}
+			b, err = exec.Command("nix", "--extra-experimental-features", "nix-command", "path-info", "--store", cache, dataPath).CombinedOutput()
+			if err != nil {
+				t.Fatalf("runtime data missing from copied closure: %v\n%s", err, b)
 			}
 		})
 	}

@@ -1,6 +1,9 @@
 package export
 
 import (
+	"errors"
+	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -29,7 +32,7 @@ func TestStoreReferencesSurviveInlining(t *testing.T) {
 		t.Fatal(err)
 	}
 	mock := filepath.Join(t.TempDir(), "nix")
-	if err := os.WriteFile(mock, []byte("#!/bin/sh\nprintf '%s\\n' '{\""+valid+"\":{},\""+missing+"\":null}'\nexit 1\n"), 0755); err != nil {
+	if err := os.WriteFile(mock, []byte("#!/bin/sh\nprintf '%s\\n' '{\""+valid+"\":{},\""+missing+"\":null}'\n"), 0755); err != nil {
 		t.Fatal(err)
 	}
 	t.Setenv("PATH", filepath.Dir(mock))
@@ -58,13 +61,73 @@ func TestStoreReferencesSurviveInlining(t *testing.T) {
 }
 
 func TestStoreReferenceQueryFailsClosed(t *testing.T) {
+	path := "/nix/store/" + strings.Repeat("1", 32) + "-runtime-data"
+	for _, tc := range []struct{ name, output, status, want string }{
+		{"failed", fmt.Sprintf(`{"%s":{}}`, path), "echo unavailable >&2; exit 1", "unavailable"},
+		{"omitted", `{}`, "", "omitted"},
+		{"invalid-json", `{`, "", "decode"},
+		{"invalid-value", fmt.Sprintf(`{"%s":true}`, path), "", "decode"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			mock := filepath.Join(t.TempDir(), "nix")
+			if err := os.WriteFile(mock, []byte("#!/bin/sh\nprintf '%s' '"+tc.output+"'\n"+tc.status+"\n"), 0755); err != nil {
+				t.Fatal(err)
+			}
+			t.Setenv("PATH", filepath.Dir(mock))
+			units := []plan.Unit{{Script: path}}
+			if err := collectStoreReferences(t.TempDir(), units); err == nil || !strings.Contains(err.Error(), tc.want) {
+				t.Fatalf("expected %q error, got %v", tc.want, err)
+			}
+		})
+	}
+}
+
+func TestStoreReferenceQueryBatches(t *testing.T) {
+	// More candidates than a single exec's argument limit on Linux or macOS.
+	const count = 40000
+	var script strings.Builder
+	for i := 0; i < count; i++ {
+		fmt.Fprintf(&script, "/nix/store/%s-data-%05d\n", strings.Repeat("1", 32), i)
+	}
 	mock := filepath.Join(t.TempDir(), "nix")
-	if err := os.WriteFile(mock, []byte("#!/bin/sh\nprintf '{}'\nexit 1\n"), 0755); err != nil {
+	if err := os.WriteFile(mock, []byte(`#!/bin/sh
+[ "$#" -le 262 ] || exit 2
+printf '{'
+sep=''
+for path in "$@"; do
+  case "$path" in /nix/store/*) printf '%s"%s":{}' "$sep" "$path"; sep=',' ;; esac
+done
+printf '}'
+`), 0755); err != nil {
 		t.Fatal(err)
 	}
 	t.Setenv("PATH", filepath.Dir(mock))
-	units := []plan.Unit{{Script: "/nix/store/" + strings.Repeat("1", 32) + "-runtime-data"}}
-	if err := collectStoreReferences(t.TempDir(), units); err == nil {
-		t.Fatal("silently dropped a reference on store query failure")
+	units := []plan.Unit{{Script: script.String()}}
+	if err := collectStoreReferences(t.TempDir(), units); err != nil {
+		t.Fatal(err)
+	}
+	if len(units[0].StoreReferences) != count {
+		t.Fatalf("got %d references, want %d", len(units[0].StoreReferences), count)
 	}
 }
+
+func TestScanStoreReferences(t *testing.T) {
+	path := "/nix/store/" + strings.Repeat("1", 32) + "-" + strings.Repeat("a", 211)
+	// Exercise every possible split through the prefix, hash, name and delimiter.
+	for split := 1; split <= len(path); split++ {
+		input := strings.Repeat(" ", 512-split) + path + "/file " + path + "x " + path
+		found := map[string]bool{}
+		err := scanStoreReferences(strings.NewReader(input), make([]byte, 512), func(p string) { found[p] = true })
+		if err != nil || !reflect.DeepEqual(found, map[string]bool{path: true}) {
+			t.Fatalf("split %d: %v, %v", split, found, err)
+		}
+	}
+	want := errors.New("read failed")
+	if err := scanStoreReferences(io.MultiReader(strings.NewReader(path), failingReferenceReader{want}), make([]byte, 512), func(string) {}); !errors.Is(err, want) {
+		t.Fatalf("lost read error: %v", err)
+	}
+}
+
+type failingReferenceReader struct{ err error }
+
+func (r failingReferenceReader) Read([]byte) (int, error) { return 0, r.err }

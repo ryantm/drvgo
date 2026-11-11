@@ -38,6 +38,7 @@ let
       runtimeReferences = map (path: builtins.appendContext path {
         ${path} = { path = true; };
       }) (u.storeReferences or []);
+      passAsFile = [ "script" "runtimeReferences" ];
     }));
   }) graph.units);
 in {
