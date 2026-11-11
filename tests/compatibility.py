@@ -4,6 +4,7 @@ import argparse
 import gzip
 import json
 import os
+import platform
 from pathlib import Path
 import re
 import shutil
@@ -22,9 +23,10 @@ repo = Path(__file__).resolve().parent.parent
 out = (a.out or Path(tempfile.mkdtemp(prefix='drvgo-compat-'))).resolve()
 out.mkdir(parents=True, exist_ok=True)
 tc, cli = a.toolchain.resolve(), a.drvgo.resolve()
-env = {k:v for k,v in os.environ.items() if not (k.startswith(('GO','CGO_','NIX_')) or k in ('CC','CXX','PATH'))}
+env = {k:v for k,v in os.environ.items() if not (k.startswith(('GO','CGO_','NIX_','DEVELOPER_DIR_','MACOSX_DEPLOYMENT_TARGET_')) or k in ('CC','CXX','PATH','SDKROOT','DEVELOPER_DIR','MACOSX_DEPLOYMENT_TARGET'))}
+cc, cxx = ('clang', 'clang++') if platform.system() == 'Darwin' else ('gcc', 'g++')
 env.update(PATH=str(tc/'bin')+':'+os.environ['PATH'], GOENV='off', GOFLAGS='', GOTOOLCHAIN='local', CGO_ENABLED='1',
-           GOMAXPROCS='2', GOPROXY='off', CC=str(tc/'bin/gcc'), CXX=str(tc/'bin/g++'))
+           GOMAXPROCS='2', GOPROXY='off', CC=str(tc/'bin'/cc), CXX=str(tc/'bin'/cxx))
 
 def run(cmd, cwd=None, go=False, cgo=None):
     command_env = dict(env, CGO_ENABLED=cgo) if go and cgo is not None else env if go else None
@@ -38,7 +40,8 @@ def write(path, content):
     path.write_text(content)
 
 version = run([tc/'bin/go','env','GOVERSION'], go=True).stdout.decode().strip()
-report = {'go':version, 'toolchain':str(tc), 'cases':[], 'nix':run(['nix','--version']).stdout.decode().strip()}
+report = {'go':version, 'platform':run([tc/'bin/go','env','GOOS','GOARCH'], go=True).stdout.decode().split(),
+          'toolchain':str(tc), 'cases':[], 'nix':run(['nix','--version']).stdout.decode().strip()}
 
 def case(name, source, expected, tags='', ldflags='', cgo=None, race=False):
     native = out/(name+'-native')
@@ -51,8 +54,13 @@ def case(name, source, expected, tags='', ldflags='', cgo=None, race=False):
     modes = (['-cgo',cgo] if cgo is not None else []) + (['-race'] if race else [])
     run([cli,'export','-C',source,'-out',export,'-toolchain',tc,'-module-proxy','off','-tags',tags,'-ldflags',ldflags,*modes,'.'])
     graph = json.loads((export/'graph.json').read_text())
+    assert [graph['goos'], graph['goarch']] == report['platform'], graph
     result = run(['nix-build',export,'-A','default','--no-out-link','--max-jobs','4','--cores','2']).stdout.decode().strip()
-    actual = run([Path(result)/'bin'/graph['binaryName']]).stdout.decode()
+    binary = Path(result)/'bin'/graph['binaryName']
+    if report['platform'] == ['darwin', 'arm64']:
+        header = binary.read_bytes()[:8]
+        assert header == b'\xcf\xfa\xed\xfe\x0c\x00\x00\x01', ('expected native arm64 Mach-O', header)
+    actual = run([binary]).stdout.decode()
     assert actual == normal, (name,actual,normal)
     paths = json.loads(run(['nix-instantiate','--eval','--strict','--json','--expr',
         'builtins.mapAttrs (_: d: d.drvPath) (import '+str(export)+' {}).units']).stdout)
@@ -101,6 +109,16 @@ write(modes/'native.go','package main\n/* static int answer(void) { return 42; }
 write(modes/'pure.go','//go:build !cgo\n\npackage main\nconst expected=7\nfunc Value() int { return 7 }\n')
 case('cgo-disabled',modes,'7\n',cgo='0')
 case('race-cgo',modes,'42\n',cgo='1',race=True)
+cxx = out/'cxx'
+write(cxx/'go.mod','module example.com/cxx\ngo 1.23.0\n')
+write(cxx/'main.go','package main\n/* int answer(void); */\nimport "C"\nimport "fmt"\nfunc main(){fmt.Println(C.answer())}\n')
+write(cxx/'answer.cc','#include <vector>\nextern "C" int answer(void) { std::vector<int> values{20, 22}; return values[0] + values[1]; }\n')
+case('cxx',cxx,'42\n')
+if report['platform'] == ['darwin', 'arm64']:
+    framework = out/'framework'
+    write(framework/'go.mod','module example.com/framework\ngo 1.23.0\n')
+    write(framework/'main.go','package main\n/*\n#cgo LDFLAGS: -framework CoreFoundation\n#include <CoreFoundation/CoreFoundation.h>\nstatic int answer(void) { return (int)CFStringGetLength(CFSTR("hello")); }\n*/\nimport "C"\nimport "fmt"\nfunc main(){fmt.Println(C.answer())}\n')
+    case('darwin-framework',framework,'5\n')
 checkenv=dict(os.environ,DRVGO_TEST_TOOLCHAIN=str(tc))
 p=subprocess.run([str(a.integration_test.resolve()),'-test.run=^(TestEmbeddedAssetsAndCacheIsolation|TestTestBinary.*)$','-test.v'],cwd=repo/'internal/export',env=checkenv,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
 (out/'integration.log').write_bytes(p.stdout)

@@ -13,6 +13,10 @@ import (
 )
 
 func TestEmbeddedAssetsAndCacheIsolation(t *testing.T) {
+	// A developer's Xcode selection must not leak into standalone exports.
+	t.Setenv("SDKROOT", "/drvgo-ambient-sdk-must-not-be-used")
+	t.Setenv("DEVELOPER_DIR", "/drvgo-ambient-xcode-must-not-be-used")
+	t.Setenv("MACOSX_DEPLOYMENT_TARGET", "99.0")
 	root := t.TempDir()
 	fixture, err := filepath.Abs("../../tests/fixture")
 	if err != nil {

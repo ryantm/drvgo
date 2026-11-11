@@ -3,8 +3,49 @@ package export
 import (
 	"os"
 	"path/filepath"
+	"runtime"
+	"strings"
 	"testing"
 )
+
+func TestControlledEnvUsesPinnedCompilerAndSDK(t *testing.T) {
+	for _, key := range []string{"CC", "CXX", "GOOS", "GOARCH", "SDKROOT", "DEVELOPER_DIR", "DEVELOPER_DIR_aarch64_apple_darwin", "MACOSX_DEPLOYMENT_TARGET", "MACOSX_DEPLOYMENT_TARGET_aarch64_apple_darwin"} {
+		t.Setenv(key, "ambient-setting")
+	}
+	env := map[string]string{}
+	for _, entry := range controlledEnv("/toolchain") {
+		key, value, _ := strings.Cut(entry, "=")
+		env[key] = value
+		if value == "ambient-setting" {
+			t.Fatalf("ambient %s leaked into planning", key)
+		}
+	}
+	cc, cxx := "gcc", "g++"
+	if runtime.GOOS == "darwin" {
+		cc, cxx = "clang", "clang++"
+	}
+	if env["CC"] != "/toolchain/bin/"+cc || env["CXX"] != "/toolchain/bin/"+cxx {
+		t.Fatalf("unexpected native compilers: CC=%s CXX=%s", env["CC"], env["CXX"])
+	}
+}
+
+func TestSupportedPlatforms(t *testing.T) {
+	for _, tc := range []struct{ os, arch, system string }{
+		{"linux", "amd64", "x86_64-linux"},
+		{"linux", "arm64", "aarch64-linux"},
+		{"darwin", "arm64", "aarch64-darwin"},
+	} {
+		got, err := nixSystem(tc.os, tc.arch)
+		if err != nil || got != tc.system {
+			t.Fatalf("%s/%s: %q, %v", tc.os, tc.arch, got, err)
+		}
+	}
+	for _, tc := range []struct{ os, arch string }{{"darwin", "amd64"}, {"windows", "arm64"}, {"linux", "386"}} {
+		if _, err := nixSystem(tc.os, tc.arch); err == nil {
+			t.Fatalf("accepted unsupported %s/%s", tc.os, tc.arch)
+		}
+	}
+}
 
 func TestSnapshotEmbeds(t *testing.T) {
 	src := t.TempDir()
