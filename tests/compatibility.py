@@ -39,12 +39,12 @@ def write(path, content):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content)
 
-integration_pattern = '^(TestEmbeddedAssetsAndCacheIsolation|TestNestedCommandWithoutOriginalSource|TestNativeObjectWithoutOriginalSource|TestCustomBuildID|TestEmptyTest.*|TestTestBinary.*)$'
+integration_pattern = '^(TestEmbeddedAssetsAndCacheIsolation|TestNestedCommandWithoutOriginalSource|TestNativeObjectWithoutOriginalSource|TestCustomBuildID|TestRuntimeStoreReferences|TestEmptyTest.*|TestTestBinary.*)$'
 integration_tests = run([a.integration_test.resolve(), '-test.list='+integration_pattern]).stdout.decode().splitlines()
 required_tests = {'TestEmbeddedAssetsAndCacheIsolation', 'TestTestBinaryInternalExternalAndFailure',
                   'TestTestBinaryMainPackage', 'TestTestBinaryRaceAndCGO', 'TestTestBinaryRejectsPackageWithoutTests',
                   'TestNestedCommandWithoutOriginalSource', 'TestNativeObjectWithoutOriginalSource', 'TestCustomBuildID',
-                  'TestEmptyTestSelection', 'TestEmptyTestResult', 'TestEmptyTestsRequireTestMode'}
+                  'TestEmptyTestSelection', 'TestEmptyTestResult', 'TestEmptyTestsRequireTestMode', 'TestRuntimeStoreReferences'}
 if not required_tests.issubset(integration_tests):
     raise RuntimeError('Integration binary lacks required tests; compile it with go test -c -tags integration ./internal/export')
 
@@ -150,6 +150,24 @@ if a.flake_toolchain:
     assert Path(result).resolve() == Path(report['cases'][0]['store_path']), 'dynamic and standalone builds must share package outputs'
     report['dynamic_ifd_disabled']='passed'
     print(version,'dynamic/IFD-disabled PASS',flush=True)
+    for explicit in [False, True]:
+        fixture_expr = (f'import ./tests/runtime-references.nix {{ toolchain = '
+                        f'(builtins.getFlake {json.dumps(str(repo))}).packages.{system}.{a.flake_toolchain}; '
+                        f'explicit = {str(explicit).lower()}; }}')
+        expr = (f'let f = {fixture_expr}; in import ./tests/dynamic-compatibility.nix {{ '
+                f'system = {json.dumps(system)}; toolchainAttr = {json.dumps(a.flake_toolchain)}; '
+                'inherit (f) src ldflags runtimeInputs; }')
+        runtime_result = run(['nix-build','--expr',expr,'--no-out-link',
+            '--option','allow-import-from-derivation','false','--option','sandbox','true',
+            '--option','sandbox-fallback','false','--max-jobs','4','--cores','2'],cwd=repo).stdout.decode().strip()
+        assert run([Path(runtime_result)/'bin/runtime-reference']).stdout.decode() == 'source data\nembedded data\nlinked data\n'
+        data = json.loads(run(['nix-instantiate','--eval','--strict','--read-write-mode','--json','--expr',
+            f'let f = {fixture_expr}; in {{ inherit (f) references unusedData; }}'],cwd=repo).stdout)
+        closure = run(['nix-store','--query','--requisites',runtime_result]).stdout.decode().splitlines()
+        assert set(data['references']).issubset(closure), (data, closure)
+        assert data['unusedData'] not in closure, (data, closure)
+        report.setdefault('dynamic_runtime_references',[]).append({'explicit_inputs':explicit,'output':runtime_result})
+    print(version,'runtime-source/embed/ldflags/unused-inputs/dynamic PASS',flush=True)
     planner_cached = run(['nix-build',repo/'tests/dynamic-compatibility.nix','--argstr','system',system,
         '--argstr','toolchainAttr',a.flake_toolchain,'--arg','allowPlannerSubstitutes','true',
         '--option','allow-import-from-derivation','false','--max-jobs','4','--cores','2','--no-out-link']).stdout.decode().strip()

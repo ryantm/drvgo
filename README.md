@@ -288,6 +288,16 @@ The module download is a fixed-output derivation; the planner uses that proxy
 offline. `tags` and `ldflags` are optional strings. Source trees should exclude
 build outputs and unrelated files to avoid unnecessary replanning.
 
+Store paths embedded verbatim in selected source files, `go:embed` assets, or
+linker flags are retained as runtime dependencies when they are valid in the
+planner's store. Nix string context normally supplies these inputs through
+`src` or `ldflags`. For paths written literally in an existing checkout, declare
+them with `runtimeInputs = [ runtimeData ];` so the recursive planner can see
+them. This also works with `lib.mkGoPackage`. Only references used by selected
+packages enter their build inputs; unused `runtimeInputs` and excluded source
+files do not enlarge the resulting runtime closure. Encoded or dynamically
+constructed paths require an explicit reference in the selected source or flags.
+
 Both the client and daemon need these experimental features:
 
 ```nix

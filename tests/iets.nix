@@ -2,6 +2,7 @@
 # inside the recursive planner as well as using iets for the outer build.
 { iets, src ? ./fixture, name ? "drvgo-iets-fixture", nested ? false
 , cgoEnabled ? null, test ? false, allowEmptyTests ? false, tags ? ""
+, runtimeInputs ? [], ldflags ? ""
 }:
 let
   tc = import ../internal/export/templates/toolchain.nix;
@@ -20,8 +21,9 @@ let
     mkdir -p $out/bin
     ln -s ${instantiate}/bin/nix-instantiate $out/bin/nix-instantiate
     ln -s ${pkgs.nix}/bin/nix-store $out/bin/nix-store
+    ln -s ${pkgs.nix}/bin/nix $out/bin/nix
   '';
   toolchain = if nested then tc // { pkgs = pkgs // { nix = commands; }; } else tc;
 in (import ../nix/dynamic.nix { inherit toolchain; }) {
-  inherit src name cgoEnabled test allowEmptyTests tags;
+  inherit src name cgoEnabled test allowEmptyTests tags runtimeInputs ldflags;
 }

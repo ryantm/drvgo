@@ -12,12 +12,13 @@ import (
 )
 
 type Unit struct {
-	ID      string   `json:"id"`
-	Name    string   `json:"name"`
-	Script  string   `json:"script"`
-	Deps    []string `json:"deps"`
-	Sources []string `json:"sources"`
-	Binary  bool     `json:"binary"`
+	ID              string   `json:"id"`
+	Name            string   `json:"name"`
+	Script          string   `json:"script"`
+	Deps            []string `json:"deps"`
+	Sources         []string `json:"sources"`
+	StoreReferences []string `json:"storeReferences,omitempty"`
+	Binary          bool     `json:"binary"`
 }
 
 var start = regexp.MustCompile(`^mkdir -p \$WORK/(b[0-9]+)/$`)

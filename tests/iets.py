@@ -147,6 +147,32 @@ def main():
         assert result.returncode != 0 and "cannot use" in result.stderr, (label, result.stderr)
     report["optional_tests_invalid_after_cached_empty"] = "passed"
 
+    runtime_outputs = []
+    for nested in [False, True]:
+        for explicit in [False, True]:
+            label = f"runtime-nested-{nested}-explicit-{explicit}"
+            fixture_expr = f"import ./tests/runtime-references.nix {{ explicit = {str(explicit).lower()}; }}"
+            expr = (f"let f = {fixture_expr}; in import ./tests/iets.nix {{ "
+                    f"iets = builtins.storePath {nix_string(package)}; inherit (f) src ldflags runtimeInputs; "
+                    f'name = "drvgo-iets-{nonce}-{label}"; nested = {str(nested).lower()}; }}')
+            nix_drv = run(["nix-instantiate", *features, *flags, "--eval", "--raw", "--read-write-mode", "-E", f"({expr}).drvPath"], label + "-nix-eval")[0]
+            iets_drv = run([binary, "eval", "--impure", *flags, "--raw", "--no-tracing-cache", "-E", f"({expr}).drvPath"], label + "-iets-eval")[0]
+            assert nix_drv == iets_drv
+            result = run([binary, "build", "--impure", *flags, "--no-tracing-cache", "-E", expr], label + "-build")[0]
+            assert result == run(["nix-build", *features, *flags, "--no-out-link", "-E", expr], label + "-reference")[0]
+            assert run([Path(result)/"bin/runtime-reference"], label + "-run")[0] == "source data\nembedded data\nlinked data"
+            data = json.loads(run(["nix-instantiate", "--eval", "--strict", "--read-write-mode", "--json", "-E",
+                f"let f = {fixture_expr}; in {{ inherit (f) references unusedData; }}"], label + "-data")[0])
+            closure = run(["nix-store", "--query", "--requisites", result], label + "-closure")[0].splitlines()
+            assert set(data["references"]).issubset(closure), (data, closure)
+            assert data["unusedData"] not in closure, (data, closure)
+            direct = f'builtins.outputOf ({expr}).planner.outPath "out"'
+            direct_result = run([binary, "build", "--impure", *flags, "--no-tracing-cache", "-E", direct], label + "-direct")[0]
+            assert Path(direct_result).resolve() == Path(result).resolve()
+            runtime_outputs.append(Path(result).resolve())
+            report["checks"].append(dict(case=label, derivation=nix_drv, output=result, command_output=str(runtime_outputs[-1])))
+            print(label, "evaluation/build/direct/closure PASS", flush=True)
+    assert len(set(runtime_outputs)) == 1, "runtime input declaration or nested evaluator changed package outputs"
     report["medians"] = {
         case: {client: statistics.median(r["seconds"] for r in report["records"]
                                         if r["case"] == case and r["client"] == client and not r["warmup"])

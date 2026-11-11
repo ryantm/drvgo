@@ -2,12 +2,13 @@
 , src ? ./fixture, test ? false, race ? false, cgoEnabled ? null
 , allowPlannerSubstitutes ? false, allowEmptyTests ? false
 , package ? ".", ldflags ? ""
+, runtimeInputs ? []
 }:
 let
   drvgo = builtins.getFlake (toString ../.);
   toolchain = drvgo.packages.${system}.${toolchainAttr};
 in drvgo.lib.mkGoPackage {
-  inherit system src test race cgoEnabled allowPlannerSubstitutes allowEmptyTests package ldflags;
+  inherit system src test race cgoEnabled allowPlannerSubstitutes allowEmptyTests package ldflags runtimeInputs;
   go = toolchain.go;
   name = "drvgo-compatibility-fixture";
 }
