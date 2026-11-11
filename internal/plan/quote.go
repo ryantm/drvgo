@@ -71,7 +71,8 @@ func quoteCommand(line string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return quoteWords(words) + suffix, nil
+	quoted, err := quoteWords(words)
+	return quoted + suffix, err
 }
 
 func commandWords(line string) ([]string, error) {
@@ -130,7 +131,7 @@ func commandWords(line string) ([]string, error) {
 	return words, nil
 }
 
-func quoteWords(words []string) string {
+func quoteWords(words []string) (string, error) {
 	// Normalize the compiler's scheduling flag after decoding argv, so flag-like
 	// text inside a quoted filename is left intact. cmd/go omits -c on one CPU.
 	for i, w := range words {
@@ -149,6 +150,11 @@ func quoteWords(words []string) string {
 		}
 		break
 	}
+	var err error
+	words, err = canonicalBuildIDs(words)
+	if err != nil {
+		return "", err
+	}
 	for i, w := range words {
 		if isAssignment(w) {
 			key, value, _ := strings.Cut(w, "=")
@@ -157,5 +163,5 @@ func quoteWords(words []string) string {
 			words[i] = shellWord(w)
 		}
 	}
-	return strings.Join(words, " ")
+	return strings.Join(words, " "), nil
 }

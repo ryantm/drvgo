@@ -100,11 +100,13 @@ func checkNativeTemporaryPaths(t *testing.T, graph, name string) {
 	delete(env, "script")
 	var first []byte
 	for _, label := range []string{"first", "second"} {
+		cores := "1"
 		tmp := filepath.Join(root, label)
 		if err := os.Mkdir(tmp, 0755); err != nil {
 			t.Fatal(err)
 		}
 		if label == "second" {
+			cores = "4"
 			alias := tmp + "-alias"
 			if err := os.Symlink(tmp, alias); err != nil {
 				t.Fatal(err)
@@ -116,7 +118,7 @@ func checkNativeTemporaryPaths(t *testing.T, graph, name string) {
 		for key, value := range env {
 			cmd.Env = append(cmd.Env, key+"="+value)
 		}
-		cmd.Env = append(cmd.Env, "TMPDIR="+tmp, "NIX_BUILD_TOP="+tmp, "out="+out, "scriptPath="+script, "NIX_BUILD_CORES=2")
+		cmd.Env = append(cmd.Env, "TMPDIR="+tmp, "NIX_BUILD_TOP="+tmp, "out="+out, "scriptPath="+script, "NIX_BUILD_CORES="+cores)
 		if b, err := cmd.CombinedOutput(); err != nil {
 			t.Fatalf("native replay: %v\n%s", err, b)
 		}
@@ -129,7 +131,7 @@ func checkNativeTemporaryPaths(t *testing.T, graph, name string) {
 			first = b
 		} else if !bytes.Equal(first, b) {
 			logBinaryDifferences(t, filepath.Join(root, "first-out", "bin", name), binary)
-			t.Fatal("native output depends on the temporary directory")
+			t.Fatal("native output depends on the temporary directory or core budget")
 		}
 	}
 }

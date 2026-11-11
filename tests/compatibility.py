@@ -40,12 +40,12 @@ def write(path, content):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content)
 
-integration_pattern = '^(TestEmbeddedAssetsAndCacheIsolation|TestNestedCommandWithoutOriginalSource|TestNativeObjectWithoutOriginalSource|TestNativePackMatchesGo|TestCompressedNativeSources|TestCustomBuildID|TestRuntimeStoreReferences|TestEmptyTest.*|TestTestBinary.*)$'
+integration_pattern = '^(TestEmbeddedAssetsAndCacheIsolation|TestNestedCommandWithoutOriginalSource|TestNativeObjectWithoutOriginalSource|TestNativePackMatchesGo|TestCompressedNativeSources|TestCustomBuildID|TestCanonicalBuildIDRelocation|TestRuntimeStoreReferences|TestEmptyTest.*|TestTestBinary.*)$'
 integration_tests = run([a.integration_test.resolve(), '-test.list='+integration_pattern]).stdout.decode().splitlines()
 required_tests = {'TestEmbeddedAssetsAndCacheIsolation', 'TestTestBinaryInternalExternalAndFailure',
                   'TestTestBinaryMainPackage', 'TestTestBinaryRaceAndCGO', 'TestTestBinaryRejectsPackageWithoutTests',
                   'TestNestedCommandWithoutOriginalSource', 'TestNativeObjectWithoutOriginalSource', 'TestNativePackMatchesGo', 'TestCompressedNativeSources', 'TestCustomBuildID',
-                  'TestEmptyTestSelection', 'TestEmptyTestResult', 'TestEmptyTestsRequireTestMode', 'TestRuntimeStoreReferences'}
+                  'TestEmptyTestSelection', 'TestEmptyTestResult', 'TestEmptyTestsRequireTestMode', 'TestRuntimeStoreReferences', 'TestCanonicalBuildIDRelocation'}
 if not required_tests.issubset(integration_tests):
     raise RuntimeError('Integration binary lacks required tests; compile it with go test -c -tags integration ./internal/export')
 
@@ -116,7 +116,7 @@ case('vendored',vendor,'vendored\n')
 modes = out/'build-modes'
 write(modes/'go.mod','module example.com/modes.test\ngo 1.25\n')
 write(modes/'main.go','package main\nimport "fmt"\nfunc main(){fmt.Println(Value())}\n')
-write(modes/'native.go','package main\n/* static int answer(void) { return 42; } */\nimport "C"\nconst expected=42\nfunc Value() int { return int(C.answer()) }\n')
+write(modes/'native.go','package main\n/*\n#cgo CFLAGS: -I.\nstatic int answer(void) { return 42; }\n*/\nimport "C"\nconst expected=42\nfunc Value() int { return int(C.answer()) }\n')
 write(modes/'pure.go','//go:build !cgo\n\npackage main\nconst expected=7\nfunc Value() int { return 7 }\n')
 case('cgo-disabled',modes,'7\n',cgo='0')
 case('race-cgo',modes,'42\n',cgo='1',race=True)

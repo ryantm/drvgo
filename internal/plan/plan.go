@@ -247,37 +247,8 @@ func hasCustomBuildID(words []string) bool {
 		if !strings.HasSuffix(word, "/link") {
 			return false
 		}
-		var first, last string
-		count := 0
-		for j := i + 1; j < len(words); j++ {
-			arg := words[j]
-			if !strings.HasPrefix(arg, "-") || arg == "-" || arg == "--" {
-				break
-			}
-			// Go's flag parser accepts either one or two leading dashes.
-			name, value, inline := strings.Cut(strings.TrimPrefix(strings.TrimPrefix(arg, "-"), "-"), "=")
-			if name != "buildid" {
-				// Skip operands, even when they look like build-ID flags. Keep
-				// this list in sync with cmd/link in the supported Go drivers.
-				if !inline && linkerFlagTakesValue(name) {
-					j++
-				}
-				continue
-			}
-			if !inline {
-				if j+1 == len(words) {
-					break
-				}
-				j++
-				value = words[j]
-			}
-			if count == 0 {
-				first = value
-			}
-			last = value
-			count++
-		}
-		return count > 1 && first != last
+		flags, err := buildIDFlags(words, i, "link")
+		return err == nil && len(flags) > 1 && flags[0].value != flags[len(flags)-1].value
 	}
 	return false
 }

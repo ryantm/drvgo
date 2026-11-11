@@ -87,9 +87,9 @@ def main():
         "native-build", cwd=source, env=env)
     assert run([out / "native"], "native-run") == "42 original"
 
-    def exported(label):
+    def exported(label, selected_cache=cache):
         graph = out / (label + "-export")
-        run([cli, "export", "-C", source, "-out", graph, "-toolchain", tc, "-module-cache", cache, "."], label + "-export")
+        run([cli, "export", "-C", source, "-out", graph, "-toolchain", tc, "-module-cache", selected_cache, "."], label + "-export")
         result = run(["nix-build", *flags, "--no-out-link", graph, "-A", "default"], label + "-build")
         paths = json.loads(run(["nix-instantiate", *features, "--eval", "--strict", "--json", "--expr",
                                f'builtins.mapAttrs (_: d: d.drvPath) (import {graph} {{}}).units'], label + "-units"))
@@ -97,6 +97,12 @@ def main():
         return result, {unit["name"]: paths[unit["id"]] for unit in units}
 
     original, units = exported("original")
+    alternate_cache = run(["nix-instantiate", "--eval", "--raw", "--read-write-mode", "--expr",
+                           f'builtins.path {{ path = {cache}; name = "alternate-module-cache"; }}'], "alternate-cache")
+    assert alternate_cache != str(cache)
+    alternate, alternate_units = exported("alternate-cache", alternate_cache)
+    assert alternate_units == units and alternate == original, "module-cache relocation changed recipes"
+    report["module_cache_relocation"] = True
     # Explicit cache overrides work with vendorHash=null and prepareModules=false.
     dynamic_expr = (f'import ./tests/dynamic-compatibility.nix {{ system = {nix_string(system)}; '
                     f'toolchainAttr = {nix_string(args.flake_toolchain)}; src = {source}; '

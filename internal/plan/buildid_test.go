@@ -58,3 +58,24 @@ go tool buildid -w $WORK/b001/exe/a.out # internal
 		t.Fatal("file body changed build ID handling")
 	}
 }
+
+func TestCanonicalBuildIDCommands(t *testing.T) {
+	for _, tc := range []struct{ command, want string }{
+		{`/go/compile -p main -buildid old/old file.go`, `drvgo-compile /go/compile -c=@CORES@ -p main file.go`},
+		{`/go/compile -D -buildid -buildid=old/old file.go`, `drvgo-compile /go/compile -c=@CORES@ -D -buildid file.go`},
+		{`GOROOT='' /go/link -buildid=old/old/old/old -o app main.a`, `GOROOT='' drvgo-link /go/link -o app main.a`},
+		{`/go/link -buildid=old --buildid=custom/ID main.a`, `/go/link --buildid=custom/ID main.a`},
+		{`/go/link -buildid=old -buildid= main.a`, `/go/link -buildid= main.a`},
+		{`/go/link -buildid=old -buildid "custom ID" main.a`, `/go/link -buildid 'custom ID' main.a`},
+		{`/go/link -buildid=old -buildid=old main.a`, `drvgo-link /go/link main.a`},
+		{`/go/link -buildid=old -r -buildid=literal main.a`, `drvgo-link /go/link -r -buildid=literal main.a`},
+		{`/go/link -buildid=old -X "main.value= -buildid=literal" main.a`, `drvgo-link /go/link -X 'main.value= -buildid=literal' main.a`},
+		{`/go/link -buildid=old -buildid=custom -r -buildid=old main.a`, `/go/link -buildid=custom -r -buildid=old main.a`},
+		{`/other/tool -buildid=literal file`, `/other/tool -buildid=literal file`},
+	} {
+		got, err := quoteCommand(tc.command)
+		if err != nil || got != tc.want {
+			t.Errorf("%s:\n got %s (%v)\nwant %s", tc.command, got, err, tc.want)
+		}
+	}
+}
