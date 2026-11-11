@@ -31,7 +31,7 @@ func collectSources(packages []Package, staging string) ([]source, map[string]st
 		}()
 	}
 	for i, p := range packages {
-		if !p.Standard && p.Dir != "" {
+		if p.Dir != "" {
 			jobs <- i
 		}
 	}
@@ -58,8 +58,18 @@ func snapshotPackage(p Package, staging string) (source, string, error) {
 	hash := sha256.Sum256([]byte(p.ImportPath))
 	id := hex.EncodeToString(hash[:8])
 	dest := filepath.Join(staging, "sources", id)
+	tree := snapshotTree{}
 	suffix := ""
-	if len(p.CgoFiles) > 0 && p.Module != nil && p.Module.Dir != "" {
+	stdRoot := ""
+	if p.Standard {
+		// Preserve GOROOT/src-relative include layout without retaining the
+		// SDK. Standard-package headers can include a sibling package's files.
+		suffix = "/" + p.ImportPath
+		stdRoot = strings.TrimSuffix(filepath.ToSlash(p.Dir), suffix)
+		if stdRoot == filepath.ToSlash(p.Dir) {
+			return source{}, "", fmt.Errorf("standard package directory does not match import path: %s", p.Dir)
+		}
+	} else if len(p.CgoFiles) > 0 && p.Module != nil && p.Module.Dir != "" {
 		rel, relErr := filepath.Rel(p.Module.Dir, p.Dir)
 		if relErr != nil || strings.HasPrefix(rel, "..") {
 			return source{}, "", fmt.Errorf("cgo package escapes module: %s", p.Dir)
@@ -67,14 +77,25 @@ func snapshotPackage(p Package, staging string) (source, string, error) {
 		if rel != "." {
 			suffix = "/" + filepath.ToSlash(rel)
 		}
-		if err := copyAuxiliary(p.Module.Dir, dest); err != nil {
+		if err := tree.auxiliary(p.Module.Dir, ""); err != nil {
 			return source{}, "", err
 		}
 	}
-	if err := snapshot(p, dest+suffix); err != nil {
+	if err := tree.packageFiles(p, strings.TrimPrefix(suffix, "/")); err != nil {
 		return source{}, "", fmt.Errorf("snapshot %s: %w", p.ImportPath, err)
 	}
-	hashString, err := snapshotHash(dest)
+	if p.Standard {
+		var nativeFiles []string
+		for _, files := range [][]string{p.SFiles, p.HFiles, p.CFiles, p.CXXFiles, p.MFiles} {
+			for _, file := range files {
+				nativeFiles = append(nativeFiles, filepath.Join(p.ImportPath, file))
+			}
+		}
+		if err := collectIncludes(stdRoot, nativeFiles, func(src, rel string) error { return tree.add(src, rel) }); err != nil {
+			return source{}, "", fmt.Errorf("snapshot %s includes: %w", p.ImportPath, err)
+		}
+	}
+	hashString, err := tree.write(dest)
 	if err != nil {
 		return source{}, "", fmt.Errorf("hash snapshot %s: %w", p.ImportPath, err)
 	}

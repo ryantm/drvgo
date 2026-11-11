@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/fs"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -18,7 +17,7 @@ import (
 	"github.com/ryantm/drvgo/internal/plan"
 )
 
-//go:embed templates/*
+//go:embed templates/*.nix templates/runner.go templates/buildid.go
 var templates embed.FS
 
 type Options struct {
@@ -47,6 +46,7 @@ type Graph struct {
 	GoOS           string            `json:"goos"`
 	GoArch         string            `json:"goarch"`
 	CGO            string            `json:"cgo"`
+	NativeLink     bool              `json:"nativeLink,omitempty"`
 	GoVersion      string            `json:"goVersion"`
 	BinaryName     string            `json:"binaryName"`
 	Root           string            `json:"root"`
@@ -69,6 +69,10 @@ func run(dir string, env []string, name string, args ...string) ([]byte, error) 
 func Toolchain() (string, error) {
 	b, _ := templates.ReadFile("templates/toolchain.nix")
 	builder, _ := templates.ReadFile("templates/toolchain-builder.nix")
+	runner, _ := templates.ReadFile("templates/runner.go")
+	builder = []byte(strings.Replace(string(builder), "builtins.readFile ./runner.go", nixString(string(runner)), 1))
+	buildid, _ := templates.ReadFile("templates/buildid.go")
+	builder = []byte(strings.Replace(string(builder), "builtins.readFile ./buildid.go", nixString(string(buildid)), 1))
 	expression := strings.Replace(string(b), "import ./toolchain-builder.nix", "("+string(builder)+")", 1)
 	out, err := run("", os.Environ(), "nix-build", "--no-out-link", "--expr", expression)
 	return strings.TrimSpace(string(out)), err
@@ -196,6 +200,10 @@ func Generate(o Options) (*Graph, error) {
 		return nil, err
 	}
 	var packages []Package
+	// Native objects and an explicit external link mode need the C toolchain.
+	// Ordinary Go links can use a much smaller bundle, even with cgo enabled
+	// globally when no selected dependency actually uses it.
+	nativeLink := o.Race || strings.Contains(o.LDFlags, "-linkmode") || strings.Contains(o.LDFlags, "-extld")
 	dec := json.NewDecoder(bytes.NewReader(data))
 	var target *Package
 	for {
@@ -214,6 +222,7 @@ func Generate(o Options) (*Graph, error) {
 			return nil, fmt.Errorf("%s requires unsupported SWIG or Fortran tools", p.ImportPath)
 		}
 		packages = append(packages, p)
+		nativeLink = nativeLink || len(p.CgoFiles)+len(p.SysoFiles) > 0
 		if !p.DepOnly && (!o.Test || isTestMain(p)) {
 			if target != nil {
 				if o.Test {
@@ -268,6 +277,7 @@ func Generate(o Options) (*Graph, error) {
 		return nil, err
 	}
 	paths := sourcePaths(sources)
+	toolPaths := strings.NewReplacer(ge["GOROOT"], "@GOROOT@", tc, "@TOOLCHAIN@")
 	root := ""
 	for i := range units {
 		u := &units[i]
@@ -282,6 +292,7 @@ func Generate(o Options) (*Graph, error) {
 			u.Script = strings.ReplaceAll(u.Script, "cd "+dir+"\n", "cd @WORK@\n")
 		}
 		u.Script, u.Sources = paths.rewrite(u.Script)
+		u.Script = toolPaths.Replace(u.Script)
 		u.Script = normalizeDirectories(u.Script)
 		if u.Binary {
 			if root != "" {
@@ -297,11 +308,11 @@ func Generate(o Options) (*Graph, error) {
 	if target.Target != "" {
 		binaryName = filepath.Base(target.Target)
 	}
-	graph := &Graph{Driver: driver.Family, ExperimentalGo: driver.Experimental, Diagnostics: diagnostics, SourceHashes: sourceHashes, System: system, GoRoot: ge["GOROOT"], GoOS: ge["GOOS"], GoArch: ge["GOARCH"], CGO: "1", GoVersion: ge["GOVERSION"], BinaryName: binaryName, Root: root, Units: units}
+	graph := &Graph{Driver: driver.Family, ExperimentalGo: driver.Experimental, Diagnostics: diagnostics, SourceHashes: sourceHashes, System: system, GoRoot: ge["GOROOT"], GoOS: ge["GOOS"], GoArch: ge["GOARCH"], CGO: "1", NativeLink: nativeLink, GoVersion: ge["GOVERSION"], BinaryName: binaryName, Root: root, Units: units}
 	if o.CGOEnabled != nil && !*o.CGOEnabled {
 		graph.CGO = "0"
 	}
-	for _, name := range []string{"default.nix", "toolchain.nix", "toolchain-builder.nix", "builder.sh"} {
+	for _, name := range []string{"default.nix", "toolchain.nix", "toolchain-builder.nix", "runner.go", "buildid.go"} {
 		b, _ := templates.ReadFile("templates/" + name)
 		if err = os.WriteFile(filepath.Join(staging, name), b, 0644); err != nil {
 			return nil, err
@@ -310,7 +321,7 @@ func Generate(o Options) (*Graph, error) {
 	if err = os.WriteFile(filepath.Join(staging, "scripts.nix"), []byte(nixScripts(units)), 0644); err != nil {
 		return nil, err
 	}
-	b, err := json.MarshalIndent(graph, "", "  ")
+	b, err := json.Marshal(graph)
 	if err != nil {
 		return nil, err
 	}
@@ -353,69 +364,12 @@ func copyFile(src, dest string) error {
 	return os.WriteFile(dest, b, 0644)
 }
 
-func snapshot(p Package, dest string) error {
-	if err := os.MkdirAll(dest, 0755); err != nil {
-		return err
-	}
-	files := []string{}
-	for _, group := range [][]string{p.GoFiles, p.CgoFiles, p.CFiles, p.CXXFiles, p.MFiles, p.HFiles, p.FFiles, p.SFiles, p.SysoFiles, p.EmbedFiles} {
-		files = append(files, group...)
-	}
-	for _, f := range files {
-		if filepath.IsAbs(f) || f == ".." || strings.HasPrefix(filepath.Clean(f), "../") {
-			return fmt.Errorf("source escapes package: %s", f)
-		}
-		if err := copyFile(filepath.Join(p.Dir, f), filepath.Join(dest, f)); err != nil {
-			return err
-		}
-	}
-	if len(p.CgoFiles) > 0 {
-		return copyAuxiliary(p.Dir, dest)
-	}
-	return nil
-}
-
-// Native includes may walk to parent directories. Preserve auxiliary files
-// relative to the module root, skipping unrelated Go package subtrees.
-func copyAuxiliary(root, dest string) error {
-	return filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-		rel, _ := filepath.Rel(root, path)
-		if rel == "." {
-			return nil
-		}
-		if d.IsDir() {
-			if strings.HasPrefix(d.Name(), ".") {
-				return filepath.SkipDir
-			}
-			entries, err := os.ReadDir(path)
-			if err != nil {
-				return err
-			}
-			for _, e := range entries {
-				if strings.HasSuffix(e.Name(), ".go") || e.Name() == ".drvgo" {
-					return filepath.SkipDir
-				}
-			}
-			return nil
-		}
-		if d.Type()&os.ModeSymlink != 0 {
-			return nil
-		}
-		if strings.HasPrefix(d.Name(), ".") || strings.HasSuffix(d.Name(), ".go") {
-			return nil
-		}
-		return copyFile(path, filepath.Join(dest, rel))
-	})
-}
-
 // cmd/go elides redundant cd commands based on the *whole* build's order.
 // Normalize them after path rewriting so unrelated graph ordering cannot change
 // a package derivation and defeat cross-project cache reuse.
 func normalizeDirectories(script string) string {
 	var out strings.Builder
+	out.Grow(len(script))
 	current := ""
 	for _, line := range strings.Split(script, "\n") {
 		if line == "cd ." {

@@ -18,7 +18,7 @@ func writeEvaluationMetadata(dir string, g *Graph) error {
 	var units []unit
 	for _, u := range g.Units {
 		// cgo actions invoke the native compiler; linking may use it too.
-		units = append(units, unit{u.ID, u.Name, u.Binary, u.Binary || strings.Contains(u.Script, "/cgo ")})
+		units = append(units, unit{u.ID, u.Name, u.Binary, (u.Binary && g.NativeLink) || strings.Contains(u.Script, "/cgo ")})
 	}
 	data, err := json.Marshal(struct {
 		*Graph
@@ -37,14 +37,22 @@ func writeEvaluationMetadata(dir string, g *Graph) error {
 func writeResolvedToolchain(dir, tc string) error {
 	paths := []string{tc}
 	fallbacks := []string{"import ./toolchain.nix"}
-	if data, err := os.ReadFile(filepath.Join(tc, "nix-support", "drvgo-compile-toolchain")); err == nil {
-		paths = append(paths, strings.TrimSpace(string(data)))
-		fallbacks = append(fallbacks, "(import ./toolchain.nix).compile")
+	var names []string
+	for _, name := range []string{"compile", "link", "native"} {
+		if data, err := os.ReadFile(filepath.Join(tc, "nix-support", "drvgo-"+name+"-toolchain")); err == nil {
+			paths = append(paths, strings.TrimSpace(string(data)))
+			fallbacks = append(fallbacks, "(import ./toolchain.nix)."+name)
+			names = append(names, name)
+		}
 	}
 	resolved := resolvedToolchains(paths, fallbacks)
 	expression := resolved[0]
-	if len(resolved) == 2 {
-		expression = "{ outPath = (" + expression + "); compile = (" + resolved[1] + "); }\n"
+	if len(names) != 0 {
+		expression = "{ outPath = (" + expression + ");"
+		for i, name := range names {
+			expression += " " + name + " = (" + resolved[i+1] + ");"
+		}
+		expression += " }\n"
 	}
 	return os.WriteFile(filepath.Join(dir, "resolved-toolchain.nix"), []byte(expression), 0644)
 }
@@ -64,7 +72,7 @@ func resolvedToolchains(toolchains, fallbacks []string) []string {
 		}
 		paths[i] = path
 	}
-	// Query both outputs together: extra toolchains must not add a pair of Nix
+	// Query all outputs together: extra toolchains must not add a pair of Nix
 	// process startups to every export. nix-store emits one line per argument.
 	data, err := run("", os.Environ(), "nix-store", append([]string{"--query", "--deriver"}, paths...)...)
 	drvs := strings.Fields(string(data))

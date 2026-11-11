@@ -107,6 +107,10 @@ func TestEmbeddedAssetsAndCacheIsolation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	nativePath, err := os.ReadFile(filepath.Join(selectedTC, "nix-support", "drvgo-native-toolchain"))
+	if err != nil {
+		t.Fatal(err)
+	}
 	data, err := os.ReadFile(filepath.Join(out, "graph.json"))
 	if err != nil {
 		t.Fatal(err)
@@ -118,7 +122,7 @@ func TestEmbeddedAssetsAndCacheIsolation(t *testing.T) {
 	for _, u := range graph.Units {
 		want := strings.TrimSpace(string(compilePath))
 		if u.Binary || strings.Contains(u.Name, "cgo") {
-			want = selectedTC
+			want = strings.TrimSpace(string(nativePath))
 		}
 		b, err := exec.Command("nix-store", "--query", "--binding", "toolchainInput", before[u.ID]).CombinedOutput()
 		if err != nil || strings.TrimSpace(string(b)) != want {

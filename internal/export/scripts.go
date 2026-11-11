@@ -16,9 +16,14 @@ func nixString(s string) string { return `"` + nixEscapes.Replace(s) + `"` }
 // shell ${...} expressions and unknown token-like filenames stay literal.
 func nixScripts(units []plan.Unit) string {
 	var out strings.Builder
+	size := 128
+	for _, u := range units {
+		size += len(u.Script) + 64
+	}
+	out.Grow(size)
 	out.WriteString("# Generated replay scripts; regenerate with drvgo export.\nunits: sources: {\n")
 	for _, u := range units {
-		var pairs []string
+		pairs := make([]string, 0, 2*(len(u.Deps)+len(u.Sources)))
 		for _, id := range u.Deps {
 			pairs = append(pairs, "@DEP:"+id+"@", "${units."+nixString(id)+"}")
 		}
