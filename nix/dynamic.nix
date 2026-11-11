@@ -23,6 +23,8 @@ let
   toolchainExpr = ''{
     outPath = ${outputExpr toolchain};
     compile = ${outputExpr (toolchain.compile or toolchain)};
+    link = ${outputExpr (toolchain.link or toolchain)};
+    native = ${outputExpr (toolchain.native or toolchain)};
   }'';
   # These wrappers only run explicit tools; a stdenv setup and its dependency
   # closure are unnecessary on the planning and final forwarding paths.
@@ -42,6 +44,8 @@ let
     # Make the toolchain derivation itself available to the nested evaluator.
     toolchainDrv = builtins.unsafeDiscardOutputDependency toolchain.drvPath;
     compileToolchainDrv = builtins.unsafeDiscardOutputDependency (toolchain.compile or toolchain).drvPath;
+    linkToolchainDrv = builtins.unsafeDiscardOutputDependency (toolchain.link or toolchain).drvPath;
+    nativeToolchainDrv = builtins.unsafeDiscardOutputDependency (toolchain.native or toolchain).drvPath;
     coreutilsDrv = builtins.unsafeDiscardOutputDependency pkgs.coreutils.drvPath;
     inherit src;
     passAsFile = [ "expression" ];

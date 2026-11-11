@@ -11,14 +11,15 @@ let
   units = builtins.listToAttrs (map (u: {
     name = u.id;
     value = let
-      tc = if u.native then toolchain else toolchain.compile or toolchain;
+      tc = if u.native then toolchain.native or toolchain
+        else if u.binary then toolchain.link or toolchain
+        else toolchain.compile or toolchain;
     in builtins.derivation {
       name = "go-" + builtins.replaceStrings [ "/" "@" "+" ] [ "-" "-" "-" ] u.name;
       system = graph.system;
-      builder = "${tc}/bin/bash";
-      args = [ "-e" ./builder.sh ];
+      builder = "${tc}/bin/drvgo-builder";
       PATH = "${tc}/bin";
-      GOROOT = graph.goroot;
+      GOROOT = "${tc}/share/go";
       GOOS = graph.goos;
       GOARCH = graph.goarch;
       CGO_ENABLED = graph.cgo;
@@ -29,8 +30,7 @@ let
       # File-backed scripts avoid Linux's per-argument size limit on large graphs.
       passAsFile = [ "script" ];
       script = scripts.${u.id};
-      # Keep native tools and Go's real GOROOT in the input closure even though
-      # the dry-run script refers to their absolute paths through JSON strings.
+      # Replay resolves @GOROOT@ and @TOOLCHAIN@ using this worker bundle.
       toolchainInput = tc;
     };
   }) graph.units);

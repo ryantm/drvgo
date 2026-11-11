@@ -39,6 +39,12 @@ def write(path, content):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content)
 
+integration_tests = run([a.integration_test.resolve(), '-test.list=^(TestEmbeddedAssetsAndCacheIsolation|TestTestBinary.*)$']).stdout.decode().splitlines()
+required_tests = {'TestEmbeddedAssetsAndCacheIsolation', 'TestTestBinaryInternalExternalAndFailure',
+                  'TestTestBinaryMainPackage', 'TestTestBinaryRaceAndCGO', 'TestTestBinaryRejectsPackageWithoutTests'}
+if not required_tests.issubset(integration_tests):
+    raise RuntimeError('Integration binary lacks required tests; compile it with go test -c -tags integration ./internal/export')
+
 version = run([tc/'bin/go','env','GOVERSION'], go=True).stdout.decode().strip()
 report = {'go':version, 'platform':run([tc/'bin/go','env','GOOS','GOARCH'], go=True).stdout.decode().split(),
           'toolchain':str(tc), 'cases':[], 'nix':run(['nix','--version']).stdout.decode().strip()}
@@ -89,6 +95,7 @@ write(assembly/'asm/answer_amd64.s','#include "textflag.h"\nTEXT ·Answer(SB), N
 write(assembly/'asm/answer_arm64.s','#include "textflag.h"\nTEXT ·Answer(SB), NOSPLIT, $0-8\n MOVD $42, R0\n MOVD R0, ret+0(FP)\n RET\n')
 case('assembly',assembly,'42 default dev\n')
 case('tags-ldflags',assembly,'42 tagged matrix\n',tags='compat',ldflags='-X main.release=matrix')
+case('external-link',assembly,'42 default dev\n',ldflags='-linkmode=external')
 workspace=out/'workspace'
 write(workspace/'go.work','go 1.23.0\nuse (\n ./app\n ./dep\n)\n')
 write(workspace/'app/go.mod','module example.com/app\ngo 1.23.0\nrequire example.com/dep v0.0.0\n')

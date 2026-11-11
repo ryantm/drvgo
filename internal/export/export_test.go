@@ -104,3 +104,12 @@ func TestNormalizeDirectories(t *testing.T) {
 		t.Fatal("redundant cd changed package script")
 	}
 }
+
+func snapshot(p Package, dest string) error {
+	tree := snapshotTree{}
+	if err := tree.packageFiles(p, ""); err != nil {
+		return err
+	}
+	_, err := tree.write(dest)
+	return err
+}

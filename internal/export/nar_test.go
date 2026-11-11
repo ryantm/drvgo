@@ -60,3 +60,44 @@ func TestSnapshotHashMatchesNix(t *testing.T) {
 		t.Fatal("expected unsupported snapshot type error")
 	}
 }
+
+func TestCopyAndHashSnapshot(t *testing.T) {
+	root, dest := t.TempDir(), filepath.Join(t.TempDir(), "snapshot")
+	tree := snapshotTree{}
+	for i, name := range []string{"z", "a/b", "a/empty", "é", "four", "five", "six", "seven", "eight", "large"} {
+		p := filepath.Join(root, name)
+		if err := os.MkdirAll(filepath.Dir(p), 0755); err != nil {
+			t.Fatal(err)
+		}
+		n := i
+		if name == "large" {
+			n = 100000
+		}
+		if err := os.WriteFile(p, []byte(strings.Repeat("\x00", n)), 0755); err != nil {
+			t.Fatal(err)
+		}
+		// The Go and embed selections can contain the same file.
+		for j := 0; j < 2; j++ {
+			if err := tree.add(p, name); err != nil {
+				t.Fatal(err)
+			}
+		}
+	}
+	got, err := tree.write(dest)
+	if err != nil {
+		t.Fatal(err)
+	}
+	want, err := snapshotHash(dest)
+	if err != nil || got != want {
+		t.Fatalf("copy hash %s != snapshot hash %s: %v", got, want, err)
+	}
+	if info, err := os.Stat(filepath.Join(dest, "z")); err != nil || info.Mode().Perm() != 0644 {
+		t.Fatalf("source mode not normalized: %v %v", info, err)
+	}
+	if nixHash, err := exec.LookPath("nix-hash"); err == nil {
+		want, err := exec.Command(nixHash, "--type", "sha256", dest).CombinedOutput()
+		if err != nil || got != strings.TrimSpace(string(want)) {
+			t.Fatalf("copy hash %s != Nix %s: %v", got, want, err)
+		}
+	}
+}
