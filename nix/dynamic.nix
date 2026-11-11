@@ -86,7 +86,13 @@ let
       ${lib.escapeShellArg package}
     cp "$expressionPath" "$TMPDIR/build.nix"
     drv=$(nix-instantiate "$TMPDIR/build.nix")
-    cp "$drv" "$out"
+    ${if pkgs.stdenv.hostPlatform.isDarwin then ''
+      # macOS cannot extend the sandbox's filesystem permissions for a newly
+      # registered derivation. Read it through the restricted daemon instead.
+      drvgo internal-copy-derivation "$drv" "$out"
+    '' else ''
+      cp "$drv" "$out"
+    ''}
   '';
   result = builtins.derivation {
     inherit name;
