@@ -25,7 +25,7 @@ nix-build /path/to/project/nix-build -A default
 
 Flags must precede the package argument. `-tags` and `-ldflags` pass through to Go. `-out` selects the export directory (default `.drvgo`); `-o` selects the Nix result symlink (default `result`). Both are relative to `-C`. The result is a directory with `bin/<command>`, not a single executable file.
 
-The generated directory contains `default.nix`, `toolchain.nix`, `toolchain-builder.nix`, `runner.go`, `buildid.go`, `scripts.nix`, `graph.json`, `evaluation.json`, `resolved-toolchain.nix`, and `sources/`. It can be moved or checked in and built without the original checkout, Go module cache, or this CLI. Its toolchain pin supports fetching the same tools on another machine. Nix's result symlink roots the built output against garbage collection.
+The generated directory contains `default.nix`, `toolchain.nix`, `toolchain-builder.nix`, `runner.go`, `buildid.go`, `pack.go`, `pack.patch`, `scripts.nix`, `graph.json`, `evaluation.json`, `resolved-toolchain.nix`, and `sources/`. It can be moved or checked in and built without the original checkout, Go module cache, or this CLI. Its toolchain pin supports fetching the same tools on another machine. Nix's result symlink roots the built output against garbage collection.
 
 The project also includes `devenv.nix`/`devenv.yaml`. The tested `nix-shell` entry point and generated builds use the same immutable nixpkgs revision. No directory trust or shell hooks are changed automatically.
 
@@ -230,7 +230,7 @@ Changing an embedded file changes the embedding package's derivation and its dep
 
 ## How it works
 
-1. Build the pinned toolchain, including the native replay runner and a precompiled `pack` helper.
+1. Build the pinned toolchain, including the native replay runner with Go's build-ID and archive implementations linked in.
 2. Ask that toolchain for package metadata and `go build -n -a -work -p 1 -trimpath -buildvcs=false` commands. Go handles module selection, replacements, build tags, compiler flags, assembly, and cgo.
 3. Split the trace into package actions, resolve relative source paths, translate Go argument quoting, and identify dependencies through temporary archive references.
 4. Snapshot selected package files. Native packages additionally preserve module-relative auxiliary sources for parent-directory C includes.
@@ -343,11 +343,12 @@ planning of the same cached 1,061-unit graph from 3.77 s to 2.42 s (35.7%) with
 remote cache queries excluded. Small snapshots, up to 4 KiB including filename
 and metadata overhead, are encoded in the existing file-backed replay script.
 The native runner restores their exact bytes and executable modes in its build
-directory. Larger snapshots remain separate store objects. This avoids a store
+directory. Larger snapshots stay separate unless they fit the compression limits
+below. This avoids a store
 registration per small snapshot while preserving package-level invalidation.
 
 Pure Go and Go assembly package actions receive only the compiler, assembler,
-archive helper, and native replay runner. Selected standard-library sources and
+and native replay runner. Selected standard-library sources and
 quoted native headers are snapshotted per package, so workers no longer need the
 full Go SDK. Pure Go links add the linker; cgo, race, native objects, and explicit
 external-link flags select the native compiler bundle. Planning uses the full
@@ -361,11 +362,27 @@ Avoiding unnecessary helper compilation reduced fresh dynamic builds of an
 optional no-test package from 3.29 to 0.62 seconds and tagged tests from 3.79 to
 1.14 seconds, with tools and package outputs cached and remote queries disabled.
 
+The [fourth round](benchmarks/ci-round4-2026-11-11.md) integrates Go's archive
+tool into the native worker, reducing the compressed compile-toolchain closure
+another 7.3%, from 11.84 to 10.98 MiB. Archive replay and helper builds are faster;
+the full 62-package fixture rebuild remains essentially unchanged.
+
+The [compressed snapshot round](benchmarks/ci-round5-2026-11-11.md) reduces fresh
+UPM planning from 3.81 to 3.43 seconds (10.0%). Snapshots up to 64 KiB decoded can
+now travel compressed when their payload, filenames, and metadata fit a 16 KiB
+budget before base64 encoding. The original raw path remains for snapshots up
+to 4 KiB. This removes 273 store objects from UPM's graph while adding 0.30 MiB
+to its compressed cache payload; package rebuild time stays essentially flat.
+
 The runner performs file operations directly and calls that Go release's build-ID
-library in process, including its Mach-O signing support. Compiler, assembler,
+and archive implementations in process, including Mach-O signing support.
+Archive handling uses the selected SDK's `cmd/pack` source with a small entry-point
+patch; it preserves Go's archive format and avoids a separate executable and
+process per append. Compiler, assembler,
 linker, and native compilation still use the pinned tools. Source snapshots are
 copied and NAR-hashed in one pass. Ordinary exports and dynamic builds preserve
-derivation contexts and share package outputs. Custom toolchains without the
+derivation contexts. They share package outputs when Go discovery emits identical
+action IDs; relative cgo include paths can currently prevent that sharing. Custom toolchains without the
 separate `compile`, `link`, or `native` attributes use the supplied full bundle;
 they must include the current native runner.
 

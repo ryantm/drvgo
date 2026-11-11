@@ -1,6 +1,8 @@
 { pkgs, go ? pkgs.go
 , runnerSource ? builtins.toFile "drvgo-builder.go" (builtins.readFile ./runner.go)
 , buildidSource ? builtins.toFile "drvgo-buildid.go" (builtins.readFile ./buildid.go)
+, packSource ? builtins.toFile "drvgo-pack.go" (builtins.readFile ./pack.go)
+, packPatch ? builtins.toFile "drvgo-pack.patch" (builtins.readFile ./pack.patch)
 }:
 let
   target = "${pkgs.stdenv.hostPlatform.go.GOOS}_${pkgs.stdenv.hostPlatform.go.GOARCH}";
@@ -20,6 +22,8 @@ let
       # Attribute names cannot carry context; nativeBuildInputs retains Go.
       "${builtins.unsafeDiscardStringContext (toString go)}/share/go/src/cmd/drvgo-builder/runner.go" = runnerSource;
       "${builtins.unsafeDiscardStringContext (toString go)}/share/go/src/cmd/drvgo-builder/buildid.go" = buildidSource;
+      "${builtins.unsafeDiscardStringContext (toString go)}/share/go/src/cmd/drvgo-builder/pack.go" = packSource;
+      "${builtins.unsafeDiscardStringContext (toString go)}/share/go/src/cmd/drvgo-builder/pack-upstream.go" = "@DRVGO_PACK_SOURCE@";
     };
   });
   helpers = pkgs.runCommand "go-libnix-helpers" {
@@ -28,9 +32,14 @@ let
   } ''
     export HOME=$TMPDIR GOCACHE=$TMPDIR/cache GOTOOLCHAIN=local CGO_ENABLED=0
     mkdir -p $out/bin
-    go build -trimpath -ldflags='-s -w' -o $out/bin/libnix-pack cmd/pack
+    # Reuse this exact SDK's archive format and object handling. The patch only
+    # gives main a callable entry point, closes its archive, and drops telemetry.
+    cp ${go}/share/go/src/cmd/pack/pack.go "$TMPDIR/pack-upstream.go"
+    patch --silent --fuzz=0 "$TMPDIR/pack-upstream.go" < ${packPatch}
+    substitute ${overlay} "$TMPDIR/overlay.json" \
+      --subst-var-by DRVGO_PACK_SOURCE "$TMPDIR/pack-upstream.go"
     go build -trimpath -ldflags='-s -w' -tags drvgo_toolchain \
-      -overlay ${overlay} -o $out/bin/drvgo-builder cmd/drvgo-builder
+      -overlay "$TMPDIR/overlay.json" -o $out/bin/drvgo-builder cmd/drvgo-builder
   '';
   compile = pkgs.symlinkJoin {
     name = "go-libnix-compile-toolchain";

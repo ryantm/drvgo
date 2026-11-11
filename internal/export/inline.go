@@ -1,6 +1,8 @@
 package export
 
 import (
+	"bytes"
+	"compress/zlib"
 	"encoding/base64"
 	"fmt"
 	"io/fs"
@@ -13,11 +15,21 @@ import (
 
 // Small snapshots cost more to register with the recursive Nix store than to
 // carry in a replay script. Keep larger inputs as independently stored sources.
-const inlineSourceLimit = 4096
+const inlineSourceLimit = 64 << 10
+const inlinePayloadLimit = 16 << 10
+const smallInlineSourceLimit = 4 << 10
+
+// Reuse the compressor across files and snapshots; its working buffers are much
+// larger than these inputs. Each export owns its encoder.
+type sourceEncoder struct {
+	compressed bytes.Buffer
+	writer     *zlib.Writer
+}
 
 func inlineSources(dir string, units []plan.Unit) error {
 	type snapshot struct{ script, path string }
 	snapshots := make(map[string]snapshot)
+	var encoder sourceEncoder
 	for i := range units {
 		u := &units[i]
 		var prefix strings.Builder
@@ -26,7 +38,7 @@ func inlineSources(dir string, units []plan.Unit) error {
 			s, ok := snapshots[id]
 			if !ok {
 				path := "@WORK@/sources/" + id
-				script, err := inlineSnapshot(filepath.Join(dir, "sources", id), path)
+				script, err := encoder.snapshot(filepath.Join(dir, "sources", id), path)
 				if err != nil {
 					return fmt.Errorf("inline source %s: %w", id, err)
 				}
@@ -50,7 +62,7 @@ func inlineSources(dir string, units []plan.Unit) error {
 
 // Return an empty script for an oversized snapshot; never inline just a prefix
 // of its files. File names and metadata count toward the limit too.
-func inlineSnapshot(root, dest string) (string, error) {
+func (e *sourceEncoder) snapshot(root, dest string) (string, error) {
 	type file struct {
 		rel  string
 		mode fs.FileMode
@@ -86,6 +98,7 @@ func inlineSnapshot(root, dest string) (string, error) {
 		return "", err
 	}
 	var script strings.Builder
+	var payloadCost int
 	fmt.Fprintf(&script, "mkdir -p %s\n", replayQuote(dest))
 	for _, f := range files {
 		data, err := os.ReadFile(filepath.Join(root, f.rel))
@@ -96,8 +109,38 @@ func inlineSnapshot(root, dest string) (string, error) {
 		if f.mode&0100 != 0 {
 			mode = "0755"
 		}
-		fmt.Fprintf(&script, "drvgo-source %s %s %s\n", mode,
-			replayQuote(dest+"/"+f.rel), replayQuote(base64.StdEncoding.EncodeToString(data)))
+		payload := data
+		if cost > smallInlineSourceLimit && len(data) != 0 {
+			e.compressed.Reset()
+			if e.writer == nil {
+				e.writer, err = zlib.NewWriterLevel(&e.compressed, zlib.BestSpeed)
+				if err != nil {
+					return "", err
+				}
+			} else {
+				e.writer.Reset(&e.compressed)
+			}
+			if _, err := e.writer.Write(data); err != nil {
+				return "", err
+			}
+			if err := e.writer.Close(); err != nil {
+				return "", err
+			}
+			if e.compressed.Len() < len(data) {
+				payload = e.compressed.Bytes()
+			}
+		}
+		payloadCost += len(payload) + len(f.rel) + 64
+		if payloadCost > inlinePayloadLimit {
+			return "", nil
+		}
+		if len(payload) < len(data) {
+			fmt.Fprintf(&script, "drvgo-source-zlib %s %s %d %s\n", mode,
+				replayQuote(dest+"/"+f.rel), len(data), replayQuote(base64.StdEncoding.EncodeToString(payload)))
+		} else {
+			fmt.Fprintf(&script, "drvgo-source %s %s %s\n", mode,
+				replayQuote(dest+"/"+f.rel), replayQuote(base64.StdEncoding.EncodeToString(data)))
+		}
 	}
 	return script.String(), nil
 }

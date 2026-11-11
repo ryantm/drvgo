@@ -239,7 +239,7 @@ func TestEmbeddedAssetsAndCacheIsolation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, content := range []string{strings.Repeat("x", inlineSourceLimit+1) + "\n", string(message)} {
+	for _, content := range []string{strings.Repeat("x", 8192) + "\n", strings.Repeat("x", inlineSourceLimit+1) + "\n", string(message)} {
 		if err = os.WriteFile(messagePath, []byte(content), 0644); err != nil {
 			t.Fatal(err)
 		}

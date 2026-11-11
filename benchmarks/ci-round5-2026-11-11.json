@@ -1,0 +1,2441 @@
+{
+  "date": "2026-11-11",
+  "platform": "Linux amd64, Intel i7-1280P, Go 1.26.5",
+  "baseline": "aef482cbf4182d3c54db15b904927a710be41b57",
+  "implementation": "48964c578cacbc5026aae0e69cd1894662c8adcc",
+  "upm_ci": {
+    "scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
+    "source": "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+    "package": "./cmd/upm",
+    "vendor_hash": "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+    "cgo": null,
+    "test": false,
+    "allow_empty_tests": false,
+    "tags": "",
+    "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+    "roots": {
+      "before": "/tmp/drvgo-ci-round4",
+      "after": "/tmp/drvgo-ci-compressed"
+    },
+    "flags": [
+      "--extra-experimental-features",
+      "ca-derivations dynamic-derivations recursive-nix",
+      "--option",
+      "allow-import-from-derivation",
+      "false",
+      "--max-jobs",
+      "4",
+      "--cores",
+      "2",
+      "--option",
+      "always-allow-substitutes",
+      "false",
+      "--option",
+      "substituters",
+      "",
+      "--option",
+      "sandbox",
+      "true",
+      "--option",
+      "sandbox-fallback",
+      "false"
+    ],
+    "nonce": "101ece82d149",
+    "records": [
+      {
+        "label": "before",
+        "trial": 0,
+        "warmup": true,
+        "evaluation": 0.4177111079916358,
+        "realization": 3.4052416930207983,
+        "total": 3.822952801012434,
+        "derivation": "/nix/store/lcins031knnc4hnkjjdkh5i4pghnf8zv-drvgo-ci-101ece82d149-before-0.drv",
+        "result": "/nix/store/qb1xiknk0dfrmvkn03gxmpzqmb7l90m4-drvgo-ci-101ece82d149-before-0",
+        "command_output": "/nix/store/vzlzvg2rszw3fyb245ldsiqnicnfhd9r-go-github.com-replit-upm-cmd-upm"
+      },
+      {
+        "label": "after",
+        "trial": 0,
+        "warmup": true,
+        "evaluation": 0.3979328350396827,
+        "realization": 11.679495953954756,
+        "total": 12.077428788994439,
+        "derivation": "/nix/store/ddvs5dm11r7m5vbd5hlprs1qapfna4n1-drvgo-ci-101ece82d149-after-0.drv",
+        "result": "/nix/store/n2p5dnxcs9fq3sspp0l2inpl973yzw48-drvgo-ci-101ece82d149-after-0",
+        "command_output": "/nix/store/3yrihby3k5pc5af2hpajw6v9db3yvbfj-go-github.com-replit-upm-cmd-upm"
+      },
+      {
+        "label": "after",
+        "trial": 1,
+        "warmup": false,
+        "evaluation": 0.4874146820511669,
+        "realization": 3.070766029995866,
+        "total": 3.558180712047033,
+        "derivation": "/nix/store/vzkspz7vnlccgxfqg58kazbd3b3aixx4-drvgo-ci-101ece82d149-after-1.drv",
+        "result": "/nix/store/rlrcz28wc2xn08bqkda1158sm60522sh-drvgo-ci-101ece82d149-after-1",
+        "command_output": "/nix/store/3yrihby3k5pc5af2hpajw6v9db3yvbfj-go-github.com-replit-upm-cmd-upm"
+      },
+      {
+        "label": "before",
+        "trial": 1,
+        "warmup": false,
+        "evaluation": 0.42861833493225276,
+        "realization": 3.3741693790070713,
+        "total": 3.802787713939324,
+        "derivation": "/nix/store/lqbdp7hddnz8wz6lswh1mswq0bxr0cp3-drvgo-ci-101ece82d149-before-1.drv",
+        "result": "/nix/store/07qdxw88a1kdcl8m6ik86y6ngcby94gy-drvgo-ci-101ece82d149-before-1",
+        "command_output": "/nix/store/vzlzvg2rszw3fyb245ldsiqnicnfhd9r-go-github.com-replit-upm-cmd-upm"
+      },
+      {
+        "label": "before",
+        "trial": 2,
+        "warmup": false,
+        "evaluation": 0.4214102750411257,
+        "realization": 3.3991138900164515,
+        "total": 3.820524165057577,
+        "derivation": "/nix/store/xdaw3yp9j54yr74jl4jq1sry88dqifhl-drvgo-ci-101ece82d149-before-2.drv",
+        "result": "/nix/store/2wj0x0d9ha8f52l25dsb0mzi4f449chp-drvgo-ci-101ece82d149-before-2",
+        "command_output": "/nix/store/vzlzvg2rszw3fyb245ldsiqnicnfhd9r-go-github.com-replit-upm-cmd-upm"
+      },
+      {
+        "label": "after",
+        "trial": 2,
+        "warmup": false,
+        "evaluation": 0.4029057790758088,
+        "realization": 3.0183411189354956,
+        "total": 3.4212468980113044,
+        "derivation": "/nix/store/4vx7p2kfagn9912b3bm8ls375mxpk2k4-drvgo-ci-101ece82d149-after-2.drv",
+        "result": "/nix/store/4wjkavnr9xa3sx12rwknd5wmv6rvmzcp-drvgo-ci-101ece82d149-after-2",
+        "command_output": "/nix/store/3yrihby3k5pc5af2hpajw6v9db3yvbfj-go-github.com-replit-upm-cmd-upm"
+      },
+      {
+        "label": "after",
+        "trial": 3,
+        "warmup": false,
+        "evaluation": 0.49895379901863635,
+        "realization": 3.088404569076374,
+        "total": 3.5873583680950105,
+        "derivation": "/nix/store/b0xz2dfapp5iqkbanfppf61axycncv88-drvgo-ci-101ece82d149-after-3.drv",
+        "result": "/nix/store/z423lpi17biz6h8k1f8swi38wgsz20c1-drvgo-ci-101ece82d149-after-3",
+        "command_output": "/nix/store/3yrihby3k5pc5af2hpajw6v9db3yvbfj-go-github.com-replit-upm-cmd-upm"
+      },
+      {
+        "label": "before",
+        "trial": 3,
+        "warmup": false,
+        "evaluation": 0.4026820929720998,
+        "realization": 3.370605363044888,
+        "total": 3.7732874560169876,
+        "derivation": "/nix/store/9v1r3ipj4pcr73nxyr1ky4byszlks707-drvgo-ci-101ece82d149-before-3.drv",
+        "result": "/nix/store/bbx261xbwxmrp7an89pnq71ljnjjqbg0-drvgo-ci-101ece82d149-before-3",
+        "command_output": "/nix/store/vzlzvg2rszw3fyb245ldsiqnicnfhd9r-go-github.com-replit-upm-cmd-upm"
+      },
+      {
+        "label": "before",
+        "trial": 4,
+        "warmup": false,
+        "evaluation": 0.4030809160321951,
+        "realization": 3.3304811980342492,
+        "total": 3.7335621140664443,
+        "derivation": "/nix/store/lkaizgc4xvc6pya0ngwk0rklggcpa7kd-drvgo-ci-101ece82d149-before-4.drv",
+        "result": "/nix/store/7gsvwy93nb3wb2562c09nda865mdzzz1-drvgo-ci-101ece82d149-before-4",
+        "command_output": "/nix/store/vzlzvg2rszw3fyb245ldsiqnicnfhd9r-go-github.com-replit-upm-cmd-upm"
+      },
+      {
+        "label": "after",
+        "trial": 4,
+        "warmup": false,
+        "evaluation": 0.4144085270818323,
+        "realization": 3.0245030189398676,
+        "total": 3.4389115460217,
+        "derivation": "/nix/store/lagm4949jd7nl4yiq7dwk3d8xcchk31f-drvgo-ci-101ece82d149-after-4.drv",
+        "result": "/nix/store/shrz89wsx27kg6g7virpd09yagl38khh-drvgo-ci-101ece82d149-after-4",
+        "command_output": "/nix/store/3yrihby3k5pc5af2hpajw6v9db3yvbfj-go-github.com-replit-upm-cmd-upm"
+      },
+      {
+        "label": "after",
+        "trial": 5,
+        "warmup": false,
+        "evaluation": 0.42514480906538665,
+        "realization": 3.023363551008515,
+        "total": 3.4485083600739017,
+        "derivation": "/nix/store/2rkwazkmvlailp6dfi930phjang6pbi0-drvgo-ci-101ece82d149-after-5.drv",
+        "result": "/nix/store/sz56g9vv2gzzq2aixxq3mmd89ppzrxy1-drvgo-ci-101ece82d149-after-5",
+        "command_output": "/nix/store/3yrihby3k5pc5af2hpajw6v9db3yvbfj-go-github.com-replit-upm-cmd-upm"
+      },
+      {
+        "label": "before",
+        "trial": 5,
+        "warmup": false,
+        "evaluation": 0.40319691004697233,
+        "realization": 3.3786016519879922,
+        "total": 3.7817985620349646,
+        "derivation": "/nix/store/8mkgfj3zccxvjx31mi49ryabfw9hdz05-drvgo-ci-101ece82d149-before-5.drv",
+        "result": "/nix/store/q1ahnrz465mq7vxs4z51k0v56i0ka2d6-drvgo-ci-101ece82d149-before-5",
+        "command_output": "/nix/store/vzlzvg2rszw3fyb245ldsiqnicnfhd9r-go-github.com-replit-upm-cmd-upm"
+      }
+    ],
+    "medians": {
+      "before": {
+        "evaluation": 0.40319691004697233,
+        "realization": 3.3741693790070713,
+        "total": 3.7817985620349646
+      },
+      "after": {
+        "evaluation": 0.42514480906538665,
+        "realization": 3.0245030189398676,
+        "total": 3.4485083600739017
+      }
+    }
+  },
+  "synthetic_ci": {
+    "scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
+    "source": "/tmp/drvgo-ci-synthetic",
+    "package": ".",
+    "vendor_hash": null,
+    "cgo": null,
+    "test": false,
+    "allow_empty_tests": false,
+    "tags": "",
+    "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+    "roots": {
+      "before": "/tmp/drvgo-ci-round4",
+      "after": "/tmp/drvgo-ci-compressed"
+    },
+    "flags": [
+      "--extra-experimental-features",
+      "ca-derivations dynamic-derivations recursive-nix",
+      "--option",
+      "allow-import-from-derivation",
+      "false",
+      "--max-jobs",
+      "4",
+      "--cores",
+      "2",
+      "--option",
+      "always-allow-substitutes",
+      "false",
+      "--option",
+      "substituters",
+      "",
+      "--option",
+      "sandbox",
+      "true",
+      "--option",
+      "sandbox-fallback",
+      "false"
+    ],
+    "nonce": "cca775adc2d3",
+    "records": [
+      {
+        "label": "before",
+        "trial": 0,
+        "warmup": true,
+        "evaluation": 0.4079438420012593,
+        "realization": 23.246733211912215,
+        "total": 23.654677053913474,
+        "derivation": "/nix/store/98sfmlsba88zx0xgkg0flli690d036y6-drvgo-ci-cca775adc2d3-before-0.drv",
+        "result": "/nix/store/6201lpz9zjf1ya52ihraczglaa3s98xc-drvgo-ci-cca775adc2d3-before-0",
+        "command_output": "/nix/store/41rdwvg97hrrpamrqrx50wa5s8351s51-go-example.com-ci"
+      },
+      {
+        "label": "after",
+        "trial": 0,
+        "warmup": true,
+        "evaluation": 0.4028518639970571,
+        "realization": 22.882190528092906,
+        "total": 23.285042392089963,
+        "derivation": "/nix/store/11p9bvycw5wnzr33ccnyvp60mapaax6y-drvgo-ci-cca775adc2d3-after-0.drv",
+        "result": "/nix/store/8pyg4bd42j85dnvk6ph8dmhnhl0vzfqr-drvgo-ci-cca775adc2d3-after-0",
+        "command_output": "/nix/store/aiv5f3wicg67nk94g2lz4pafxf908g9l-go-example.com-ci"
+      },
+      {
+        "label": "after",
+        "trial": 1,
+        "warmup": false,
+        "evaluation": 0.39485526201315224,
+        "realization": 2.039214975084178,
+        "total": 2.4340702370973304,
+        "derivation": "/nix/store/j32idvcwy3pnr619yvqzgqkv0rr2yj1d-drvgo-ci-cca775adc2d3-after-1.drv",
+        "result": "/nix/store/gc158jc9avrr473q5543458kkwi4zzpj-drvgo-ci-cca775adc2d3-after-1",
+        "command_output": "/nix/store/aiv5f3wicg67nk94g2lz4pafxf908g9l-go-example.com-ci"
+      },
+      {
+        "label": "before",
+        "trial": 1,
+        "warmup": false,
+        "evaluation": 0.4334636980202049,
+        "realization": 2.0505019309930503,
+        "total": 2.4839656290132552,
+        "derivation": "/nix/store/y67bhrjiigcznzcqgwa22n8kw47f0fld-drvgo-ci-cca775adc2d3-before-1.drv",
+        "result": "/nix/store/v8b577vqy0gj50j5h65fy6vg0nvaclv2-drvgo-ci-cca775adc2d3-before-1",
+        "command_output": "/nix/store/41rdwvg97hrrpamrqrx50wa5s8351s51-go-example.com-ci"
+      },
+      {
+        "label": "before",
+        "trial": 2,
+        "warmup": false,
+        "evaluation": 0.41105098300613463,
+        "realization": 2.0663095329655334,
+        "total": 2.477360515971668,
+        "derivation": "/nix/store/97vxr1znqwh1nxb5am75d4zg70c956xw-drvgo-ci-cca775adc2d3-before-2.drv",
+        "result": "/nix/store/3wh1iyj6kppswhy4pfs73z6m8kxcpld6-drvgo-ci-cca775adc2d3-before-2",
+        "command_output": "/nix/store/41rdwvg97hrrpamrqrx50wa5s8351s51-go-example.com-ci"
+      },
+      {
+        "label": "after",
+        "trial": 2,
+        "warmup": false,
+        "evaluation": 0.4098556200042367,
+        "realization": 2.0190195130417123,
+        "total": 2.428875133045949,
+        "derivation": "/nix/store/11iai18agr7xdk3pr7asay2jbb2z5pbs-drvgo-ci-cca775adc2d3-after-2.drv",
+        "result": "/nix/store/g46vy2s40p5yd8ffikay2bfqwbll7fn8-drvgo-ci-cca775adc2d3-after-2",
+        "command_output": "/nix/store/aiv5f3wicg67nk94g2lz4pafxf908g9l-go-example.com-ci"
+      },
+      {
+        "label": "after",
+        "trial": 3,
+        "warmup": false,
+        "evaluation": 0.38303291297052056,
+        "realization": 2.036869761068374,
+        "total": 2.4199026740388945,
+        "derivation": "/nix/store/aix9q95jg6z3pp3ymj274hfrdcdc6ack-drvgo-ci-cca775adc2d3-after-3.drv",
+        "result": "/nix/store/vk82fk947byyk69phn972qn417wkkp5a-drvgo-ci-cca775adc2d3-after-3",
+        "command_output": "/nix/store/aiv5f3wicg67nk94g2lz4pafxf908g9l-go-example.com-ci"
+      },
+      {
+        "label": "before",
+        "trial": 3,
+        "warmup": false,
+        "evaluation": 0.3893115349346772,
+        "realization": 2.053075561998412,
+        "total": 2.442387096933089,
+        "derivation": "/nix/store/vigawdjr4xq2dd7jiykqq7z1pc855lxq-drvgo-ci-cca775adc2d3-before-3.drv",
+        "result": "/nix/store/lc2hdkm1aj967j5cy04xbc6kq7vc3zrv-drvgo-ci-cca775adc2d3-before-3",
+        "command_output": "/nix/store/41rdwvg97hrrpamrqrx50wa5s8351s51-go-example.com-ci"
+      },
+      {
+        "label": "before",
+        "trial": 4,
+        "warmup": false,
+        "evaluation": 0.3889501920202747,
+        "realization": 2.020118309999816,
+        "total": 2.409068502020091,
+        "derivation": "/nix/store/fm8823gv7176ymbbkbkj84lkmn2mgbrw-drvgo-ci-cca775adc2d3-before-4.drv",
+        "result": "/nix/store/fycsra3vwjz4nn1dmjp6rficf8kzy348-drvgo-ci-cca775adc2d3-before-4",
+        "command_output": "/nix/store/41rdwvg97hrrpamrqrx50wa5s8351s51-go-example.com-ci"
+      },
+      {
+        "label": "after",
+        "trial": 4,
+        "warmup": false,
+        "evaluation": 0.42488316202070564,
+        "realization": 1.9839155720546842,
+        "total": 2.40879873407539,
+        "derivation": "/nix/store/ia1gqmld3qdhmhrqa9a1y0dd6d2cxgvb-drvgo-ci-cca775adc2d3-after-4.drv",
+        "result": "/nix/store/zmb6ii2d18jncsgx35cwfixmfs9df40j-drvgo-ci-cca775adc2d3-after-4",
+        "command_output": "/nix/store/aiv5f3wicg67nk94g2lz4pafxf908g9l-go-example.com-ci"
+      },
+      {
+        "label": "after",
+        "trial": 5,
+        "warmup": false,
+        "evaluation": 0.43246090004686266,
+        "realization": 1.979350434965454,
+        "total": 2.4118113350123167,
+        "derivation": "/nix/store/wfmcjqv1wpmsfhi3k0g8i0v2yk5nkx5b-drvgo-ci-cca775adc2d3-after-5.drv",
+        "result": "/nix/store/b0lr1391fz1bl0aph1jg23ybfms0fbyh-drvgo-ci-cca775adc2d3-after-5",
+        "command_output": "/nix/store/aiv5f3wicg67nk94g2lz4pafxf908g9l-go-example.com-ci"
+      },
+      {
+        "label": "before",
+        "trial": 5,
+        "warmup": false,
+        "evaluation": 0.39757646701764315,
+        "realization": 2.0711747349705547,
+        "total": 2.468751201988198,
+        "derivation": "/nix/store/49l1hnin04l62ryipniq7mm3zravg417-drvgo-ci-cca775adc2d3-before-5.drv",
+        "result": "/nix/store/6z6pvi56n8484sd6x9my1hc94n5rgc6h-drvgo-ci-cca775adc2d3-before-5",
+        "command_output": "/nix/store/41rdwvg97hrrpamrqrx50wa5s8351s51-go-example.com-ci"
+      }
+    ],
+    "medians": {
+      "before": {
+        "evaluation": 0.39757646701764315,
+        "realization": 2.053075561998412,
+        "total": 2.468751201988198
+      },
+      "after": {
+        "evaluation": 0.4098556200042367,
+        "realization": 2.0190195130417123,
+        "total": 2.4199026740388945
+      }
+    }
+  },
+  "rebuild": {
+    "scope": "Rebuild every package with nix-build --check; warm tools, sources, and dependency outputs. No network transfer.",
+    "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+    "flags": [
+      "--no-out-link",
+      "--max-jobs",
+      "4",
+      "--cores",
+      "2"
+    ],
+    "roots": {
+      "before": "/tmp/drvgo-round4-final-compat/assembly-export",
+      "after": "/tmp/drvgo-compressed-compat/assembly-export"
+    },
+    "records": [
+      {
+        "label": "before",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 3.6760589350014925
+      },
+      {
+        "label": "after",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 3.663740337942727
+      },
+      {
+        "label": "after",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 3.7195057020289823
+      },
+      {
+        "label": "before",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 3.6832413150696084
+      },
+      {
+        "label": "before",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 3.7293092360487208
+      },
+      {
+        "label": "after",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 3.723643198958598
+      },
+      {
+        "label": "after",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 3.7416894109919667
+      },
+      {
+        "label": "before",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 3.7072234679944813
+      },
+      {
+        "label": "before",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 3.746874406002462
+      },
+      {
+        "label": "after",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 3.6885243960423395
+      },
+      {
+        "label": "after",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 3.736027949023992
+      },
+      {
+        "label": "before",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 3.7241038009524345
+      }
+    ],
+    "medians": {
+      "before": 3.7241038009524345,
+      "after": 3.723643198958598
+    }
+  },
+  "evaluation": {
+    "scope": "Warm graph evaluation; no builds; iets tracing cache and Nix fallback disabled",
+    "roots": {
+      "before": "/tmp/drvgo-compressed-before-upm-export",
+      "after": "/tmp/drvgo-compressed-after-upm-export"
+    },
+    "records": [
+      {
+        "label": "before",
+        "client": "nix",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.18154726992361248,
+        "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "before",
+        "client": "iets-1",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.04624740593135357,
+        "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "before",
+        "client": "iets-4",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.05480612500105053,
+        "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "after",
+        "client": "nix",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.17426572798285633,
+        "derivation": "/nix/store/872xg7bnh1s6kgx3d58pg86b4xrjlcjj-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "after",
+        "client": "iets-1",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.05328111897688359,
+        "derivation": "/nix/store/872xg7bnh1s6kgx3d58pg86b4xrjlcjj-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "after",
+        "client": "iets-4",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.05777724401559681,
+        "derivation": "/nix/store/872xg7bnh1s6kgx3d58pg86b4xrjlcjj-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "after",
+        "client": "iets-4",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.057636882993392646,
+        "derivation": "/nix/store/872xg7bnh1s6kgx3d58pg86b4xrjlcjj-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "after",
+        "client": "iets-1",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.04179907392244786,
+        "derivation": "/nix/store/872xg7bnh1s6kgx3d58pg86b4xrjlcjj-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "after",
+        "client": "nix",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.14338934503030032,
+        "derivation": "/nix/store/872xg7bnh1s6kgx3d58pg86b4xrjlcjj-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "before",
+        "client": "iets-4",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.08255652501247823,
+        "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "before",
+        "client": "iets-1",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.04590460902545601,
+        "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "before",
+        "client": "nix",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.13270101696252823,
+        "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "before",
+        "client": "nix",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 0.13626043288968503,
+        "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "before",
+        "client": "iets-1",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 0.055813198909163475,
+        "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "before",
+        "client": "iets-4",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 0.05735255207400769,
+        "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "after",
+        "client": "nix",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 0.13347654009703547,
+        "derivation": "/nix/store/872xg7bnh1s6kgx3d58pg86b4xrjlcjj-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "after",
+        "client": "iets-1",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 0.04219595203176141,
+        "derivation": "/nix/store/872xg7bnh1s6kgx3d58pg86b4xrjlcjj-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "after",
+        "client": "iets-4",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 0.07033555896487087,
+        "derivation": "/nix/store/872xg7bnh1s6kgx3d58pg86b4xrjlcjj-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "after",
+        "client": "iets-4",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 0.056298571988008916,
+        "derivation": "/nix/store/872xg7bnh1s6kgx3d58pg86b4xrjlcjj-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "after",
+        "client": "iets-1",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 0.04428805399220437,
+        "derivation": "/nix/store/872xg7bnh1s6kgx3d58pg86b4xrjlcjj-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "after",
+        "client": "nix",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 0.1368379519553855,
+        "derivation": "/nix/store/872xg7bnh1s6kgx3d58pg86b4xrjlcjj-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "before",
+        "client": "iets-4",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 0.05737720301840454,
+        "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "before",
+        "client": "iets-1",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 0.041572083020582795,
+        "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "before",
+        "client": "nix",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 0.12146014301106334,
+        "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "before",
+        "client": "nix",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 0.12497550004627556,
+        "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "before",
+        "client": "iets-1",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 0.040417906013317406,
+        "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "before",
+        "client": "iets-4",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 0.0627632379764691,
+        "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "after",
+        "client": "nix",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 0.1312057130271569,
+        "derivation": "/nix/store/872xg7bnh1s6kgx3d58pg86b4xrjlcjj-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "after",
+        "client": "iets-1",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 0.04015007708221674,
+        "derivation": "/nix/store/872xg7bnh1s6kgx3d58pg86b4xrjlcjj-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "after",
+        "client": "iets-4",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 0.0595254140207544,
+        "derivation": "/nix/store/872xg7bnh1s6kgx3d58pg86b4xrjlcjj-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "after",
+        "client": "iets-4",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 0.05870110006071627,
+        "derivation": "/nix/store/872xg7bnh1s6kgx3d58pg86b4xrjlcjj-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "after",
+        "client": "iets-1",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 0.040975306066684425,
+        "derivation": "/nix/store/872xg7bnh1s6kgx3d58pg86b4xrjlcjj-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "after",
+        "client": "nix",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 0.13344365800730884,
+        "derivation": "/nix/store/872xg7bnh1s6kgx3d58pg86b4xrjlcjj-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "before",
+        "client": "iets-4",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 0.056526620988734066,
+        "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "before",
+        "client": "iets-1",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 0.04140634404029697,
+        "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+      },
+      {
+        "label": "before",
+        "client": "nix",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 0.1388296150835231,
+        "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+      }
+    ],
+    "medians": {
+      "before": {
+        "nix": 0.13270101696252823,
+        "iets-1": 0.041572083020582795,
+        "iets-4": 0.05737720301840454
+      },
+      "after": {
+        "nix": 0.13347654009703547,
+        "iets-1": 0.04179907392244786,
+        "iets-4": 0.05870110006071627
+      }
+    }
+  },
+  "upm_vs_raw16": {
+    "scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
+    "source": "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+    "package": "./cmd/upm",
+    "vendor_hash": "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+    "cgo": null,
+    "test": false,
+    "allow_empty_tests": false,
+    "tags": "",
+    "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+    "roots": {
+      "before": "/tmp/drvgo-ci-round5",
+      "after": "/tmp/drvgo-ci-compressed"
+    },
+    "flags": [
+      "--extra-experimental-features",
+      "ca-derivations dynamic-derivations recursive-nix",
+      "--option",
+      "allow-import-from-derivation",
+      "false",
+      "--max-jobs",
+      "4",
+      "--cores",
+      "2",
+      "--option",
+      "always-allow-substitutes",
+      "false",
+      "--option",
+      "substituters",
+      "",
+      "--option",
+      "sandbox",
+      "true",
+      "--option",
+      "sandbox-fallback",
+      "false"
+    ],
+    "nonce": "4a306aa9b999",
+    "records": [
+      {
+        "label": "before",
+        "trial": 0,
+        "warmup": true,
+        "evaluation": 0.5010357209248468,
+        "realization": 3.146964353043586,
+        "total": 3.648000073968433,
+        "derivation": "/nix/store/zy8vxcgrb4fk3crlcgwf5hagv3zwli1w-drvgo-ci-4a306aa9b999-before-0.drv",
+        "result": "/nix/store/maxvnmq0glvay4xnd3f8pjpfxqmfpd2h-drvgo-ci-4a306aa9b999-before-0",
+        "command_output": "/nix/store/najfbqv3aygabhk4ym41f4b4kbpvcqd1-go-github.com-replit-upm-cmd-upm"
+      },
+      {
+        "label": "after",
+        "trial": 0,
+        "warmup": true,
+        "evaluation": 0.4014587439596653,
+        "realization": 56.861901749973185,
+        "total": 57.26336049393285,
+        "derivation": "/nix/store/c7radmbxl81hyhwnm270ksbpddq1mfjn-drvgo-ci-4a306aa9b999-after-0.drv",
+        "result": "/nix/store/p45kdagwmymkxf166zkf97rnrf8m8d3z-drvgo-ci-4a306aa9b999-after-0",
+        "command_output": "/nix/store/3yrihby3k5pc5af2hpajw6v9db3yvbfj-go-github.com-replit-upm-cmd-upm"
+      },
+      {
+        "label": "after",
+        "trial": 1,
+        "warmup": false,
+        "evaluation": 0.4391990510048345,
+        "realization": 3.00749015097972,
+        "total": 3.4466892019845545,
+        "derivation": "/nix/store/37q3117qhii24p77bzwx7ihhqg4vj8kj-drvgo-ci-4a306aa9b999-after-1.drv",
+        "result": "/nix/store/9899k07ln317szmf2w75vnbd1wlr4nqk-drvgo-ci-4a306aa9b999-after-1",
+        "command_output": "/nix/store/3yrihby3k5pc5af2hpajw6v9db3yvbfj-go-github.com-replit-upm-cmd-upm"
+      },
+      {
+        "label": "before",
+        "trial": 1,
+        "warmup": false,
+        "evaluation": 0.40736131300218403,
+        "realization": 3.1577959780115634,
+        "total": 3.5651572910137475,
+        "derivation": "/nix/store/q2q9i4crpxn0wr816r1yzdgsyfliza0x-drvgo-ci-4a306aa9b999-before-1.drv",
+        "result": "/nix/store/bjdrhg6s2r9xfislzh5p2a62ifzqyp76-drvgo-ci-4a306aa9b999-before-1",
+        "command_output": "/nix/store/najfbqv3aygabhk4ym41f4b4kbpvcqd1-go-github.com-replit-upm-cmd-upm"
+      },
+      {
+        "label": "before",
+        "trial": 2,
+        "warmup": false,
+        "evaluation": 0.43778821208979934,
+        "realization": 3.222859625937417,
+        "total": 3.6606478380272165,
+        "derivation": "/nix/store/fl6kmhm6qw7p32sqsx3zc0s27inrjh2c-drvgo-ci-4a306aa9b999-before-2.drv",
+        "result": "/nix/store/mnsyw42g8ym7zsfjwk9jb70b8mg01hlb-drvgo-ci-4a306aa9b999-before-2",
+        "command_output": "/nix/store/najfbqv3aygabhk4ym41f4b4kbpvcqd1-go-github.com-replit-upm-cmd-upm"
+      },
+      {
+        "label": "after",
+        "trial": 2,
+        "warmup": false,
+        "evaluation": 0.42435423098504543,
+        "realization": 3.002589431940578,
+        "total": 3.4269436629256234,
+        "derivation": "/nix/store/cvcnv3fxxnlzf089hmzy4i18i17dskf2-drvgo-ci-4a306aa9b999-after-2.drv",
+        "result": "/nix/store/g81jpqz1w64p4ddza8ydhgh0bcjrxv2b-drvgo-ci-4a306aa9b999-after-2",
+        "command_output": "/nix/store/3yrihby3k5pc5af2hpajw6v9db3yvbfj-go-github.com-replit-upm-cmd-upm"
+      },
+      {
+        "label": "after",
+        "trial": 3,
+        "warmup": false,
+        "evaluation": 0.4028533030068502,
+        "realization": 3.0873418810078874,
+        "total": 3.4901951840147376,
+        "derivation": "/nix/store/6wvi768iv9avmzb1c5qn8j42pgw5zxlv-drvgo-ci-4a306aa9b999-after-3.drv",
+        "result": "/nix/store/sw6yhx76wkzsmn6l3gw6h1hvqjmhg7g0-drvgo-ci-4a306aa9b999-after-3",
+        "command_output": "/nix/store/3yrihby3k5pc5af2hpajw6v9db3yvbfj-go-github.com-replit-upm-cmd-upm"
+      },
+      {
+        "label": "before",
+        "trial": 3,
+        "warmup": false,
+        "evaluation": 0.4053445950848982,
+        "realization": 3.225068573956378,
+        "total": 3.630413169041276,
+        "derivation": "/nix/store/gdwnx4bahgslg5c81vh53hjmxqad8drw-drvgo-ci-4a306aa9b999-before-3.drv",
+        "result": "/nix/store/ykva92v7xf7l786x983mihv20zlsd6bj-drvgo-ci-4a306aa9b999-before-3",
+        "command_output": "/nix/store/najfbqv3aygabhk4ym41f4b4kbpvcqd1-go-github.com-replit-upm-cmd-upm"
+      },
+      {
+        "label": "before",
+        "trial": 4,
+        "warmup": false,
+        "evaluation": 0.41019607498310506,
+        "realization": 3.204059518990107,
+        "total": 3.614255593973212,
+        "derivation": "/nix/store/6yi7q8faaj6dnc8s7pj5pqznm7r3v0fs-drvgo-ci-4a306aa9b999-before-4.drv",
+        "result": "/nix/store/sh0xkhhb6kl2n089lrf4xbmqj06iqyq3-drvgo-ci-4a306aa9b999-before-4",
+        "command_output": "/nix/store/najfbqv3aygabhk4ym41f4b4kbpvcqd1-go-github.com-replit-upm-cmd-upm"
+      },
+      {
+        "label": "after",
+        "trial": 4,
+        "warmup": false,
+        "evaluation": 0.442294412991032,
+        "realization": 3.0318083099555224,
+        "total": 3.4741027229465544,
+        "derivation": "/nix/store/11qmsl6mkn1xki6q9zy7jc4mc4cmk7b7-drvgo-ci-4a306aa9b999-after-4.drv",
+        "result": "/nix/store/c52qgvysma6brgbgcfma306vhrv2q5xv-drvgo-ci-4a306aa9b999-after-4",
+        "command_output": "/nix/store/3yrihby3k5pc5af2hpajw6v9db3yvbfj-go-github.com-replit-upm-cmd-upm"
+      },
+      {
+        "label": "after",
+        "trial": 5,
+        "warmup": false,
+        "evaluation": 0.41473978001158684,
+        "realization": 3.0755458169151098,
+        "total": 3.4902855969266966,
+        "derivation": "/nix/store/aqw4lwpgaqgnq4f54skp04wqirxrafm8-drvgo-ci-4a306aa9b999-after-5.drv",
+        "result": "/nix/store/31h37v2x8ppbgqbwmza6x0w1wlgz13nb-drvgo-ci-4a306aa9b999-after-5",
+        "command_output": "/nix/store/3yrihby3k5pc5af2hpajw6v9db3yvbfj-go-github.com-replit-upm-cmd-upm"
+      },
+      {
+        "label": "before",
+        "trial": 5,
+        "warmup": false,
+        "evaluation": 0.44493954395875335,
+        "realization": 3.220200984971598,
+        "total": 3.665140528930351,
+        "derivation": "/nix/store/ch4plaj2cjq8n0dxl1l8qhgi1cjrp8p5-drvgo-ci-4a306aa9b999-before-5.drv",
+        "result": "/nix/store/hj5lmmwmf3ly65pn26qvf5m03ssynyws-drvgo-ci-4a306aa9b999-before-5",
+        "command_output": "/nix/store/najfbqv3aygabhk4ym41f4b4kbpvcqd1-go-github.com-replit-upm-cmd-upm"
+      }
+    ],
+    "medians": {
+      "before": {
+        "evaluation": 0.41019607498310506,
+        "realization": 3.220200984971598,
+        "total": 3.630413169041276
+      },
+      "after": {
+        "evaluation": 0.42435423098504543,
+        "realization": 3.0318083099555224,
+        "total": 3.4741027229465544
+      }
+    }
+  },
+  "graph_closure": {
+    "scope": "Complete generated derivation/source closures; includes shared toolchain recipes, excludes compiled package outputs. Fresh local zstd level 3 cache; no network timing.",
+    "roots": {
+      "4KiB": "/nix/store/yrsr8f4mbs1rr9jzw84bb2c51h2mj7si-drvgo-ci-49f4d1764ced-before-0-result.drv",
+      "16KiB": "/nix/store/rdar3i887rmb3z4kam7hmfi7k81v4c9y-drvgo-ci-49f4d1764ced-after-0-result.drv",
+      "64KiB": "/nix/store/r5sy7yfzp3iz7w6xfv55myarsfpqpnvz-drvgo-ci-46799ee13904-after-0-result.drv",
+      "compressed": "/nix/store/cdlkyqhdrm38xiszxf80gzlal3ki08rp-drvgo-ci-4a306aa9b999-after-0-result.drv"
+    },
+    "sizes": {
+      "4KiB": {
+        "paths": 1853,
+        "nar_bytes": 124353832,
+        "zstd_bytes": 28784367
+      },
+      "16KiB": {
+        "paths": 1705,
+        "nar_bytes": 124714232,
+        "zstd_bytes": 29047435
+      },
+      "64KiB": {
+        "paths": 1551,
+        "nar_bytes": 126263752,
+        "zstd_bytes": 29863393
+      },
+      "compressed": {
+        "paths": 1580,
+        "nar_bytes": 121491008,
+        "zstd_bytes": 29092661
+      }
+    }
+  },
+  "toolchain_closure": {
+    "scope": "Sum of NAR and zstd level 3 file sizes for complete closures; local binary cache, no network timing",
+    "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+    "toolchains": {
+      "before": {
+        "planning": {
+          "path": "/nix/store/cp6119p4kb6m9mv739jbb8v0hd705dhw-go-libnix-toolchain",
+          "paths": 48,
+          "nar_bytes": 682091008,
+          "zstd_bytes": 203484609
+        },
+        "compile": {
+          "path": "/nix/store/bmm0ilamwpi10zz62rm4f67fz2nmdla5-go-libnix-compile-toolchain",
+          "paths": 4,
+          "nar_bytes": 35569576,
+          "zstd_bytes": 11511648
+        },
+        "link": {
+          "path": "/nix/store/syl4iyvjin7myizcbiwnz56rvmbxp34d-go-libnix-link-toolchain",
+          "paths": 9,
+          "nar_bytes": 79977736,
+          "zstd_bytes": 25327835
+        },
+        "native": {
+          "path": "/nix/store/gvhds187hda7y0ijgdjqpfbs6ssg5glh-go-libnix-native-toolchain",
+          "paths": 42,
+          "nar_bytes": 450201920,
+          "zstd_bytes": 141167380
+        }
+      },
+      "after": {
+        "planning": {
+          "path": "/nix/store/k2jxxsdfk4gpnzvf235jp36jyp9nzqi3-go-libnix-toolchain",
+          "paths": 48,
+          "nar_bytes": 682091008,
+          "zstd_bytes": 203486732
+        },
+        "compile": {
+          "path": "/nix/store/2m53pgcpwhxs684hg0wag3zjcdqwwd6w-go-libnix-compile-toolchain",
+          "paths": 4,
+          "nar_bytes": 35569576,
+          "zstd_bytes": 11513767
+        },
+        "link": {
+          "path": "/nix/store/i48sa0ka3c9dzfmgdn636vs21w9zgvi2-go-libnix-link-toolchain",
+          "paths": 9,
+          "nar_bytes": 79977736,
+          "zstd_bytes": 25329958
+        },
+        "native": {
+          "path": "/nix/store/rl0zagx50z4i8h2m8y9k9y8gmrlxg9sa-go-libnix-native-toolchain",
+          "paths": 42,
+          "nar_bytes": 450201920,
+          "zstd_bytes": 141169500
+        }
+      }
+    }
+  },
+  "cli_closure": {
+    "scope": "Complete drvgo CLI output closures, local zstd3 cache, no network timing",
+    "roots": {
+      "before": "/nix/store/j7l9xfivjzwhfg8yk9y91caknnlf01wv-drvgo-0.1.0",
+      "after": "/nix/store/wm0g789r18fqav4frrgdnc0k6ncdf4sb-drvgo-0.1.0"
+    },
+    "sizes": {
+      "before": {
+        "paths": 2,
+        "nar_bytes": 5581112,
+        "zstd_bytes": 1653181
+      },
+      "after": {
+        "paths": 2,
+        "nar_bytes": 5651016,
+        "zstd_bytes": 1684736
+      }
+    }
+  },
+  "compression_levels": {
+    "scope": "Eligible UPM snapshots held in memory; per-file zlib encoding and budget selection only. Trial 0 is warmup; no Nix, filesystem-read, base64 or network timing.",
+    "records": [
+      {
+        "Level": 1,
+        "Trial": 0,
+        "Selected": 273,
+        "Bytes": 1809177,
+        "Seconds": 0.061094736
+      },
+      {
+        "Level": 3,
+        "Trial": 0,
+        "Selected": 280,
+        "Bytes": 1808502,
+        "Seconds": 0.086525213
+      },
+      {
+        "Level": 6,
+        "Trial": 0,
+        "Selected": 283,
+        "Bytes": 1764611,
+        "Seconds": 0.123002115
+      },
+      {
+        "Level": 6,
+        "Trial": 1,
+        "Selected": 283,
+        "Bytes": 1764611,
+        "Seconds": 0.123869922
+      },
+      {
+        "Level": 3,
+        "Trial": 1,
+        "Selected": 280,
+        "Bytes": 1808502,
+        "Seconds": 0.08860547
+      },
+      {
+        "Level": 1,
+        "Trial": 1,
+        "Selected": 273,
+        "Bytes": 1809177,
+        "Seconds": 0.065159015
+      },
+      {
+        "Level": 1,
+        "Trial": 2,
+        "Selected": 273,
+        "Bytes": 1809177,
+        "Seconds": 0.064890941
+      },
+      {
+        "Level": 3,
+        "Trial": 2,
+        "Selected": 280,
+        "Bytes": 1808502,
+        "Seconds": 0.088644722
+      },
+      {
+        "Level": 6,
+        "Trial": 2,
+        "Selected": 283,
+        "Bytes": 1764611,
+        "Seconds": 0.124599005
+      },
+      {
+        "Level": 6,
+        "Trial": 3,
+        "Selected": 283,
+        "Bytes": 1764611,
+        "Seconds": 0.125338998
+      },
+      {
+        "Level": 3,
+        "Trial": 3,
+        "Selected": 280,
+        "Bytes": 1808502,
+        "Seconds": 0.092415086
+      },
+      {
+        "Level": 1,
+        "Trial": 3,
+        "Selected": 273,
+        "Bytes": 1809177,
+        "Seconds": 0.06570201
+      },
+      {
+        "Level": 1,
+        "Trial": 4,
+        "Selected": 273,
+        "Bytes": 1809177,
+        "Seconds": 0.065896285
+      },
+      {
+        "Level": 3,
+        "Trial": 4,
+        "Selected": 280,
+        "Bytes": 1808502,
+        "Seconds": 0.08929854
+      },
+      {
+        "Level": 6,
+        "Trial": 4,
+        "Selected": 283,
+        "Bytes": 1764611,
+        "Seconds": 0.125207836
+      },
+      {
+        "Level": 6,
+        "Trial": 5,
+        "Selected": 283,
+        "Bytes": 1764611,
+        "Seconds": 0.124511607
+      },
+      {
+        "Level": 3,
+        "Trial": 5,
+        "Selected": 280,
+        "Bytes": 1808502,
+        "Seconds": 0.088729051
+      },
+      {
+        "Level": 1,
+        "Trial": 5,
+        "Selected": 273,
+        "Bytes": 1809177,
+        "Seconds": 0.06534719
+      }
+    ],
+    "source": "package main\nimport(\"bytes\";\"compress/zlib\";\"encoding/json\";\"fmt\";\"io/fs\";\"os\";\"path/filepath\";\"time\")\ntype file struct { Data []byte; Cost int }\nfunc main(){\n b,_:=os.ReadFile(\"/tmp/drvgo-compression-source-paths.json\"); var paths []string; if err:=json.Unmarshal(b,&paths);err!=nil{panic(err)}\n var snapshots [][]file\n for _,p:=range paths { var files []file; cost:=0; err:=filepath.WalkDir(p,func(path string,d fs.DirEntry,err error)error{if err!=nil{return err};if d.IsDir(){return nil};s,err:=d.Info();if err!=nil{return err};rel,err:=filepath.Rel(p,path);if err!=nil{return err};meta:=len(rel)+64;cost+=int(s.Size())+meta;if cost>65536{return fs.SkipAll};data,err:=os.ReadFile(path);files=append(files,file{data,meta});return err});if err!=nil{panic(err)};if cost<=65536{snapshots=append(snapshots,files)}}\n type record struct{Level,Trial,Selected,Bytes int;Seconds float64};var records []record\n for trial:=0;trial<6;trial++ { levels:=[]int{1,3,6};if trial%2==1 {levels=[]int{6,3,1}};for _,level:=range levels{var buf bytes.Buffer;w,err:=zlib.NewWriterLevel(&buf,level);if err!=nil{panic(err)};start:=time.Now();n,total:=0,0;for _,files:=range snapshots{cost:=0;for _,f:=range files{buf.Reset();w.Reset(&buf);w.Write(f.Data);w.Close();size:=len(f.Data);if buf.Len()<size{size=buf.Len()};cost+=size+f.Cost};if cost<=16384 {n++;total+=cost}};r:=record{level,trial,n,total,time.Since(start).Seconds()};records=append(records,r);fmt.Println(r)}}\n data,_:=json.MarshalIndent(records,\"\",\"  \");os.WriteFile(\"/tmp/drvgo-compression-levels.json\",data,0644)\n}\n",
+    "source_paths": [
+      "/nix/store/00zqbv0jcmhh9dn8gm3dpl6ibilj0xwk-go-source",
+      "/nix/store/014wkddfjhrhwfjg8g8x9792jmggqav7-go-source",
+      "/nix/store/02xy3m4kf3ih57j00j5pksscd1b7hys5-go-source",
+      "/nix/store/03cln47s6ca83afcpjk9aidifsmcdvc5-go-source",
+      "/nix/store/06lvf1zwksbib9m7g4kwlpzczi1k9fm7-go-source",
+      "/nix/store/09q86gavw2k2jv9bkracv3lsxpx5iijn-go-source",
+      "/nix/store/0i2p60cxi01pdmn7wkcnn3c9108549f5-go-source",
+      "/nix/store/0ih7jqx3yq0ibgqppcflxl47k0sa9gaq-go-source",
+      "/nix/store/0njdilf425phc6v2hv5yfgpra5h5qf5n-go-source",
+      "/nix/store/0rrnh8msjg0ixyxrlapcb9bpv3kk9j1q-go-source",
+      "/nix/store/0sg1zlm95174pv95ch51j7d0dw4ch23g-go-source",
+      "/nix/store/0skw4x31favwylblpjfnvli5j8mj6pkp-go-source",
+      "/nix/store/0z8svv35dyycpzhy0id7fr89rk0qzr73-go-source",
+      "/nix/store/0zaxsybkckm1yxx6fpw3j4ca66g61v0k-go-source",
+      "/nix/store/1csdf8sd411c2s2kl7jjcvh57ajb3f1r-go-source",
+      "/nix/store/1m78nr1lw0f2qah50h0c5jya8bplfsrx-go-source",
+      "/nix/store/1x2x2hakngz2xrwp76y6cm665wzhmhyn-go-source",
+      "/nix/store/1x6p2bkinqb7smqhy9fnycgfazx7ibhf-go-source",
+      "/nix/store/24r7im4hx5h368hd7x875dcm68awwisv-go-source",
+      "/nix/store/25l2x4a2nqv9prc8ivgsjp9m3gkcx32w-go-source",
+      "/nix/store/25m2ryqykpz6dj2r4daia7jlnvcz2fp8-go-source",
+      "/nix/store/284sm5zdggkwkgy65kbmc495vv76v6f2-go-source",
+      "/nix/store/28snmh0dq7izcqr7midfd87wpgg0zlg7-go-source",
+      "/nix/store/2gch2zx00l0v0narmhfva2z40pgymy62-go-source",
+      "/nix/store/2l65kfbkgifxdlpsp2660rh8m6rq11c8-go-source",
+      "/nix/store/2nxvf3ggxmqh6bakypmpxq6wy6kzddis-go-source",
+      "/nix/store/2qgmhc83r7rbvxaqbsqja9590ywiy7wk-go-source",
+      "/nix/store/2slhlirk4zzakg1yb8f28g4m9lsbiy6x-go-source",
+      "/nix/store/2z3798gwjwazkmp3hqq9igcbjv36zci7-go-source",
+      "/nix/store/2zr62lanvr0yrdf2riczz1b91rprydv4-go-source",
+      "/nix/store/3297s9inwrhwzmpdb39i5gzjyjnp5gp6-go-source",
+      "/nix/store/35v2x0aq77v2qf51zvnpmpmrcd0l5szs-go-source",
+      "/nix/store/39ngmjxp2pp2xh2lv2a71px84wixjl3m-go-source",
+      "/nix/store/3amybmzjjj5y2n78dmhm3q7gx7g4hyq4-go-source",
+      "/nix/store/3anm5rv9nbnhhx8ydvn6xzyjdc14vjil-go-source",
+      "/nix/store/3g93avzmk9s83zl5znam8razsxamgibb-go-source",
+      "/nix/store/3ms8br5nfl9adkwp7jvbv3z3ql6lsp4f-go-source",
+      "/nix/store/3p2nq3d4i1b4fsizdiz4b8747ql0vp4s-go-source",
+      "/nix/store/3qykl6d9azvs88c2wly775p1minb7g0c-go-source",
+      "/nix/store/3s5qn156ynz3n92c9fyb39d930cq41bd-go-source",
+      "/nix/store/3srh3h9amip0pq9ggf2577lpxdsx6ixg-go-source",
+      "/nix/store/3vwi2vj84scqnam2qxs31cbhqmmpx5sx-go-source",
+      "/nix/store/3w5sd2rlcidlhw5kkgr3y21zkv30qwjn-go-source",
+      "/nix/store/47c4rjs4qkg9y4iz63i00m7l0ai14kxh-go-source",
+      "/nix/store/482869iszbvz2ir0mxhbpphmjzksk8qc-go-source",
+      "/nix/store/485kwwvmlhq2xp3grqqz6v6yspzijx4k-go-source",
+      "/nix/store/4cba18x3l64gbmrbksy5j6ksjmzixrlr-go-source",
+      "/nix/store/4d01gd3nhsa712gw0kivkn6q18kyrvnd-go-source",
+      "/nix/store/4dig1h7ps6dq1988x3661fhcvnr908yf-go-source",
+      "/nix/store/4dqs0zi4vlpq92g58z7h6ji4b7820x2g-go-source",
+      "/nix/store/4h5kh7n6ngxiazxd23j1kikbbkvfyg81-go-source",
+      "/nix/store/4k81kncn4rlazi4fwgs9lp3101vnr8yh-go-source",
+      "/nix/store/4q0ypmasiryk3mzpkak763irsv9c1j4p-go-source",
+      "/nix/store/4sqadz2xi9a2m0hrl5yd15cyi13q6ay5-go-source",
+      "/nix/store/4wg6ibb22kdzz33hvdxaxrw03h85vmi9-go-source",
+      "/nix/store/50zs7448758flyvvgx50wc57706rgncq-go-source",
+      "/nix/store/55vf11amwiyhi0jvlihyshn836frlm6v-go-source",
+      "/nix/store/5imgv7k0vm5xc9wvkzy342fr5q8257rb-go-source",
+      "/nix/store/5jb08y77l08rmj47af7r87x109wsq9g7-go-source",
+      "/nix/store/5kaz77dglhlhcc6pjzi1mzqmdjh9qvnc-go-source",
+      "/nix/store/5l8623wgg98gy6b862mffy8qmz0ang0y-go-source",
+      "/nix/store/5lfm7ifp5pnclqbdal1mxq446vab7ssv-go-source",
+      "/nix/store/5lgvlwcfhf50kpk7ag61j4a4bz5cxxzy-go-source",
+      "/nix/store/5lnnb8mgl6l7770lkdbfi8f6ahllaf1q-go-source",
+      "/nix/store/5m80jismkxhlffldm8rxxx7dj81h09y7-go-source",
+      "/nix/store/5mrdq0wl0z1l3sinfsc6qh6ggavj48k7-go-source",
+      "/nix/store/5my6f4b256bc2ww81507z5bd9fh2w3vf-go-source",
+      "/nix/store/5sj52kcz3xmpy03ms6zq7amwk4lfavnd-go-source",
+      "/nix/store/5sy0z74kipq1pwh3a6jniqaj5z030y0v-go-source",
+      "/nix/store/5v1ypcvzpkfcsr3ckdzsy3va058336n1-go-source",
+      "/nix/store/5x5pj3qpgx47qs510h9yhdv6xpymg1ih-go-source",
+      "/nix/store/5z3c2rvgbq6zzvcdaxisbsl4nfba5k4b-go-source",
+      "/nix/store/61a7jacya3w43sw5bwmdzjxahjjd35f1-go-source",
+      "/nix/store/6662gn14f53v3x6ffpsmhv9vn35j122w-go-source",
+      "/nix/store/69gspnv49r8mi6vr3a76whnx1kgyi2ww-go-source",
+      "/nix/store/6bghg9nay7afj4cfws5gy4pj5kq1ffwc-go-source",
+      "/nix/store/6cb3ymc3h96pl7kckjhnrnpmmbvgqd9i-go-source",
+      "/nix/store/6d03anpa9h0fkmkpxy9iwn7xqp51q2hx-go-source",
+      "/nix/store/6fxm27qkydy3sgs2l2ls9x6n5cbj0qmf-go-source",
+      "/nix/store/6iyplhmjzpkjxm4m290qwrxi7752g2ri-go-source",
+      "/nix/store/6j8axdg47nhsaisa5mq8mg2wjvcf55f5-go-source",
+      "/nix/store/6r6pn64msll8djkb07y1a76k1ipik3n9-go-source",
+      "/nix/store/6sbkkafydid49sk35xvzcd6wn4afxabb-go-source",
+      "/nix/store/6y05brwkqlbyiqy4ivnzrm7mpq9x6rdc-go-source",
+      "/nix/store/6y8crcrk9hgmglcra2bvkjq93v3if61c-go-source",
+      "/nix/store/714s2hbykkmkr8599icmg3sssbm8dz4a-go-source",
+      "/nix/store/74ra0l2767vxc57ls5hfsq27kvfp2w7s-go-source",
+      "/nix/store/77nmqm5i80xvgndc88j0p8372z3j9jxn-go-source",
+      "/nix/store/79xqmyxic2s9syxrgp5pc9pzgf0p6qd4-go-source",
+      "/nix/store/7gx4fi1mzx2fknlky8w2xmzaw5v9xvrk-go-source",
+      "/nix/store/7p2f6cv4p3gv8mygb4cihdq6b59c4d05-go-source",
+      "/nix/store/7pg7yas9961mh96cgbzlznfi3l8jl810-go-source",
+      "/nix/store/7qm6a7yzba2dbw7dv2pb3qzb88rrz1gb-go-source",
+      "/nix/store/7r07vs6qm7rh7vvz4qh3ni5j62hvmqcy-go-source",
+      "/nix/store/7y0fdvhdksp8k0i96ncn9zknl2insnxr-go-source",
+      "/nix/store/80ijkll1050m6klkgdybs6zhd84gvgcx-go-source",
+      "/nix/store/8231ln90d7wnf77vmza59mjdqw1wd98g-go-source",
+      "/nix/store/82zj54h7wc1qq2f72z3xhi3ql8b0x03q-go-source",
+      "/nix/store/88fc9fykjq29sfk72mljp7hwfqg1h2pg-go-source",
+      "/nix/store/8f126j7r50nabvzhdsj1z8sxlkx4w7iz-go-source",
+      "/nix/store/8kbiz98sfgz9j87x5jb5xjq60856iybi-go-source",
+      "/nix/store/8vb0ilqavrp6iix7hy3xpagp01kb6sy0-go-source",
+      "/nix/store/8w0wcdvw042r3v7jpm84pcqbifwzzk2d-go-source",
+      "/nix/store/8yrhkss8c9mqqb8g5pdid9a1kcbx7f85-go-source",
+      "/nix/store/93kfzj0gxxfpwi215s32rrdby4wv3ks6-go-source",
+      "/nix/store/95wb20nywyrgv2wjyvisxaigav37c7gi-go-source",
+      "/nix/store/996x0h8mp1dsd1dj65wvi7krdc8winlm-go-source",
+      "/nix/store/99cbyrkw0rhd6dvks7shcvrbf6hmp7l1-go-source",
+      "/nix/store/99k9fbnrwm0l933wnqlx8iql1rhlsm9b-go-source",
+      "/nix/store/9h7xf87wp9kiadiqg63i5z091asjv2is-go-source",
+      "/nix/store/9jlbgk51yawx6c8cjw7fpxymj9cxr6ix-go-source",
+      "/nix/store/9l1rcbfjkyyzq2pr104wkf1s1w5dh1r1-go-source",
+      "/nix/store/9l7717cj0lz6i03dv2w9gfqdyrlib23w-go-source",
+      "/nix/store/9mdpp676arnz5mfkykfy90dgkbmaw7hq-go-source",
+      "/nix/store/9ra151kjd67j81n9fg9y7w99xm654v52-go-source",
+      "/nix/store/9rq38rnbvajgvj0nw3grbbny7qhjw877-go-source",
+      "/nix/store/9sclyyrh3ymxw5pjwqhncgc088mhc02j-go-source",
+      "/nix/store/a13yhjx5y2a9j26bfpajigs6z9989788-go-source",
+      "/nix/store/a33zsjzm3zvkbx5f3d2zndx3hvyz2pd1-go-source",
+      "/nix/store/a5vwg3czxifs3x2lgvmgz6w251v213ps-go-source",
+      "/nix/store/a63adf7m5a1n3vf684c6ckpbs71bsyj5-go-source",
+      "/nix/store/a8ayihqg8q5z70rsp95gnmwpdmyp4rar-go-source",
+      "/nix/store/a9zwkjiy8qp99jnppk25w9cfzrqv4jid-go-source",
+      "/nix/store/acc15v863ddag6z3yyixilhazdpd8vzm-go-source",
+      "/nix/store/aci31qzwyn7ywz46662p5s9g1yg4q34k-go-source",
+      "/nix/store/ackhfvx848f2yrjk0q7xmha18yz7hxd4-go-source",
+      "/nix/store/acs66c369b0cnfppdf29nwffyhwj2dcz-go-source",
+      "/nix/store/afl76m0pyyvl2vkbgdik6yfpx3gy8dhq-go-source",
+      "/nix/store/am3yg9yibgj8as3z602frvwxj02vwxrk-go-source",
+      "/nix/store/asz1rznkvqbrcxj60pwn3vf1673gp079-go-source",
+      "/nix/store/b2v7bgmsjkxq01gmaiiviakzzrdlckd4-go-source",
+      "/nix/store/b2xb568s1w8y24r54b0q6d7mds058s0y-go-source",
+      "/nix/store/ba3md92i3zd3avkprr43rp4jll9n2xd6-go-source",
+      "/nix/store/balf7jg6y695w9va86jipwq6vd9y0xfl-go-source",
+      "/nix/store/bdddpk5gfl656za0vjk3d44pbg552s1a-go-source",
+      "/nix/store/bm3vp23pzvnyb5y8pds4hr1zzmmwr32d-go-source",
+      "/nix/store/bpmkq0fspv0idqkpxkh9p3d0bdj1wxs3-go-source",
+      "/nix/store/bq214iyywi82sd1iiak5cd4b83phxfdv-go-source",
+      "/nix/store/bwwi19ya9xx5z8liz77593brd6811d6r-go-source",
+      "/nix/store/byvnbhsc3kz8qrfncj14v1qply11fgh6-go-source",
+      "/nix/store/c1axrjqjqaqh4qc89xnj4z3l2h1dw1rb-go-source",
+      "/nix/store/c6lmmgijqryh6r05k7hvw6c8a2cs1rzi-go-source",
+      "/nix/store/c7a5rsmhpwkkiabj749s9wy9g7j7q4h2-go-source",
+      "/nix/store/ccxcay4h9yh3f26hd42399k5kk87vdd8-go-source",
+      "/nix/store/cf3a7dvcm5267w9gxhknxf1bk8yd6hya-go-source",
+      "/nix/store/cflhxah7ahawcpnrvycgnnfl9y6wp8bd-go-source",
+      "/nix/store/cjavpxjmk2jn2yibs7k07q09aay019yi-go-source",
+      "/nix/store/crga3y5sj2fy1f5m92k1bxa0hsh5v1ib-go-source",
+      "/nix/store/cxbnspsz88l8glw4ds8rww8lqzlfx8qi-go-source",
+      "/nix/store/cxnp4zhyra9rry0dwivh4wcdcgnx0xds-go-source",
+      "/nix/store/d1ad2bfxjma6nq7jf6ms7s8l235py0p6-go-source",
+      "/nix/store/d241v63hr6xj2nw0i7l9vvig1sdrsdbk-go-source",
+      "/nix/store/d28p1jj0gvrrhkwk0s8h6g29hzp7n69y-go-source",
+      "/nix/store/d2k49kyqk2xsfxrliw6g23nzvri0bhdp-go-source",
+      "/nix/store/d2l401k4dkdzvnx4rjab6f9ankr00hkg-go-source",
+      "/nix/store/d5fnxw090a7igy8pl5gyrp0gm3i9qjc4-go-source",
+      "/nix/store/d7si6wpliv8c5nsgziwc7drgfdzwb1pg-go-source",
+      "/nix/store/dbfp8pis1gg1fwbb0xj06046bcsljm2l-go-source",
+      "/nix/store/dd0g0djpw555d4mrp3h177wwbsyg1jnx-go-source",
+      "/nix/store/dd5svmsrk4q9a16k6n67c97wy6xa6215-go-source",
+      "/nix/store/dhgcg72v3brq9gzjf1xyy0yikzw80r55-go-source",
+      "/nix/store/djkj563d6h08jzhpc9s7cm0vd31a8j82-go-source",
+      "/nix/store/dlb4qmljv36s9w9xx3iz64d10wvf4gpw-go-source",
+      "/nix/store/dvl6zi8dyp134slcgiglaig26hd6157f-go-source",
+      "/nix/store/dwivgcfc5qrqbc6nr4d92z1yaapvxji4-go-source",
+      "/nix/store/dxcxg08ywwqcqhisypnfbns1m1bwiwnr-go-source",
+      "/nix/store/dy8nzsnd8cv23nlv3wf78ara5v9gaicm-go-source",
+      "/nix/store/dygf1dmb3dzd3fycfvfpdxv4n7r8d4w5-go-source",
+      "/nix/store/f0976qvwdhl7msy901yf6xdqvdih2zff-go-source",
+      "/nix/store/farryxcg0zxrfkj1bfl1dmf7hxsk0aqz-go-source",
+      "/nix/store/fbfq6hy6wp71g1a69l2fpfnjllsgjv80-go-source",
+      "/nix/store/fbixqlm9wc4njckpw62g15gd35l1315n-go-source",
+      "/nix/store/fj6xps4gk9aykqqw7bxi6srl4fil96br-go-source",
+      "/nix/store/flzfrbnygzgi4a8yh9swywv29rh2q18y-go-source",
+      "/nix/store/fn5d14pps8lyyqy8qc5sl0pyspsps9y8-go-source",
+      "/nix/store/fnb4l06zh6qgja9i2h87b6zrcsjvi57a-go-source",
+      "/nix/store/fp006a0vgr0kq4j3x5agp2358w0gpp9m-go-source",
+      "/nix/store/fp42vwmgkzb6jzgl37l5lmkfca4igvdi-go-source",
+      "/nix/store/fx51x62fn4i9drxs2wjzszm1kr5vfd5x-go-source",
+      "/nix/store/fyddxs038ghja52x8b5n62y0vfdgsxc5-go-source",
+      "/nix/store/fzdwmlvr0f7q29b9ga1km1ml9544dqrb-go-source",
+      "/nix/store/gc0ryghhad7x45wn6287vy4axypzvx73-go-source",
+      "/nix/store/gdcnisws9m4q83q7rmjk9i3msdcb7nwv-go-source",
+      "/nix/store/ghs1j1dkxvq1acl3p2ag8f2778hqv8xf-go-source",
+      "/nix/store/gi9vyiimf1zjzln7y51zv62wvc0xs7r7-go-source",
+      "/nix/store/gk64g3snl2988bpr464v8d7y0irqv7a7-go-source",
+      "/nix/store/gll247m7xjasmzbar87yinsrh9m28x9x-go-source",
+      "/nix/store/gr481095blj4ql5yzwssgbamwsxa3k37-go-source",
+      "/nix/store/gz12pbqwf3fkfhqrs9bxv0smgrj0biyj-go-source",
+      "/nix/store/h2iacciihvdkv1kvxy60bgyk5ms3l71v-go-source",
+      "/nix/store/h4as1pazdjr9nh4w6wja6l7j8vsj5xar-go-source",
+      "/nix/store/h71f6ii2mylf3a6qlyzmdq6xnv9m1ql4-go-source",
+      "/nix/store/h84gqr52hghn1i4ivygxmjy6grbaak5x-go-source",
+      "/nix/store/h84mshjgvsbbvzdv8fn9mjky9hvi69cs-go-source",
+      "/nix/store/h8p22x0l824pzslyhj3zc62w8mrw4l2i-go-source",
+      "/nix/store/h9ffbv4f4gbqk85yzvwb3i67gjsjskya-go-source",
+      "/nix/store/hazn6xh52d6yg4n3lgddzy7wa0d18xb2-go-source",
+      "/nix/store/hihj4s61ygv10njfkklpq3xj8pzsn00s-go-source",
+      "/nix/store/hjn39x1xiv33fp788jphkcxva5s8i8cq-go-source",
+      "/nix/store/hk6a5x5bf8r6f6yqdxkskq5xw3xjrqca-go-source",
+      "/nix/store/hnrrwfw5qs51dcnvali4nj76k1vfb59n-go-source",
+      "/nix/store/hpn397niks1b4q93xym3vrpgjxz9yddm-go-source",
+      "/nix/store/hv02gp4nalmbma5ifsqxc96krvrdj3by-go-source",
+      "/nix/store/hvrc6ds0zkqzcam1rfrpszy5m5jqrc71-go-source",
+      "/nix/store/hzhhqjqrra9pjp4ljvkr6c7pa709jy0h-go-source",
+      "/nix/store/i2zqsgvnx1qfkaqihj6ra0f7k5ssj81s-go-source",
+      "/nix/store/i3hlvj1ybxbq6mdl3m8lpjap5pdqf355-go-source",
+      "/nix/store/i5ydkfxzj5abjc5rnhqknbhklp9c0z27-go-source",
+      "/nix/store/i740jgbk9jybdlpb3kk2hl22dmg1incx-go-source",
+      "/nix/store/i9p3ds00sa1h13rd2rxfcmgdxs49r63h-go-source",
+      "/nix/store/ibk8zfyw8y0l4b6yxfn1ikl0y0xgdziw-go-source",
+      "/nix/store/ii3jgk23rbmqfqfbd4a7r3vsl3pn3vfw-go-source",
+      "/nix/store/ijkyq0ygw732fpxm5yhw92vvv7mx86xq-go-source",
+      "/nix/store/il3j27gmjd0hfa1vg9v3glzf8qfh550j-go-source",
+      "/nix/store/im0961ryv48hdlw1spz78xi2s6v1gqc1-go-source",
+      "/nix/store/ipma36l0bn59wzdm0vxxkx0jn3xq7c64-go-source",
+      "/nix/store/isyp3s5178c9gb79rbbsivy9b30p14ag-go-source",
+      "/nix/store/j2ziw79lfx064lsx32c45l68b5fs6b7q-go-source",
+      "/nix/store/j3aizgry6dlc57hbcp8ldhs4i8vavc2w-go-source",
+      "/nix/store/j3lw7731f8ybd7alrx860ncah8zvi8c1-go-source",
+      "/nix/store/j4g6865qla8rfx8m27hjbd6aglfqvgyq-go-source",
+      "/nix/store/j65vhfn8fjvzzd9h29rsdrkybgjjz2sx-go-source",
+      "/nix/store/j9x1pgm9fcpniiv5bp1bal5fs5hbq6r6-go-source",
+      "/nix/store/jcngaqz46rb6vrdq4pll7sy7acagxpqr-go-source",
+      "/nix/store/jcqc0rx6iyqcv3l8a5s36spa5kx7vxw0-go-source",
+      "/nix/store/jfrjqgs4qhsp0p7cnxxfxymzsj4ii3ir-go-source",
+      "/nix/store/jkvwgjlrcswinrfymvjnf1y96b9x04lv-go-source",
+      "/nix/store/jmf7k5j3670ln5gy5gnali3gzn9jrlzn-go-source",
+      "/nix/store/jv0f0pciqwmj3vl39mhhwz1v86am1jrq-go-source",
+      "/nix/store/k42xirk9ajld5vrch4licg8hqz0cmll9-go-source",
+      "/nix/store/k9943zvkh5h42912pl9m277jf0ha3lmk-go-source",
+      "/nix/store/kaxr642153hyax0dxrkrvzy4nl3llxmj-go-source",
+      "/nix/store/kh6jra5pqknxyd0kq58kkbxjg7v3a6kj-go-source",
+      "/nix/store/khjfhxnybapna9ikxjvfnf1ccndk9119-go-source",
+      "/nix/store/kj5az2xinixr1qd8yc7d8r5bcpvgvznl-go-source",
+      "/nix/store/kq8iyf0q0yp0x9c8ghzh8z1g1wb1474h-go-source",
+      "/nix/store/ks766pqdlax2mpsg673rpswjrz3n6q7z-go-source",
+      "/nix/store/ksfzvd5vcxpjw4iavg07xk0pr51gqfwc-go-source",
+      "/nix/store/kwbqd6z8bdn2qg7f5iv7ic72dhzyy3wh-go-source",
+      "/nix/store/kx3pbwzai5f11nqvqppfj94an8c1yjh6-go-source",
+      "/nix/store/kx6q5v1vv00mz35x8i232wj14fmpmn84-go-source",
+      "/nix/store/l1xxpzzznf4z36mgrbhn183hv1p39hyh-go-source",
+      "/nix/store/l3ypf5w2xzx23lnvf399482h8j1j86g1-go-source",
+      "/nix/store/l59awdmwd4ig410pbz2c5i54ns5nwcgf-go-source",
+      "/nix/store/l5wvmmmi9sasb9cx7a6pnnbsbj5gjjy3-go-source",
+      "/nix/store/l7kid6gpsif3s74bzza2amgns2r6z1mz-go-source",
+      "/nix/store/l8ph6raywfqj2magjpzk6kp4bpw3glh9-go-source",
+      "/nix/store/ldlz4qqbkjj85xl0cqfybfj2qjzgg0ns-go-source",
+      "/nix/store/lgbs1x413dvm59zw98srkp6100li0mrp-go-source",
+      "/nix/store/lh8xwiw0055ma3kvxds88chzdnaqp3zk-go-source",
+      "/nix/store/lirv6lck7zc2nfhc0dsdhngkgfsidgfb-go-source",
+      "/nix/store/lk4zlp1vbfispf4hrn1g86f95ijs6619-go-source",
+      "/nix/store/lm9x8i7r9w584dncrshfj7hi86vwqbxm-go-source",
+      "/nix/store/lnnn522i0q6xy6664xzn8pyhdwf6gxbj-go-source",
+      "/nix/store/lnyydnq7yqgscbcv8sgiclqfwjkb882i-go-source",
+      "/nix/store/lqh15680nvdrg39qaadfz56kla0rz6z0-go-source",
+      "/nix/store/lr429nrdarrzvpi2szgpgapp8spf9iz9-go-source",
+      "/nix/store/lw5n31cjqwmrwhd98hbprb5xsyk1595h-go-source",
+      "/nix/store/lxmxf1gnn0l7rldg6ic0lcn706hc6cqq-go-source",
+      "/nix/store/m0mphny5frqxpc9sh0091pzlnxsz02w4-go-source",
+      "/nix/store/m2gncdfckm12pg4638b8jkrk46q1pw29-go-source",
+      "/nix/store/m2wqq7vmrz33k2rcawmnaazawrfrb4fb-go-source",
+      "/nix/store/m34916585dik69bvxarfbi8qsgcl5a10-go-source",
+      "/nix/store/m3mbahkkblih5xr9hl5qazll9wspfbbm-go-source",
+      "/nix/store/m3shkkqis87l752w1qz6iimfwy7b149g-go-source",
+      "/nix/store/m5j247gi9r6r291j9nkwv69r9qwf1h8l-go-source",
+      "/nix/store/m772snki2gbvlks85xck87mcq6h8mvjy-go-source",
+      "/nix/store/mbagzfjgwb3xa0pfvpyyjj2f846v4rna-go-source",
+      "/nix/store/mfwjl0bh8vlfv8rqmjmr0kppra0cc3i4-go-source",
+      "/nix/store/mhlirfs0hr0wfnpdcdvgrsg1p01gvlb3-go-source",
+      "/nix/store/mjc18rrqbiqwpqsxzxq0h89mfg62j196-go-source",
+      "/nix/store/mprb3dqdh2rmdgh89v84vcljnvp21vsv-go-source",
+      "/nix/store/n2g6zkp3s3ba8q1idsmn7bpraymy1ymf-go-source",
+      "/nix/store/n2l6v9413fw046799lfsi39snrfh2gqb-go-source",
+      "/nix/store/n492ys3rd2k2hwrz915h4bdph3h4xdzd-go-source",
+      "/nix/store/n5m6lk4qx2xfjybqggivhmwappq670ia-go-source",
+      "/nix/store/nhnf85hzz03gnfbs5mp4anrl6b5nxr65-go-source",
+      "/nix/store/nip971nbljzh29x6h0bbz449q6hqry4k-go-source",
+      "/nix/store/nrkcg3r9ccd0l46zh8sg10cv1xmyq3jp-go-source",
+      "/nix/store/nvj3sjdd64wf3pj55kxa9x2vi0dnifja-go-source",
+      "/nix/store/nvmrhqv1m8iri1k7q2sl6jp4m3rb330k-go-source",
+      "/nix/store/nzynkw1s5msghhbad1hk0ghkzsrgxbad-go-source",
+      "/nix/store/p082afvxsj8qgwsv21as2fpmgws6gjyx-go-source",
+      "/nix/store/p5ify4sszzgbxjvb7dn62zj04v69wmf4-go-source",
+      "/nix/store/p62wyllcblh2jpd4d92gsvrcl7549srn-go-source",
+      "/nix/store/p7ck5cl6nigdlrb2mm04x1n5icrb6vqh-go-source",
+      "/nix/store/p7g67x62nilwlhc3bkh3r5jsnwm5g3sn-go-source",
+      "/nix/store/paxxr10qcnjb2vn9f71cmfg1gbk6ynmf-go-source",
+      "/nix/store/pdqzil644ywzicmynnr260w4i5r0xq8x-go-source",
+      "/nix/store/pifzl5h4kyj5ni19l60n4jca73pfwq11-go-source",
+      "/nix/store/pisvnj8j9f5f3md50kyryl6yr5vl7i4a-go-source",
+      "/nix/store/pm5phz1m8vr48hm5g3sqbpfnpm7sa922-go-source",
+      "/nix/store/pp9q2n17bk2c90rikxsnaqkm4vj579n7-go-source",
+      "/nix/store/pqn038981ssrvwsqxfhn44v9rsggb8nh-go-source",
+      "/nix/store/pqy2hr0vdsgg4g6spb1pi5lby3wnda6c-go-source",
+      "/nix/store/prbad7qhmqdmbk4rj3qjk2snmj7acvz4-go-source",
+      "/nix/store/pv26r44r6hygc78cq9qzw68d57dm0745-go-source",
+      "/nix/store/pw23rwd64xgc5w2rngcw9hfilqv867m4-go-source",
+      "/nix/store/py6b92px6c0gf9gd2i4x9ilz0f5wmrlf-go-source",
+      "/nix/store/q44kw34vra5ms584crshz6jpv54sj4xn-go-source",
+      "/nix/store/q8zagmnk5f40kxi8l76lpbmpg4nd75k1-go-source",
+      "/nix/store/qc79xmfgrx0njp6gh3hbpgcwvyhzbrnd-go-source",
+      "/nix/store/qflx4p9q10f9262n4mb5y639zj0f3xpz-go-source",
+      "/nix/store/qsfklprbgrq8lh261rzfaa3zya9i71fp-go-source",
+      "/nix/store/qw08dvk6arz439xpia1j85gsznh03b1n-go-source",
+      "/nix/store/qyn383p0jd0dydfhd8zxm609p8ibgy7p-go-source",
+      "/nix/store/qyn7hfhqd7jhhp725rh7ld3h2ifxi14z-go-source",
+      "/nix/store/r0lhm5ry6m28qf6m95acjs2z5q7zw89n-go-source",
+      "/nix/store/r53qy61mlfiksh21nn62h9hs4xnd24ar-go-source",
+      "/nix/store/r5ipby6pzdn90pgxz30rdl63frxyc5xv-go-source",
+      "/nix/store/r6x2kc37a4qa66z7avmjlqhxmrhymf17-go-source",
+      "/nix/store/r7gqhdnjzixay80krq5h1p1bgs362dn9-go-source",
+      "/nix/store/r7nf8g41b87p5a7cxfqknpi9wh5yky4c-go-source",
+      "/nix/store/r88f45jslqbfgwg47njr2dsyakspcl7x-go-source",
+      "/nix/store/r8l7nlza1mvhg136g3p280i4si9x8yqd-go-source",
+      "/nix/store/ra4ikh1zlgqx9vhpnanm88a1lrbar9ff-go-source",
+      "/nix/store/rc1rzl2w7impr70vq7dw0jc01rc6685i-go-source",
+      "/nix/store/rg9yawj7wjkbmg8x2s6fn7wv5mdqr1fg-go-source",
+      "/nix/store/rihm78p7hsn22k3r3njwkr7g0a4fzwc5-go-source",
+      "/nix/store/rk4nzz179a2w61hqrg6lqxrn0hqp03ql-go-source",
+      "/nix/store/rkkgpb8c42a95qczbsr4ln2v5cag83dl-go-source",
+      "/nix/store/rmy9nq4q93ymgfiw4kx7kaljalin59kw-go-source",
+      "/nix/store/rqy15wc73v8ksxdv30hghn8m97xc8jdh-go-source",
+      "/nix/store/rx2zivc7zxblyvlyi9zynlw3n0zmjnhj-go-source",
+      "/nix/store/rz02j0k298fzdln2j27kn339rhpb0hd9-go-source",
+      "/nix/store/rzgwvapx79snps901x79dbnw120i0h5p-go-source",
+      "/nix/store/s0s9i105hxyhf7vpwx0r4qrjdjlf9laq-go-source",
+      "/nix/store/s2fg487gasljbg066baghrrfh0ziccza-go-source",
+      "/nix/store/s65zcd4bknwxbq6fa1r9n069f6z7arzy-go-source",
+      "/nix/store/savhlm7rck30cg0hvdvls6724mbgcdky-go-source",
+      "/nix/store/sbz4mx9vvlpq9dlafcvizjnay3qq9clz-go-source",
+      "/nix/store/sf17zinpzzm537maq2n4q87r3kkakfz4-go-source",
+      "/nix/store/sf9a7m9rzxhmgfm7mj4v5b396ng52kza-go-source",
+      "/nix/store/sfnwkc4qcg9dkvql53g15xip654lacmq-go-source",
+      "/nix/store/sh1z0g1rsfl8nfj5rhrkxpa0rf4k9b32-go-source",
+      "/nix/store/sj9g7rsn4ra6f02lfka9b47bg1ylmc60-go-source",
+      "/nix/store/spg1yjk6cjw2fgc352njzgm1h6wdsgq2-go-source",
+      "/nix/store/spj5p73b92d4a0066szzfy9z3x6a1ii3-go-source",
+      "/nix/store/srnvk6qryair8hdqsdql2cb7xamnsns8-go-source",
+      "/nix/store/v3plgygkzr5frrkd49w1kz3af586s33y-go-source",
+      "/nix/store/v8ljgj4d4byr7yx1q2s4zdl83zxaxqx1-go-source",
+      "/nix/store/va7dhg7m2rqypz7729xiygigjrp3wygf-go-source",
+      "/nix/store/vc4q2fmd51m8lgvh77f262mc4nr01rhr-go-source",
+      "/nix/store/vf2mdzi6mhr2zvn3s5v3il56z0m7k5xa-go-source",
+      "/nix/store/vhmsgsmxlvizssg8skldbdnaidx92mhk-go-source",
+      "/nix/store/vjqdjjlgjxkh51imjdiz0sxbx6v23mbj-go-source",
+      "/nix/store/vnm39q1ybvds6knifyjkx3zj9v8x130y-go-source",
+      "/nix/store/vp304391ii2dpam76w4xwg9vbcixys67-go-source",
+      "/nix/store/vpi41fsg1pmdgls41cmaxy3498jagwkr-go-source",
+      "/nix/store/vqb1pjwi9fbznasa96h0mhm4hqn9h7na-go-source",
+      "/nix/store/vvfa51li1zvwcgw3r1d0yr1zcms4sb56-go-source",
+      "/nix/store/w2xzwicjj4qihqqb5li7m2ldr0b66gic-go-source",
+      "/nix/store/w3ml10a093nr5x9m0xwrli0f7h218w1f-go-source",
+      "/nix/store/w8gx0605vmahr5zpmp8k0z219v94wsf4-go-source",
+      "/nix/store/wclliwrhxnvcqxzkki9didiwr6kg2czs-go-source",
+      "/nix/store/whmhvgk1lvkmrdjg8d8q48cldbd3j7jn-go-source",
+      "/nix/store/wj64q28ar9xlsj4w1cmb03dcdkbs9hhd-go-source",
+      "/nix/store/wl9jwagfh3wziq8n9ysbv3n2nh3zsdk9-go-source",
+      "/nix/store/wlhkd373mmq3vhb6azkbg09lx2a75162-go-source",
+      "/nix/store/wy57pn732lxqawk26cdx4miqgss4ws70-go-source",
+      "/nix/store/x163kx3yarw8b04s12y4qh1dk15r768s-go-source",
+      "/nix/store/x1fp4bpb2rxh3b6676353rb7h8jvvd1p-go-source",
+      "/nix/store/x66qsrwv0xikfjhqpzccay59bj6p92w0-go-source",
+      "/nix/store/x76sinjrfd7rw7rajalpc86ggzivxq88-go-source",
+      "/nix/store/x8zr5f6s9hmq7nz9xxvnv37vwy8hrmqf-go-source",
+      "/nix/store/x979bpsnpxf4y4w1jlsga7rq7gfn2hng-go-source",
+      "/nix/store/xav4gni5iqs71qqm10w2blvfyd5yb365-go-source",
+      "/nix/store/xb1af0gjymy03qy5vpkqda9dazwpxbrq-go-source",
+      "/nix/store/xbmf417liq3hk8i9mq9ilv7ka4yy093z-go-source",
+      "/nix/store/xjgm2dp25c5kq4kkc1wssb90kygl2xdy-go-source",
+      "/nix/store/xslgzqa3i01x6zifs08i7x9pwf893699-go-source",
+      "/nix/store/y48vzp7iqfhmz1gand4dxcr8p1ibynzg-go-source",
+      "/nix/store/y4wvwsyng9rghsjnhd0mxb89kn18bybw-go-source",
+      "/nix/store/y7mf3735dyjqp2wz617xx634wk9h8na3-go-source",
+      "/nix/store/y9wz3bqncsal92gb5w6wgw9imyic4jp1-go-source",
+      "/nix/store/ybakv0dbl2xrq033a95a36d114jvyqp6-go-source",
+      "/nix/store/yczbmiyji8yyr2n5a22j0b71gkkvpn0i-go-source",
+      "/nix/store/yjqn072c9s1rns3snrpk70wijc0k70sn-go-source",
+      "/nix/store/ylsf082slp4jvf9li3vpzk770d54sgrf-go-source",
+      "/nix/store/yn5f1iwcxg1scvi877kj5icp3ambshvh-go-source",
+      "/nix/store/yp526j4y3kl8dj5qf2awr44vnggaky2g-go-source",
+      "/nix/store/yq4b8q9yn8asil1l3yv43fj022i1pb2y-go-source",
+      "/nix/store/yy6gkip5idybbpcs8gcb82900qqyckdr-go-source",
+      "/nix/store/yyh04f1pjdy616ylkij7nd8mfywhb1zm-go-source",
+      "/nix/store/yyl0bc0mir8hb6fgzrhjjlwgy1hqk402-go-source",
+      "/nix/store/yzjxspcj03476x4gm3ggg1zdd939cap6-go-source",
+      "/nix/store/z21l7h4nj7h6h0l113msw0qp9d61df18-go-source",
+      "/nix/store/z2a4l7arhygsfp6ah4hgkyhpcr1nczhk-go-source",
+      "/nix/store/z2p9fr1ha05nld46mr1s0hs5ziqpi4c4-go-source",
+      "/nix/store/z3a3rxrdasq7chfx89f0asp8jgk9adss-go-source",
+      "/nix/store/z6fdxis0gv3lvb73kwwdj1srbn3526qn-go-source",
+      "/nix/store/z88aclp3nc84gyp2wlzs0cvi8d448bb7-go-source",
+      "/nix/store/z97v665dhd39im3y0v1my6s3bqnpa652-go-source",
+      "/nix/store/zc97x6gzbqfcvghlmbws0q8s462d29by-go-source",
+      "/nix/store/zfk3b34jyk8jrqg5x6vfbl1bbgl3k886-go-source",
+      "/nix/store/zj4sv0jl8ixkhr7f3p47w55sng5swhmy-go-source",
+      "/nix/store/zps6an3pbg7gayd3xcaymhq53h2zc3lb-go-source",
+      "/nix/store/zq6jrfk6pr96595x5f1wpl1704xsc69j-go-source",
+      "/nix/store/zqagmf7fki6zxd8knlv1mn2fvwzz90vh-go-source",
+      "/nix/store/zrk0hi43crw9bw4svzpr274zb1kkjv9l-go-source"
+    ]
+  },
+  "validation": {
+    "go_test_all": "passed",
+    "go_vet_all": "passed",
+    "compressed_native_sources_and_reproducibility": [
+      "go1.26.5",
+      "go1.25.12",
+      "go1.26.6"
+    ],
+    "toolchains": [
+      "/nix/store/k2jxxsdfk4gpnzvf235jp36jyp9nzqi3-go-libnix-toolchain",
+      "/nix/store/qssvwqnv6bjmnxa7ijgj9qxa8z0k5fa2-go-libnix-toolchain",
+      "/nix/store/pbpyw3dy4bxzfz56c67znvj7vayn2qvs-go-libnix-toolchain"
+    ],
+    "compatibility_cases": [
+      {
+        "name": "embed-cgo",
+        "units": 67
+      },
+      {
+        "name": "assembly",
+        "units": 62
+      },
+      {
+        "name": "tags-ldflags",
+        "units": 62
+      },
+      {
+        "name": "external-link",
+        "units": 63
+      },
+      {
+        "name": "workspace",
+        "units": 62
+      },
+      {
+        "name": "vendored",
+        "units": 62
+      },
+      {
+        "name": "cgo-disabled",
+        "units": 61
+      },
+      {
+        "name": "race-cgo",
+        "units": 64
+      },
+      {
+        "name": "cxx",
+        "units": 62
+      },
+      {
+        "name": "native-object-cgo-disabled",
+        "units": 61
+      }
+    ],
+    "compatibility_extra_checks": [
+      "go1.26.5 embed-cgo PASS 67 units",
+      "go1.26.5 assembly PASS 62 units",
+      "go1.26.5 tags-ldflags PASS 62 units",
+      "go1.26.5 external-link PASS 63 units",
+      "go1.26.5 workspace PASS 62 units",
+      "go1.26.5 vendored PASS 62 units",
+      "go1.26.5 cgo-disabled PASS 61 units",
+      "go1.26.5 race-cgo PASS 64 units",
+      "go1.26.5 cxx PASS 62 units",
+      "go1.26.5 native-object-cgo-disabled PASS 61 units",
+      "go1.26.5 dynamic/IFD-disabled PASS",
+      "go1.26.5 runtime-source/embed/ldflags/unused-inputs/dynamic PASS",
+      "go1.26.5 nested-command/custom-buildid/dynamic/IFD-disabled PASS",
+      "go1.26.5 native-object/cgo-disabled/dynamic/IFD-disabled PASS",
+      "go1.26.5 test-cgo-disabled dynamic/standalone/IFD-disabled PASS",
+      "go1.26.5 test-race-cgo dynamic/standalone/IFD-disabled PASS",
+      "go1.26.5 incremental/cache/standalone PASS"
+    ],
+    "byte_equivalence": {
+      "scope": "Raw64KiB and compressed snapshots with identical discovery toolchain and module-cache directory",
+      "compared": 554,
+      "different": []
+    },
+    "upm_smoke": [
+      "--version",
+      "list-languages"
+    ],
+    "iets": {
+      "revision": "69883a64bfb0d9a95dce253dae304878e07b076e",
+      "scope": "Dynamic functional validation only; these runs were concurrent with compatibility checks and are not used for performance claims.",
+      "checks": [
+        {
+          "case": "outer",
+          "derivation": "/nix/store/vfsihll4pkl2kcww5b9n2mh2gy3byn52-drvgo-iets-b682ab26a779-outer.drv",
+          "output": "/nix/store/49hy3k98ij1m0la931grsqki7zyvvqyq-drvgo-iets-b682ab26a779-outer",
+          "command_output": "/nix/store/r55jqpj1hrg7sxa88p3c4nwc1x5rlnjk-go-example.com-libnix-fixture",
+          "direct_output": "/nix/store/hz5db11nrsv6r98j3ad5mgk29rqyida0-drvgo-iets-b682ab26a779-outer-result"
+        },
+        {
+          "case": "nested",
+          "derivation": "/nix/store/bkagkn0mvyg6wclf8yn9jjv931kcqbkf-drvgo-iets-b682ab26a779-nested.drv",
+          "output": "/nix/store/lpg5j9dqf3k3nm6ldhqfmmy4r1f4bz22-drvgo-iets-b682ab26a779-nested",
+          "command_output": "/nix/store/r55jqpj1hrg7sxa88p3c4nwc1x5rlnjk-go-example.com-libnix-fixture",
+          "direct_output": "/nix/store/zjki2n1f2mync51py9bcv9fdxa14lm52-drvgo-iets-b682ab26a779-nested-result"
+        },
+        {
+          "case": "runtime-nested-False-explicit-False",
+          "derivation": "/nix/store/0d0cgl0f6nmhfhbbs1p5whr10ifs0y16-drvgo-iets-b682ab26a779-runtime-nested-False-explicit-False.drv",
+          "output": "/nix/store/c1fk6jfqc1q68q8d8mj674g8f9jh9y9r-drvgo-iets-b682ab26a779-runtime-nested-False-explicit-False",
+          "command_output": "/nix/store/6kid1n8kpcqix3xys3i2k33vliwiirpz-go-example.com-runtime-reference"
+        },
+        {
+          "case": "runtime-nested-False-explicit-True",
+          "derivation": "/nix/store/lmw7n143snz5jdy6nipzfgi49m35dmps-drvgo-iets-b682ab26a779-runtime-nested-False-explicit-True.drv",
+          "output": "/nix/store/qq0xgpcil45ypr1k5mnkffhhgvhyfx6q-drvgo-iets-b682ab26a779-runtime-nested-False-explicit-True",
+          "command_output": "/nix/store/6kid1n8kpcqix3xys3i2k33vliwiirpz-go-example.com-runtime-reference"
+        },
+        {
+          "case": "runtime-nested-True-explicit-False",
+          "derivation": "/nix/store/q03h9djq402f5nrwml2d5lw096qs9fg2-drvgo-iets-b682ab26a779-runtime-nested-True-explicit-False.drv",
+          "output": "/nix/store/zm8hjw34am7a4bihwjp5ddc466igvhqb-drvgo-iets-b682ab26a779-runtime-nested-True-explicit-False",
+          "command_output": "/nix/store/6kid1n8kpcqix3xys3i2k33vliwiirpz-go-example.com-runtime-reference"
+        },
+        {
+          "case": "runtime-nested-True-explicit-True",
+          "derivation": "/nix/store/fikynj8mgvxrd2jpfv8d7717rh0aylzg-drvgo-iets-b682ab26a779-runtime-nested-True-explicit-True.drv",
+          "output": "/nix/store/7acx33k5pddyj3gs6mxx056sidym776w-drvgo-iets-b682ab26a779-runtime-nested-True-explicit-True",
+          "command_output": "/nix/store/6kid1n8kpcqix3xys3i2k33vliwiirpz-go-example.com-runtime-reference"
+        }
+      ],
+      "embed_invalidation": "passed",
+      "optional_tests": [
+        {
+          "case": "optional-outer-empty",
+          "command_output": "/nix/store/fa4lp60va58gfjs2p5ai3b7p43dhs7fh-go-empty-tests"
+        },
+        {
+          "case": "optional-outer-tagged",
+          "command_output": "/nix/store/qsfpaa0dwzphphy0i1grajvbi3iazh42-go-example.com-iets-tests.test"
+        },
+        {
+          "case": "optional-nested-empty",
+          "command_output": "/nix/store/fa4lp60va58gfjs2p5ai3b7p43dhs7fh-go-empty-tests"
+        },
+        {
+          "case": "optional-nested-tagged",
+          "command_output": "/nix/store/qsfpaa0dwzphphy0i1grajvbi3iazh42-go-example.com-iets-tests.test"
+        }
+      ],
+      "optional_tests_invalid_after_cached_empty": "passed"
+    },
+    "remote_matrix": "pending",
+    "baseline_cache_limitation": "go-sqlite3 ordinary and dynamic replay scripts differ only in their automatic Go build IDs; this propagates to UPM command recipes. Not introduced by compression."
+  },
+  "native_reproducibility_followup": {
+    "implementation": "c6b0306befaf46260a2d59e3304a3b53770229c9",
+    "cause": "Go -n skips compiler capability probes, omitting native prefix maps. Both raw and compressed macOS builds embedded changing DW_AT_comp_dir values.",
+    "fix": "Restore native file/debug prefix maps and canonicalize temporary-directory aliases; retain debug information.",
+    "validation": {
+      "unit_tests": "passed",
+      "vet": "passed",
+      "linux_amd64_native_reproducibility": [
+        "go1.25.12",
+        "go1.26.5",
+        "go1.26.6"
+      ],
+      "native_test_scope": "raw and compressed headers, sources removed, Nix --check, and direct replay in two distinct temporary directories including a symlink",
+      "full_go1_26_5_compatibility": "passed",
+      "iets_pr3_dynamic_builds": "passed; outer/nested/direct/repeat/embed/optional-tests/runtime-references; concurrent with compatibility, timings not performance claims",
+      "remote_ci": "c6b0306 Linux amd64/arm64 checks passed; Apple Silicon checks pending"
+    },
+    "upm_ci": {
+      "scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
+      "source": "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+      "package": "./cmd/upm",
+      "vendor_hash": "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+      "cgo": null,
+      "test": false,
+      "allow_empty_tests": false,
+      "tags": "",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "roots": {
+        "before": "/tmp/drvgo-ci-round4",
+        "after": "/tmp/drvgo-ci-compressed"
+      },
+      "flags": [
+        "--extra-experimental-features",
+        "ca-derivations dynamic-derivations recursive-nix",
+        "--option",
+        "allow-import-from-derivation",
+        "false",
+        "--max-jobs",
+        "4",
+        "--cores",
+        "2",
+        "--option",
+        "sandbox",
+        "true",
+        "--option",
+        "sandbox-fallback",
+        "false",
+        "--option",
+        "substituters",
+        "",
+        "--option",
+        "always-allow-substitutes",
+        "false"
+      ],
+      "nonce": "be7ad87a1b71",
+      "records": [
+        {
+          "label": "before",
+          "trial": 0,
+          "warmup": true,
+          "evaluation": 0.3973055500537157,
+          "realization": 3.3693218829575926,
+          "total": 3.7666274330113083,
+          "derivation": "/nix/store/1h7x41mryy8rqjchpy8pzg0dvrnxda8s-drvgo-ci-be7ad87a1b71-before-0.drv",
+          "result": "/nix/store/wrxixlsplcpl9pgrrn8ls2yjx6g0g0gh-drvgo-ci-be7ad87a1b71-before-0",
+          "command_output": "/nix/store/vzlzvg2rszw3fyb245ldsiqnicnfhd9r-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 0,
+          "warmup": true,
+          "evaluation": 0.410005996003747,
+          "realization": 44.70013688597828,
+          "total": 45.11014288198203,
+          "derivation": "/nix/store/hj924wb02ykv8ycfbsw2pdq5jrd6p9sg-drvgo-ci-be7ad87a1b71-after-0.drv",
+          "result": "/nix/store/fq0y6x1pladparqc96n7sqwv5ddji1wh-drvgo-ci-be7ad87a1b71-after-0",
+          "command_output": "/nix/store/mshp75g9phgx9xvy80c0ab5wx0p7a861-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 1,
+          "warmup": false,
+          "evaluation": 0.4148847380420193,
+          "realization": 2.990508720977232,
+          "total": 3.405393459019251,
+          "derivation": "/nix/store/w52jq3nvybsy443s71ghc7yabzq6xbvf-drvgo-ci-be7ad87a1b71-after-1.drv",
+          "result": "/nix/store/q5qn9dzvm8h6l472i68r2fp07f5si6vw-drvgo-ci-be7ad87a1b71-after-1",
+          "command_output": "/nix/store/mshp75g9phgx9xvy80c0ab5wx0p7a861-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 1,
+          "warmup": false,
+          "evaluation": 0.3934951290721074,
+          "realization": 3.3983856899430975,
+          "total": 3.791880819015205,
+          "derivation": "/nix/store/x69qbzqrg7qhfbhl26r5hnc9z4b06m0g-drvgo-ci-be7ad87a1b71-before-1.drv",
+          "result": "/nix/store/52bnjfpy5kxnka022cmfx8y7z3sh7pgw-drvgo-ci-be7ad87a1b71-before-1",
+          "command_output": "/nix/store/vzlzvg2rszw3fyb245ldsiqnicnfhd9r-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 2,
+          "warmup": false,
+          "evaluation": 0.42449982604011893,
+          "realization": 3.402016752981581,
+          "total": 3.8265165790216997,
+          "derivation": "/nix/store/m3z1f10anhvy5vcgqp0lr06kvkvin8jn-drvgo-ci-be7ad87a1b71-before-2.drv",
+          "result": "/nix/store/03llz1q39dndk9c644v60a5k2s9rmld1-drvgo-ci-be7ad87a1b71-before-2",
+          "command_output": "/nix/store/vzlzvg2rszw3fyb245ldsiqnicnfhd9r-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 2,
+          "warmup": false,
+          "evaluation": 0.39531400008127093,
+          "realization": 2.9924515068996698,
+          "total": 3.3877655069809407,
+          "derivation": "/nix/store/k6b7absx9prsbhf41s0f73mvbm6i3nbj-drvgo-ci-be7ad87a1b71-after-2.drv",
+          "result": "/nix/store/nx0hkdr1zzgy3asrz4xbr3hsnygvc2ia-drvgo-ci-be7ad87a1b71-after-2",
+          "command_output": "/nix/store/mshp75g9phgx9xvy80c0ab5wx0p7a861-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 3,
+          "warmup": false,
+          "evaluation": 0.42163802799768746,
+          "realization": 3.0088066639145836,
+          "total": 3.430444691912271,
+          "derivation": "/nix/store/i8cz1y5xjz469b2x3axfzdsbdisy0m25-drvgo-ci-be7ad87a1b71-after-3.drv",
+          "result": "/nix/store/wx4153baw5lnx80kspg7adpfpnqinwlv-drvgo-ci-be7ad87a1b71-after-3",
+          "command_output": "/nix/store/mshp75g9phgx9xvy80c0ab5wx0p7a861-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 3,
+          "warmup": false,
+          "evaluation": 0.4408684029476717,
+          "realization": 3.372177640092559,
+          "total": 3.813046043040231,
+          "derivation": "/nix/store/qd0v6sd15321ax784dwhhwx8vn6l3ci0-drvgo-ci-be7ad87a1b71-before-3.drv",
+          "result": "/nix/store/8f32hd8sihijjs79ljhryi09q0dj7h24-drvgo-ci-be7ad87a1b71-before-3",
+          "command_output": "/nix/store/vzlzvg2rszw3fyb245ldsiqnicnfhd9r-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 4,
+          "warmup": false,
+          "evaluation": 0.41953056398779154,
+          "realization": 3.3500207570614293,
+          "total": 3.769551321049221,
+          "derivation": "/nix/store/3416vqmgds4aghwjn70jjl6xcyjwq1fg-drvgo-ci-be7ad87a1b71-before-4.drv",
+          "result": "/nix/store/8ii547yhzamxhwbb9vi7171ayirvsypy-drvgo-ci-be7ad87a1b71-before-4",
+          "command_output": "/nix/store/vzlzvg2rszw3fyb245ldsiqnicnfhd9r-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 4,
+          "warmup": false,
+          "evaluation": 0.42613587400410324,
+          "realization": 3.0188369839452207,
+          "total": 3.444972857949324,
+          "derivation": "/nix/store/abr9jzxlws5ghsmz7i3y9i0b5ci8s0j6-drvgo-ci-be7ad87a1b71-after-4.drv",
+          "result": "/nix/store/jj625xpql3xb02nd06d3sm0xfcsy4q25-drvgo-ci-be7ad87a1b71-after-4",
+          "command_output": "/nix/store/mshp75g9phgx9xvy80c0ab5wx0p7a861-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 5,
+          "warmup": false,
+          "evaluation": 0.4991514439461753,
+          "realization": 3.052664944087155,
+          "total": 3.5518163880333304,
+          "derivation": "/nix/store/in1n75nk0i7582h3mcn3ld410pds3h06-drvgo-ci-be7ad87a1b71-after-5.drv",
+          "result": "/nix/store/4w6ya9qli44cpm1ml8a2lm9xjvs0mdpq-drvgo-ci-be7ad87a1b71-after-5",
+          "command_output": "/nix/store/mshp75g9phgx9xvy80c0ab5wx0p7a861-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 5,
+          "warmup": false,
+          "evaluation": 0.46268561598844826,
+          "realization": 3.387251907028258,
+          "total": 3.849937523016706,
+          "derivation": "/nix/store/fgs962azi5yb3wpvn4xwkd48q0ilpzb0-drvgo-ci-be7ad87a1b71-before-5.drv",
+          "result": "/nix/store/zwqzxynrygbdyxp8viklnawl4wglq097-drvgo-ci-be7ad87a1b71-before-5",
+          "command_output": "/nix/store/vzlzvg2rszw3fyb245ldsiqnicnfhd9r-go-github.com-replit-upm-cmd-upm"
+        }
+      ],
+      "medians": {
+        "before": {
+          "evaluation": 0.42449982604011893,
+          "realization": 3.387251907028258,
+          "total": 3.813046043040231
+        },
+        "after": {
+          "evaluation": 0.42163802799768746,
+          "realization": 3.0088066639145836,
+          "total": 3.430444691912271
+        }
+      }
+    },
+    "evaluation": {
+      "scope": "Warm graph evaluation; no builds; iets tracing cache and Nix fallback disabled",
+      "roots": {
+        "before": "/tmp/drvgo-compressed-before-upm-export",
+        "after": "/tmp/drvgo-native-paths-upm-export"
+      },
+      "records": [
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.14989106601569802,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.044075024081394076,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.06587336398661137,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.1713262819685042,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.04687563003972173,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.06293420505244285,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.06752380100078881,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.04273698094766587,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.1356284449575469,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.056685290997847915,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.04192112502641976,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.13416264893021435,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.12977539701387286,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.041360993986018,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.059114836039952934,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.13721453899051994,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.04316748108249158,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.05950690503232181,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.058579168980941176,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.0483847880968824,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.13420402409974486,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.06649511295836419,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.0431602590251714,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.13702456397004426,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.14168433588929474,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.040707426029257476,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.07423524896148592,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.13592381589114666,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.04167831200174987,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.056263098027557135,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.06653099704999477,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.0439540030201897,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.14348258904647082,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.06088621902745217,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.047979241935536265,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.1325868209823966,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        }
+      ],
+      "medians": {
+        "before": {
+          "nix": 0.13416264893021435,
+          "iets-1": 0.04192112502641976,
+          "iets-4": 0.06088621902745217
+        },
+        "after": {
+          "nix": 0.13592381589114666,
+          "iets-1": 0.04316748108249158,
+          "iets-4": 0.05950690503232181
+        }
+      }
+    },
+    "graph_closure": {
+      "scope": "Sum of NAR and zstd level 3 file sizes for complete closures; local binary cache, no network timing",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "toolchains": {
+        "before": {
+          "planning": {
+            "path": "/nix/store/yrsr8f4mbs1rr9jzw84bb2c51h2mj7si-drvgo-ci-49f4d1764ced-before-0-result.drv",
+            "paths": 1853,
+            "nar_bytes": 124353832,
+            "zstd_bytes": 28784367
+          },
+          "compile": {
+            "path": "/nix/store/yrsr8f4mbs1rr9jzw84bb2c51h2mj7si-drvgo-ci-49f4d1764ced-before-0-result.drv",
+            "paths": 1853,
+            "nar_bytes": 124353832,
+            "zstd_bytes": 28784367
+          },
+          "link": {
+            "path": "/nix/store/yrsr8f4mbs1rr9jzw84bb2c51h2mj7si-drvgo-ci-49f4d1764ced-before-0-result.drv",
+            "paths": 1853,
+            "nar_bytes": 124353832,
+            "zstd_bytes": 28784367
+          },
+          "native": {
+            "path": "/nix/store/yrsr8f4mbs1rr9jzw84bb2c51h2mj7si-drvgo-ci-49f4d1764ced-before-0-result.drv",
+            "paths": 1853,
+            "nar_bytes": 124353832,
+            "zstd_bytes": 28784367
+          }
+        },
+        "after": {
+          "planning": {
+            "path": "/nix/store/mzdp38vajmh1wkycida5fg754cr42y42-drvgo-ci-be7ad87a1b71-after-0-result.drv",
+            "paths": 1580,
+            "nar_bytes": 121500064,
+            "zstd_bytes": 29093728
+          },
+          "compile": {
+            "path": "/nix/store/mzdp38vajmh1wkycida5fg754cr42y42-drvgo-ci-be7ad87a1b71-after-0-result.drv",
+            "paths": 1580,
+            "nar_bytes": 121500064,
+            "zstd_bytes": 29093728
+          },
+          "link": {
+            "path": "/nix/store/mzdp38vajmh1wkycida5fg754cr42y42-drvgo-ci-be7ad87a1b71-after-0-result.drv",
+            "paths": 1580,
+            "nar_bytes": 121500064,
+            "zstd_bytes": 29093728
+          },
+          "native": {
+            "path": "/nix/store/mzdp38vajmh1wkycida5fg754cr42y42-drvgo-ci-be7ad87a1b71-after-0-result.drv",
+            "paths": 1580,
+            "nar_bytes": 121500064,
+            "zstd_bytes": 29093728
+          }
+        }
+      }
+    },
+    "toolchain_closure": {
+      "scope": "Sum of NAR and zstd level 3 file sizes for complete closures; local binary cache, no network timing",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "toolchains": {
+        "before": {
+          "planning": {
+            "path": "/nix/store/cp6119p4kb6m9mv739jbb8v0hd705dhw-go-libnix-toolchain",
+            "paths": 48,
+            "nar_bytes": 682091008,
+            "zstd_bytes": 203484609
+          },
+          "compile": {
+            "path": "/nix/store/bmm0ilamwpi10zz62rm4f67fz2nmdla5-go-libnix-compile-toolchain",
+            "paths": 4,
+            "nar_bytes": 35569576,
+            "zstd_bytes": 11511648
+          },
+          "link": {
+            "path": "/nix/store/syl4iyvjin7myizcbiwnz56rvmbxp34d-go-libnix-link-toolchain",
+            "paths": 9,
+            "nar_bytes": 79977736,
+            "zstd_bytes": 25327835
+          },
+          "native": {
+            "path": "/nix/store/gvhds187hda7y0ijgdjqpfbs6ssg5glh-go-libnix-native-toolchain",
+            "paths": 42,
+            "nar_bytes": 450201920,
+            "zstd_bytes": 141167380
+          }
+        },
+        "after": {
+          "planning": {
+            "path": "/nix/store/fgwv2wpq8abn16rjzry12s0dln9s0wyh-go-libnix-toolchain",
+            "paths": 48,
+            "nar_bytes": 682095104,
+            "zstd_bytes": 203488730
+          },
+          "compile": {
+            "path": "/nix/store/liz3wf7dvs3mdkr0bkxhs6zzf8nhq22b-go-libnix-compile-toolchain",
+            "paths": 4,
+            "nar_bytes": 35573672,
+            "zstd_bytes": 11515768
+          },
+          "link": {
+            "path": "/nix/store/d7bgfdvipfbg5bkr25ny5rbjssn11m88-go-libnix-link-toolchain",
+            "paths": 9,
+            "nar_bytes": 79981832,
+            "zstd_bytes": 25331956
+          },
+          "native": {
+            "path": "/nix/store/n58jjkmga3sfqnya8n79a38m5wsh7b3h-go-libnix-native-toolchain",
+            "paths": 42,
+            "nar_bytes": 450206016,
+            "zstd_bytes": 141171500
+          }
+        }
+      }
+    },
+    "cli_closure": {
+      "scope": "Sum of NAR and zstd level 3 file sizes for complete closures; local binary cache, no network timing",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "toolchains": {
+        "before": {
+          "planning": {
+            "path": "/nix/store/j7l9xfivjzwhfg8yk9y91caknnlf01wv-drvgo-0.1.0",
+            "paths": 2,
+            "nar_bytes": 5581112,
+            "zstd_bytes": 1653181
+          },
+          "compile": {
+            "path": "/nix/store/j7l9xfivjzwhfg8yk9y91caknnlf01wv-drvgo-0.1.0",
+            "paths": 2,
+            "nar_bytes": 5581112,
+            "zstd_bytes": 1653181
+          },
+          "link": {
+            "path": "/nix/store/j7l9xfivjzwhfg8yk9y91caknnlf01wv-drvgo-0.1.0",
+            "paths": 2,
+            "nar_bytes": 5581112,
+            "zstd_bytes": 1653181
+          },
+          "native": {
+            "path": "/nix/store/j7l9xfivjzwhfg8yk9y91caknnlf01wv-drvgo-0.1.0",
+            "paths": 2,
+            "nar_bytes": 5581112,
+            "zstd_bytes": 1653181
+          }
+        },
+        "after": {
+          "planning": {
+            "path": "/nix/store/4pmhy8r3fbrjn1fahjvq71psxqjl0bpr-drvgo-0.1.0",
+            "paths": 2,
+            "nar_bytes": 5651088,
+            "zstd_bytes": 1685646
+          },
+          "compile": {
+            "path": "/nix/store/4pmhy8r3fbrjn1fahjvq71psxqjl0bpr-drvgo-0.1.0",
+            "paths": 2,
+            "nar_bytes": 5651088,
+            "zstd_bytes": 1685646
+          },
+          "link": {
+            "path": "/nix/store/4pmhy8r3fbrjn1fahjvq71psxqjl0bpr-drvgo-0.1.0",
+            "paths": 2,
+            "nar_bytes": 5651088,
+            "zstd_bytes": 1685646
+          },
+          "native": {
+            "path": "/nix/store/4pmhy8r3fbrjn1fahjvq71psxqjl0bpr-drvgo-0.1.0",
+            "paths": 2,
+            "nar_bytes": 5651088,
+            "zstd_bytes": 1685646
+          }
+        }
+      }
+    }
+  }
+}

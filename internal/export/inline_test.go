@@ -1,7 +1,11 @@
 package export
 
 import (
+	"bytes"
+	"compress/zlib"
 	"encoding/base64"
+	"io"
+	"math/rand/v2"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -10,6 +14,65 @@ import (
 
 	"github.com/ryantm/drvgo/internal/plan"
 )
+
+func inlineSnapshot(root, dest string) (string, error) {
+	var encoder sourceEncoder
+	return encoder.snapshot(root, dest)
+}
+
+func TestCompressedSnapshotBudgetAndReuse(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "asset")
+	data := bytes.Repeat([]byte{0, 255, '\n', '@', '$'}, 6000)
+	write := func(data []byte) {
+		t.Helper()
+		if err := os.WriteFile(path, data, 0755); err != nil {
+			t.Fatal(err)
+		}
+	}
+	write(data)
+	var encoder sourceEncoder
+	first, err := encoder.snapshot(dir, "dest")
+	if err != nil {
+		t.Fatal(err)
+	}
+	line := strings.Split(strings.TrimSpace(first), "\n")[1]
+	fields := strings.Fields(line)
+	if fields[0] != "drvgo-source-zlib" || fields[1] != "0755" || fields[3] != "30000" {
+		t.Fatalf("missing compressed source or mode/size: %s", line)
+	}
+	encoded, err := base64.StdEncoding.DecodeString(strings.Trim(fields[4], "'"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	r, err := zlib.NewReader(bytes.NewReader(encoded))
+	if err != nil {
+		t.Fatal(err)
+	}
+	decoded, err := io.ReadAll(r)
+	r.Close()
+	if err != nil || !bytes.Equal(decoded, data) {
+		t.Fatalf("compressed bytes changed: %v", err)
+	}
+	noise := make([]byte, 30000)
+	rand.NewChaCha8([32]byte{1}).Read(noise)
+	write(noise)
+	if script, err := encoder.snapshot(dir, "dest"); err != nil || script != "" {
+		t.Fatalf("oversized incompressible payload accepted: %v", err)
+	}
+	write(data)
+	if script, err := encoder.snapshot(dir, "dest"); err != nil || script != first {
+		t.Fatalf("compressor reuse changed the restored recipe: %v", err)
+	}
+	// The payload budget is shared by all files, not applied to each file.
+	write(noise[:9000])
+	if err := os.WriteFile(filepath.Join(dir, "second"), noise[9000:18000], 0644); err != nil {
+		t.Fatal(err)
+	}
+	if script, err := encoder.snapshot(dir, "dest"); err != nil || script != "" {
+		t.Fatalf("oversized aggregate payload accepted: %v", err)
+	}
+}
 
 func TestInlineSourceSelectionAndInvalidation(t *testing.T) {
 	dir := t.TempDir()

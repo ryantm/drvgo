@@ -2,15 +2,112 @@ package main
 
 import (
 	"bytes"
+	"compress/zlib"
 	"encoding/base64"
+	"errors"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"reflect"
+	"runtime"
 	"strconv"
 	"strings"
 	"testing"
 )
+
+func TestCompressedSourceReplay(t *testing.T) {
+	inTemp(t)
+	data := bytes.Repeat([]byte{0, 255, '\r', '\n', '@', '$'}, 6000)
+	var b bytes.Buffer
+	w := zlib.NewWriter(&b)
+	if _, err := w.Write(data); err != nil {
+		t.Fatal(err)
+	}
+	if err := w.Close(); err != nil {
+		t.Fatal(err)
+	}
+	encoded := base64.StdEncoding.EncodeToString(b.Bytes())
+	script := fmt.Sprintf("drvgo-source-zlib 0755 'nested/space 雪' %d '%s'\n", len(data), encoded)
+	actions, err := parse(script)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := execute(actions); err != nil {
+		t.Fatal(err)
+	}
+	got, err := os.ReadFile("nested/space 雪")
+	if err != nil || !bytes.Equal(got, data) {
+		t.Fatalf("decoded source changed: %v", err)
+	}
+	info, err := os.Stat("nested/space 雪")
+	if err != nil || info.Mode().Perm() != 0755 {
+		t.Fatalf("decoded mode changed: %v", err)
+	}
+	corrupted := append([]byte(nil), b.Bytes()...)
+	corrupted[len(corrupted)-1] ^= 1
+	for _, invalid := range []string{
+		"drvgo-source-zlib 0644 bad 36000 !",
+		"drvgo-source-zlib 0777 bad 36000 '" + encoded + "'",
+		"drvgo-source-zlib 0644 bad -1 '" + encoded + "'",
+		"drvgo-source-zlib 0644 bad 65537 '" + encoded + "'",
+		"drvgo-source-zlib 0644 bad 35999 '" + encoded + "'",
+		"drvgo-source-zlib 0644 bad 36001 '" + encoded + "'",
+		"drvgo-source-zlib 0644 bad 36000 '" + base64.StdEncoding.EncodeToString(b.Bytes()[:b.Len()-1]) + "'",
+		"drvgo-source-zlib 0644 bad 36000 '" + base64.StdEncoding.EncodeToString(corrupted) + "'",
+		"X=y " + script,
+	} {
+		actions, err := parse(invalid)
+		if err == nil {
+			err = execute(actions)
+		}
+		if err == nil {
+			t.Fatal("invalid compressed source accepted")
+		}
+	}
+	if _, err := os.Stat("bad"); !os.IsNotExist(err) {
+		t.Fatal("invalid source was published")
+	}
+}
+
+func TestNativePackDispatch(t *testing.T) {
+	previous := packArchive
+	t.Cleanup(func() { packArchive = previous })
+	var calls [][]string
+	packArchive = func(args []string) error {
+		calls = append(calls, args)
+		return nil
+	}
+	actions, err := parse("libnix-pack c 'archive one.a' 'file one.o'\nlibnix-pack r second.a second.o\n")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := execute(actions); err != nil {
+		t.Fatal(err)
+	}
+	want := [][]string{{"c", "archive one.a", "file one.o"}, {"r", "second.a", "second.o"}}
+	if !reflect.DeepEqual(calls, want) {
+		t.Fatalf("calls: %v", calls)
+	}
+	wantErr := errors.New("archive failed")
+	packArchive = func([]string) error { return wantErr }
+	if err := execute(actions); !errors.Is(err, wantErr) {
+		t.Fatalf("lost pack failure: %v", err)
+	}
+	for _, a := range []action{
+		{op: "exec", args: []string{"libnix-pack", "r", "out.a"}, env: []string{"X=y"}},
+		{op: "exec", args: []string{"libnix-pack", "r", "out.a"}, path: "redirect"},
+		{op: "exec", args: []string{"libnix-pack", "r"}},
+	} {
+		if err := execute([]action{a}); err == nil || errors.Is(err, wantErr) {
+			t.Fatalf("invalid action reached pack: %v", err)
+		}
+	}
+	packArchive = nil
+	if err := execute(actions); err == nil {
+		t.Fatal("missing pinned pack accepted")
+	}
+}
 
 func TestInlineSourceReplay(t *testing.T) {
 	dir := inTemp(t)
@@ -126,6 +223,9 @@ func TestBuilderProcess(t *testing.T) {
 		return
 	}
 	main()
+	if strconv.Itoa(runtime.GOMAXPROCS(0)) != os.Getenv("GOMAXPROCS") {
+		t.Fatal("native helpers did not receive the build's core budget")
+	}
 	if err := os.WriteFile(filepath.Join(os.Getenv("TMPDIR"), "budget"), []byte(os.Getenv("GOMAXPROCS")), 0644); err != nil {
 		t.Fatal(err)
 	}

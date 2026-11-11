@@ -1,0 +1,655 @@
+{
+  "date": "2026-11-11",
+  "platform": "Linux amd64, Intel i7-1280P, Go 1.26.5",
+  "baseline": "66d655482179acb0b32b1dc0988988be79af863c",
+  "implementation": "970d5a6c28c2ed3342f2b94c4719b1c7268ef52c",
+  "conditions": {
+    "sandbox": true,
+    "sandbox_fallback": false,
+    "allow_import_from_derivation": false,
+    "remote_queries": false,
+    "warm_tools_and_sources": true
+  },
+  "archive_replay": {
+    "scope": "One assembly-object append per worker process; warm tools and inputs; includes worker startup and archive publication; no compilation, Nix scheduling, or network timing",
+    "go": "go1.26.5",
+    "arch": "amd64",
+    "iterations": 100,
+    "toolchains": {
+      "before": "/nix/store/r9kigdn8km5zz2m5rxg3pgxkbv4gzkk6-go-libnix-toolchain",
+      "after": "/nix/store/cp6119p4kb6m9mv739jbb8v0hd705dhw-go-libnix-toolchain"
+    },
+    "records": [
+      {
+        "label": "before",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.2618807799881324,
+        "seconds_per_archive": 0.0026188077998813243,
+        "sha256": "27c2b49c1017bd250da54e26501c7a3fa4d7e8d4814be48f3171f6d304a0fe7e"
+      },
+      {
+        "label": "after",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.14864114800002426,
+        "seconds_per_archive": 0.0014864114800002427,
+        "sha256": "27c2b49c1017bd250da54e26501c7a3fa4d7e8d4814be48f3171f6d304a0fe7e"
+      },
+      {
+        "label": "after",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.1481642349390313,
+        "seconds_per_archive": 0.001481642349390313,
+        "sha256": "27c2b49c1017bd250da54e26501c7a3fa4d7e8d4814be48f3171f6d304a0fe7e"
+      },
+      {
+        "label": "before",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.25055266404524446,
+        "seconds_per_archive": 0.0025055266404524447,
+        "sha256": "27c2b49c1017bd250da54e26501c7a3fa4d7e8d4814be48f3171f6d304a0fe7e"
+      },
+      {
+        "label": "before",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 0.24817091203294694,
+        "seconds_per_archive": 0.0024817091203294694,
+        "sha256": "27c2b49c1017bd250da54e26501c7a3fa4d7e8d4814be48f3171f6d304a0fe7e"
+      },
+      {
+        "label": "after",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 0.15852395701222122,
+        "seconds_per_archive": 0.0015852395701222122,
+        "sha256": "27c2b49c1017bd250da54e26501c7a3fa4d7e8d4814be48f3171f6d304a0fe7e"
+      },
+      {
+        "label": "after",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 0.15372299903538078,
+        "seconds_per_archive": 0.0015372299903538078,
+        "sha256": "27c2b49c1017bd250da54e26501c7a3fa4d7e8d4814be48f3171f6d304a0fe7e"
+      },
+      {
+        "label": "before",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 0.2565825079800561,
+        "seconds_per_archive": 0.002565825079800561,
+        "sha256": "27c2b49c1017bd250da54e26501c7a3fa4d7e8d4814be48f3171f6d304a0fe7e"
+      },
+      {
+        "label": "before",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 0.24736187094822526,
+        "seconds_per_archive": 0.002473618709482253,
+        "sha256": "27c2b49c1017bd250da54e26501c7a3fa4d7e8d4814be48f3171f6d304a0fe7e"
+      },
+      {
+        "label": "after",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 0.14788040798157454,
+        "seconds_per_archive": 0.0014788040798157454,
+        "sha256": "27c2b49c1017bd250da54e26501c7a3fa4d7e8d4814be48f3171f6d304a0fe7e"
+      },
+      {
+        "label": "after",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 0.1471066289814189,
+        "seconds_per_archive": 0.0014710662898141892,
+        "sha256": "27c2b49c1017bd250da54e26501c7a3fa4d7e8d4814be48f3171f6d304a0fe7e"
+      },
+      {
+        "label": "before",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 0.2496586120687425,
+        "seconds_per_archive": 0.002496586120687425,
+        "sha256": "27c2b49c1017bd250da54e26501c7a3fa4d7e8d4814be48f3171f6d304a0fe7e"
+      }
+    ],
+    "medians": {
+      "before": 0.002496586120687425,
+      "after": 0.001481642349390313
+    }
+  },
+  "package_rebuilds": {
+    "scope": "Rebuild every package with nix-build --check; warm tools, sources, and dependency outputs. No network transfer.",
+    "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+    "flags": [
+      "--no-out-link",
+      "--max-jobs",
+      "4",
+      "--cores",
+      "2"
+    ],
+    "roots": {
+      "before": "/tmp/drvgo-runtime-round3-compat/assembly-export",
+      "after": "/tmp/drvgo-round4-final-compat/assembly-export"
+    },
+    "records": [
+      {
+        "label": "before",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 3.631755342008546
+      },
+      {
+        "label": "after",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 3.630375290988013
+      },
+      {
+        "label": "after",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 3.6563158619683236
+      },
+      {
+        "label": "before",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 3.6853809899184853
+      },
+      {
+        "label": "before",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 3.7348617860116065
+      },
+      {
+        "label": "after",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 3.7030673859408125
+      },
+      {
+        "label": "after",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 3.7437378789763898
+      },
+      {
+        "label": "before",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 3.7146552110789344
+      },
+      {
+        "label": "before",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 3.685274253017269
+      },
+      {
+        "label": "after",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 3.6658403960755095
+      },
+      {
+        "label": "after",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 3.7299495119368657
+      },
+      {
+        "label": "before",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 3.7380562559701502
+      }
+    ],
+    "medians": {
+      "before": 3.7146552110789344,
+      "after": 3.7030673859408125
+    }
+  },
+  "helper_rebuilds": {
+    "scope": "Rebuild helpers with a fresh Go cache in each sandbox; warm SDK and build inputs; no network. Every rebuild checks reproducibility.",
+    "derivations": {
+      "before": "/nix/store/jzc609n93yf6dqp9kqxcbd1w9pnb5pmx-go-libnix-helpers.drv",
+      "after": "/nix/store/sg7m1d0vnvnjhqjkhwv3fhgp753pbx8d-go-libnix-helpers.drv"
+    },
+    "flags": [
+      "--no-out-link",
+      "--check",
+      "--cores",
+      "2",
+      "--max-jobs",
+      "1"
+    ],
+    "records": [
+      {
+        "label": "before",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 2.8092359140282497
+      },
+      {
+        "label": "after",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 2.5707556719426066
+      },
+      {
+        "label": "after",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 2.5524446630151942
+      },
+      {
+        "label": "before",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 2.7929029170190915
+      },
+      {
+        "label": "before",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 2.76901715004351
+      },
+      {
+        "label": "after",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 2.584841451025568
+      },
+      {
+        "label": "after",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 2.5557344789849594
+      },
+      {
+        "label": "before",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 2.8397968609351665
+      },
+      {
+        "label": "before",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 2.8177307379664853
+      },
+      {
+        "label": "after",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 2.5885758420918137
+      },
+      {
+        "label": "after",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 2.5747755529591814
+      },
+      {
+        "label": "before",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 2.847367389011197
+      }
+    ],
+    "medians": {
+      "before": 2.8177307379664853,
+      "after": 2.5747755529591814
+    }
+  },
+  "closure": {
+    "scope": "Sum of NAR and zstd level 3 file sizes for complete closures; local binary cache, no network timing",
+    "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+    "toolchains": {
+      "before": {
+        "planning": {
+          "path": "/nix/store/r9kigdn8km5zz2m5rxg3pgxkbv4gzkk6-go-libnix-toolchain",
+          "paths": 48,
+          "nar_bytes": 684083144,
+          "zstd_bytes": 204391233
+        },
+        "compile": {
+          "path": "/nix/store/3xkbv7nbihiprr18n2wdw281xx56s7dp-go-libnix-compile-toolchain",
+          "paths": 4,
+          "nar_bytes": 37560896,
+          "zstd_bytes": 12418101
+        },
+        "link": {
+          "path": "/nix/store/pkclgi79p1hmjy6gaxg4d2f4dfsnp9gz-go-libnix-link-toolchain",
+          "paths": 9,
+          "nar_bytes": 81969056,
+          "zstd_bytes": 26234286
+        },
+        "native": {
+          "path": "/nix/store/k84xp7kimiyvzjx45k2m2iq9hlr5q3ni-go-libnix-native-toolchain",
+          "paths": 42,
+          "nar_bytes": 452193240,
+          "zstd_bytes": 142073828
+        }
+      },
+      "after": {
+        "planning": {
+          "path": "/nix/store/cp6119p4kb6m9mv739jbb8v0hd705dhw-go-libnix-toolchain",
+          "paths": 48,
+          "nar_bytes": 682091008,
+          "zstd_bytes": 203484609
+        },
+        "compile": {
+          "path": "/nix/store/bmm0ilamwpi10zz62rm4f67fz2nmdla5-go-libnix-compile-toolchain",
+          "paths": 4,
+          "nar_bytes": 35569576,
+          "zstd_bytes": 11511648
+        },
+        "link": {
+          "path": "/nix/store/syl4iyvjin7myizcbiwnz56rvmbxp34d-go-libnix-link-toolchain",
+          "paths": 9,
+          "nar_bytes": 79977736,
+          "zstd_bytes": 25327835
+        },
+        "native": {
+          "path": "/nix/store/gvhds187hda7y0ijgdjqpfbs6ssg5glh-go-libnix-native-toolchain",
+          "paths": 42,
+          "nar_bytes": 450201920,
+          "zstd_bytes": 141167380
+        }
+      }
+    }
+  },
+  "executables": {
+    "before": {
+      "drvgo-builder": 2511010,
+      "libnix-pack": 2105506
+    },
+    "after": {
+      "drvgo-builder": 2625698
+    }
+  },
+  "outputs_after_fresh_discovery": {
+    "compared": 626,
+    "identical": 615,
+    "differences": [
+      {
+        "case": "embed-cgo",
+        "unit": "runtime/cgo"
+      },
+      {
+        "case": "embed-cgo",
+        "unit": "example.com/libnix-fixture/cgobase"
+      },
+      {
+        "case": "embed-cgo",
+        "unit": "example.com/libnix-fixture/cgouse"
+      },
+      {
+        "case": "embed-cgo",
+        "unit": "example.com/libnix-fixture"
+      },
+      {
+        "case": "external-link",
+        "unit": "runtime/cgo"
+      },
+      {
+        "case": "external-link",
+        "unit": "example.com/compat"
+      },
+      {
+        "case": "race-cgo",
+        "unit": "runtime/cgo"
+      },
+      {
+        "case": "race-cgo",
+        "unit": "runtime/race"
+      },
+      {
+        "case": "race-cgo",
+        "unit": "example.com/modes.test"
+      },
+      {
+        "case": "cxx",
+        "unit": "runtime/cgo"
+      },
+      {
+        "case": "cxx",
+        "unit": "example.com/cxx"
+      }
+    ],
+    "cases": [
+      {
+        "name": "embed-cgo",
+        "units": 67,
+        "different": [
+          "runtime/cgo",
+          "example.com/libnix-fixture/cgobase",
+          "example.com/libnix-fixture/cgouse",
+          "example.com/libnix-fixture"
+        ]
+      },
+      {
+        "name": "assembly",
+        "units": 62,
+        "different": []
+      },
+      {
+        "name": "tags-ldflags",
+        "units": 62,
+        "different": []
+      },
+      {
+        "name": "external-link",
+        "units": 63,
+        "different": [
+          "runtime/cgo",
+          "example.com/compat"
+        ]
+      },
+      {
+        "name": "workspace",
+        "units": 62,
+        "different": []
+      },
+      {
+        "name": "vendored",
+        "units": 62,
+        "different": []
+      },
+      {
+        "name": "cgo-disabled",
+        "units": 61,
+        "different": []
+      },
+      {
+        "name": "race-cgo",
+        "units": 64,
+        "different": [
+          "runtime/cgo",
+          "runtime/race",
+          "example.com/modes.test"
+        ]
+      },
+      {
+        "name": "cxx",
+        "units": 62,
+        "different": [
+          "runtime/cgo",
+          "example.com/cxx"
+        ]
+      },
+      {
+        "name": "native-object-cgo-disabled",
+        "units": 61,
+        "different": []
+      }
+    ]
+  },
+  "outputs_with_original_discovery": {
+    "scope": "Replay unchanged Go discovery scripts with the new worker to isolate archive handling from changed toolchain identity",
+    "cases": [
+      {
+        "name": "embed-cgo",
+        "units": 67,
+        "different": []
+      },
+      {
+        "name": "external-link",
+        "units": 63,
+        "different": []
+      },
+      {
+        "name": "race-cgo",
+        "units": 64,
+        "different": []
+      },
+      {
+        "name": "cxx",
+        "units": 62,
+        "different": []
+      }
+    ]
+  },
+  "validation": {
+    "go_test_all": "passed",
+    "go_vet_all": "passed",
+    "native_pack_byte_output_and_descriptor_tests": [
+      "go1.25.12",
+      "go1.26.5",
+      "go1.26.6"
+    ],
+    "compatibility_cases": [
+      {
+        "name": "embed-cgo",
+        "units": 67
+      },
+      {
+        "name": "assembly",
+        "units": 62
+      },
+      {
+        "name": "tags-ldflags",
+        "units": 62
+      },
+      {
+        "name": "external-link",
+        "units": 63
+      },
+      {
+        "name": "workspace",
+        "units": 62
+      },
+      {
+        "name": "vendored",
+        "units": 62
+      },
+      {
+        "name": "cgo-disabled",
+        "units": 61
+      },
+      {
+        "name": "race-cgo",
+        "units": 64
+      },
+      {
+        "name": "cxx",
+        "units": 62
+      },
+      {
+        "name": "native-object-cgo-disabled",
+        "units": 61
+      }
+    ],
+    "compatibility_extra_checks": [
+      "go1.26.5 embed-cgo PASS 67 units",
+      "go1.26.5 assembly PASS 62 units",
+      "go1.26.5 tags-ldflags PASS 62 units",
+      "go1.26.5 external-link PASS 63 units",
+      "go1.26.5 workspace PASS 62 units",
+      "go1.26.5 vendored PASS 62 units",
+      "go1.26.5 cgo-disabled PASS 61 units",
+      "go1.26.5 race-cgo PASS 64 units",
+      "go1.26.5 cxx PASS 62 units",
+      "go1.26.5 native-object-cgo-disabled PASS 61 units",
+      "go1.26.5 dynamic/IFD-disabled PASS",
+      "go1.26.5 runtime-source/embed/ldflags/unused-inputs/dynamic PASS",
+      "go1.26.5 nested-command/custom-buildid/dynamic/IFD-disabled PASS",
+      "go1.26.5 native-object/cgo-disabled/dynamic/IFD-disabled PASS",
+      "go1.26.5 test-cgo-disabled dynamic/standalone/IFD-disabled PASS",
+      "go1.26.5 test-race-cgo dynamic/standalone/IFD-disabled PASS",
+      "go1.26.5 incremental/cache/standalone PASS"
+    ],
+    "iets": {
+      "revision": "69883a64bfb0d9a95dce253dae304878e07b076e",
+      "scope": "Functional validation only; timing samples ran alongside compatibility tests and are not reported as a performance comparison.",
+      "checks": [
+        {
+          "case": "outer",
+          "derivation": "/nix/store/3n6k6w8jva3qf42d6zvdan367nsi28s8-drvgo-iets-00c583381d4b-outer.drv",
+          "output": "/nix/store/pf1k0slc2l295ni3vlg5ny1rl4lpf3jv-drvgo-iets-00c583381d4b-outer",
+          "command_output": "/nix/store/692yy71vs1s9vlnwpmbvs8aagzd5nqy8-go-example.com-libnix-fixture",
+          "direct_output": "/nix/store/w37z4dlpq7s16v4zkqv3cs9yks6g50nc-drvgo-iets-00c583381d4b-outer-result"
+        },
+        {
+          "case": "nested",
+          "derivation": "/nix/store/ns7mqsy356by5ng711rhfg8nlz31r7v4-drvgo-iets-00c583381d4b-nested.drv",
+          "output": "/nix/store/xsqp1r9fn7xan5akm1jrba733n2jjnxw-drvgo-iets-00c583381d4b-nested",
+          "command_output": "/nix/store/692yy71vs1s9vlnwpmbvs8aagzd5nqy8-go-example.com-libnix-fixture",
+          "direct_output": "/nix/store/16h59khx2s3armmrhv1vks16xaby8zzh-drvgo-iets-00c583381d4b-nested-result"
+        },
+        {
+          "case": "runtime-nested-False-explicit-False",
+          "derivation": "/nix/store/im5z0nz6ppp8gkfjfm86ylmfx4prd5z5-drvgo-iets-00c583381d4b-runtime-nested-False-explicit-False.drv",
+          "output": "/nix/store/ahcixj5cryylrh19gc45xjyh0rdgswns-drvgo-iets-00c583381d4b-runtime-nested-False-explicit-False",
+          "command_output": "/nix/store/4gks9gzz7d2x0p6fabyghw0zkffgailq-go-example.com-runtime-reference"
+        },
+        {
+          "case": "runtime-nested-False-explicit-True",
+          "derivation": "/nix/store/w1lrfwd1f9lkfpjg7zx4zvv95l1rlwbi-drvgo-iets-00c583381d4b-runtime-nested-False-explicit-True.drv",
+          "output": "/nix/store/hlcpn26rzdkp38rrz60y2yyqzb6ffnr0-drvgo-iets-00c583381d4b-runtime-nested-False-explicit-True",
+          "command_output": "/nix/store/4gks9gzz7d2x0p6fabyghw0zkffgailq-go-example.com-runtime-reference"
+        },
+        {
+          "case": "runtime-nested-True-explicit-False",
+          "derivation": "/nix/store/sc9nknfcvcgn14szhcw19j4kzjbbs8hb-drvgo-iets-00c583381d4b-runtime-nested-True-explicit-False.drv",
+          "output": "/nix/store/43cfp9m4wsb1hmh2malrk4wc6qq1di3g-drvgo-iets-00c583381d4b-runtime-nested-True-explicit-False",
+          "command_output": "/nix/store/4gks9gzz7d2x0p6fabyghw0zkffgailq-go-example.com-runtime-reference"
+        },
+        {
+          "case": "runtime-nested-True-explicit-True",
+          "derivation": "/nix/store/9bn864s1pk2nwcdy4iwar5nlyahcvxsc-drvgo-iets-00c583381d4b-runtime-nested-True-explicit-True.drv",
+          "output": "/nix/store/fq7n8pwvw9q8cwqmmzafg90dxs5h1f1b-drvgo-iets-00c583381d4b-runtime-nested-True-explicit-True",
+          "command_output": "/nix/store/4gks9gzz7d2x0p6fabyghw0zkffgailq-go-example.com-runtime-reference"
+        }
+      ],
+      "embed_invalidation": "passed",
+      "optional_tests": [
+        {
+          "case": "optional-outer-empty",
+          "command_output": "/nix/store/irx814ll03qq0g1rg68pg1v23cyd1pva-go-empty-tests"
+        },
+        {
+          "case": "optional-outer-tagged",
+          "command_output": "/nix/store/ibygfi2yskgrvwg25fpl7w78dmm31w8d-go-example.com-iets-tests.test"
+        },
+        {
+          "case": "optional-nested-empty",
+          "command_output": "/nix/store/irx814ll03qq0g1rg68pg1v23cyd1pva-go-empty-tests"
+        },
+        {
+          "case": "optional-nested-tagged",
+          "command_output": "/nix/store/ibygfi2yskgrvwg25fpl7w78dmm31w8d-go-example.com-iets-tests.test"
+        }
+      ],
+      "optional_tests_invalid_after_cached_empty": "passed"
+    },
+    "remote_platform_matrix": "pending"
+  }
+}
