@@ -25,7 +25,7 @@ nix-build /path/to/project/nix-build -A default
 
 Flags must precede the package argument. `-tags` and `-ldflags` pass through to Go. `-out` selects the export directory (default `.drvgo`); `-o` selects the Nix result symlink (default `result`). Both are relative to `-C`. The result is a directory with `bin/<command>`, not a single executable file.
 
-The generated directory contains `default.nix`, `toolchain.nix`, `toolchain-builder.nix`, `runner.go`, `scripts.nix`, `graph.json`, `evaluation.json`, `resolved-toolchain.nix`, and `sources/`. It can be moved or checked in and built without the original checkout, Go module cache, or this CLI. Its toolchain pin supports fetching the same tools on another machine. Nix's result symlink roots the built output against garbage collection.
+The generated directory contains `default.nix`, `toolchain.nix`, `toolchain-builder.nix`, `runner.go`, `buildid.go`, `scripts.nix`, `graph.json`, `evaluation.json`, `resolved-toolchain.nix`, and `sources/`. It can be moved or checked in and built without the original checkout, Go module cache, or this CLI. Its toolchain pin supports fetching the same tools on another machine. Nix's result symlink roots the built output against garbage collection.
 
 The project also includes `devenv.nix`/`devenv.yaml`. The tested `nix-shell` entry point and generated builds use the same immutable nixpkgs revision. No directory trust or shell hooks are changed automatically.
 
@@ -211,7 +211,7 @@ Changing an embedded file changes the embedding package's derivation and its dep
 
 ## How it works
 
-1. Build the pinned toolchain, including precompiled `buildid` and `pack` helpers.
+1. Build the pinned toolchain, including the native replay runner and a precompiled `pack` helper.
 2. Ask that toolchain for package metadata and `go build -n -a -work -p 1 -trimpath -buildvcs=false` commands. Go handles module selection, replacements, build tags, compiler flags, assembly, and cgo.
 3. Split the trace into package actions, resolve relative source paths, translate Go argument quoting, and identify dependencies through temporary archive references.
 4. Snapshot selected package files. Native packages additionally preserve module-relative auxiliary sources for parent-directory C includes.
@@ -303,12 +303,20 @@ Nix installations without these experimental features.
 
 ### CI toolchain and output sizes
 
-Pure Go and Go assembly package actions use a separate compile toolchain, without
-GCC, binutils, or their development files. cgo actions and final links retain the
-full native toolchain. Both toolchains use the same pinned Go compiler. Ordinary
-exports and dynamic builds preserve both derivation contexts and share package
-outputs. Custom toolchains without a separate `compile` toolchain retain the
-full-toolchain behavior.
+Pure Go and Go assembly package actions receive only the compiler, assembler,
+archive helper, and native replay runner. Selected standard-library sources and
+quoted native headers are snapshotted per package, so workers no longer need the
+full Go SDK. Pure Go links add the linker; cgo, race, native objects, and explicit
+external-link flags select the native compiler bundle. Planning retains the full
+SDK and native tools. All bundles use the same pinned Go release.
+
+The runner performs file operations directly and calls that Go release's build-ID
+library in process, including its Mach-O signing support. Compiler, assembler,
+linker, and native compilation still use the pinned tools. Source snapshots are
+copied and NAR-hashed in one pass. Ordinary exports and dynamic builds preserve
+derivation contexts and share package outputs. Custom toolchains without the
+separate `compile`, `link`, or `native` attributes use the supplied full bundle;
+they must include the current native runner.
 
 The dynamic planner uses explicit tools without stdenv setup. Its two forwarding
 outputs invoke `ln` directly, build locally, and skip binary-cache queries: each

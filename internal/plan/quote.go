@@ -2,18 +2,55 @@ package plan
 
 import (
 	"fmt"
-	"regexp"
 	"strconv"
 	"strings"
 )
 
-var safeWord = regexp.MustCompile(`^[a-zA-Z0-9_./:@%+=,!~-]+$`)
-var assignment = regexp.MustCompile(`^[A-Z_][A-Z0-9_]*=`)
-var compilerConcurrency = regexp.MustCompile(`^-c=[0-9]+$`)
+// These predicates run on every compiler argument. Byte checks avoid the
+// regexp interpreter and do not allocate a replacement copy of $WORK paths.
+func safeShellWord(s string) bool {
+	if s == "" {
+		return false
+	}
+	for i := 0; i < len(s); i++ {
+		c := s[i]
+		if c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c >= '0' && c <= '9' {
+			continue
+		}
+		switch c {
+		case '_', '.', '/', ':', '@', '%', '+', '=', ',', '!', '~', '-':
+		case '$':
+			if !strings.HasPrefix(s[i:], "$WORK") {
+				return false
+			}
+			i += 4
+		default:
+			return false
+		}
+	}
+	return true
+}
+
+func isAssignment(s string) bool {
+	for i := 0; i < len(s); i++ {
+		c := s[i]
+		if c == '=' {
+			return i > 0
+		}
+		if !(c >= 'A' && c <= 'Z' || c == '_' || i > 0 && c >= '0' && c <= '9') {
+			return false
+		}
+	}
+	return false
+}
+
+func isCompilerConcurrency(s string) bool {
+	return len(s) > 3 && strings.HasPrefix(s, "-c=") && strings.Trim(s[3:], "0123456789") == ""
+}
 
 func shellWord(s string) string {
 	// WORK is our own placeholder, substituted before any shell sees the script.
-	if safeWord.MatchString(strings.ReplaceAll(s, "$WORK", "WORK")) {
+	if safeShellWord(s) {
 		return s
 	}
 	return "'" + strings.ReplaceAll(s, "'", "'\"'\"'") + "'"
@@ -73,8 +110,11 @@ func quoteCommand(line string) (string, error) {
 				word.WriteString(line[start:i])
 				i++
 			default:
-				word.WriteByte(line[i])
-				i++
+				start := i
+				for i < len(line) && line[i] != ' ' && line[i] != '\t' && line[i] != '\'' && line[i] != '"' {
+					i++
+				}
+				word.WriteString(line[start:i])
 			}
 		}
 		words = append(words, word.String())
@@ -82,14 +122,14 @@ func quoteCommand(line string) (string, error) {
 	// Normalize the compiler's scheduling flag after decoding argv, so flag-like
 	// text inside a quoted filename is left intact. cmd/go omits -c on one CPU.
 	for i, w := range words {
-		if assignment.MatchString(w) {
+		if isAssignment(w) {
 			continue
 		}
 		if strings.HasSuffix(w, "/compile") {
 			args := append([]string{}, words[:i+1]...)
 			args = append(args, "-c=@CORES@")
 			for _, arg := range words[i+1:] {
-				if !compilerConcurrency.MatchString(arg) {
+				if !isCompilerConcurrency(arg) {
 					args = append(args, arg)
 				}
 			}
@@ -98,7 +138,7 @@ func quoteCommand(line string) (string, error) {
 		break
 	}
 	for i, w := range words {
-		if assignment.MatchString(w) {
+		if isAssignment(w) {
 			key, value, _ := strings.Cut(w, "=")
 			words[i] = key + "=" + shellWord(value)
 		} else {

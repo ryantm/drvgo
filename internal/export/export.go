@@ -17,7 +17,7 @@ import (
 	"github.com/ryantm/drvgo/internal/plan"
 )
 
-//go:embed templates/*.nix templates/runner.go
+//go:embed templates/*.nix templates/runner.go templates/buildid.go
 var templates embed.FS
 
 type Options struct {
@@ -71,6 +71,8 @@ func Toolchain() (string, error) {
 	builder, _ := templates.ReadFile("templates/toolchain-builder.nix")
 	runner, _ := templates.ReadFile("templates/runner.go")
 	builder = []byte(strings.Replace(string(builder), "builtins.readFile ./runner.go", nixString(string(runner)), 1))
+	buildid, _ := templates.ReadFile("templates/buildid.go")
+	builder = []byte(strings.Replace(string(builder), "builtins.readFile ./buildid.go", nixString(string(buildid)), 1))
 	expression := strings.Replace(string(b), "import ./toolchain-builder.nix", "("+string(builder)+")", 1)
 	out, err := run("", os.Environ(), "nix-build", "--no-out-link", "--expr", expression)
 	return strings.TrimSpace(string(out)), err
@@ -275,6 +277,7 @@ func Generate(o Options) (*Graph, error) {
 		return nil, err
 	}
 	paths := sourcePaths(sources)
+	toolPaths := strings.NewReplacer(ge["GOROOT"], "@GOROOT@", tc, "@TOOLCHAIN@")
 	root := ""
 	for i := range units {
 		u := &units[i]
@@ -289,7 +292,7 @@ func Generate(o Options) (*Graph, error) {
 			u.Script = strings.ReplaceAll(u.Script, "cd "+dir+"\n", "cd @WORK@\n")
 		}
 		u.Script, u.Sources = paths.rewrite(u.Script)
-		u.Script = strings.NewReplacer(ge["GOROOT"], "@GOROOT@", tc, "@TOOLCHAIN@").Replace(u.Script)
+		u.Script = toolPaths.Replace(u.Script)
 		u.Script = normalizeDirectories(u.Script)
 		if u.Binary {
 			if root != "" {
@@ -309,7 +312,7 @@ func Generate(o Options) (*Graph, error) {
 	if o.CGOEnabled != nil && !*o.CGOEnabled {
 		graph.CGO = "0"
 	}
-	for _, name := range []string{"default.nix", "toolchain.nix", "toolchain-builder.nix", "runner.go"} {
+	for _, name := range []string{"default.nix", "toolchain.nix", "toolchain-builder.nix", "runner.go", "buildid.go"} {
 		b, _ := templates.ReadFile("templates/" + name)
 		if err = os.WriteFile(filepath.Join(staging, name), b, 0644); err != nil {
 			return nil, err
@@ -318,7 +321,7 @@ func Generate(o Options) (*Graph, error) {
 	if err = os.WriteFile(filepath.Join(staging, "scripts.nix"), []byte(nixScripts(units)), 0644); err != nil {
 		return nil, err
 	}
-	b, err := json.MarshalIndent(graph, "", "  ")
+	b, err := json.Marshal(graph)
 	if err != nil {
 		return nil, err
 	}
@@ -366,6 +369,7 @@ func copyFile(src, dest string) error {
 // a package derivation and defeat cross-project cache reuse.
 func normalizeDirectories(script string) string {
 	var out strings.Builder
+	out.Grow(len(script))
 	current := ""
 	for _, line := range strings.Split(script, "\n") {
 		if line == "cd ." {

@@ -1,5 +1,6 @@
 { pkgs, go ? pkgs.go
 , runnerSource ? builtins.toFile "drvgo-builder.go" (builtins.readFile ./runner.go)
+, buildidSource ? builtins.toFile "drvgo-buildid.go" (builtins.readFile ./buildid.go)
 }:
 let
   target = "${pkgs.stdenv.hostPlatform.go.GOOS}_${pkgs.stdenv.hostPlatform.go.GOARCH}";
@@ -14,12 +15,22 @@ let
     done
     cp -r ${go}/share/go/pkg/include $out/share/go/pkg/
   '';
-  helpers = pkgs.runCommand "go-libnix-helpers" { nativeBuildInputs = [ go ]; } ''
+  overlay = builtins.toFile "drvgo-builder-overlay.json" (builtins.toJSON {
+    Replace = {
+      # Attribute names cannot carry context; nativeBuildInputs retains Go.
+      "${builtins.unsafeDiscardStringContext (toString go)}/share/go/src/cmd/drvgo-builder/runner.go" = runnerSource;
+      "${builtins.unsafeDiscardStringContext (toString go)}/share/go/src/cmd/drvgo-builder/buildid.go" = buildidSource;
+    };
+  });
+  helpers = pkgs.runCommand "go-libnix-helpers" {
+    nativeBuildInputs = [ go ];
+    disallowedReferences = [ go ];
+  } ''
     export HOME=$TMPDIR GOCACHE=$TMPDIR/cache GOTOOLCHAIN=local CGO_ENABLED=0
     mkdir -p $out/bin
-    go build -trimpath -ldflags='-s -w' -o $out/bin/libnix-buildid cmd/buildid
     go build -trimpath -ldflags='-s -w' -o $out/bin/libnix-pack cmd/pack
-    go build -trimpath -ldflags='-s -w' -o $out/bin/drvgo-builder ${runnerSource}
+    go build -trimpath -ldflags='-s -w' -tags drvgo_toolchain \
+      -overlay ${overlay} -o $out/bin/drvgo-builder cmd/drvgo-builder
   '';
   compile = pkgs.symlinkJoin {
     name = "go-libnix-compile-toolchain";

@@ -23,6 +23,9 @@ type action struct {
 	yes, no        []action
 }
 
+// Linked against the selected Go compiler's library by toolchain-builder.nix.
+var rewriteBuildID func(string) error
+
 // words decodes the quoting emitted by drvgo's trace adapter. Operators are
 // separate tokens; unsupported shell syntax is rejected rather than executed.
 type word struct {
@@ -282,6 +285,15 @@ func execute(actions []action) error {
 		case "write":
 			err = os.WriteFile(a.path, []byte(a.text), 0644)
 		case "exec":
+			if a.args[0] == "libnix-buildid" {
+				if rewriteBuildID == nil || len(a.args) != 3 || a.args[1] != "-w" || len(a.env) != 0 || a.path != "" {
+					return fmt.Errorf("unsupported buildid action or missing pinned buildid implementation")
+				}
+				if err := rewriteBuildID(a.args[2]); err != nil {
+					return fmt.Errorf("buildid %s: %w", a.args[2], err)
+				}
+				continue
+			}
 			cmd := exec.Command(a.args[0], a.args[1:]...)
 			cmd.Env = append(os.Environ(), a.env...)
 			cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
