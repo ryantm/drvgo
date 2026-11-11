@@ -30,6 +30,9 @@ func run(args []string) error {
 	output := f.String("o", "result", "Nix output symlink (relative to project)")
 	toolchain := f.String("toolchain", "", "prebuilt pinned toolchain path")
 	experimentalGo := f.Bool("experimental-go", false, "try an untested numbered Go toolchain (no compatibility guarantee)")
+	test := f.Bool("test", false, "export one package's test binary")
+	race := f.Bool("race", false, "enable Go's race detector")
+	cgo := f.String("cgo", "", "override cgo: 0 or 1")
 	moduleProxy := f.String("module-proxy", "", "explicit module proxy (off or file:// path for offline planning)")
 	tags := f.String("tags", "", "Go build tags")
 	ldflags := f.String("ldflags", "", "Go linker flags")
@@ -56,7 +59,15 @@ func run(args []string) error {
 	if !filepath.IsAbs(exportDir) {
 		exportDir = filepath.Join(abs, exportDir)
 	}
-	graph, err := exporter.Generate(exporter.Options{Dir: abs, Out: exportDir, Package: pkg, Tags: *tags, LDFlags: *ldflags, Toolchain: *toolchain, ModuleProxy: *moduleProxy, ExperimentalGo: *experimentalGo})
+	var cgoEnabled *bool
+	if *cgo != "" {
+		if *cgo != "0" && *cgo != "1" {
+			return fmt.Errorf("-cgo must be 0 or 1")
+		}
+		value := *cgo == "1"
+		cgoEnabled = &value
+	}
+	graph, err := exporter.Generate(exporter.Options{Dir: abs, Out: exportDir, Package: pkg, Tags: *tags, LDFlags: *ldflags, Toolchain: *toolchain, ModuleProxy: *moduleProxy, ExperimentalGo: *experimentalGo, Test: *test, Race: *race, CGOEnabled: cgoEnabled})
 	if err != nil {
 		return err
 	}

@@ -29,6 +29,28 @@ The generated directory contains `default.nix`, `toolchain.nix`, `toolchain-buil
 
 The project also includes `devenv.nix`/`devenv.yaml`. The tested `nix-shell` entry point and generated builds use the same immutable nixpkgs revision. No directory trust or shell hooks are changed automatically.
 
+## Test binaries and build modes
+
+`drvgo export -test ./pkg/example` exports one package's test executable,
+using cmd/go's generated test main. Run the resulting `bin/<import-path-tail>.test`
+from the package's source directory so relative fixtures remain available.
+Internal tests, external tests, custom `TestMain`, and test embeds are included. This compiles
+tests; it does not run them or silently replace cmd/go's test harness.
+Select a package with tests; packages without tests are rejected.
+
+```sh
+drvgo export -test -cgo 0 -out /tmp/example-tests ./pkg/example
+tests=$(nix-build /tmp/example-tests -A default --no-out-link)
+(cd pkg/example && "$tests/bin/example.test" -test.v)
+```
+
+`-race` enables the race detector for commands or test binaries. `-cgo 0` and
+`-cgo 1` explicitly select cgo; it remains enabled by default. Race builds require
+cgo, so `-race -cgo 0` is rejected. The flake helper accepts `test`, `race`, and
+`cgoEnabled` (a boolean, or `null` for the default) respectively.
+Its dynamic planner still performs discovery at build time with IFD disabled.
+Coverage and multi-package test runners are not implemented.
+
 ## Consume as a Nix flake
 
 The flake provides `packages.<system>.drvgo` (also `default`),
@@ -129,7 +151,13 @@ The compatibility suite compares normal `go build` runtime output against drvgo
 for cgo with cross-package native symbols, embedded files, assembly, build tags,
 linker flags, workspaces, and offline vendoring. It also checks unchanged-build
 reuse, Go edits, test-only/unrelated files, new/changed embeds, standalone exports,
-and dynamic builds with IFD disabled. Recorded compressed traces and expected
+and dynamic builds with IFD disabled. Test-binary checks cover internal/external
+tests, both sets of embeds, custom `TestMain`, runtime fixtures, relocated source
+trees, application-main isolation, and intentional failure propagation. The
+matrix also compares cgo-disabled and race-enabled commands against `go build`,
+requires a race-enabled test binary to detect an intentional data race, and
+checks that dynamic test builds share their outputs with standalone exports.
+Recorded compressed traces and expected
 normalized-plan hashes protect each adapter against regressions. In particular,
 Go 1.25 prints action headers before `mkdir`, unlike Go 1.26; the adapter
 normalizes that boundary before using the shared parser.
@@ -202,7 +230,7 @@ See [the UPM example](examples/upm/README.md) for the tested revision and result
 
 ## Current boundaries
 
-- One native Linux main package per invocation. amd64 was tested; arm64 is accepted but untested. Cross-compilation, Darwin, race/coverage modes, test binaries, shared-library modes, and install commands are not implemented.
+- One native Linux main package or test binary per invocation. amd64 was tested; arm64 is accepted but untested. Cross-compilation, Darwin, coverage modes, shared-library modes, and install commands are not implemented.
 - Requires a tested compiler or an explicit experimental override. New versions need translator and differential-build testing, not just a version-string edit.
 - cgo uses the pinned GCC toolchain. System libraries and `pkg-config` dependency injection are not implemented. SWIG and Fortran are unsupported. Native sources that require undeclared files outside their module cannot build.
 - cgo snapshots include auxiliary module files, so native-package invalidation is coarser than pure-Go package invalidation. Arbitrary native build generators are not run automatically.

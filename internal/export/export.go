@@ -23,6 +23,9 @@ var templates embed.FS
 type Options struct {
 	Dir, Out, Package, Tags, LDFlags, Toolchain, ModuleProxy string
 	ExperimentalGo                                           bool
+	Test                                                     bool
+	Race                                                     bool
+	CGOEnabled                                               *bool
 }
 type Module struct{ Dir string }
 
@@ -87,6 +90,9 @@ func controlledEnv(tc string) []string {
 var safePath = regexp.MustCompile(`^[a-zA-Z0-9/._@+!,=:~-]+$`)
 
 func Generate(o Options) (*Graph, error) {
+	if o.Race && o.CGOEnabled != nil && !*o.CGOEnabled {
+		return nil, fmt.Errorf("-race requires cgo; remove -cgo 0 or use -cgo 1")
+	}
 	dir, err := filepath.Abs(o.Dir)
 	if err != nil {
 		return nil, err
@@ -109,6 +115,13 @@ func Generate(o Options) (*Graph, error) {
 		}
 	}
 	env := controlledEnv(tc)
+	if o.CGOEnabled != nil {
+		value := "0"
+		if *o.CGOEnabled {
+			value = "1"
+		}
+		env = append(env, "CGO_ENABLED="+value)
+	}
 	if o.ModuleProxy != "" {
 		env = append(env, "GOPROXY="+o.ModuleProxy, "GOSUMDB=off", "GOPATH="+filepath.Join(os.TempDir(), "drvgo-go"))
 	}
@@ -130,6 +143,9 @@ func Generate(o Options) (*Graph, error) {
 		return nil, err
 	}
 	flags := []string{"-trimpath", "-buildvcs=false"}
+	if o.Race {
+		flags = append(flags, "-race")
+	}
 	if o.Tags != "" {
 		flags = append(flags, "-tags", o.Tags)
 	}
@@ -139,8 +155,14 @@ func Generate(o Options) (*Graph, error) {
 	// In particular, do not request Stale: calculating it hashes the build
 	// graph, work that the subsequent dry run already performs.
 	args := append(driver.ListArgs(), flags...)
+	if o.Test {
+		args = append(args, "-test")
+	}
 	args = append(args, o.Package)
 	buildArgs := append([]string{"build", "-n", "-a", "-work", "-p", "1"}, flags...)
+	if o.Test {
+		buildArgs = append([]string{"test", "-c", "-vet=off", "-n", "-a", "-work", "-p", "1"}, flags...)
+	}
 	buildArgs = append(buildArgs, "-o", "/LIBNIX_OUTPUT", o.Package)
 	data, trace, err := discover(dir, env, goBin, args, buildArgs)
 	if err != nil {
@@ -165,8 +187,11 @@ func Generate(o Options) (*Graph, error) {
 			return nil, fmt.Errorf("%s requires unsupported SWIG or Fortran tools", p.ImportPath)
 		}
 		packages = append(packages, p)
-		if !p.DepOnly {
+		if !p.DepOnly && (!o.Test || isTestMain(p)) {
 			if target != nil {
+				if o.Test {
+					return nil, fmt.Errorf("select one package with tests, not multiple packages")
+				}
 				return nil, fmt.Errorf("select one command package, not multiple packages")
 			}
 			pp := p
@@ -174,7 +199,16 @@ func Generate(o Options) (*Graph, error) {
 		}
 	}
 	if target == nil || target.Name != "main" {
+		if o.Test {
+			return nil, fmt.Errorf("select one package with tests; no generated test main was found")
+		}
 		return nil, fmt.Errorf("select one main package")
+	}
+	if o.Test {
+		packages, trace, err = prepareTestSources(packages, *target, trace)
+		if err != nil {
+			return nil, err
+		}
 	}
 	units, err := driver.Parse(string(trace), dir)
 	if err != nil {
@@ -210,9 +244,16 @@ func Generate(o Options) (*Graph, error) {
 	root := ""
 	for i := range units {
 		u := &units[i]
-		// No package compilation needs the caller's working directory: source
-		// arguments are absolute. cgo/assembly have explicit package-directory cds.
-		u.Script = strings.ReplaceAll(u.Script, "cd "+dir+"\n", "cd @WORK@\n")
+		if o.Test && u.Binary {
+			u.Script = "mkdir -p @SELF@/exe\n" + u.Script
+		}
+		// Pure-Go compiler sources are absolute. Native tools still use
+		// relative inputs, including when their package is the project root.
+		if strings.Contains(u.Script, "/cgo ") || strings.Contains(u.Script, "/asm ") {
+			u.Script = strings.ReplaceAll(u.Script, "cd .\n", "cd "+dir+"\n")
+		} else {
+			u.Script = strings.ReplaceAll(u.Script, "cd "+dir+"\n", "cd @WORK@\n")
+		}
 		u.Script, u.Sources = paths.rewrite(u.Script)
 		u.Script = normalizeDirectories(u.Script)
 		if u.Binary {
@@ -234,6 +275,9 @@ func Generate(o Options) (*Graph, error) {
 		binaryName = filepath.Base(target.Target)
 	}
 	graph := &Graph{Driver: driver.Family, ExperimentalGo: driver.Experimental, Diagnostics: diagnostics, SourceHashes: sourceHashes, System: arch + "-linux", GoRoot: ge["GOROOT"], GoOS: ge["GOOS"], GoArch: ge["GOARCH"], CGO: "1", GoVersion: ge["GOVERSION"], BinaryName: binaryName, Root: root, Units: units}
+	if o.CGOEnabled != nil && !*o.CGOEnabled {
+		graph.CGO = "0"
+	}
 	for _, name := range []string{"default.nix", "toolchain.nix", "toolchain-builder.nix", "builder.sh"} {
 		b, _ := templates.ReadFile("templates/" + name)
 		if err = os.WriteFile(filepath.Join(staging, name), b, 0644); err != nil {
