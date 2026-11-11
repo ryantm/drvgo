@@ -21,12 +21,12 @@ import (
 var templates embed.FS
 
 type Options struct {
-	Dir, Out, Package, Tags, LDFlags, Toolchain, ModuleProxy string
-	ExperimentalGo                                           bool
-	Test                                                     bool
-	AllowEmptyTests                                          bool
-	Race                                                     bool
-	CGOEnabled                                               *bool
+	Dir, Out, Package, Tags, LDFlags, Toolchain, ModuleProxy, ModuleCache string
+	ExperimentalGo                                                        bool
+	Test                                                                  bool
+	AllowEmptyTests                                                       bool
+	Race                                                                  bool
+	CGOEnabled                                                            *bool
 }
 type Module struct{ Dir string }
 
@@ -156,6 +156,17 @@ func Generate(o Options) (*Graph, error) {
 	}
 	if o.ModuleProxy != "" {
 		env = append(env, "GOPROXY="+o.ModuleProxy, "GOSUMDB=off", "GOPATH="+filepath.Join(os.TempDir(), "drvgo-go"))
+	}
+	if o.ModuleCache != "" {
+		cache, err := filepath.Abs(o.ModuleCache)
+		if err != nil {
+			return nil, err
+		}
+		cache, err = filepath.EvalSymlinks(cache)
+		if err != nil {
+			return nil, fmt.Errorf("module cache: %w", err)
+		}
+		env = append(env, "GOMODCACHE="+cache, "GOPROXY=off", "GOSUMDB=off", "GOPATH="+filepath.Join(os.TempDir(), "drvgo-go"))
 	}
 	goBin := tc + "/bin/go"
 	eb, err := run(dir, env, goBin, "env", "-json", "GOROOT", "GOOS", "GOARCH", "GOVERSION")
@@ -296,15 +307,26 @@ func Generate(o Options) (*Graph, error) {
 	}
 	paths := sourcePaths(sources)
 	toolPaths := strings.NewReplacer(ge["GOROOT"], "@GOROOT@", tc, "@TOOLCHAIN@")
+	nativeCallerPackages := map[string]bool{}
+	for _, p := range packages {
+		if p.Dir == dir && len(p.CgoFiles)+len(p.SFiles) > 0 {
+			nativeCallerPackages[p.ImportPath] = true
+			// cgo identifies a test variant by its original import path.
+			base, _, _ := strings.Cut(p.ImportPath, " [")
+			nativeCallerPackages[base] = true
+		}
+	}
 	root := ""
 	for i := range units {
 		u := &units[i]
 		if o.Test && u.Binary {
 			u.Script = "mkdir -p @SELF@/exe\n" + u.Script
 		}
-		// Pure-Go compiler sources are absolute. Native tools still use
-		// relative inputs, including when their package is the project root.
-		if strings.Contains(u.Script, "/cgo ") || strings.Contains(u.Script, "/asm ") {
+		// Only a native package located in the caller's directory needs its
+		// contents as a working directory. Go also returns there between
+		// dependency commands with absolute inputs: retaining those cd's
+		// would make dependency recipes depend on the caller's source files.
+		if nativeCallerPackages[u.Name] {
 			u.Script = strings.ReplaceAll(u.Script, "cd .\n", "cd "+dir+"\n")
 		} else {
 			u.Script = strings.ReplaceAll(u.Script, "cd "+dir+"\n", "cd @WORK@\n")

@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 
 	exporter "github.com/ryantm/drvgo/internal/export"
+	"github.com/ryantm/drvgo/internal/modcache"
 	"github.com/ryantm/drvgo/internal/storecopy"
 )
 
@@ -18,6 +19,9 @@ func main() {
 	}
 }
 func run(args []string) error {
+	if len(args) == 4 && args[0] == "internal-prepare-module-cache" {
+		return modcache.Prepare(args[1], args[2], args[3])
+	}
 	// Internal planner operation for stores not readable from the sandbox.
 	if len(args) == 3 && args[0] == "internal-copy-derivation" {
 		return storecopy.Copy(os.Getenv("NIX_REMOTE"), args[1], args[2])
@@ -40,6 +44,7 @@ func run(args []string) error {
 	race := f.Bool("race", false, "enable Go's race detector")
 	cgo := f.String("cgo", "", "override cgo: 0 or 1")
 	moduleProxy := f.String("module-proxy", "", "explicit module proxy (off or file:// path for offline planning)")
+	moduleCache := f.String("module-cache", "", "prepared module cache for offline planning")
 	tags := f.String("tags", "", "Go build tags")
 	ldflags := f.String("ldflags", "", "Go linker flags")
 	if err := f.Parse(args[1:]); err != nil {
@@ -73,7 +78,7 @@ func run(args []string) error {
 		value := *cgo == "1"
 		cgoEnabled = &value
 	}
-	graph, err := exporter.Generate(exporter.Options{Dir: abs, Out: exportDir, Package: pkg, Tags: *tags, LDFlags: *ldflags, Toolchain: *toolchain, ModuleProxy: *moduleProxy, ExperimentalGo: *experimentalGo, Test: *test, AllowEmptyTests: *allowEmptyTests, Race: *race, CGOEnabled: cgoEnabled})
+	graph, err := exporter.Generate(exporter.Options{Dir: abs, Out: exportDir, Package: pkg, Tags: *tags, LDFlags: *ldflags, Toolchain: *toolchain, ModuleProxy: *moduleProxy, ModuleCache: *moduleCache, ExperimentalGo: *experimentalGo, Test: *test, AllowEmptyTests: *allowEmptyTests, Race: *race, CGOEnabled: cgoEnabled})
 	if err != nil {
 		return err
 	}
