@@ -90,12 +90,22 @@ func collectStoreReferences(dir string, units []plan.Unit) error {
 	}
 	sort.Strings(paths)
 	valid := make(map[string]bool)
+	queryArgs := []string{"--extra-experimental-features", "nix-command", "path-info", "--json", "--json-format", "1"}
 	for start := 0; start < len(paths); start += storeReferenceBatch {
 		batch := paths[start:min(start+storeReferenceBatch, len(paths))]
-		cmd := exec.Command("nix", append([]string{"--extra-experimental-features", "nix-command", "path-info", "--json", "--json-format", "1"}, batch...)...)
+		cmd := exec.Command("nix", append(queryArgs, batch...)...)
 		var stderr bytes.Buffer
 		cmd.Stderr = &stderr
 		data, err := cmd.Output()
+		if err != nil && len(queryArgs) == 6 && bytes.Contains(stderr.Bytes(), []byte("unrecognised flag '--json-format'")) {
+			// Older Nix (including 2.31) has the same JSON format but no version
+			// selector. Retry only this CLI error; store/query failures stay fatal.
+			queryArgs = queryArgs[:4]
+			stderr.Reset()
+			cmd = exec.Command("nix", append(queryArgs, batch...)...)
+			cmd.Stderr = &stderr
+			data, err = cmd.Output()
+		}
 		if err != nil {
 			return fmt.Errorf("query runtime references: %w\n%s", err, stderr.String())
 		}
