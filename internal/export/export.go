@@ -327,6 +327,9 @@ func Generate(o Options) (*Graph, error) {
 	if root == "" {
 		return nil, fmt.Errorf("missing link action")
 	}
+	if err := collectStoreReferences(staging, units); err != nil {
+		return nil, err
+	}
 	if err := inlineSources(staging, units); err != nil {
 		return nil, err
 	}

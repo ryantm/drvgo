@@ -14,7 +14,7 @@ let
       tc = if u.native then toolchain.native or toolchain
         else if u.binary then toolchain.link or toolchain
         else toolchain.compile or toolchain;
-    in builtins.derivation {
+    in builtins.derivation ({
       name = "go-" + builtins.replaceStrings [ "/" "@" "+" ] [ "-" "-" "-" ] u.name;
       system = graph.system;
       builder = "${tc}/bin/drvgo-builder";
@@ -32,7 +32,14 @@ let
       script = scripts.${u.id};
       # Replay resolves @GOROOT@ and @TOOLCHAIN@ using this worker bundle.
       toolchainInput = tc;
-    };
+    } // (if (u.storeReferences or []) == [] then {} else {
+      # Source snapshots and encoded scripts do not retain Nix string context.
+      # Make embedded runtime paths eligible for output reference scanning.
+      runtimeReferences = map (path: builtins.appendContext path {
+        ${path} = { path = true; };
+      }) (u.storeReferences or []);
+      passAsFile = [ "script" "runtimeReferences" ];
+    }));
   }) graph.units);
 in {
   inherit units;

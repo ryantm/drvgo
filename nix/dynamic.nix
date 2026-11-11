@@ -6,6 +6,7 @@
 { src, package ? ".", vendorHash ? null, tags ? "", ldflags ? "", name ? "drvgo"
 , experimentalGo ? false, test ? false, race ? false, cgoEnabled ? null
 , allowPlannerSubstitutes ? false, allowEmptyTests ? false
+, runtimeInputs ? []
 }:
 let
   pkgs = toolchain.pkgs;
@@ -29,7 +30,7 @@ let
   }'';
   # These wrappers only run explicit tools; a stdenv setup and its dependency
   # closure are unnecessary on the planning and final forwarding paths.
-  planner = builtins.derivation {
+  planner = builtins.derivation ({
     name = "${name}-result.drv";
     system = pkgs.stdenv.hostPlatform.system;
     builder = "${pkgs.bash}/bin/bash";
@@ -70,7 +71,13 @@ let
         args = [ "-s" command (builtins.placeholder "out") ];
       }
     '';
-  };
+  } // lib.optionalAttrs (runtimeInputs != []) {
+    # Literal paths in an existing checkout have no Nix string context.
+    # Make their data available to the restricted recursive store; the graph
+    # retains only references found in each selected package or replay action.
+    inherit runtimeInputs;
+    passAsFile = [ "expression" "runtimeInputs" ];
+  });
   plannerScript = ''
     export HOME=$TMPDIR/home
     mkdir -p "$HOME"
