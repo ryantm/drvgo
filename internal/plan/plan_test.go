@@ -110,15 +110,46 @@ EOF
 }
 
 func TestNativeToolsRestoreElidedDirectory(t *testing.T) {
-	for _, tool := range []string{"cgo", "asm"} {
+	for _, tool := range []struct{ command, replay string }{
+		{"/tool/cgo ./native.go", "/tool/cgo"},
+		{"/tool/asm ./native.s", "/tool/asm"},
+		{"go tool pack r $WORK/b002/_pkg_.a ./native.syso", "libnix-pack"},
+		{"go tool pack r $WORK/b002/_pkg_.a \"./native object.syso\" # internal", "libnix-pack"},
+	} {
 		raw := "mkdir -p $WORK/b001/\n#\n# first\n#\ncd /project/native\n/tool/compile -p first ./first.go\n" +
-			"mkdir -p $WORK/b002/\n#\n# second\n#\n/tool/" + tool + " ./native.go\n"
+			"mkdir -p $WORK/b002/\n#\n# second\n#\n" + tool.command + "\n"
 		units, err := Parse(raw, "/project")
 		if err != nil {
 			t.Fatal(err)
 		}
-		if !strings.Contains(units[1].Script, "cd /project/native\n/tool/"+tool) {
-			t.Fatalf("missing elided %s directory: %s", tool, units[1].Script)
+		if !strings.Contains(units[1].Script, "cd /project/native\n"+tool.replay) {
+			t.Fatalf("missing elided %s directory: %s", tool.command, units[1].Script)
 		}
+	}
+}
+
+func TestPackAbsoluteInputsKeepWorkingDirectory(t *testing.T) {
+	for _, file := range []string{"/toolchain/race.syso", "$WORK/b002/native.o"} {
+		raw := "mkdir -p $WORK/b001/\n#\n# first\n#\ncd /project/native\n/tool/compile -p first ./first.go\n" +
+			"mkdir -p $WORK/b002/\n#\n# second\n#\ngo tool pack r $WORK/b002/_pkg_.a " + file + " # internal\n"
+		units, err := Parse(raw, "/project")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if strings.Contains(units[1].Script, "cd /project/native") {
+			t.Fatalf("absolute archive input introduced a source dependency: %s", units[1].Script)
+		}
+	}
+}
+
+func TestPackCallerRelativeInputs(t *testing.T) {
+	raw := "mkdir -p $WORK/b001/\n#\n# main\n#\n" +
+		"go tool pack r $WORK/b001/_pkg_.a \"./native object.syso\" # internal\n"
+	units, err := Parse(raw, "/project")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(units[0].Script, "libnix-pack r @SELF@/_pkg_.a '/project/native object.syso' # internal") {
+		t.Fatalf("archive input cannot be mapped to its snapshot: %s", units[0].Script)
 	}
 }

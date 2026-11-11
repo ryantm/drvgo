@@ -4,8 +4,10 @@ package plan
 
 import (
 	"fmt"
+	"path/filepath"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -72,9 +74,41 @@ func parse(raw, cwd string, driver Driver) ([]Unit, error) {
 			}
 			actionDirs[units[current].ID] = directory
 		}
-		// cmd/go can elide a native tool's cd across action boundaries, but
-		// isolated actions start in their own empty work directory.
-		if (strings.Contains(line, "/cgo ") && !strings.Contains(line, " -dynimport ")) || strings.Contains(line, "/asm ") {
+		relativePack := false
+		if !heredoc && strings.HasPrefix(line, "go tool pack ") {
+			command, internal := strings.CutSuffix(line, " # internal")
+			words, err := commandWords(command)
+			if err != nil {
+				return nil, fmt.Errorf("pack command: %w", err)
+			}
+			if len(words) < 5 {
+				return nil, fmt.Errorf("pack command is missing its archive")
+			}
+			for i, path := range words[4:] {
+				if !filepath.IsAbs(path) && !strings.HasPrefix(path, "$WORK/") {
+					relativePack = true
+					if directory == cwd {
+						words[i+4] = filepath.Join(directory, path)
+					}
+				}
+			}
+			if relativePack && directory == cwd {
+				// The caller's directory is normalized away during export.
+				// Make its archive inputs absolute like compiler inputs, so
+				// source rewriting can attach the correct package snapshot.
+				for i := 3; i < len(words); i++ {
+					words[i] = strconv.Quote(words[i])
+				}
+				line = strings.Join(words, " ")
+				if internal {
+					line += " # internal"
+				}
+				relativePack = false
+			}
+		}
+		// cmd/go can elide a native tool or packer's cd across action boundaries,
+		// but isolated actions start in their own empty work directory.
+		if (strings.Contains(line, "/cgo ") && !strings.Contains(line, " -dynimport ")) || strings.Contains(line, "/asm ") || relativePack {
 			if actionDirs[units[current].ID] != directory {
 				script.WriteString("cd " + directory + "\n")
 				actionDirs[units[current].ID] = directory
