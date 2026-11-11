@@ -303,6 +303,12 @@ Nix installations without these experimental features.
 
 ### CI toolchain and output sizes
 
+The [November 11 measurements](benchmarks/ci-2026-11-11.md) show a 33.7% faster
+full rebuild of a 1,061-unit graph and an 85.5% smaller compressed compile
+toolchain closure (81.5 MiB to 11.8 MiB). Cached dynamic planning remains roughly
+flat. The report includes the planning-closure tradeoff, iets PR 3 comparisons,
+raw samples, and the Linux/Apple Silicon compatibility results.
+
 Pure Go and Go assembly package actions receive only the compiler, assembler,
 archive helper, and native replay runner. Selected standard-library sources and
 quoted native headers are snapshotted per package, so workers no longer need the
