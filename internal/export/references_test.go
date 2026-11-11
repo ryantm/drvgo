@@ -111,6 +111,30 @@ printf '}'
 	}
 }
 
+func TestStoreReferenceLegacyNix(t *testing.T) {
+	path := "/nix/store/" + strings.Repeat("1", 32) + "-runtime-data"
+	mock := filepath.Join(t.TempDir(), "nix")
+	if err := os.WriteFile(mock, []byte(`#!/bin/sh
+for arg in "$@"; do
+  if [ "$arg" = --json-format ]; then
+    echo "error: unrecognised flag '--json-format'" >&2
+    exit 1
+  fi
+done
+printf '%s' '{"`+path+`":{}}'
+`), 0755); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("PATH", filepath.Dir(mock))
+	units := []plan.Unit{{Script: path}}
+	if err := collectStoreReferences(t.TempDir(), units); err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(units[0].StoreReferences, []string{path}) {
+		t.Fatalf("legacy query lost reference: %v", units[0].StoreReferences)
+	}
+}
+
 func TestScanStoreReferences(t *testing.T) {
 	path := "/nix/store/" + strings.Repeat("1", 32) + "-" + strings.Repeat("a", 211)
 	// Exercise every possible split through the prefix, hash, name and delimiter.
