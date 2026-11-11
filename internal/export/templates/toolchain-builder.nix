@@ -6,7 +6,7 @@ let
   cc = if pkgs.stdenv.hostPlatform.isDarwin then
     pkgs.stdenv.cc.override (old: {
       extraBuildCommands = (old.extraBuildCommands or "") + ''
-        echo '-L${pkgs.lib.getLib pkgs.libresolv}/lib' >> $out/nix-support/cc-ldflags
+        echo '-L${pkgs.lib.getLib pkgs.darwin.libresolv}/lib' >> $out/nix-support/cc-ldflags
       '';
     })
   else pkgs.stdenv.cc;
