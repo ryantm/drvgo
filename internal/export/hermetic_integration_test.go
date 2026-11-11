@@ -25,7 +25,7 @@ func TestNestedCommandWithoutOriginalSource(t *testing.T) {
 		}
 	}
 	out := filepath.Join(root, "export")
-	graph, err := Generate(Options{Dir: src, Out: out, Package: "./cmd/hello", Toolchain: os.Getenv("DRVGO_TEST_TOOLCHAIN")})
+	graph, err := Generate(Options{Dir: src, Out: out, Package: "./cmd/hello", Toolchain: testToolchain(t)})
 	if err != nil {
 		t.Fatal(err)
 	}

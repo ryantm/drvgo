@@ -83,7 +83,7 @@ func parse(raw, cwd string, driver Driver) ([]Unit, error) {
 		if strings.Contains(line, "/compile ") {
 			line = strings.ReplaceAll(line, " ./", " "+directory+"/")
 		}
-		if strings.Contains(line, "/link ") {
+		if !heredoc && strings.Contains(line, "/link ") {
 			words, err := commandWords(line)
 			if err != nil {
 				return nil, err
@@ -92,7 +92,7 @@ func parse(raw, cwd string, driver Driver) ([]Unit, error) {
 		}
 		// The dry run prints this before cmd/go checks whether the caller
 		// replaced its generated ID. The standalone tool cannot do that check.
-		if customBuildIDs[units[current].ID] && strings.HasPrefix(line, "go tool buildid -w ") {
+		if !heredoc && customBuildIDs[units[current].ID] && strings.HasPrefix(line, "go tool buildid -w ") {
 			continue
 		}
 		// cmd/go prints file bodies without adding a newline before EOF.
@@ -206,23 +206,55 @@ func parse(raw, cwd string, driver Driver) ([]Unit, error) {
 
 func hasCustomBuildID(words []string) bool {
 	for i, word := range words {
-if isAssignment(word) {
+		if isAssignment(word) {
 			continue
 		}
 		if !strings.HasSuffix(word, "/link") {
 			return false
 		}
-		var ids []string
+		var first, last string
+		count := 0
 		for j := i + 1; j < len(words); j++ {
 			arg := words[j]
-			if strings.HasPrefix(arg, "-buildid=") {
-				ids = append(ids, strings.TrimPrefix(arg, "-buildid="))
-			} else if arg == "-buildid" && j+1 < len(words) {
-				j++
-				ids = append(ids, words[j])
+			if !strings.HasPrefix(arg, "-") || arg == "-" || arg == "--" {
+				break
 			}
+			// Go's flag parser accepts either one or two leading dashes.
+			name, value, inline := strings.Cut(strings.TrimPrefix(strings.TrimPrefix(arg, "-"), "-"), "=")
+			if name != "buildid" {
+				// Skip operands, even when they look like build-ID flags. Keep
+				// this list in sync with cmd/link in the supported Go drivers.
+				if !inline && linkerFlagTakesValue(name) {
+					j++
+				}
+				continue
+			}
+			if !inline {
+				if j+1 == len(words) {
+					break
+				}
+				j++
+				value = words[j]
+			}
+			if count == 0 {
+				first = value
+			}
+			last = value
+			count++
 		}
-		return len(ids) > 1 && ids[0] != ids[len(ids)-1]
+		return count > 1 && first != last
+	}
+	return false
+}
+
+func linkerFlagTakesValue(name string) bool {
+	switch name {
+	case "B", "D", "E", "H", "I", "L", "R", "T", "X", "o", "r", "k",
+		"benchmark", "benchmarkprofile", "buildmode", "capturehostobjs", "cpuprofile",
+		"debugtextsize", "debugtramp", "extar", "extld", "extldflags", "fipso", "funcalign",
+		"importcfg", "installsuffix", "libgcc", "linkmode", "memprofile", "memprofilerate",
+		"pluginpath", "randlayout", "strictdups", "tmpdir":
+		return true
 	}
 	return false
 }
