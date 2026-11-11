@@ -26,7 +26,7 @@ func TestRuntimeStoreReferences(t *testing.T) {
 		t.Fatalf("runtime data is not registered: %v\n%s", err, b)
 	}
 	tc := testToolchain(t)
-	for _, padding := range []int{0, inlineSourceLimit * 2} {
+	for _, padding := range []int{0, 8192, inlineSourceLimit * 2} {
 		t.Run(fmt.Sprintf("padding-%d", padding), func(t *testing.T) {
 			root := writeTestProject(t, map[string]string{
 				"go.mod": "module example.com/runtime-reference\ngo 1.25\n",

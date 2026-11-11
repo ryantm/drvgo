@@ -11,6 +11,55 @@ import (
 	"testing"
 )
 
+func TestCompressedNativeSources(t *testing.T) {
+	src := writeTestProject(t, map[string]string{
+		"go.mod": "module example.com/compressednative\ngo 1.25\n",
+		"main.go": `package main
+// #include "answer.h"
+import "C"
+import "fmt"
+func main() { fmt.Println(C.answer()) }
+`,
+		"answer.h": "/*" + strings.Repeat("native source fixture ", 600) + "*/\nstatic int answer(void) { return 42; }\n",
+	})
+	out := filepath.Join(t.TempDir(), "export")
+	cgo := true
+	g, err := Generate(Options{Dir: src, Out: out, Package: ".", Toolchain: testToolchain(t), CGOEnabled: &cgo})
+	if err != nil {
+		t.Fatal(err)
+	}
+	compressed := false
+	for _, unit := range g.Units {
+		if unit.Name == "example.com/compressednative" {
+			compressed = strings.Contains(unit.Script, "drvgo-source-zlib")
+		}
+	}
+	if !compressed {
+		t.Fatal("native source fixture was not compressed")
+	}
+	if err := os.RemoveAll(src); err != nil {
+		t.Fatal(err)
+	}
+	args := []string{out, "-A", "default", "--no-out-link", "--max-jobs", "4", "--cores", "2",
+		"--option", "sandbox", "true", "--option", "sandbox-fallback", "false"}
+	cmd := exec.Command("nix-build", args...)
+	var stderr strings.Builder
+	cmd.Stderr = &stderr
+	result, err := cmd.Output()
+	if err != nil {
+		t.Fatalf("compressed native build: %v\n%s", err, stderr.String())
+	}
+	binary := filepath.Join(strings.TrimSpace(string(result)), "bin", g.BinaryName)
+	if b, err := exec.Command(binary).CombinedOutput(); err != nil || string(b) != "42\n" {
+		t.Fatalf("compressed native run: %v: %s", err, b)
+	}
+	// Moving native headers into the work directory must remain reproducible,
+	// including debug paths on platforms with different sandbox layouts.
+	if b, err := exec.Command("nix-build", append(args, "--check")...).CombinedOutput(); err != nil {
+		t.Fatalf("compressed native reproducibility: %v\n%s", err, b)
+	}
+}
+
 func TestNestedCommandWithoutOriginalSource(t *testing.T) {
 	root := t.TempDir()
 	src := filepath.Join(root, "source")

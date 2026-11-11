@@ -4,6 +4,8 @@
 package main
 
 import (
+	"bytes"
+	"compress/zlib"
 	"encoding/base64"
 	"errors"
 	"fmt"
@@ -287,13 +289,41 @@ func execute(actions []action) error {
 		case "write":
 			err = os.WriteFile(a.path, []byte(a.text), 0644)
 		case "exec":
-			if a.args[0] == "drvgo-source" {
-				if len(a.args) != 4 || len(a.env) != 0 || a.path != "" || (a.args[1] != "0644" && a.args[1] != "0755") {
+			if a.args[0] == "drvgo-source" || a.args[0] == "drvgo-source-zlib" {
+				compressed := a.args[0] == "drvgo-source-zlib"
+				argc := 4
+				if compressed {
+					argc = 5
+				}
+				if len(a.args) != argc || len(a.env) != 0 || a.path != "" || (a.args[1] != "0644" && a.args[1] != "0755") {
 					return fmt.Errorf("invalid inline source action")
 				}
-				data, err := base64.StdEncoding.DecodeString(a.args[3])
+				data, err := base64.StdEncoding.DecodeString(a.args[argc-1])
 				if err != nil {
 					return err
+				}
+				if compressed {
+					size, err := strconv.Atoi(a.args[3])
+					// Match the exporter's decoded snapshot bound. Read one extra
+					// byte so a wrong length cannot silently truncate a source.
+					if err != nil || size < 0 || size > 64<<10 {
+						return fmt.Errorf("invalid compressed source size: %s", a.args[3])
+					}
+					r, err := zlib.NewReader(bytes.NewReader(data))
+					if err != nil {
+						return err
+					}
+					data, err = io.ReadAll(io.LimitReader(r, int64(size)+1))
+					closeErr := r.Close()
+					if err != nil {
+						return err
+					}
+					if closeErr != nil {
+						return closeErr
+					}
+					if len(data) != size {
+						return fmt.Errorf("compressed source size: got %d, want %d", len(data), size)
+					}
 				}
 				if err := os.MkdirAll(filepath.Dir(a.args[2]), 0755); err != nil {
 					return err

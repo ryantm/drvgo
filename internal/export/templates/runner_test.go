@@ -2,8 +2,10 @@ package main
 
 import (
 	"bytes"
+	"compress/zlib"
 	"encoding/base64"
 	"errors"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -13,6 +15,60 @@ import (
 	"strings"
 	"testing"
 )
+
+func TestCompressedSourceReplay(t *testing.T) {
+	inTemp(t)
+	data := bytes.Repeat([]byte{0, 255, '\r', '\n', '@', '$'}, 6000)
+	var b bytes.Buffer
+	w := zlib.NewWriter(&b)
+	if _, err := w.Write(data); err != nil {
+		t.Fatal(err)
+	}
+	if err := w.Close(); err != nil {
+		t.Fatal(err)
+	}
+	encoded := base64.StdEncoding.EncodeToString(b.Bytes())
+	script := fmt.Sprintf("drvgo-source-zlib 0755 'nested/space 雪' %d '%s'\n", len(data), encoded)
+	actions, err := parse(script)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := execute(actions); err != nil {
+		t.Fatal(err)
+	}
+	got, err := os.ReadFile("nested/space 雪")
+	if err != nil || !bytes.Equal(got, data) {
+		t.Fatalf("decoded source changed: %v", err)
+	}
+	info, err := os.Stat("nested/space 雪")
+	if err != nil || info.Mode().Perm() != 0755 {
+		t.Fatalf("decoded mode changed: %v", err)
+	}
+	corrupted := append([]byte(nil), b.Bytes()...)
+	corrupted[len(corrupted)-1] ^= 1
+	for _, invalid := range []string{
+		"drvgo-source-zlib 0644 bad 36000 !",
+		"drvgo-source-zlib 0777 bad 36000 '" + encoded + "'",
+		"drvgo-source-zlib 0644 bad -1 '" + encoded + "'",
+		"drvgo-source-zlib 0644 bad 65537 '" + encoded + "'",
+		"drvgo-source-zlib 0644 bad 35999 '" + encoded + "'",
+		"drvgo-source-zlib 0644 bad 36001 '" + encoded + "'",
+		"drvgo-source-zlib 0644 bad 36000 '" + base64.StdEncoding.EncodeToString(b.Bytes()[:b.Len()-1]) + "'",
+		"drvgo-source-zlib 0644 bad 36000 '" + base64.StdEncoding.EncodeToString(corrupted) + "'",
+		"X=y " + script,
+	} {
+		actions, err := parse(invalid)
+		if err == nil {
+			err = execute(actions)
+		}
+		if err == nil {
+			t.Fatal("invalid compressed source accepted")
+		}
+	}
+	if _, err := os.Stat("bad"); !os.IsNotExist(err) {
+		t.Fatal("invalid source was published")
+	}
+}
 
 func TestNativePackDispatch(t *testing.T) {
 	previous := packArchive

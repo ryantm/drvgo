@@ -19,7 +19,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--before", type=Path, required=True, help="baseline drvgo checkout")
     parser.add_argument("--after", type=Path, required=True, help="modified drvgo checkout")
-    parser.add_argument("--source", type=Path, required=True, help="Go source tree; vendorHash=null")
+    parser.add_argument("--source", type=Path, required=True, help="Go source tree")
+    parser.add_argument("--vendor-hash", help="module proxy hash for sources with external dependencies")
     parser.add_argument("--package", default=".")
     parser.add_argument("--cgo", choices=["0", "1"], help="explicitly select cgo mode")
     parser.add_argument("--test", action="store_true", help="export a test binary")
@@ -44,6 +45,8 @@ def main():
         flags.extend(["--option", name, value])
     roots = {"before": args.before.resolve(), "after": args.after.resolve()}
     build_options = ""
+    if args.vendor_hash is not None:
+        build_options += f" vendorHash = {nix_string(args.vendor_hash)};"
     if args.cgo is not None:
         build_options += f" cgoEnabled = {str(args.cgo == '1').lower()};"
     if args.test:
@@ -54,7 +57,7 @@ def main():
         build_options += f" tags = {nix_string(args.tags)};"
     nonce = uuid.uuid4().hex[:12]
     report = {"scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
-              "source": str(args.source.resolve()), "package": args.package,
+              "source": str(args.source.resolve()), "package": args.package, "vendor_hash": args.vendor_hash,
               "cgo": args.cgo, "test": args.test, "allow_empty_tests": args.allow_empty_tests, "tags": args.tags,
               "nix": subprocess.check_output(["nix", "--version"], text=True).strip(),
               "roots": {k: str(v) for k, v in roots.items()}, "flags": flags, "nonce": nonce, "records": []}
