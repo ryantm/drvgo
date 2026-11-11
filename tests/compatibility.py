@@ -39,9 +39,11 @@ def write(path, content):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content)
 
-integration_tests = run([a.integration_test.resolve(), '-test.list=^(TestEmbeddedAssetsAndCacheIsolation|TestTestBinary.*)$']).stdout.decode().splitlines()
+integration_pattern = '^(TestEmbeddedAssetsAndCacheIsolation|TestNestedCommandWithoutOriginalSource|TestCustomBuildID|TestEmptyTest.*|TestTestBinary.*)$'
+integration_tests = run([a.integration_test.resolve(), '-test.list='+integration_pattern]).stdout.decode().splitlines()
 required_tests = {'TestEmbeddedAssetsAndCacheIsolation', 'TestTestBinaryInternalExternalAndFailure',
-                  'TestTestBinaryMainPackage', 'TestTestBinaryRaceAndCGO', 'TestTestBinaryRejectsPackageWithoutTests'}
+                  'TestTestBinaryMainPackage', 'TestTestBinaryRaceAndCGO', 'TestTestBinaryRejectsPackageWithoutTests',
+                  'TestNestedCommandWithoutOriginalSource', 'TestCustomBuildID'}
 if not required_tests.issubset(integration_tests):
     raise RuntimeError('Integration binary lacks required tests; compile it with go test -c -tags integration ./internal/export')
 
@@ -127,7 +129,7 @@ if report['platform'] == ['darwin', 'arm64']:
     write(framework/'main.go','package main\n/*\n#cgo LDFLAGS: -framework CoreFoundation\n#include <CoreFoundation/CoreFoundation.h>\nstatic int answer(void) { return (int)CFStringGetLength(CFSTR("hello")); }\n*/\nimport "C"\nimport "fmt"\nfunc main(){fmt.Println(C.answer())}\n')
     case('darwin-framework',framework,'5\n')
 checkenv=dict(os.environ,DRVGO_TEST_TOOLCHAIN=str(tc))
-p=subprocess.run([str(a.integration_test.resolve()),'-test.run=^(TestEmbeddedAssetsAndCacheIsolation|TestNestedCommandWithoutOriginalSource|TestCustomBuildID|TestEmptyTest.*|TestTestBinary.*)$','-test.v'],cwd=repo/'internal/export',env=checkenv,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+p=subprocess.run([str(a.integration_test.resolve()),'-test.run='+integration_pattern,'-test.v'],cwd=repo/'internal/export',env=checkenv,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
 (out/'integration.log').write_bytes(p.stdout)
 if p.returncode: raise RuntimeError(p.stdout.decode())
 if a.flake_toolchain:
@@ -146,6 +148,19 @@ if a.flake_toolchain:
         '--option','allow-import-from-derivation','false','--max-jobs','4','--cores','2','--no-out-link']).stdout.decode().strip()
     assert planner_cached == result, 'planner cache policy changed the resolved output'
     report['planner_substitution_policy']='passed'
+    nested = out/'nested-command'
+    write(nested/'go.mod', 'module example.com/nested\n\ngo 1.25\n')
+    write(nested/'cmd/hello/main.go', 'package main\nimport ("fmt"; _ "net")\nfunc main(){fmt.Println("nested works")}\n')
+    result = run(['nix-build',repo/'tests/dynamic-compatibility.nix','--argstr','system',system,
+        '--argstr','toolchainAttr',a.flake_toolchain,'--arg','src',f'builtins.path {{ path = {json.dumps(str(nested))}; name = "source"; }}',
+        '--argstr','package','./cmd/hello','--argstr','ldflags','--buildid=custom/ID',
+        '--option','allow-import-from-derivation','false','--option','sandbox','true',
+        '--option','sandbox-fallback','false','--max-jobs','4','--cores','2','--no-out-link']).stdout.decode().strip()
+    executable = Path(result)/'bin/hello'
+    assert run([executable]).stdout.decode() == 'nested works\n'
+    assert run([tc/'bin/go','tool','buildid',executable],go=True).stdout.decode() == 'custom/ID\n'
+    report['dynamic_nested_custom_buildid']='passed'
+    print(version,'nested-command/custom-buildid/dynamic/IFD-disabled PASS',flush=True)
     # Exercise every new helper argument, including generated test-main sources
     # inside the recursive sandbox. Dynamic and standalone outputs must match.
     write(modes/'main_test.go','package main\nimport "testing"\nfunc TestValue(t *testing.T){if Value()!=expected {t.Fatal("wrong build mode")}}\n')
