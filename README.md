@@ -208,8 +208,10 @@ should preserve cmd/go's source selection rather than reimplementing it in drvgo
 Test exports remain strict by default. For filesystem-discovered candidate
 directories, use `mkGoPackage { test = true; allowEmptyTests = true; ... }`
 or `drvgo export -test -allow-empty-tests`. Exactly one package is required.
-The selected Go compiler's `go/build` semantics determine platform, release,
-cgo and build-tag eligibility. No-test packages with eligible ordinary sources
+The selected Go compiler determines platform, release, cgo and build-tag
+eligibility. Successful `go list` results avoid compiling a selection helper;
+excluded directories still use that compiler's typed `go/build` errors.
+No-test packages with eligible ordinary sources
 are actually compiled during planning, so load, syntax and type errors remain
 fatal. Entirely excluded source directories may produce an empty result.
 
@@ -338,8 +340,16 @@ Pure Go and Go assembly package actions receive only the compiler, assembler,
 archive helper, and native replay runner. Selected standard-library sources and
 quoted native headers are snapshotted per package, so workers no longer need the
 full Go SDK. Pure Go links add the linker; cgo, race, native objects, and explicit
-external-link flags select the native compiler bundle. Planning retains the full
-SDK and native tools. All bundles use the same pinned Go release.
+external-link flags select the native compiler bundle. Planning uses the full
+SDK and native tools by default. With `cgoEnabled = false`, dynamic planning
+needs only the SDK plus worker derivation recipes; the generated graph retains
+the original worker dependencies. All bundles use the same pinned Go release.
+
+In the [third CI optimization round](benchmarks/ci-round3-2026-11-11.md), this
+reduced the pure-Go planner's compressed input closure from 235 to 118 MiB.
+Avoiding unnecessary helper compilation reduced fresh dynamic builds of an
+optional no-test package from 3.26 to 0.62 seconds and tagged tests from 3.78 to
+1.11 seconds, with tools and package outputs cached and remote queries disabled.
 
 The runner performs file operations directly and calls that Go release's build-ID
 library in process, including its Mach-O signing support. Compiler, assembler,

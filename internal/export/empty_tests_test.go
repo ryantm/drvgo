@@ -49,6 +49,9 @@ func TestEmptyTestSelection(t *testing.T) {
 		{"missing-import", map[string]string{"a.go": "package sample\nimport _ \"example.invalid/missing\"\n"}, "", false, false, true},
 		{"type-error", map[string]string{"a.go": "package sample\nvar x int = \"bad\"\n"}, "", false, false, true},
 		{"syntax-error", map[string]string{"a.go": "package sample\nfunc {\n"}, "", false, false, true},
+		{"invalid-embed", map[string]string{"a.go": "package sample\nimport _ \"embed\"\n//go:embed missing.txt\nvar data string\n"}, "", false, false, true},
+		{"conflicting-packages", map[string]string{"a.go": "package first\n", "b.go": "package second\n"}, "", false, false, true},
+		{"empty-directory", nil, "", false, false, true},
 		{"missing-directory", nil, "", false, false, true},
 	}
 	for _, tt := range cases {

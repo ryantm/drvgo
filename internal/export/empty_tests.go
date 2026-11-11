@@ -20,7 +20,11 @@ func emptyTestSelection(dir string, env []string, goBin string, flags []string, 
 	if err != nil {
 		return false, err
 	}
-	var p struct{ Dir string }
+	var p struct {
+		Dir                                          string
+		GoFiles, CgoFiles, TestGoFiles, XTestGoFiles []string
+		Error                                        *struct{ Err string }
+	}
 	d := json.NewDecoder(bytes.NewReader(data))
 	if err := d.Decode(&p); err != nil || p.Dir == "" {
 		return false, fmt.Errorf("resolve exactly one test package: %s", data)
@@ -29,23 +33,36 @@ func emptyTestSelection(dir string, env []string, goBin string, flags []string, 
 	if err := d.Decode(&extra); err != io.EOF {
 		return false, fmt.Errorf("allow-empty-tests requires exactly one package")
 	}
+	var selected struct{ Tests, Sources bool }
+	selected.Tests = len(p.TestGoFiles)+len(p.XTestGoFiles) > 0
+	selected.Sources = len(p.GoFiles)+len(p.CgoFiles) > 0
+	// cmd/go already selected these files with the requested build flags. Avoid
+	// compiling a selector (and its standard library on a cold CI worker) when
+	// listing succeeded. Eligible tests are validated by normal graph discovery.
+	if p.Error == nil && selected.Tests {
+		return false, nil
+	}
 	tmp, err := os.MkdirTemp("", "drvgo-test-selection-")
 	if err != nil {
 		return false, err
 	}
 	defer os.RemoveAll(tmp)
-	source, _ := templates.ReadFile("templates/test-selection.go")
-	helper := filepath.Join(tmp, "selection.go")
-	if err := os.WriteFile(helper, source, 0644); err != nil {
-		return false, err
-	}
-	data, err = run(dir, env, goBin, "run", helper, p.Dir, o.Tags, strconv.FormatBool(o.Race))
-	if err != nil {
-		return false, err
-	}
-	var selected struct{ Tests, Sources bool }
-	if err := json.Unmarshal(data, &selected); err != nil {
-		return false, err
+	if p.Error != nil || !selected.Sources {
+		// An excluded directory may carry a load error. Use the selected Go
+		// release's typed NoGoError to distinguish it from genuine failures;
+		// never infer an empty result from localized diagnostic text.
+		source, _ := templates.ReadFile("templates/test-selection.go")
+		helper := filepath.Join(tmp, "selection.go")
+		if err := os.WriteFile(helper, source, 0644); err != nil {
+			return false, err
+		}
+		data, err = run(dir, env, goBin, "run", helper, p.Dir, o.Tags, strconv.FormatBool(o.Race))
+		if err != nil {
+			return false, err
+		}
+		if err := json.Unmarshal(data, &selected); err != nil {
+			return false, err
+		}
 	}
 	if selected.Tests {
 		return false, nil
