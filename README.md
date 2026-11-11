@@ -203,6 +203,23 @@ graph, alongside the trace adapters. `go build -json` currently reports build
 output and failures; it is not that complete replayable interface. This direction
 should preserve cmd/go's source selection rather than reimplementing it in drvgo.
 
+## Optional empty test results
+
+Test exports remain strict by default. For filesystem-discovered candidate
+directories, use `mkGoPackage { test = true; allowEmptyTests = true; ... }`
+or `drvgo export -test -allow-empty-tests`. Exactly one package is required.
+The selected Go compiler's `go/build` semantics determine platform, release,
+cgo and build-tag eligibility. No-test packages with eligible ordinary sources
+are actually compiled during planning, so load, syntax and type errors remain
+fatal. Entirely excluded source directories may produce an empty result.
+
+An empty result has no `bin` directory and contains
+`nix-support/no-tests` with `{"version":1,"status":"no-tests"}` and a trailing
+newline. Consumers must skip only this explicit marker, never infer a skip
+from a missing binary. Eligible internal or external tests follow the normal
+test-binary path. This opt-in does not permit multiple packages or convert
+failed tests/builds into skips.
+
 ## Embedded files
 
 `//go:embed` is supported for strings, byte slices, and `embed.FS`, including nested directories, glob patterns, and `all:` hidden files. The exporter uses `go list -deps -json`'s resolved `EmbedFiles`; it does not approximate Go's pattern rules. It copies the files into the embedding package's snapshot and rewrites the compiler's `embedcfg` to refer to that snapshot.

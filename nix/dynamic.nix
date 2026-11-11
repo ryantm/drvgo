@@ -5,7 +5,7 @@
 }:
 { src, package ? ".", vendorHash ? null, tags ? "", ldflags ? "", name ? "drvgo"
 , experimentalGo ? false, test ? false, race ? false, cgoEnabled ? null
-, allowPlannerSubstitutes ? false
+, allowPlannerSubstitutes ? false, allowEmptyTests ? false
 }:
 let
   pkgs = toolchain.pkgs;
@@ -78,6 +78,7 @@ let
     allow-import-from-derivation = false'
     drvgo export -C "$src" -out "$TMPDIR/graph" ${lib.optionalString experimentalGo "-experimental-go"} \
       ${lib.optionalString test "-test"} ${lib.optionalString race "-race"} \
+      ${lib.optionalString allowEmptyTests "-allow-empty-tests"} \
       ${lib.optionalString (cgoEnabled != null) "-cgo ${if cgoEnabled then "1" else "0"}"} \
       -toolchain ${toolchain} \
       -module-proxy ${lib.escapeShellArg (if modules == null then "off" else "file://${modules}")} \

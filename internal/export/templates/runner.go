@@ -360,6 +360,13 @@ func execute(actions []action) error {
 }
 
 func build() error {
+if os.Getenv("emptyTests") == "1" {
+dir := filepath.Join(os.Getenv("out"), "nix-support")
+if err := os.MkdirAll(dir, 0755); err != nil {
+return err
+}
+return os.WriteFile(filepath.Join(dir, "no-tests"), []byte("{\"version\":1,\"status\":\"no-tests\"}\n"), 0644)
+}
 	cores := os.Getenv("NIX_BUILD_CORES")
 	if cores == "" {
 		cores = "1"

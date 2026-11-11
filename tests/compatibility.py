@@ -127,7 +127,7 @@ if report['platform'] == ['darwin', 'arm64']:
     write(framework/'main.go','package main\n/*\n#cgo LDFLAGS: -framework CoreFoundation\n#include <CoreFoundation/CoreFoundation.h>\nstatic int answer(void) { return (int)CFStringGetLength(CFSTR("hello")); }\n*/\nimport "C"\nimport "fmt"\nfunc main(){fmt.Println(C.answer())}\n')
     case('darwin-framework',framework,'5\n')
 checkenv=dict(os.environ,DRVGO_TEST_TOOLCHAIN=str(tc))
-p=subprocess.run([str(a.integration_test.resolve()),'-test.run=^(TestEmbeddedAssetsAndCacheIsolation|TestNestedCommandWithoutOriginalSource|TestCustomBuildID|TestTestBinary.*)$','-test.v'],cwd=repo/'internal/export',env=checkenv,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+p=subprocess.run([str(a.integration_test.resolve()),'-test.run=^(TestEmbeddedAssetsAndCacheIsolation|TestNestedCommandWithoutOriginalSource|TestCustomBuildID|TestEmptyTest.*|TestTestBinary.*)$','-test.v'],cwd=repo/'internal/export',env=checkenv,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
 (out/'integration.log').write_bytes(p.stdout)
 if p.returncode: raise RuntimeError(p.stdout.decode())
 if a.flake_toolchain:
@@ -165,6 +165,16 @@ if a.flake_toolchain:
         assert 'PASS: TestValue' in output, output
         report.setdefault('dynamic_tests',[]).append({'name':name,'store_path':standalone,'cgo':cgo,'race':race})
         print(version,name,'dynamic/standalone/IFD-disabled PASS',flush=True)
+    empty = out/'empty-tests'
+    write(empty/'go.mod','module example.com/emptytests\ngo 1.25\n')
+    write(empty/'sample.go','package sample\n')
+    dynamic = run(['nix-build',repo/'tests/dynamic-compatibility.nix','--argstr','system',system,
+        '--argstr','toolchainAttr',a.flake_toolchain,'--arg','src',f'builtins.path {{ path = {json.dumps(str(empty))}; name = "source"; }}',
+        '--arg','test','true','--arg','allowEmptyTests','true',
+        '--option','allow-import-from-derivation','false','--max-jobs','4','--cores','2','--no-out-link']).stdout.decode().strip()
+    assert json.loads((Path(dynamic)/'nix-support/no-tests').read_text()) == {'version':1,'status':'no-tests'}
+    assert not (Path(dynamic)/'bin').exists()
+    report['dynamic_empty_tests']='passed'
 report['incremental_cache_and_embeds']='passed'
 report['test_binaries_and_race_detection']='passed'
 (out/'results.json').write_text(json.dumps(report,indent=2)+'\n')
