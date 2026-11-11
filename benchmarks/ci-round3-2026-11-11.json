@@ -1,5 +1,5 @@
 {
-  "baseline": "0ade56518640f38c071563522eceb24317b5cafe",
+  "baseline": "38b33df1d92b828ee9a4396168157d9d1cf05867",
   "platform": "x86_64-linux",
   "go": "go1.26.5",
   "dynamic": {
@@ -13,7 +13,7 @@
       "tags": "",
       "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
       "roots": {
-        "before": "/tmp/drvgo-ci-round3-fixed-baseline",
+        "before": "/tmp/drvgo-review-runtime",
         "after": "/home/ryantm/p/drvgo"
       },
       "flags": [
@@ -33,151 +33,151 @@
         "substituters",
         ""
       ],
-      "nonce": "0a1c5f99a1f8",
+      "nonce": "03d7b2350c5e",
       "records": [
         {
           "label": "before",
           "trial": 0,
           "warmup": true,
-          "evaluation": 0.39617195806931704,
-          "realization": 0.4754937560064718,
-          "total": 0.8716657140757889,
-          "derivation": "/nix/store/s9y0h04q7q4xd6m08wp1d8kk26cfv3bl-drvgo-ci-0a1c5f99a1f8-before-0.drv",
-          "result": "/nix/store/6if3j5zgl2mbha4rf899m3wlyhy61lnx-drvgo-ci-0a1c5f99a1f8-before-0",
-          "command_output": "/nix/store/52iwdvzbbwfcxl5lkbixx8pl187f32l6-go-example.com-ci-pure"
+          "evaluation": 0.3814274891046807,
+          "realization": 1.3207837159279734,
+          "total": 1.702211205032654,
+          "derivation": "/nix/store/7rkhq34l9fmxca2gyhm3wrvx92rxlx03-drvgo-ci-03d7b2350c5e-before-0.drv",
+          "result": "/nix/store/nkwi23nwwhpnwz7by9ql1rggw3zdv8ry-drvgo-ci-03d7b2350c5e-before-0",
+          "command_output": "/nix/store/9qqy72nn0g4ry4zfp2s24x3cd67q5f3a-go-example.com-ci-pure"
         },
         {
           "label": "after",
           "trial": 0,
           "warmup": true,
-          "evaluation": 0.38413964095525444,
-          "realization": 8.645945094991475,
-          "total": 9.03008473594673,
-          "derivation": "/nix/store/22s9wzzw5f2zzd8lwysw46pgx9n799w2-drvgo-ci-0a1c5f99a1f8-after-0.drv",
-          "result": "/nix/store/sf2h6fns8wvnpp3i0j8cgapmi7f67qc7-drvgo-ci-0a1c5f99a1f8-after-0",
-          "command_output": "/nix/store/52iwdvzbbwfcxl5lkbixx8pl187f32l6-go-example.com-ci-pure"
+          "evaluation": 0.3940033159451559,
+          "realization": 0.5102012560237199,
+          "total": 0.9042045719688758,
+          "derivation": "/nix/store/rkxnasfyj328pymg3bb2j8hma4jkwff2-drvgo-ci-03d7b2350c5e-after-0.drv",
+          "result": "/nix/store/21w1ss5jyzpnx4kcd5z76cr5x1bk5v6l-drvgo-ci-03d7b2350c5e-after-0",
+          "command_output": "/nix/store/9qqy72nn0g4ry4zfp2s24x3cd67q5f3a-go-example.com-ci-pure"
         },
         {
           "label": "after",
           "trial": 1,
           "warmup": false,
-          "evaluation": 0.3991419089725241,
-          "realization": 0.4937966309953481,
-          "total": 0.8929385399678722,
-          "derivation": "/nix/store/0dz3q185jc21fya675jw32kyjh4rxhqs-drvgo-ci-0a1c5f99a1f8-after-1.drv",
-          "result": "/nix/store/gk242hvf7a75d7pqsmykg2vkzph9vzp1-drvgo-ci-0a1c5f99a1f8-after-1",
-          "command_output": "/nix/store/52iwdvzbbwfcxl5lkbixx8pl187f32l6-go-example.com-ci-pure"
+          "evaluation": 0.3825577680254355,
+          "realization": 0.5102665040176362,
+          "total": 0.8928242720430717,
+          "derivation": "/nix/store/f5pbb0ivz6zk1hyx5ihrmw3gk7p4vp22-drvgo-ci-03d7b2350c5e-after-1.drv",
+          "result": "/nix/store/3vkdxjrxhj5ygvy963fgmvkmripaz9hf-drvgo-ci-03d7b2350c5e-after-1",
+          "command_output": "/nix/store/9qqy72nn0g4ry4zfp2s24x3cd67q5f3a-go-example.com-ci-pure"
         },
         {
           "label": "before",
           "trial": 1,
           "warmup": false,
-          "evaluation": 0.3878276370232925,
-          "realization": 0.4924212059704587,
-          "total": 0.8802488429937512,
-          "derivation": "/nix/store/xvr0ikhfngsqwacv6lxr2swbi32bsk9q-drvgo-ci-0a1c5f99a1f8-before-1.drv",
-          "result": "/nix/store/pv2r3m84p3r7n85f01c5ayzjyrkvp5m2-drvgo-ci-0a1c5f99a1f8-before-1",
-          "command_output": "/nix/store/52iwdvzbbwfcxl5lkbixx8pl187f32l6-go-example.com-ci-pure"
+          "evaluation": 0.38962757296394557,
+          "realization": 0.49801463703624904,
+          "total": 0.8876422100001946,
+          "derivation": "/nix/store/wvs18v4mhab5g32vdzai8kdyj8yw9z1p-drvgo-ci-03d7b2350c5e-before-1.drv",
+          "result": "/nix/store/xb105mlavy4wiklpka5kn60h3blrbqkh-drvgo-ci-03d7b2350c5e-before-1",
+          "command_output": "/nix/store/9qqy72nn0g4ry4zfp2s24x3cd67q5f3a-go-example.com-ci-pure"
         },
         {
           "label": "before",
           "trial": 2,
           "warmup": false,
-          "evaluation": 0.37891924602445215,
-          "realization": 0.4775688169756904,
-          "total": 0.8564880630001426,
-          "derivation": "/nix/store/dkg2mprn68rsfzhimyksbkdghc8048rq-drvgo-ci-0a1c5f99a1f8-before-2.drv",
-          "result": "/nix/store/0f97wd9l91y335r7clb1bzhvkdxbi3mm-drvgo-ci-0a1c5f99a1f8-before-2",
-          "command_output": "/nix/store/52iwdvzbbwfcxl5lkbixx8pl187f32l6-go-example.com-ci-pure"
+          "evaluation": 0.3920690310187638,
+          "realization": 0.5097991609945893,
+          "total": 0.9018681920133531,
+          "derivation": "/nix/store/b7398x227kr1mbx43va7w1mgijc5b74l-drvgo-ci-03d7b2350c5e-before-2.drv",
+          "result": "/nix/store/fyz9q0h9pky2wl3vysvpk61ghpb7q5kf-drvgo-ci-03d7b2350c5e-before-2",
+          "command_output": "/nix/store/9qqy72nn0g4ry4zfp2s24x3cd67q5f3a-go-example.com-ci-pure"
         },
         {
           "label": "after",
           "trial": 2,
           "warmup": false,
-          "evaluation": 0.4067534989444539,
-          "realization": 0.46888749103527516,
-          "total": 0.8756409899797291,
-          "derivation": "/nix/store/zf5hpghk5p546iv741w0jahkxmbhdam1-drvgo-ci-0a1c5f99a1f8-after-2.drv",
-          "result": "/nix/store/hjwzf4cdr7sgdavbmg77dj448ab8749y-drvgo-ci-0a1c5f99a1f8-after-2",
-          "command_output": "/nix/store/52iwdvzbbwfcxl5lkbixx8pl187f32l6-go-example.com-ci-pure"
+          "evaluation": 0.37720977899152786,
+          "realization": 0.4861519170226529,
+          "total": 0.8633616960141808,
+          "derivation": "/nix/store/1mmskxqw09dnpwmpifbgi9k4dmzr82pz-drvgo-ci-03d7b2350c5e-after-2.drv",
+          "result": "/nix/store/nq356nply8fcljyd8mpphx1a3f0pk1c3-drvgo-ci-03d7b2350c5e-after-2",
+          "command_output": "/nix/store/9qqy72nn0g4ry4zfp2s24x3cd67q5f3a-go-example.com-ci-pure"
         },
         {
           "label": "after",
           "trial": 3,
           "warmup": false,
-          "evaluation": 0.3975771509576589,
-          "realization": 0.4923801610711962,
-          "total": 0.8899573120288551,
-          "derivation": "/nix/store/85zlama7nlxaxr9gypzj38k9vgbm9g9v-drvgo-ci-0a1c5f99a1f8-after-3.drv",
-          "result": "/nix/store/a6yy33fng3wd26czfgyl6wb54nvgvydi-drvgo-ci-0a1c5f99a1f8-after-3",
-          "command_output": "/nix/store/52iwdvzbbwfcxl5lkbixx8pl187f32l6-go-example.com-ci-pure"
+          "evaluation": 0.3848860260332003,
+          "realization": 0.5027162700425833,
+          "total": 0.8876022960757837,
+          "derivation": "/nix/store/2lwzi2alcr6fg6gs4vd2amyd72kd4d9l-drvgo-ci-03d7b2350c5e-after-3.drv",
+          "result": "/nix/store/836pf4j0p98hxg1gdg5aiw10n7p4in02-drvgo-ci-03d7b2350c5e-after-3",
+          "command_output": "/nix/store/9qqy72nn0g4ry4zfp2s24x3cd67q5f3a-go-example.com-ci-pure"
         },
         {
           "label": "before",
           "trial": 3,
           "warmup": false,
-          "evaluation": 0.36860033904667944,
-          "realization": 0.47717125702183694,
-          "total": 0.8457715960685164,
-          "derivation": "/nix/store/07gl0lwkjyax0p2gcc0s8war5mvziq8a-drvgo-ci-0a1c5f99a1f8-before-3.drv",
-          "result": "/nix/store/75v5pyd0p6bn8j5b99jyiy0ipx0fbha4-drvgo-ci-0a1c5f99a1f8-before-3",
-          "command_output": "/nix/store/52iwdvzbbwfcxl5lkbixx8pl187f32l6-go-example.com-ci-pure"
+          "evaluation": 0.3834211709909141,
+          "realization": 0.49802923295646906,
+          "total": 0.8814504039473832,
+          "derivation": "/nix/store/5v5fyb4p8vlibd5p49syf65lk1rzpyv8-drvgo-ci-03d7b2350c5e-before-3.drv",
+          "result": "/nix/store/v78kryxh59v3iy0bq9y7lv3hw0yv48sz-drvgo-ci-03d7b2350c5e-before-3",
+          "command_output": "/nix/store/9qqy72nn0g4ry4zfp2s24x3cd67q5f3a-go-example.com-ci-pure"
         },
         {
           "label": "before",
           "trial": 4,
           "warmup": false,
-          "evaluation": 0.3885441720485687,
-          "realization": 0.49428354494739324,
-          "total": 0.882827716995962,
-          "derivation": "/nix/store/kg993zfmd4lsh1mxxv0dqppg8dd7kqaa-drvgo-ci-0a1c5f99a1f8-before-4.drv",
-          "result": "/nix/store/1yjff2f04bb68h4bi715w4ma0imdzzmj-drvgo-ci-0a1c5f99a1f8-before-4",
-          "command_output": "/nix/store/52iwdvzbbwfcxl5lkbixx8pl187f32l6-go-example.com-ci-pure"
+          "evaluation": 0.38629310205578804,
+          "realization": 0.4925222179153934,
+          "total": 0.8788153199711815,
+          "derivation": "/nix/store/01m63g41h9zac4v1rj6z2bsf7wv3f9ad-drvgo-ci-03d7b2350c5e-before-4.drv",
+          "result": "/nix/store/fkvp3g44gs35nfwms5b4sy3sbi061dw8-drvgo-ci-03d7b2350c5e-before-4",
+          "command_output": "/nix/store/9qqy72nn0g4ry4zfp2s24x3cd67q5f3a-go-example.com-ci-pure"
         },
         {
           "label": "after",
           "trial": 4,
           "warmup": false,
-          "evaluation": 0.37525805400218815,
-          "realization": 0.465183986001648,
-          "total": 0.8404420400038362,
-          "derivation": "/nix/store/lzs8hngwq4jdas1lin0qxa28i2nvf2lp-drvgo-ci-0a1c5f99a1f8-after-4.drv",
-          "result": "/nix/store/6ajml3zb2rmqdylww87abcbci3zif3l9-drvgo-ci-0a1c5f99a1f8-after-4",
-          "command_output": "/nix/store/52iwdvzbbwfcxl5lkbixx8pl187f32l6-go-example.com-ci-pure"
+          "evaluation": 0.40615359297953546,
+          "realization": 0.510025518015027,
+          "total": 0.9161791109945625,
+          "derivation": "/nix/store/zy4hk0mrghbzvgw367km6r1jlnznrb53-drvgo-ci-03d7b2350c5e-after-4.drv",
+          "result": "/nix/store/vfhdxcb0k3zck0ywczzinddmwa0max8w-drvgo-ci-03d7b2350c5e-after-4",
+          "command_output": "/nix/store/9qqy72nn0g4ry4zfp2s24x3cd67q5f3a-go-example.com-ci-pure"
         },
         {
           "label": "after",
           "trial": 5,
           "warmup": false,
-          "evaluation": 0.4130144709488377,
-          "realization": 0.4823461869964376,
-          "total": 0.8953606579452753,
-          "derivation": "/nix/store/5rfj6q9f1dk2rbvfwlyc9pyhslxrsh1a-drvgo-ci-0a1c5f99a1f8-after-5.drv",
-          "result": "/nix/store/rn504baijhmf80qbp7gjbyfssn9r77cx-drvgo-ci-0a1c5f99a1f8-after-5",
-          "command_output": "/nix/store/52iwdvzbbwfcxl5lkbixx8pl187f32l6-go-example.com-ci-pure"
+          "evaluation": 0.39116414706222713,
+          "realization": 0.48980472004041076,
+          "total": 0.8809688671026379,
+          "derivation": "/nix/store/prn4ay40kqlgpxs6rqb15czyk3ac87rq-drvgo-ci-03d7b2350c5e-after-5.drv",
+          "result": "/nix/store/4z6dibnx08ib41b264qrmhnmji5d0vhg-drvgo-ci-03d7b2350c5e-after-5",
+          "command_output": "/nix/store/9qqy72nn0g4ry4zfp2s24x3cd67q5f3a-go-example.com-ci-pure"
         },
         {
           "label": "before",
           "trial": 5,
           "warmup": false,
-          "evaluation": 0.37835716095287353,
-          "realization": 0.47239611798431724,
-          "total": 0.8507532789371908,
-          "derivation": "/nix/store/h8dgibvd7mykwrmz8mj7mxbmabpmhbq4-drvgo-ci-0a1c5f99a1f8-before-5.drv",
-          "result": "/nix/store/8dssvssidii9a19j88b34cf7x7qa1s7y-drvgo-ci-0a1c5f99a1f8-before-5",
-          "command_output": "/nix/store/52iwdvzbbwfcxl5lkbixx8pl187f32l6-go-example.com-ci-pure"
+          "evaluation": 0.40080887894146144,
+          "realization": 0.49953363405074924,
+          "total": 0.9003425129922107,
+          "derivation": "/nix/store/5b4cpgq3dbb8nll0xv3h6g2f4ja5kvy4-drvgo-ci-03d7b2350c5e-before-5.drv",
+          "result": "/nix/store/x4y39d8141nb329rz6m31f4p6q36mkp7-drvgo-ci-03d7b2350c5e-before-5",
+          "command_output": "/nix/store/9qqy72nn0g4ry4zfp2s24x3cd67q5f3a-go-example.com-ci-pure"
         }
       ],
       "medians": {
         "before": {
-          "evaluation": 0.37891924602445215,
-          "realization": 0.4775688169756904,
-          "total": 0.8564880630001426
+          "evaluation": 0.38962757296394557,
+          "realization": 0.49802923295646906,
+          "total": 0.8876422100001946
         },
         "after": {
-          "evaluation": 0.3991419089725241,
-          "realization": 0.4823461869964376,
-          "total": 0.8899573120288551
+          "evaluation": 0.3848860260332003,
+          "realization": 0.5027162700425833,
+          "total": 0.8876022960757837
         }
       }
     },
@@ -191,7 +191,7 @@
       "tags": "",
       "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
       "roots": {
-        "before": "/tmp/drvgo-ci-round3-fixed-baseline",
+        "before": "/tmp/drvgo-review-runtime",
         "after": "/home/ryantm/p/drvgo"
       },
       "flags": [
@@ -211,151 +211,151 @@
         "substituters",
         ""
       ],
-      "nonce": "1706065622c0",
+      "nonce": "9722b2bd642b",
       "records": [
         {
           "label": "before",
           "trial": 0,
           "warmup": true,
-          "evaluation": 0.40501885500270873,
-          "realization": 2.829923179000616,
-          "total": 3.234942034003325,
-          "derivation": "/nix/store/ld2afqhzzmkkz9w55aawr1aqgrlr840m-drvgo-ci-1706065622c0-before-0.drv",
-          "result": "/nix/store/7l2kzkn7brs47yxz2n8zy4ddlg67f1rg-drvgo-ci-1706065622c0-before-0",
+          "evaluation": 0.39134982810355723,
+          "realization": 2.8375470439204946,
+          "total": 3.228896872024052,
+          "derivation": "/nix/store/5ffpfg283b0sl8przx0h03gwddxbpavd-drvgo-ci-9722b2bd642b-before-0.drv",
+          "result": "/nix/store/kvc81dmwwg2pijc8yxlpv4v5zlw6j52v-drvgo-ci-9722b2bd642b-before-0",
           "command_output": "/nix/store/s188is17zdzbxaw4ch93hdr7n6d4ps20-go-empty-tests"
         },
         {
           "label": "after",
           "trial": 0,
           "warmup": true,
-          "evaluation": 0.39674644300248474,
-          "realization": 0.2198779039317742,
-          "total": 0.6166243469342589,
-          "derivation": "/nix/store/i7zs15fny3wqaacx340srq8fsk3lihb5-drvgo-ci-1706065622c0-after-0.drv",
-          "result": "/nix/store/28rj4jznb1cwfafyvnpy91n7d306ysm2-drvgo-ci-1706065622c0-after-0",
+          "evaluation": 0.37340140994638205,
+          "realization": 0.21641969005577266,
+          "total": 0.5898211000021547,
+          "derivation": "/nix/store/w38gch78hgl9iqkgm7z6kp61f6v241cb-drvgo-ci-9722b2bd642b-after-0.drv",
+          "result": "/nix/store/lyq2xlwxfqv2s6jqf2kjs7761hrsrhra-drvgo-ci-9722b2bd642b-after-0",
           "command_output": "/nix/store/s188is17zdzbxaw4ch93hdr7n6d4ps20-go-empty-tests"
         },
         {
           "label": "after",
           "trial": 1,
           "warmup": false,
-          "evaluation": 0.41392078797798604,
-          "realization": 0.21611124300397933,
-          "total": 0.6300320309819654,
-          "derivation": "/nix/store/sl2rny6dc4ikrw5w4afc7f7pda18za4b-drvgo-ci-1706065622c0-after-1.drv",
-          "result": "/nix/store/g0zgkv07hyb1f1zsf0v7n449s6041pma-drvgo-ci-1706065622c0-after-1",
+          "evaluation": 0.3769497050670907,
+          "realization": 0.2228676970116794,
+          "total": 0.5998174020787701,
+          "derivation": "/nix/store/7k4rpv39aggjgx7q7dlanz21i49fhsl2-drvgo-ci-9722b2bd642b-after-1.drv",
+          "result": "/nix/store/n4r4clb3j11pyxgq0lk57b33i92axcw4-drvgo-ci-9722b2bd642b-after-1",
           "command_output": "/nix/store/s188is17zdzbxaw4ch93hdr7n6d4ps20-go-empty-tests"
         },
         {
           "label": "before",
           "trial": 1,
           "warmup": false,
-          "evaluation": 0.37453974899835885,
-          "realization": 2.8767550219781697,
-          "total": 3.2512947709765285,
-          "derivation": "/nix/store/pbs4qy5hcm6n9gz7l3m6pnw8zam8d0rq-drvgo-ci-1706065622c0-before-1.drv",
-          "result": "/nix/store/b40rvb78bfrh55az5817lr289z84qfg0-drvgo-ci-1706065622c0-before-1",
+          "evaluation": 0.39004980004392564,
+          "realization": 2.8388102130265906,
+          "total": 3.2288600130705163,
+          "derivation": "/nix/store/b0qxp57d5ldyq2sb6xp7glkz5a9b61xg-drvgo-ci-9722b2bd642b-before-1.drv",
+          "result": "/nix/store/l112w7psmlfnnjvy432iv1v54ziy8wyd-drvgo-ci-9722b2bd642b-before-1",
           "command_output": "/nix/store/s188is17zdzbxaw4ch93hdr7n6d4ps20-go-empty-tests"
         },
         {
           "label": "before",
           "trial": 2,
           "warmup": false,
-          "evaluation": 0.3928639559308067,
-          "realization": 2.8699701010482386,
-          "total": 3.2628340569790453,
-          "derivation": "/nix/store/x8c3ppya44pd7r54cagm9304y71svpva-drvgo-ci-1706065622c0-before-2.drv",
-          "result": "/nix/store/pqn6mppqjns2jbp0hr45bzc7ix6q4plz-drvgo-ci-1706065622c0-before-2",
+          "evaluation": 0.38793353899382055,
+          "realization": 2.9008661590050906,
+          "total": 3.288799697998911,
+          "derivation": "/nix/store/6sc9nqln3y3pmwdlwbr2bvgyrdax8s9w-drvgo-ci-9722b2bd642b-before-2.drv",
+          "result": "/nix/store/1vfsvcrk8a30qg14avfw6zm61s87xa0v-drvgo-ci-9722b2bd642b-before-2",
           "command_output": "/nix/store/s188is17zdzbxaw4ch93hdr7n6d4ps20-go-empty-tests"
         },
         {
           "label": "after",
           "trial": 2,
           "warmup": false,
-          "evaluation": 0.38941918802447617,
-          "realization": 0.22010901605244726,
-          "total": 0.6095282040769234,
-          "derivation": "/nix/store/fh6chv141gyw8bfycxa8k0sgykl255gv-drvgo-ci-1706065622c0-after-2.drv",
-          "result": "/nix/store/yw6nl1v1f3cxkib3srl26ldj13ca3nzx-drvgo-ci-1706065622c0-after-2",
+          "evaluation": 0.37277456908486784,
+          "realization": 0.2213183669373393,
+          "total": 0.5940929360222071,
+          "derivation": "/nix/store/bnks45ar1dr4p9db27h9lq9ra8i2wr2w-drvgo-ci-9722b2bd642b-after-2.drv",
+          "result": "/nix/store/0y16xjjarbszw205jgwgxf1lfnrs146m-drvgo-ci-9722b2bd642b-after-2",
           "command_output": "/nix/store/s188is17zdzbxaw4ch93hdr7n6d4ps20-go-empty-tests"
         },
         {
           "label": "after",
           "trial": 3,
           "warmup": false,
-          "evaluation": 0.401798989973031,
-          "realization": 0.2174508289899677,
-          "total": 0.6192498189629987,
-          "derivation": "/nix/store/95l07mvwbzxwai838ggsf1hwdyzibqrh-drvgo-ci-1706065622c0-after-3.drv",
-          "result": "/nix/store/kc2vp8abn26nb28l081ffkhs09asf87h-drvgo-ci-1706065622c0-after-3",
+          "evaluation": 0.40414675406645983,
+          "realization": 0.22398787399288267,
+          "total": 0.6281346280593425,
+          "derivation": "/nix/store/rk46rlkj6jpjab9cy5bfi3fcbvl57d44-drvgo-ci-9722b2bd642b-after-3.drv",
+          "result": "/nix/store/0gjgy0bhdwvvjj6b3arc8vmmbqwmmjmf-drvgo-ci-9722b2bd642b-after-3",
           "command_output": "/nix/store/s188is17zdzbxaw4ch93hdr7n6d4ps20-go-empty-tests"
         },
         {
           "label": "before",
           "trial": 3,
           "warmup": false,
-          "evaluation": 0.382885133032687,
-          "realization": 2.8735345620661974,
-          "total": 3.2564196950988844,
-          "derivation": "/nix/store/7xf92r71riqrc2wrfwqc87id60fngj0d-drvgo-ci-1706065622c0-before-3.drv",
-          "result": "/nix/store/paiardzm4xf6khacjln5ly4qf6xkl4a1-drvgo-ci-1706065622c0-before-3",
+          "evaluation": 0.4029244700213894,
+          "realization": 2.872706806054339,
+          "total": 3.2756312760757282,
+          "derivation": "/nix/store/p1ddwmdnzaz9nfgv9vx7n0zq8fbi7nd6-drvgo-ci-9722b2bd642b-before-3.drv",
+          "result": "/nix/store/cwgpznp90zgva3wqbyr1bcqlb71fgvn2-drvgo-ci-9722b2bd642b-before-3",
           "command_output": "/nix/store/s188is17zdzbxaw4ch93hdr7n6d4ps20-go-empty-tests"
         },
         {
           "label": "before",
           "trial": 4,
           "warmup": false,
-          "evaluation": 0.4132259120233357,
-          "realization": 2.892217062995769,
-          "total": 3.305442975019105,
-          "derivation": "/nix/store/qqzjw9sdcl613bjxp15ip7jdzywdbynl-drvgo-ci-1706065622c0-before-4.drv",
-          "result": "/nix/store/651aqiln433y2xhxhkm3dchl0ra221dm-drvgo-ci-1706065622c0-before-4",
+          "evaluation": 0.3988905360456556,
+          "realization": 2.9015235640108585,
+          "total": 3.300414100056514,
+          "derivation": "/nix/store/xmjrhqknk1v2h5zm8bzcmaqb0vz21j5z-drvgo-ci-9722b2bd642b-before-4.drv",
+          "result": "/nix/store/psx4v7zk4dw58xhbknpdid651jrmcv16-drvgo-ci-9722b2bd642b-before-4",
           "command_output": "/nix/store/s188is17zdzbxaw4ch93hdr7n6d4ps20-go-empty-tests"
         },
         {
           "label": "after",
           "trial": 4,
           "warmup": false,
-          "evaluation": 0.4036064080428332,
-          "realization": 0.21319228294305503,
-          "total": 0.6167986909858882,
-          "derivation": "/nix/store/igf3k9m3bl7xkgr1g8sqr5kdfvmznqwi-drvgo-ci-1706065622c0-after-4.drv",
-          "result": "/nix/store/np9by4f6ixqv0h8lxkbq6xlmrmkmlkvs-drvgo-ci-1706065622c0-after-4",
+          "evaluation": 0.3912036719266325,
+          "realization": 0.21597948810085654,
+          "total": 0.6071831600274891,
+          "derivation": "/nix/store/h452llvk5iqyawxmyn5jy8chj2c0c0qj-drvgo-ci-9722b2bd642b-after-4.drv",
+          "result": "/nix/store/9kx4f3is93v70h536za1b1dprznx0vrp-drvgo-ci-9722b2bd642b-after-4",
           "command_output": "/nix/store/s188is17zdzbxaw4ch93hdr7n6d4ps20-go-empty-tests"
         },
         {
           "label": "after",
           "trial": 5,
           "warmup": false,
-          "evaluation": 0.397924397024326,
-          "realization": 0.21629823395051062,
-          "total": 0.6142226309748366,
-          "derivation": "/nix/store/k26342m696scpwq40gz85ry7iwg3616q-drvgo-ci-1706065622c0-after-5.drv",
-          "result": "/nix/store/97ynd1kz5bqji62fndhl8vj1b51ylsbj-drvgo-ci-1706065622c0-after-5",
+          "evaluation": 0.3946676489431411,
+          "realization": 0.21439145505428314,
+          "total": 0.6090591039974242,
+          "derivation": "/nix/store/mvphjs1np3zs35svaldmq8n95qrlraqm-drvgo-ci-9722b2bd642b-after-5.drv",
+          "result": "/nix/store/aad5kf6bf9xh43kgrcqvd5z2k3qdymkd-drvgo-ci-9722b2bd642b-after-5",
           "command_output": "/nix/store/s188is17zdzbxaw4ch93hdr7n6d4ps20-go-empty-tests"
         },
         {
           "label": "before",
           "trial": 5,
           "warmup": false,
-          "evaluation": 0.39821891800966114,
-          "realization": 2.8743604340124875,
-          "total": 3.2725793520221487,
-          "derivation": "/nix/store/gc04z62hbjn2nb4qrc9gw30vj9wm59sz-drvgo-ci-1706065622c0-before-5.drv",
-          "result": "/nix/store/p4pf3y7ks1v1zgq872b7fv8jgxfnx93m-drvgo-ci-1706065622c0-before-5",
+          "evaluation": 0.3952353090280667,
+          "realization": 2.8964452400105074,
+          "total": 3.291680549038574,
+          "derivation": "/nix/store/bz9qraisjdw8bg4pxnnvsv9mm7pjqx8d-drvgo-ci-9722b2bd642b-before-5.drv",
+          "result": "/nix/store/ksfgdfl9wla6jybcbh8cpwc0p5vvmxg1-drvgo-ci-9722b2bd642b-before-5",
           "command_output": "/nix/store/s188is17zdzbxaw4ch93hdr7n6d4ps20-go-empty-tests"
         }
       ],
       "medians": {
         "before": {
-          "evaluation": 0.3928639559308067,
-          "realization": 2.8743604340124875,
-          "total": 3.2628340569790453
+          "evaluation": 0.3952353090280667,
+          "realization": 2.8964452400105074,
+          "total": 3.288799697998911
         },
         "after": {
-          "evaluation": 0.401798989973031,
-          "realization": 0.21629823395051062,
-          "total": 0.6167986909858882
+          "evaluation": 0.3912036719266325,
+          "realization": 0.2213183669373393,
+          "total": 0.6071831600274891
         }
       }
     },
@@ -369,7 +369,7 @@
       "tags": "'special'",
       "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
       "roots": {
-        "before": "/tmp/drvgo-ci-round3-fixed-baseline",
+        "before": "/tmp/drvgo-review-runtime",
         "after": "/home/ryantm/p/drvgo"
       },
       "flags": [
@@ -389,151 +389,151 @@
         "substituters",
         ""
       ],
-      "nonce": "8dbad498a5bf",
+      "nonce": "4ecaf3f2ab33",
       "records": [
         {
           "label": "before",
           "trial": 0,
           "warmup": true,
-          "evaluation": 0.3877858779160306,
-          "realization": 3.366733389091678,
-          "total": 3.7545192670077085,
-          "derivation": "/nix/store/c63jafwbfmsfgl7p5d2i10yk6zd4sv07-drvgo-ci-8dbad498a5bf-before-0.drv",
-          "result": "/nix/store/3b0lcr6l07ldf2kahipjwd695b7k2h31-drvgo-ci-8dbad498a5bf-before-0",
-          "command_output": "/nix/store/02l0rhrj92lrkz1wr7g489yinnnccjbb-go-example.com-ci-tests.test"
+          "evaluation": 0.40435127599630505,
+          "realization": 5.233962694066577,
+          "total": 5.638313970062882,
+          "derivation": "/nix/store/n6f32j96qchp938ifhlgy2v13vy024iw-drvgo-ci-4ecaf3f2ab33-before-0.drv",
+          "result": "/nix/store/vd18yb8mac3r4cmrjldlxhjf6k4dbz67-drvgo-ci-4ecaf3f2ab33-before-0",
+          "command_output": "/nix/store/sxm0fis217yycip0k56sas16cmx5ka7y-go-example.com-ci-tests.test"
         },
         {
           "label": "after",
           "trial": 0,
           "warmup": true,
-          "evaluation": 0.40246941708028316,
-          "realization": 0.6992764530004933,
-          "total": 1.1017458700807765,
-          "derivation": "/nix/store/5p52s9hcpjn40kyrf6v18vkjpvjyr81h-drvgo-ci-8dbad498a5bf-after-0.drv",
-          "result": "/nix/store/00kkd48hacah3k3x63n2sjn6z2g8aigj-drvgo-ci-8dbad498a5bf-after-0",
-          "command_output": "/nix/store/02l0rhrj92lrkz1wr7g489yinnnccjbb-go-example.com-ci-tests.test"
+          "evaluation": 0.4081411010120064,
+          "realization": 0.7289089219411835,
+          "total": 1.13705002295319,
+          "derivation": "/nix/store/xia46ay8hh0m5l8pi852h7r95n4mizpr-drvgo-ci-4ecaf3f2ab33-after-0.drv",
+          "result": "/nix/store/03nf0qdzybv6f47z1bchqv9wd4x0x2dn-drvgo-ci-4ecaf3f2ab33-after-0",
+          "command_output": "/nix/store/sxm0fis217yycip0k56sas16cmx5ka7y-go-example.com-ci-tests.test"
         },
         {
           "label": "after",
           "trial": 1,
           "warmup": false,
-          "evaluation": 0.39470101497136056,
-          "realization": 0.7240908100502566,
-          "total": 1.1187918250216171,
-          "derivation": "/nix/store/yval0vhakc724gvry791ngsmb4bhhz1d-drvgo-ci-8dbad498a5bf-after-1.drv",
-          "result": "/nix/store/va9nw7ibsy8ssy1r73c5838fvdy3sizb-drvgo-ci-8dbad498a5bf-after-1",
-          "command_output": "/nix/store/02l0rhrj92lrkz1wr7g489yinnnccjbb-go-example.com-ci-tests.test"
+          "evaluation": 0.4243642770452425,
+          "realization": 0.7208857140503824,
+          "total": 1.1452499910956249,
+          "derivation": "/nix/store/jprmdff1qh14y1zwh5hzm67yw9cph35m-drvgo-ci-4ecaf3f2ab33-after-1.drv",
+          "result": "/nix/store/7lglxgnhq3gpiywln8hmpgjvgn2hf7fj-drvgo-ci-4ecaf3f2ab33-after-1",
+          "command_output": "/nix/store/sxm0fis217yycip0k56sas16cmx5ka7y-go-example.com-ci-tests.test"
         },
         {
           "label": "before",
           "trial": 1,
           "warmup": false,
-          "evaluation": 0.39492958993650973,
-          "realization": 3.335583751089871,
-          "total": 3.7305133410263807,
-          "derivation": "/nix/store/h10m5fsf1hvidn7rxw4qj4chllp03ps1-drvgo-ci-8dbad498a5bf-before-1.drv",
-          "result": "/nix/store/0l6lv8kwls56838vhi65pihsy3qljhs0-drvgo-ci-8dbad498a5bf-before-1",
-          "command_output": "/nix/store/02l0rhrj92lrkz1wr7g489yinnnccjbb-go-example.com-ci-tests.test"
+          "evaluation": 0.3958479691063985,
+          "realization": 3.378559457953088,
+          "total": 3.7744074270594865,
+          "derivation": "/nix/store/yx9w6pvi0g95diws8fc1zs4szvg4iq3m-drvgo-ci-4ecaf3f2ab33-before-1.drv",
+          "result": "/nix/store/vjhac1w87554g1flysx9y0sqkixgavm6-drvgo-ci-4ecaf3f2ab33-before-1",
+          "command_output": "/nix/store/sxm0fis217yycip0k56sas16cmx5ka7y-go-example.com-ci-tests.test"
         },
         {
           "label": "before",
           "trial": 2,
           "warmup": false,
-          "evaluation": 0.399343698984012,
-          "realization": 3.3772897560847923,
-          "total": 3.7766334550688043,
-          "derivation": "/nix/store/mamq4fk3hgy44yiwfabdxcqzg6zqmcpx-drvgo-ci-8dbad498a5bf-before-2.drv",
-          "result": "/nix/store/y88zwl975k7cibxvi170d41maf88y2nx-drvgo-ci-8dbad498a5bf-before-2",
-          "command_output": "/nix/store/02l0rhrj92lrkz1wr7g489yinnnccjbb-go-example.com-ci-tests.test"
+          "evaluation": 0.372135199024342,
+          "realization": 3.478677587932907,
+          "total": 3.850812786957249,
+          "derivation": "/nix/store/8ly7ppcm48yrp4f6xlk1ga314xbnsshb-drvgo-ci-4ecaf3f2ab33-before-2.drv",
+          "result": "/nix/store/v2ddvflxwikn8zlmf9ksx28picrhifig-drvgo-ci-4ecaf3f2ab33-before-2",
+          "command_output": "/nix/store/sxm0fis217yycip0k56sas16cmx5ka7y-go-example.com-ci-tests.test"
         },
         {
           "label": "after",
           "trial": 2,
           "warmup": false,
-          "evaluation": 0.39643215702380985,
-          "realization": 0.7137843939708546,
-          "total": 1.1102165509946644,
-          "derivation": "/nix/store/d8mvrvgkp3da15c9xfx26zrjygzlzy54-drvgo-ci-8dbad498a5bf-after-2.drv",
-          "result": "/nix/store/fs3h8avicslagps678xhqjrnbz0lihwq-drvgo-ci-8dbad498a5bf-after-2",
-          "command_output": "/nix/store/02l0rhrj92lrkz1wr7g489yinnnccjbb-go-example.com-ci-tests.test"
+          "evaluation": 0.37872213404625654,
+          "realization": 0.72725936898496,
+          "total": 1.1059815030312166,
+          "derivation": "/nix/store/gzwk9kqixbm8hgv530lmw40pnn5jfj04-drvgo-ci-4ecaf3f2ab33-after-2.drv",
+          "result": "/nix/store/g1ssb94xbzjp37kwpgi2jbwld2vmb277-drvgo-ci-4ecaf3f2ab33-after-2",
+          "command_output": "/nix/store/sxm0fis217yycip0k56sas16cmx5ka7y-go-example.com-ci-tests.test"
         },
         {
           "label": "after",
           "trial": 3,
           "warmup": false,
-          "evaluation": 0.3966947851004079,
-          "realization": 0.7054181559942663,
-          "total": 1.1021129410946742,
-          "derivation": "/nix/store/azwp3q78bcwzwq9vr51yyppg5dwhq912-drvgo-ci-8dbad498a5bf-after-3.drv",
-          "result": "/nix/store/cjm8l2fc3m3mwqaccsslg1yqa3d4mp1b-drvgo-ci-8dbad498a5bf-after-3",
-          "command_output": "/nix/store/02l0rhrj92lrkz1wr7g489yinnnccjbb-go-example.com-ci-tests.test"
+          "evaluation": 0.3794779700692743,
+          "realization": 0.7394160719122738,
+          "total": 1.118894041981548,
+          "derivation": "/nix/store/qzbi4grrfvxxmnyqgy086mdriik7pjmf-drvgo-ci-4ecaf3f2ab33-after-3.drv",
+          "result": "/nix/store/818x5zkk56bv48yrillmrmd5rimrqdfb-drvgo-ci-4ecaf3f2ab33-after-3",
+          "command_output": "/nix/store/sxm0fis217yycip0k56sas16cmx5ka7y-go-example.com-ci-tests.test"
         },
         {
           "label": "before",
           "trial": 3,
           "warmup": false,
-          "evaluation": 0.38387269200757146,
-          "realization": 3.38451622298453,
-          "total": 3.7683889149921015,
-          "derivation": "/nix/store/r7i2przszb9n20x37ncacn27qr5g1l04-drvgo-ci-8dbad498a5bf-before-3.drv",
-          "result": "/nix/store/sr2b6dmp6ywvhbx2kh6x2m54d458qjyb-drvgo-ci-8dbad498a5bf-before-3",
-          "command_output": "/nix/store/02l0rhrj92lrkz1wr7g489yinnnccjbb-go-example.com-ci-tests.test"
+          "evaluation": 0.3978023959789425,
+          "realization": 3.3738689030287787,
+          "total": 3.7716712990077212,
+          "derivation": "/nix/store/n9kpk90hk81gip50ya8byk3zg4majp31-drvgo-ci-4ecaf3f2ab33-before-3.drv",
+          "result": "/nix/store/g830qlky1ln372z7dwy2wg5k83yx1akz-drvgo-ci-4ecaf3f2ab33-before-3",
+          "command_output": "/nix/store/sxm0fis217yycip0k56sas16cmx5ka7y-go-example.com-ci-tests.test"
         },
         {
           "label": "before",
           "trial": 4,
           "warmup": false,
-          "evaluation": 0.40507320896722376,
-          "realization": 3.3792131380178034,
-          "total": 3.784286346985027,
-          "derivation": "/nix/store/13d60dzvmhzsmznlp1kxcsyg652sxrbk-drvgo-ci-8dbad498a5bf-before-4.drv",
-          "result": "/nix/store/k6pp8v59fr6j18j1pagqj4611cmh85ny-drvgo-ci-8dbad498a5bf-before-4",
-          "command_output": "/nix/store/02l0rhrj92lrkz1wr7g489yinnnccjbb-go-example.com-ci-tests.test"
+          "evaluation": 0.3852970090229064,
+          "realization": 3.391205313964747,
+          "total": 3.7765023229876533,
+          "derivation": "/nix/store/fxnbq89x0xnqldiwf9n7sk902733d1xm-drvgo-ci-4ecaf3f2ab33-before-4.drv",
+          "result": "/nix/store/93ybcjvsdnvazpc9mipc1ysnxgzp5fpn-drvgo-ci-4ecaf3f2ab33-before-4",
+          "command_output": "/nix/store/sxm0fis217yycip0k56sas16cmx5ka7y-go-example.com-ci-tests.test"
         },
         {
           "label": "after",
           "trial": 4,
           "warmup": false,
-          "evaluation": 0.3846635069930926,
-          "realization": 0.7208871630718932,
-          "total": 1.1055506700649858,
-          "derivation": "/nix/store/qpj22mbcswsdk2lvkin34bz49y0dx58d-drvgo-ci-8dbad498a5bf-after-4.drv",
-          "result": "/nix/store/z2gypcpd9whgajmjkxx99qfqf9scnbck-drvgo-ci-8dbad498a5bf-after-4",
-          "command_output": "/nix/store/02l0rhrj92lrkz1wr7g489yinnnccjbb-go-example.com-ci-tests.test"
+          "evaluation": 0.3950344700133428,
+          "realization": 0.7520492980256677,
+          "total": 1.1470837680390105,
+          "derivation": "/nix/store/v4mjqhmgw147b4c6hlrph3l994pwd4xj-drvgo-ci-4ecaf3f2ab33-after-4.drv",
+          "result": "/nix/store/rrvb5hlc9yyv0qir6y860k0n98rq4fni-drvgo-ci-4ecaf3f2ab33-after-4",
+          "command_output": "/nix/store/sxm0fis217yycip0k56sas16cmx5ka7y-go-example.com-ci-tests.test"
         },
         {
           "label": "after",
           "trial": 5,
           "warmup": false,
-          "evaluation": 0.40975103608798236,
-          "realization": 0.7126011810032651,
-          "total": 1.1223522170912474,
-          "derivation": "/nix/store/iqw3j8rnlakfmx8vbyhv82np1mqk9xjx-drvgo-ci-8dbad498a5bf-after-5.drv",
-          "result": "/nix/store/sc3ihg6kdi3vj0assfs3hp7xpnl27wji-drvgo-ci-8dbad498a5bf-after-5",
-          "command_output": "/nix/store/02l0rhrj92lrkz1wr7g489yinnnccjbb-go-example.com-ci-tests.test"
+          "evaluation": 0.38461081497371197,
+          "realization": 0.7442210030276328,
+          "total": 1.1288318180013448,
+          "derivation": "/nix/store/4sqmbygl22wp7pg00ik7dxv7kg58y2ai-drvgo-ci-4ecaf3f2ab33-after-5.drv",
+          "result": "/nix/store/3y0fzdhp5sz4mfixkmr4qhz10wndk1l4-drvgo-ci-4ecaf3f2ab33-after-5",
+          "command_output": "/nix/store/sxm0fis217yycip0k56sas16cmx5ka7y-go-example.com-ci-tests.test"
         },
         {
           "label": "before",
           "trial": 5,
           "warmup": false,
-          "evaluation": 0.421016528038308,
-          "realization": 3.4049011160386726,
-          "total": 3.8259176440769807,
-          "derivation": "/nix/store/i7kzd1g35clzk89cd0ki4y26b3frbka4-drvgo-ci-8dbad498a5bf-before-5.drv",
-          "result": "/nix/store/bf5x3mn0bbk5rgixmvj5xfxsywwqj0an-drvgo-ci-8dbad498a5bf-before-5",
-          "command_output": "/nix/store/02l0rhrj92lrkz1wr7g489yinnnccjbb-go-example.com-ci-tests.test"
+          "evaluation": 0.3868276729481295,
+          "realization": 3.388109826017171,
+          "total": 3.7749374989653006,
+          "derivation": "/nix/store/5q6bi4dk6k02sgja9jlwkj61iv9ci3ad-drvgo-ci-4ecaf3f2ab33-before-5.drv",
+          "result": "/nix/store/3gxmigr5is73hbr8v2306a0jnjznjg64-drvgo-ci-4ecaf3f2ab33-before-5",
+          "command_output": "/nix/store/sxm0fis217yycip0k56sas16cmx5ka7y-go-example.com-ci-tests.test"
         }
       ],
       "medians": {
         "before": {
-          "evaluation": 0.399343698984012,
-          "realization": 3.3792131380178034,
-          "total": 3.7766334550688043
+          "evaluation": 0.3868276729481295,
+          "realization": 3.388109826017171,
+          "total": 3.7749374989653006
         },
         "after": {
-          "evaluation": 0.39643215702380985,
-          "realization": 0.7137843939708546,
-          "total": 1.1102165509946644
+          "evaluation": 0.38461081497371197,
+          "realization": 0.7394160719122738,
+          "total": 1.1288318180013448
         }
       }
     }
@@ -554,22 +554,24 @@
     }
   },
   "implementation_sha256": {
-    "nix/dynamic.nix": "0adf4b55fc7541501d81ca26e6828f46adf7a5361d6b8deff35186ff8389ce96",
+    "nix/dynamic.nix": "98e102d9b46ebf7198377c850c360240636701102a0eef9038cf94e0b2bba1c5",
     "internal/export/empty_tests.go": "58c8ed684213d05b88a077bc7a23f82a5a86bfcab5984d3b770e0c3bc906b42c",
-    "internal/plan/plan.go": "430b3630e1713956f083fcf5bd6474d6b0bde094868ab0335cf0751a24b46da1"
+    "internal/plan/plan.go": "3e7655e2c9533a15391bfdb6894fd0d182d53d1983ad65ea0516cc08b883cab9",
+    "internal/export/references.go": "248a7e5c1f695bc745cc3c378ecfe41ea75cda4f631afe3add53e546864b9343",
+    "internal/export/templates/default.nix": "ba84d7800776d2d6a4df5200bdb8916b4363d2ead9eacc9695997331ddaa5614"
   },
   "planner_closures": {
     "scope": "Planner input closures, including raw derivation metadata; local zstd level 3 cache; no network timing",
     "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
     "planners": {
       "before": {
-        "derivation": "/nix/store/grz8jk22msb02zn0rm621wl9pr0sdpqv-drvgo-ci-round3-inputs-result.drv.drv",
+        "derivation": "/nix/store/ml5knw8w1isdbm3xjcbdm0rjikvn7rqz-drvgo-runtime-round3-closure-result.drv.drv",
         "roots": [
           "/nix/store/02xq4lq5zhp7cx07959257h9zkkhx1ic-go-libnix-native-toolchain.drv",
           "/nix/store/3xkbv7nbihiprr18n2wdw281xx56s7dp-go-libnix-compile-toolchain",
           "/nix/store/90nk33c4fkyg4x4dfk5cykqiryf2nlqq-bash-interactive-5.3p15",
           "/nix/store/97d5ygrvqj55f4nx1x34wfdcc7qn11c0-coreutils-9.11",
-          "/nix/store/f5cyhbirv3bg2h7j6m3cn4lxswzbw6id-drvgo-0.1.0",
+          "/nix/store/akv7s36shcwjd6pjncy7mskakzasrivl-drvgo-0.1.0",
           "/nix/store/fknhv943140n2074n97va7hcavzif90c-coreutils-9.11.drv",
           "/nix/store/k84xp7kimiyvzjx45k2m2iq9hlr5q3ni-go-libnix-native-toolchain",
           "/nix/store/pdfcrybj1gjyw0qm8apvfh8jnmx4qvfs-go-libnix-toolchain.drv",
@@ -581,17 +583,17 @@
           "/nix/store/vsml0v44fir86xsjjjccqrr979afxgjq-drvgo-round3-pure-source"
         ],
         "paths": 987,
-        "nar_bytes": 805666672,
-        "zstd_bytes": 246894447
+        "nar_bytes": 805683640,
+        "zstd_bytes": 246901091
       },
       "after": {
-        "derivation": "/nix/store/6qj1mhb13105smvqx82cc9x4ry4i5rv6-drvgo-ci-round3-inputs-result.drv.drv",
+        "derivation": "/nix/store/as7mwhfcmi23cv8d9yp7a55zr2y7k83p-drvgo-runtime-round3-closure-result.drv.drv",
         "roots": [
           "/nix/store/02xq4lq5zhp7cx07959257h9zkkhx1ic-go-libnix-native-toolchain.drv",
+          "/nix/store/6rih4hf27b9ylvvhzjz2j4m7nd0wcddi-drvgo-0.1.0",
           "/nix/store/90nk33c4fkyg4x4dfk5cykqiryf2nlqq-bash-interactive-5.3p15",
           "/nix/store/97d5ygrvqj55f4nx1x34wfdcc7qn11c0-coreutils-9.11",
           "/nix/store/fknhv943140n2074n97va7hcavzif90c-coreutils-9.11.drv",
-          "/nix/store/mm61802hm2xvbkzq3z4krw34d6r7w6bs-drvgo-0.1.0",
           "/nix/store/pdfcrybj1gjyw0qm8apvfh8jnmx4qvfs-go-libnix-toolchain.drv",
           "/nix/store/r4yd7hpfwpx5s8ily1ipwjc17cl087mn-nix-2.34.8",
           "/nix/store/vdg74ij7mm6ysqhvq7nm0n6h4vb55q9r-go-libnix-compile-toolchain.drv",
@@ -600,321 +602,345 @@
           "/nix/store/xrgn6m0c5vbz06467q06zdwnk6qqdl7z-go-1.26.5"
         ],
         "paths": 960,
-        "nar_bytes": 418675600,
-        "zstd_bytes": 124191921
+        "nar_bytes": 418688472,
+        "zstd_bytes": 124198274
       }
     }
   },
   "iets": {
     "iets": "/nix/store/4adhszix9rn77kn8xn2m5mvbj123lv0p-iets-0.2.0/bin/iets",
-    "nonce": "4e2c81914b75",
+    "nonce": "9bd4532befd9",
     "records": [
       {
         "case": "outer",
         "client": "nix",
         "trial": 0,
         "warmup": true,
-        "seconds": 0.39127428899519145,
-        "derivation": "/nix/store/5szhvvw0b26kbqj16pqwq8k54pk7262z-drvgo-iets-4e2c81914b75-outer.drv"
+        "seconds": 0.40907323895953596,
+        "derivation": "/nix/store/7xpn7x8dm6h95ck5ljdqf1gl5hp7k2i2-drvgo-runtime-round3-eval-outer.drv"
       },
       {
         "case": "outer",
         "client": "iets-1",
         "trial": 0,
         "warmup": true,
-        "seconds": 0.2036270919488743,
-        "derivation": "/nix/store/5szhvvw0b26kbqj16pqwq8k54pk7262z-drvgo-iets-4e2c81914b75-outer.drv"
+        "seconds": 0.19014237297233194,
+        "derivation": "/nix/store/7xpn7x8dm6h95ck5ljdqf1gl5hp7k2i2-drvgo-runtime-round3-eval-outer.drv"
       },
       {
         "case": "outer",
         "client": "iets-4",
         "trial": 0,
         "warmup": true,
-        "seconds": 0.10671024897601455,
-        "derivation": "/nix/store/5szhvvw0b26kbqj16pqwq8k54pk7262z-drvgo-iets-4e2c81914b75-outer.drv"
+        "seconds": 0.1073615220375359,
+        "derivation": "/nix/store/7xpn7x8dm6h95ck5ljdqf1gl5hp7k2i2-drvgo-runtime-round3-eval-outer.drv"
       },
       {
         "case": "outer",
         "client": "iets-4",
         "trial": 1,
         "warmup": false,
-        "seconds": 0.10298565705306828,
-        "derivation": "/nix/store/5szhvvw0b26kbqj16pqwq8k54pk7262z-drvgo-iets-4e2c81914b75-outer.drv"
+        "seconds": 0.10713444603607059,
+        "derivation": "/nix/store/7xpn7x8dm6h95ck5ljdqf1gl5hp7k2i2-drvgo-runtime-round3-eval-outer.drv"
       },
       {
         "case": "outer",
         "client": "iets-1",
         "trial": 1,
         "warmup": false,
-        "seconds": 0.18851094390265644,
-        "derivation": "/nix/store/5szhvvw0b26kbqj16pqwq8k54pk7262z-drvgo-iets-4e2c81914b75-outer.drv"
+        "seconds": 0.19065701100043952,
+        "derivation": "/nix/store/7xpn7x8dm6h95ck5ljdqf1gl5hp7k2i2-drvgo-runtime-round3-eval-outer.drv"
       },
       {
         "case": "outer",
         "client": "nix",
         "trial": 1,
         "warmup": false,
-        "seconds": 0.387871284969151,
-        "derivation": "/nix/store/5szhvvw0b26kbqj16pqwq8k54pk7262z-drvgo-iets-4e2c81914b75-outer.drv"
+        "seconds": 0.41731651907321066,
+        "derivation": "/nix/store/7xpn7x8dm6h95ck5ljdqf1gl5hp7k2i2-drvgo-runtime-round3-eval-outer.drv"
       },
       {
         "case": "outer",
         "client": "nix",
         "trial": 2,
         "warmup": false,
-        "seconds": 0.39614557405002415,
-        "derivation": "/nix/store/5szhvvw0b26kbqj16pqwq8k54pk7262z-drvgo-iets-4e2c81914b75-outer.drv"
+        "seconds": 0.3859029660234228,
+        "derivation": "/nix/store/7xpn7x8dm6h95ck5ljdqf1gl5hp7k2i2-drvgo-runtime-round3-eval-outer.drv"
       },
       {
         "case": "outer",
         "client": "iets-1",
         "trial": 2,
         "warmup": false,
-        "seconds": 0.1909701080294326,
-        "derivation": "/nix/store/5szhvvw0b26kbqj16pqwq8k54pk7262z-drvgo-iets-4e2c81914b75-outer.drv"
+        "seconds": 0.1922813719138503,
+        "derivation": "/nix/store/7xpn7x8dm6h95ck5ljdqf1gl5hp7k2i2-drvgo-runtime-round3-eval-outer.drv"
       },
       {
         "case": "outer",
         "client": "iets-4",
         "trial": 2,
         "warmup": false,
-        "seconds": 0.10979499598033726,
-        "derivation": "/nix/store/5szhvvw0b26kbqj16pqwq8k54pk7262z-drvgo-iets-4e2c81914b75-outer.drv"
+        "seconds": 0.1081559609156102,
+        "derivation": "/nix/store/7xpn7x8dm6h95ck5ljdqf1gl5hp7k2i2-drvgo-runtime-round3-eval-outer.drv"
       },
       {
         "case": "outer",
         "client": "iets-4",
         "trial": 3,
         "warmup": false,
-        "seconds": 0.10651870595756918,
-        "derivation": "/nix/store/5szhvvw0b26kbqj16pqwq8k54pk7262z-drvgo-iets-4e2c81914b75-outer.drv"
+        "seconds": 0.10311770800035447,
+        "derivation": "/nix/store/7xpn7x8dm6h95ck5ljdqf1gl5hp7k2i2-drvgo-runtime-round3-eval-outer.drv"
       },
       {
         "case": "outer",
         "client": "iets-1",
         "trial": 3,
         "warmup": false,
-        "seconds": 0.1897574309259653,
-        "derivation": "/nix/store/5szhvvw0b26kbqj16pqwq8k54pk7262z-drvgo-iets-4e2c81914b75-outer.drv"
+        "seconds": 0.19168645702302456,
+        "derivation": "/nix/store/7xpn7x8dm6h95ck5ljdqf1gl5hp7k2i2-drvgo-runtime-round3-eval-outer.drv"
       },
       {
         "case": "outer",
         "client": "nix",
         "trial": 3,
         "warmup": false,
-        "seconds": 0.4250640779500827,
-        "derivation": "/nix/store/5szhvvw0b26kbqj16pqwq8k54pk7262z-drvgo-iets-4e2c81914b75-outer.drv"
+        "seconds": 0.3930783059913665,
+        "derivation": "/nix/store/7xpn7x8dm6h95ck5ljdqf1gl5hp7k2i2-drvgo-runtime-round3-eval-outer.drv"
       },
       {
         "case": "outer",
         "client": "nix",
         "trial": 4,
         "warmup": false,
-        "seconds": 0.3856758940964937,
-        "derivation": "/nix/store/5szhvvw0b26kbqj16pqwq8k54pk7262z-drvgo-iets-4e2c81914b75-outer.drv"
+        "seconds": 0.38466873997822404,
+        "derivation": "/nix/store/7xpn7x8dm6h95ck5ljdqf1gl5hp7k2i2-drvgo-runtime-round3-eval-outer.drv"
       },
       {
         "case": "outer",
         "client": "iets-1",
         "trial": 4,
         "warmup": false,
-        "seconds": 0.18690605298615992,
-        "derivation": "/nix/store/5szhvvw0b26kbqj16pqwq8k54pk7262z-drvgo-iets-4e2c81914b75-outer.drv"
+        "seconds": 0.1973844449967146,
+        "derivation": "/nix/store/7xpn7x8dm6h95ck5ljdqf1gl5hp7k2i2-drvgo-runtime-round3-eval-outer.drv"
       },
       {
         "case": "outer",
         "client": "iets-4",
         "trial": 4,
         "warmup": false,
-        "seconds": 0.1085464310599491,
-        "derivation": "/nix/store/5szhvvw0b26kbqj16pqwq8k54pk7262z-drvgo-iets-4e2c81914b75-outer.drv"
+        "seconds": 0.11044005607254803,
+        "derivation": "/nix/store/7xpn7x8dm6h95ck5ljdqf1gl5hp7k2i2-drvgo-runtime-round3-eval-outer.drv"
       },
       {
         "case": "outer",
         "client": "iets-4",
         "trial": 5,
         "warmup": false,
-        "seconds": 0.10480059299152344,
-        "derivation": "/nix/store/5szhvvw0b26kbqj16pqwq8k54pk7262z-drvgo-iets-4e2c81914b75-outer.drv"
+        "seconds": 0.10221553803421557,
+        "derivation": "/nix/store/7xpn7x8dm6h95ck5ljdqf1gl5hp7k2i2-drvgo-runtime-round3-eval-outer.drv"
       },
       {
         "case": "outer",
         "client": "iets-1",
         "trial": 5,
         "warmup": false,
-        "seconds": 0.18775647797156125,
-        "derivation": "/nix/store/5szhvvw0b26kbqj16pqwq8k54pk7262z-drvgo-iets-4e2c81914b75-outer.drv"
+        "seconds": 0.19255946506746113,
+        "derivation": "/nix/store/7xpn7x8dm6h95ck5ljdqf1gl5hp7k2i2-drvgo-runtime-round3-eval-outer.drv"
       },
       {
         "case": "outer",
         "client": "nix",
         "trial": 5,
         "warmup": false,
-        "seconds": 0.4041892489185557,
-        "derivation": "/nix/store/5szhvvw0b26kbqj16pqwq8k54pk7262z-drvgo-iets-4e2c81914b75-outer.drv"
+        "seconds": 0.39640060800593346,
+        "derivation": "/nix/store/7xpn7x8dm6h95ck5ljdqf1gl5hp7k2i2-drvgo-runtime-round3-eval-outer.drv"
       },
       {
         "case": "nested",
         "client": "nix",
         "trial": 0,
         "warmup": true,
-        "seconds": 0.3939080510754138,
-        "derivation": "/nix/store/s87s8f7xcbjk3knwsz0isvm92mwb9mis-drvgo-iets-4e2c81914b75-nested.drv"
+        "seconds": 0.41261554800439626,
+        "derivation": "/nix/store/2zsm1q377mfkklx2cr0l0rw32d95ch25-drvgo-runtime-round3-eval-nested.drv"
       },
       {
         "case": "nested",
         "client": "iets-1",
         "trial": 0,
         "warmup": true,
-        "seconds": 0.19007253798190504,
-        "derivation": "/nix/store/s87s8f7xcbjk3knwsz0isvm92mwb9mis-drvgo-iets-4e2c81914b75-nested.drv"
+        "seconds": 0.1907651969231665,
+        "derivation": "/nix/store/2zsm1q377mfkklx2cr0l0rw32d95ch25-drvgo-runtime-round3-eval-nested.drv"
       },
       {
         "case": "nested",
         "client": "iets-4",
         "trial": 0,
         "warmup": true,
-        "seconds": 0.11252089100889862,
-        "derivation": "/nix/store/s87s8f7xcbjk3knwsz0isvm92mwb9mis-drvgo-iets-4e2c81914b75-nested.drv"
+        "seconds": 0.11059728206600994,
+        "derivation": "/nix/store/2zsm1q377mfkklx2cr0l0rw32d95ch25-drvgo-runtime-round3-eval-nested.drv"
       },
       {
         "case": "nested",
         "client": "iets-4",
         "trial": 1,
         "warmup": false,
-        "seconds": 0.10604331002105027,
-        "derivation": "/nix/store/s87s8f7xcbjk3knwsz0isvm92mwb9mis-drvgo-iets-4e2c81914b75-nested.drv"
+        "seconds": 0.10136850900016725,
+        "derivation": "/nix/store/2zsm1q377mfkklx2cr0l0rw32d95ch25-drvgo-runtime-round3-eval-nested.drv"
       },
       {
         "case": "nested",
         "client": "iets-1",
         "trial": 1,
         "warmup": false,
-        "seconds": 0.18972525803837925,
-        "derivation": "/nix/store/s87s8f7xcbjk3knwsz0isvm92mwb9mis-drvgo-iets-4e2c81914b75-nested.drv"
+        "seconds": 0.19239280000329018,
+        "derivation": "/nix/store/2zsm1q377mfkklx2cr0l0rw32d95ch25-drvgo-runtime-round3-eval-nested.drv"
       },
       {
         "case": "nested",
         "client": "nix",
         "trial": 1,
         "warmup": false,
-        "seconds": 0.38722414802759886,
-        "derivation": "/nix/store/s87s8f7xcbjk3knwsz0isvm92mwb9mis-drvgo-iets-4e2c81914b75-nested.drv"
+        "seconds": 0.3960310600232333,
+        "derivation": "/nix/store/2zsm1q377mfkklx2cr0l0rw32d95ch25-drvgo-runtime-round3-eval-nested.drv"
       },
       {
         "case": "nested",
         "client": "nix",
         "trial": 2,
         "warmup": false,
-        "seconds": 0.3997683299239725,
-        "derivation": "/nix/store/s87s8f7xcbjk3knwsz0isvm92mwb9mis-drvgo-iets-4e2c81914b75-nested.drv"
+        "seconds": 0.39374471094924957,
+        "derivation": "/nix/store/2zsm1q377mfkklx2cr0l0rw32d95ch25-drvgo-runtime-round3-eval-nested.drv"
       },
       {
         "case": "nested",
         "client": "iets-1",
         "trial": 2,
         "warmup": false,
-        "seconds": 0.1885406409855932,
-        "derivation": "/nix/store/s87s8f7xcbjk3knwsz0isvm92mwb9mis-drvgo-iets-4e2c81914b75-nested.drv"
+        "seconds": 0.1945215379819274,
+        "derivation": "/nix/store/2zsm1q377mfkklx2cr0l0rw32d95ch25-drvgo-runtime-round3-eval-nested.drv"
       },
       {
         "case": "nested",
         "client": "iets-4",
         "trial": 2,
         "warmup": false,
-        "seconds": 0.11489165900275111,
-        "derivation": "/nix/store/s87s8f7xcbjk3knwsz0isvm92mwb9mis-drvgo-iets-4e2c81914b75-nested.drv"
+        "seconds": 0.10522316000424325,
+        "derivation": "/nix/store/2zsm1q377mfkklx2cr0l0rw32d95ch25-drvgo-runtime-round3-eval-nested.drv"
       },
       {
         "case": "nested",
         "client": "iets-4",
         "trial": 3,
         "warmup": false,
-        "seconds": 0.10896227101329714,
-        "derivation": "/nix/store/s87s8f7xcbjk3knwsz0isvm92mwb9mis-drvgo-iets-4e2c81914b75-nested.drv"
+        "seconds": 0.10569330200087279,
+        "derivation": "/nix/store/2zsm1q377mfkklx2cr0l0rw32d95ch25-drvgo-runtime-round3-eval-nested.drv"
       },
       {
         "case": "nested",
         "client": "iets-1",
         "trial": 3,
         "warmup": false,
-        "seconds": 0.19266913400497288,
-        "derivation": "/nix/store/s87s8f7xcbjk3knwsz0isvm92mwb9mis-drvgo-iets-4e2c81914b75-nested.drv"
+        "seconds": 0.19289184198714793,
+        "derivation": "/nix/store/2zsm1q377mfkklx2cr0l0rw32d95ch25-drvgo-runtime-round3-eval-nested.drv"
       },
       {
         "case": "nested",
         "client": "nix",
         "trial": 3,
         "warmup": false,
-        "seconds": 0.4231047009816393,
-        "derivation": "/nix/store/s87s8f7xcbjk3knwsz0isvm92mwb9mis-drvgo-iets-4e2c81914b75-nested.drv"
+        "seconds": 0.3991649030940607,
+        "derivation": "/nix/store/2zsm1q377mfkklx2cr0l0rw32d95ch25-drvgo-runtime-round3-eval-nested.drv"
       },
       {
         "case": "nested",
         "client": "nix",
         "trial": 4,
         "warmup": false,
-        "seconds": 0.3956965251127258,
-        "derivation": "/nix/store/s87s8f7xcbjk3knwsz0isvm92mwb9mis-drvgo-iets-4e2c81914b75-nested.drv"
+        "seconds": 0.40351747593376786,
+        "derivation": "/nix/store/2zsm1q377mfkklx2cr0l0rw32d95ch25-drvgo-runtime-round3-eval-nested.drv"
       },
       {
         "case": "nested",
         "client": "iets-1",
         "trial": 4,
         "warmup": false,
-        "seconds": 0.18989621300715953,
-        "derivation": "/nix/store/s87s8f7xcbjk3knwsz0isvm92mwb9mis-drvgo-iets-4e2c81914b75-nested.drv"
+        "seconds": 0.20498367003165185,
+        "derivation": "/nix/store/2zsm1q377mfkklx2cr0l0rw32d95ch25-drvgo-runtime-round3-eval-nested.drv"
       },
       {
         "case": "nested",
         "client": "iets-4",
         "trial": 4,
         "warmup": false,
-        "seconds": 0.11595140199642628,
-        "derivation": "/nix/store/s87s8f7xcbjk3knwsz0isvm92mwb9mis-drvgo-iets-4e2c81914b75-nested.drv"
+        "seconds": 0.11342212301678956,
+        "derivation": "/nix/store/2zsm1q377mfkklx2cr0l0rw32d95ch25-drvgo-runtime-round3-eval-nested.drv"
       },
       {
         "case": "nested",
         "client": "iets-4",
         "trial": 5,
         "warmup": false,
-        "seconds": 0.10335545404814184,
-        "derivation": "/nix/store/s87s8f7xcbjk3knwsz0isvm92mwb9mis-drvgo-iets-4e2c81914b75-nested.drv"
+        "seconds": 0.10811045591253787,
+        "derivation": "/nix/store/2zsm1q377mfkklx2cr0l0rw32d95ch25-drvgo-runtime-round3-eval-nested.drv"
       },
       {
         "case": "nested",
         "client": "iets-1",
         "trial": 5,
         "warmup": false,
-        "seconds": 0.19228789396584034,
-        "derivation": "/nix/store/s87s8f7xcbjk3knwsz0isvm92mwb9mis-drvgo-iets-4e2c81914b75-nested.drv"
+        "seconds": 0.19353465805761516,
+        "derivation": "/nix/store/2zsm1q377mfkklx2cr0l0rw32d95ch25-drvgo-runtime-round3-eval-nested.drv"
       },
       {
         "case": "nested",
         "client": "nix",
         "trial": 5,
         "warmup": false,
-        "seconds": 0.39715107704978436,
-        "derivation": "/nix/store/s87s8f7xcbjk3knwsz0isvm92mwb9mis-drvgo-iets-4e2c81914b75-nested.drv"
+        "seconds": 0.4193227089708671,
+        "derivation": "/nix/store/2zsm1q377mfkklx2cr0l0rw32d95ch25-drvgo-runtime-round3-eval-nested.drv"
       }
     ],
     "checks": [
       {
         "case": "outer",
-        "derivation": "/nix/store/5szhvvw0b26kbqj16pqwq8k54pk7262z-drvgo-iets-4e2c81914b75-outer.drv",
-        "output": "/nix/store/fg7pibkp5rkc0vp5j0qilif89bg434fz-drvgo-iets-4e2c81914b75-outer",
-        "command_output": "/nix/store/w9xg6bisfnwn6rx6jskisbmrklnrm482-go-example.com-libnix-fixture",
-        "direct_output": "/nix/store/g6x4pjb64jq2hisjdrnn0jcdx33f54r3-drvgo-iets-4e2c81914b75-outer-result"
+        "derivation": "/nix/store/nh9nr9vb48gwcfjrdcg4smmsphccrnf1-drvgo-iets-9bd4532befd9-outer.drv",
+        "output": "/nix/store/h4ls94qfwl561il8gfn8fwkkjjhpzv43-drvgo-iets-9bd4532befd9-outer",
+        "command_output": "/nix/store/jvdjm1asmra4x7fvxybrwi0kf3s65klq-go-example.com-libnix-fixture",
+        "direct_output": "/nix/store/0q1c614v991m9jd1y6893m85rl5lkzp1-drvgo-iets-9bd4532befd9-outer-result"
       },
       {
         "case": "nested",
-        "derivation": "/nix/store/s87s8f7xcbjk3knwsz0isvm92mwb9mis-drvgo-iets-4e2c81914b75-nested.drv",
-        "output": "/nix/store/gnkckys18j603ha0sr8jwplx5gxayf0c-drvgo-iets-4e2c81914b75-nested",
-        "command_output": "/nix/store/w9xg6bisfnwn6rx6jskisbmrklnrm482-go-example.com-libnix-fixture",
-        "direct_output": "/nix/store/xn68i8c9mzjyyqfpdqh3rlwxm5b9kr3q-drvgo-iets-4e2c81914b75-nested-result"
+        "derivation": "/nix/store/4z77j5zx63db8f4n295r3fcnn9birni2-drvgo-iets-9bd4532befd9-nested.drv",
+        "output": "/nix/store/8l1m1ilxfcqs65xw7f83551wbj53wb30-drvgo-iets-9bd4532befd9-nested",
+        "command_output": "/nix/store/jvdjm1asmra4x7fvxybrwi0kf3s65klq-go-example.com-libnix-fixture",
+        "direct_output": "/nix/store/0kiblq9xv0z8bxv479x24yfvizx97mfk-drvgo-iets-9bd4532befd9-nested-result"
+      },
+      {
+        "case": "runtime-nested-False-explicit-False",
+        "derivation": "/nix/store/srzxjinz1skm66kxz2nrsparwwr4a30y-drvgo-iets-9bd4532befd9-runtime-nested-False-explicit-False.drv",
+        "output": "/nix/store/dwkwb3bmwlq59w1fblzmc7ibnbkm4mcd-drvgo-iets-9bd4532befd9-runtime-nested-False-explicit-False",
+        "command_output": "/nix/store/ihzzl70i2mzpd1cinb71bvs29h3rb6zz-go-example.com-runtime-reference"
+      },
+      {
+        "case": "runtime-nested-False-explicit-True",
+        "derivation": "/nix/store/7l903kmv3f9n2gmikgkiyj5rlshi2lm0-drvgo-iets-9bd4532befd9-runtime-nested-False-explicit-True.drv",
+        "output": "/nix/store/rvhfb1w0c52i5rvbwk9y08sa1n57f2zb-drvgo-iets-9bd4532befd9-runtime-nested-False-explicit-True",
+        "command_output": "/nix/store/ihzzl70i2mzpd1cinb71bvs29h3rb6zz-go-example.com-runtime-reference"
+      },
+      {
+        "case": "runtime-nested-True-explicit-False",
+        "derivation": "/nix/store/69lj56i3m2l9ripvfc35ks67spzfkp1g-drvgo-iets-9bd4532befd9-runtime-nested-True-explicit-False.drv",
+        "output": "/nix/store/vm2358gv3srw7v1isl7ji7p9l514zabb-drvgo-iets-9bd4532befd9-runtime-nested-True-explicit-False",
+        "command_output": "/nix/store/ihzzl70i2mzpd1cinb71bvs29h3rb6zz-go-example.com-runtime-reference"
+      },
+      {
+        "case": "runtime-nested-True-explicit-True",
+        "derivation": "/nix/store/z3j57krfw0c3i2laf4x7g81zshkwns8l-drvgo-iets-9bd4532befd9-runtime-nested-True-explicit-True.drv",
+        "output": "/nix/store/bviialf7n5zbibwgc2d9nxaiy8ybzc5f-drvgo-iets-9bd4532befd9-runtime-nested-True-explicit-True",
+        "command_output": "/nix/store/ihzzl70i2mzpd1cinb71bvs29h3rb6zz-go-example.com-runtime-reference"
       }
     ],
-    "scope": "Warm evaluation with tracing cache disabled; real daemon builds with IFD and classic fallback disabled. Nested planning uses iets too.",
+    "scope": "Five alternating warm evaluation trials, tracing cache disabled, compiled-file cache warm, no concurrent local compatibility or benchmark runs",
     "version": "iets 0.2.0",
     "nix_version": "nix (Determinate Nix 3.24.1) 2.35.3",
     "embed_invalidation": "passed",
@@ -925,7 +951,7 @@
       },
       {
         "case": "optional-outer-tagged",
-        "command_output": "/nix/store/x32z1a72r6zfywk2n7qdcv2fiyxcfdd9-go-example.com-iets-tests.test"
+        "command_output": "/nix/store/lxbcwyaxgsmci8rscgnxwg064iawxrg6-go-example.com-iets-tests.test"
       },
       {
         "case": "optional-nested-empty",
@@ -933,122 +959,134 @@
       },
       {
         "case": "optional-nested-tagged",
-        "command_output": "/nix/store/x32z1a72r6zfywk2n7qdcv2fiyxcfdd9-go-example.com-iets-tests.test"
+        "command_output": "/nix/store/lxbcwyaxgsmci8rscgnxwg064iawxrg6-go-example.com-iets-tests.test"
       }
     ],
     "optional_tests_invalid_after_cached_empty": "passed",
     "medians": {
       "outer": {
-        "nix": 0.39614557405002415,
-        "iets-1": 0.18851094390265644,
-        "iets-4": 0.10651870595756918
+        "nix": 0.3930783059913665,
+        "iets-1": 0.1922813719138503,
+        "iets-4": 0.10713444603607059
       },
       "nested": {
-        "nix": 0.39715107704978436,
-        "iets-1": 0.18989621300715953,
-        "iets-4": 0.10896227101329714
+        "nix": 0.3991649030940607,
+        "iets-1": 0.19353465805761516,
+        "iets-4": 0.10569330200087279
       }
     }
   },
   "compatibility": {
-    "cases": [
+    "dynamic_ifd_disabled": "passed",
+    "dynamic_runtime_references": [
       {
-        "name": "embed-cgo",
-        "units": 67,
-        "store_path": "/nix/store/w9xg6bisfnwn6rx6jskisbmrklnrm482-go-example.com-libnix-fixture",
-        "derivations_sha256": "aadcc3a3657d66c511c0ac46c14af5b974df7848c8a9cb9b4ab8b3a63a30106c",
-        "unchanged_package_derivations": true
+        "explicit_inputs": false,
+        "output": "/nix/store/9p435drhni7cbsjlsdrah45f5rfmcg29-drvgo-compatibility-fixture"
       },
       {
-        "name": "assembly",
-        "units": 62,
-        "store_path": "/nix/store/mmsf8yvg766jh6bc970jxr4mdb4m8k8q-go-example.com-compat",
-        "derivations_sha256": "c4602c49fe044af5ce4267008bcd826178e17188263eb157f192e908bb4a6800",
-        "unchanged_package_derivations": true
-      },
-      {
-        "name": "tags-ldflags",
-        "units": 62,
-        "store_path": "/nix/store/8pq6ril886g7c0i092p6ks6dxmwmfgfw-go-example.com-compat",
-        "derivations_sha256": "e5b4944b593cb87649de89df97294ebc22e41cb0b3668d6a01e4ce13933745a2",
-        "unchanged_package_derivations": true
-      },
-      {
-        "name": "external-link",
-        "units": 63,
-        "store_path": "/nix/store/5jb9in513w8fsr1j091q91vw1qkb3sir-go-example.com-compat",
-        "derivations_sha256": "ae1d4082aa7bf104965e92e57800040a12f8b2feee62572010241a7abafdef29",
-        "unchanged_package_derivations": true
-      },
-      {
-        "name": "workspace",
-        "units": 62,
-        "store_path": "/nix/store/bpxfc2mpb6jlfc16s1z6zmi9nqv8lagr-go-example.com-app",
-        "derivations_sha256": "6e4082182840ba2ab5483989b94174d9fc4b860b29e91c644645469055b080ba",
-        "unchanged_package_derivations": true
-      },
-      {
-        "name": "vendored",
-        "units": 62,
-        "store_path": "/nix/store/9jfydczwzw2jd3p918c9niakgkgqi0gh-go-example.com-app",
-        "derivations_sha256": "8245eb5b5badb3b87eb79e47d61962094dbc3764a6bd667939ce3d35ccde045a",
-        "unchanged_package_derivations": true
-      },
-      {
-        "name": "cgo-disabled",
-        "units": 61,
-        "store_path": "/nix/store/j2l13a5z5qzk6w7406yf21n3xzss4qql-go-example.com-modes.test",
-        "derivations_sha256": "6130e6b797b7a872ff8eaea20445d956d0742f639723cf1dc5dc689f3d8f9111",
-        "unchanged_package_derivations": true
-      },
-      {
-        "name": "race-cgo",
-        "units": 64,
-        "store_path": "/nix/store/7xxbmfar1l0fwn26q6x4i4i6pgnfkwaq-go-example.com-modes.test",
-        "derivations_sha256": "17e424a6e463c4b3da5123f636e8a1fffade437d3a2f7712f590cd68488581db",
-        "unchanged_package_derivations": true
-      },
-      {
-        "name": "cxx",
-        "units": 62,
-        "store_path": "/nix/store/3l6qx7vp1sg5f0y0lv0ymj9cr768iq0j-go-example.com-cxx",
-        "derivations_sha256": "1ccc4c55f5b1aaf723c3873ef04964147e1580a3fccf7637a0fdb6b05e1981dd",
-        "unchanged_package_derivations": true
-      },
-      {
-        "name": "native-object-cgo-disabled",
-        "units": 61,
-        "store_path": "/nix/store/p87wfp4d3x9qszp146nd42d3svz6m96j-go-example.com-nativeobject",
-        "derivations_sha256": "d3205634f789746334cd7399c7e81d7436a866fd4dbf0cfea90434e5caee45a1",
-        "baseline": "Pre-existing .syso replay failure; fixed in this round"
+        "explicit_inputs": true,
+        "output": "/nix/store/9p435drhni7cbsjlsdrah45f5rfmcg29-drvgo-compatibility-fixture"
       }
     ],
-    "unchanged_existing_package_derivations": 565,
-    "dynamic_ifd_disabled": "passed",
     "planner_substitution_policy": "passed",
     "dynamic_nested_custom_buildid": "passed",
     "dynamic_native_object": "passed",
     "dynamic_tests": [
       {
         "name": "test-cgo-disabled",
-        "store_path": "/nix/store/6js3wz0kwqnzz1j8ikxqql1v3jp87pfj-go-example.com-modes.test.test",
+        "store_path": "/nix/store/8yipsrmvyammjn40dv0dmpmrdd5a04qy-go-example.com-modes.test.test",
         "cgo": "0",
         "race": false
       },
       {
         "name": "test-race-cgo",
-        "store_path": "/nix/store/6x6lvb77yc8jfjdnaxbqnn7sv677dl87-go-example.com-modes.test.test",
+        "store_path": "/nix/store/xq59n7lpnf2dbpvafhmc679m3b19vk9h-go-example.com-modes.test.test",
         "cgo": "1",
         "race": true
       }
     ],
     "dynamic_empty_tests": "passed",
     "incremental_cache_and_embeds": "passed",
-    "test_binaries_and_race_detection": "passed"
+    "test_binaries_and_race_detection": "passed",
+    "cases": [
+      {
+        "name": "embed-cgo",
+        "units": 67,
+        "store_path": "/nix/store/jvdjm1asmra4x7fvxybrwi0kf3s65klq-go-example.com-libnix-fixture",
+        "derivations_sha256": "257630dfc2b741a7b397de5959de8e3ee45da16c28f44336a7df311b1544eeaf",
+        "unchanged_package_derivations": true
+      },
+      {
+        "name": "assembly",
+        "units": 62,
+        "store_path": "/nix/store/9vfcm8g5fla2rz2xy8z6s2p4gwvwxasd-go-example.com-compat",
+        "derivations_sha256": "d807a7ae89f336d53bf51b51c45a568d9c893877ea6bc55ef94b94349dbf0709",
+        "unchanged_package_derivations": true
+      },
+      {
+        "name": "tags-ldflags",
+        "units": 62,
+        "store_path": "/nix/store/jq0hzvdq0mamjjd35qhy4zprnm3rbqjg-go-example.com-compat",
+        "derivations_sha256": "7f6c17f1a1f4dda17d4c683563a110e47d910d732b72f49916f26506187777d5",
+        "unchanged_package_derivations": true
+      },
+      {
+        "name": "external-link",
+        "units": 63,
+        "store_path": "/nix/store/an8326r3jcdvmddynbaj40lq3a9bdyib-go-example.com-compat",
+        "derivations_sha256": "8c82ff670caaaa58602ad7a83c1afc17c7070dab251d3eaacc61315b4137cb80",
+        "unchanged_package_derivations": true
+      },
+      {
+        "name": "workspace",
+        "units": 62,
+        "store_path": "/nix/store/xm8n5wma90yc27k3xvk9rk8h88z572na-go-example.com-app",
+        "derivations_sha256": "be22327b1ea97b20aa42083d80ba0e804d8471ab8fb34ea28f6d6906b4ff6e22",
+        "unchanged_package_derivations": true
+      },
+      {
+        "name": "vendored",
+        "units": 62,
+        "store_path": "/nix/store/0y8jnhwdr0j342gn0nfak9bl6yxvfj2r-go-example.com-app",
+        "derivations_sha256": "9efe0dd03a93464cd96df395c3274a55f9df13d8ff2e056900beb3e242799a5b",
+        "unchanged_package_derivations": true
+      },
+      {
+        "name": "cgo-disabled",
+        "units": 61,
+        "store_path": "/nix/store/y5n8vnqv788v6s2krd99zb567gkif3ml-go-example.com-modes.test",
+        "derivations_sha256": "0d0693d9d23a7e3f5c4b55cb91e8b53b03659939110d632ef60724010c2756ce",
+        "unchanged_package_derivations": true
+      },
+      {
+        "name": "race-cgo",
+        "units": 64,
+        "store_path": "/nix/store/wvzlwl142ip6hmd69mjcxgrbj04lbgby-go-example.com-modes.test",
+        "derivations_sha256": "25f2c2c68d3ed3fd939fdc02fbbb499bd6d37bb3c8e27660541772d2cead5d62",
+        "unchanged_package_derivations": true
+      },
+      {
+        "name": "cxx",
+        "units": 62,
+        "store_path": "/nix/store/30583gjwgl8aw97zgpcbjqxwjlks77hn-go-example.com-cxx",
+        "derivations_sha256": "159ded454cb0acd371e9b9021c3d338ec63e198c2ffe6e924792be50681bdd5e",
+        "unchanged_package_derivations": true
+      },
+      {
+        "name": "native-object-cgo-disabled",
+        "units": 61,
+        "store_path": "/nix/store/a81bvagqxaka0zgqwkzhv107ihlh108v-go-example.com-nativeobject",
+        "derivations_sha256": "08c2e4bb2629b5545b8dd893fb1bc32fbe08a074e1d8f0c20e3f285afeaa3f43",
+        "baseline": "Pre-existing .syso replay failure; fixed in this round"
+      }
+    ],
+    "unchanged_existing_package_derivations": 565
   },
   "native_object_regression": {
     "baseline_failure": "pack: open ./unused.syso: no such file or directory",
     "source_removal_and_sandbox": "passed",
     "cgo_disabled_external_linking": "Rejected by both baseline and optimized planners as Go requires"
-  }
+  },
+  "implementation_commit": "1006f61",
+  "baseline_note": "Includes reviewed runtime-reference fixes from PR #9 on both sides; supersedes measurements against 0ade565."
 }
