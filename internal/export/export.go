@@ -327,6 +327,7 @@ func Generate(o Options) (*Graph, error) {
 		// to source tokens above and must retain their working directory.
 		u.Script = strings.ReplaceAll(u.Script, "cd "+dir+"\n", "cd @WORK@\n")
 		u.Script = toolPaths.Replace(u.Script)
+		u.Script = normalizeNativePaths(u.Script)
 		u.Script = normalizeDirectories(u.Script)
 		if u.Binary {
 			if root != "" {

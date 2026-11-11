@@ -425,6 +425,13 @@ func build() error {
 	// Archive/build-ID helpers now run in this process as well as child tools.
 	runtime.GOMAXPROCS(n)
 	tmp := os.Getenv("TMPDIR")
+	// Native debug paths use the physical working directory. Resolve aliases
+	// before substituting prefix maps (notably /var -> /private/var on macOS).
+	tmp, err = filepath.EvalSymlinks(tmp)
+	if err != nil {
+		return err
+	}
+	os.Setenv("TMPDIR", tmp)
 	for _, dir := range []string{"home", "cache", "unit", "work"} {
 		if err := os.MkdirAll(filepath.Join(tmp, dir), 0755); err != nil {
 			return err

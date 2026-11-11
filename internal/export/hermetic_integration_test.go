@@ -5,6 +5,7 @@ package export
 import (
 	"bytes"
 	"debug/macho"
+	"encoding/json"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -61,6 +62,7 @@ func main() { fmt.Println(C.answer()) }
 			if b, err := exec.Command(binary).CombinedOutput(); err != nil || string(b) != "42\n" {
 				t.Fatalf("compressed native run: %v: %s", err, b)
 			}
+			checkNativeTemporaryPaths(t, out, g.BinaryName)
 			// Moving native headers into the work directory must remain reproducible,
 			// including debug paths on platforms with different sandbox layouts.
 			if b, err := exec.Command("nix-build", append(args, "--check", "--keep-failed")...).CombinedOutput(); err != nil {
@@ -68,6 +70,67 @@ func main() { fmt.Println(C.answer()) }
 				t.Fatalf("compressed native reproducibility: %v\n%s", err, b)
 			}
 		})
+	}
+}
+
+// Linux's Nix sandbox consistently uses /build, hiding accidental native debug
+// references to TMPDIR. Replay the same root with its already-built dependencies
+// in two different directories, including a symlink like macOS's /var alias.
+func checkNativeTemporaryPaths(t *testing.T, graph, name string) {
+	t.Helper()
+	expression := `let d = (import ` + graph + ` {}).default; in {
+		inherit (d) builder script PATH GOROOT GOOS GOARCH CGO_ENABLED GOENV
+			GOTOOLCHAIN isBinary binaryName toolchainInput;
+	}`
+	b, err := exec.Command("nix-instantiate", "--eval", "--strict", "--json", "--expr", expression).Output()
+	if err != nil {
+		t.Fatal(err)
+	}
+	var env map[string]string
+	if err := json.Unmarshal(b, &env); err != nil {
+		t.Fatal(err)
+	}
+	root := t.TempDir()
+	script := filepath.Join(root, "script")
+	if err := os.WriteFile(script, []byte(env["script"]), 0644); err != nil {
+		t.Fatal(err)
+	}
+	builder := env["builder"]
+	delete(env, "builder")
+	delete(env, "script")
+	var first []byte
+	for _, label := range []string{"first", "second"} {
+		tmp := filepath.Join(root, label)
+		if err := os.Mkdir(tmp, 0755); err != nil {
+			t.Fatal(err)
+		}
+		if label == "second" {
+			alias := tmp + "-alias"
+			if err := os.Symlink(tmp, alias); err != nil {
+				t.Fatal(err)
+			}
+			tmp = alias
+		}
+		out := filepath.Join(root, label+"-out")
+		cmd := exec.Command(builder)
+		for key, value := range env {
+			cmd.Env = append(cmd.Env, key+"="+value)
+		}
+		cmd.Env = append(cmd.Env, "TMPDIR="+tmp, "NIX_BUILD_TOP="+tmp, "out="+out, "scriptPath="+script, "NIX_BUILD_CORES=2")
+		if b, err := cmd.CombinedOutput(); err != nil {
+			t.Fatalf("native replay: %v\n%s", err, b)
+		}
+		binary := filepath.Join(out, "bin", name)
+		b, err := os.ReadFile(binary)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if first == nil {
+			first = b
+		} else if !bytes.Equal(first, b) {
+			logBinaryDifferences(t, filepath.Join(root, "first-out", "bin", name), binary)
+			t.Fatal("native output depends on the temporary directory")
+		}
 	}
 }
 
@@ -113,7 +176,18 @@ func logBinaryDifferences(t *testing.T, before, after string) {
 		}
 	}
 	for _, section := range ma.Sections {
-		other := mb.Section(section.Name)
+		// Zero-fill sections have no file data. Names can repeat in different
+		// segments (for example __TEXT/__rodata and __DATA_CONST/__rodata).
+		if section.Offset == 0 {
+			continue
+		}
+		var other *macho.Section
+		for _, candidate := range mb.Sections {
+			if candidate.Name == section.Name && candidate.Seg == section.Seg {
+				other = candidate
+				break
+			}
+		}
 		if other == nil {
 			continue
 		}

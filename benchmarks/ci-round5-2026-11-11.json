@@ -1751,5 +1751,691 @@
     },
     "remote_matrix": "pending",
     "baseline_cache_limitation": "go-sqlite3 ordinary and dynamic replay scripts differ only in their automatic Go build IDs; this propagates to UPM command recipes. Not introduced by compression."
+  },
+  "native_reproducibility_followup": {
+    "implementation": "c6b0306befaf46260a2d59e3304a3b53770229c9",
+    "cause": "Go -n skips compiler capability probes, omitting native prefix maps. Both raw and compressed macOS builds embedded changing DW_AT_comp_dir values.",
+    "fix": "Restore native file/debug prefix maps and canonicalize temporary-directory aliases; retain debug information.",
+    "validation": {
+      "unit_tests": "passed",
+      "vet": "passed",
+      "linux_amd64_native_reproducibility": [
+        "go1.25.12",
+        "go1.26.5",
+        "go1.26.6"
+      ],
+      "native_test_scope": "raw and compressed headers, sources removed, Nix --check, and direct replay in two distinct temporary directories including a symlink",
+      "full_go1_26_5_compatibility": "passed",
+      "iets_pr3_dynamic_builds": "passed; outer/nested/direct/repeat/embed/optional-tests/runtime-references; concurrent with compatibility, timings not performance claims",
+      "remote_ci": "c6b0306 Linux amd64/arm64 checks passed; Apple Silicon checks pending"
+    },
+    "upm_ci": {
+      "scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
+      "source": "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+      "package": "./cmd/upm",
+      "vendor_hash": "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+      "cgo": null,
+      "test": false,
+      "allow_empty_tests": false,
+      "tags": "",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "roots": {
+        "before": "/tmp/drvgo-ci-round4",
+        "after": "/tmp/drvgo-ci-compressed"
+      },
+      "flags": [
+        "--extra-experimental-features",
+        "ca-derivations dynamic-derivations recursive-nix",
+        "--option",
+        "allow-import-from-derivation",
+        "false",
+        "--max-jobs",
+        "4",
+        "--cores",
+        "2",
+        "--option",
+        "sandbox",
+        "true",
+        "--option",
+        "sandbox-fallback",
+        "false",
+        "--option",
+        "substituters",
+        "",
+        "--option",
+        "always-allow-substitutes",
+        "false"
+      ],
+      "nonce": "be7ad87a1b71",
+      "records": [
+        {
+          "label": "before",
+          "trial": 0,
+          "warmup": true,
+          "evaluation": 0.3973055500537157,
+          "realization": 3.3693218829575926,
+          "total": 3.7666274330113083,
+          "derivation": "/nix/store/1h7x41mryy8rqjchpy8pzg0dvrnxda8s-drvgo-ci-be7ad87a1b71-before-0.drv",
+          "result": "/nix/store/wrxixlsplcpl9pgrrn8ls2yjx6g0g0gh-drvgo-ci-be7ad87a1b71-before-0",
+          "command_output": "/nix/store/vzlzvg2rszw3fyb245ldsiqnicnfhd9r-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 0,
+          "warmup": true,
+          "evaluation": 0.410005996003747,
+          "realization": 44.70013688597828,
+          "total": 45.11014288198203,
+          "derivation": "/nix/store/hj924wb02ykv8ycfbsw2pdq5jrd6p9sg-drvgo-ci-be7ad87a1b71-after-0.drv",
+          "result": "/nix/store/fq0y6x1pladparqc96n7sqwv5ddji1wh-drvgo-ci-be7ad87a1b71-after-0",
+          "command_output": "/nix/store/mshp75g9phgx9xvy80c0ab5wx0p7a861-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 1,
+          "warmup": false,
+          "evaluation": 0.4148847380420193,
+          "realization": 2.990508720977232,
+          "total": 3.405393459019251,
+          "derivation": "/nix/store/w52jq3nvybsy443s71ghc7yabzq6xbvf-drvgo-ci-be7ad87a1b71-after-1.drv",
+          "result": "/nix/store/q5qn9dzvm8h6l472i68r2fp07f5si6vw-drvgo-ci-be7ad87a1b71-after-1",
+          "command_output": "/nix/store/mshp75g9phgx9xvy80c0ab5wx0p7a861-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 1,
+          "warmup": false,
+          "evaluation": 0.3934951290721074,
+          "realization": 3.3983856899430975,
+          "total": 3.791880819015205,
+          "derivation": "/nix/store/x69qbzqrg7qhfbhl26r5hnc9z4b06m0g-drvgo-ci-be7ad87a1b71-before-1.drv",
+          "result": "/nix/store/52bnjfpy5kxnka022cmfx8y7z3sh7pgw-drvgo-ci-be7ad87a1b71-before-1",
+          "command_output": "/nix/store/vzlzvg2rszw3fyb245ldsiqnicnfhd9r-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 2,
+          "warmup": false,
+          "evaluation": 0.42449982604011893,
+          "realization": 3.402016752981581,
+          "total": 3.8265165790216997,
+          "derivation": "/nix/store/m3z1f10anhvy5vcgqp0lr06kvkvin8jn-drvgo-ci-be7ad87a1b71-before-2.drv",
+          "result": "/nix/store/03llz1q39dndk9c644v60a5k2s9rmld1-drvgo-ci-be7ad87a1b71-before-2",
+          "command_output": "/nix/store/vzlzvg2rszw3fyb245ldsiqnicnfhd9r-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 2,
+          "warmup": false,
+          "evaluation": 0.39531400008127093,
+          "realization": 2.9924515068996698,
+          "total": 3.3877655069809407,
+          "derivation": "/nix/store/k6b7absx9prsbhf41s0f73mvbm6i3nbj-drvgo-ci-be7ad87a1b71-after-2.drv",
+          "result": "/nix/store/nx0hkdr1zzgy3asrz4xbr3hsnygvc2ia-drvgo-ci-be7ad87a1b71-after-2",
+          "command_output": "/nix/store/mshp75g9phgx9xvy80c0ab5wx0p7a861-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 3,
+          "warmup": false,
+          "evaluation": 0.42163802799768746,
+          "realization": 3.0088066639145836,
+          "total": 3.430444691912271,
+          "derivation": "/nix/store/i8cz1y5xjz469b2x3axfzdsbdisy0m25-drvgo-ci-be7ad87a1b71-after-3.drv",
+          "result": "/nix/store/wx4153baw5lnx80kspg7adpfpnqinwlv-drvgo-ci-be7ad87a1b71-after-3",
+          "command_output": "/nix/store/mshp75g9phgx9xvy80c0ab5wx0p7a861-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 3,
+          "warmup": false,
+          "evaluation": 0.4408684029476717,
+          "realization": 3.372177640092559,
+          "total": 3.813046043040231,
+          "derivation": "/nix/store/qd0v6sd15321ax784dwhhwx8vn6l3ci0-drvgo-ci-be7ad87a1b71-before-3.drv",
+          "result": "/nix/store/8f32hd8sihijjs79ljhryi09q0dj7h24-drvgo-ci-be7ad87a1b71-before-3",
+          "command_output": "/nix/store/vzlzvg2rszw3fyb245ldsiqnicnfhd9r-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 4,
+          "warmup": false,
+          "evaluation": 0.41953056398779154,
+          "realization": 3.3500207570614293,
+          "total": 3.769551321049221,
+          "derivation": "/nix/store/3416vqmgds4aghwjn70jjl6xcyjwq1fg-drvgo-ci-be7ad87a1b71-before-4.drv",
+          "result": "/nix/store/8ii547yhzamxhwbb9vi7171ayirvsypy-drvgo-ci-be7ad87a1b71-before-4",
+          "command_output": "/nix/store/vzlzvg2rszw3fyb245ldsiqnicnfhd9r-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 4,
+          "warmup": false,
+          "evaluation": 0.42613587400410324,
+          "realization": 3.0188369839452207,
+          "total": 3.444972857949324,
+          "derivation": "/nix/store/abr9jzxlws5ghsmz7i3y9i0b5ci8s0j6-drvgo-ci-be7ad87a1b71-after-4.drv",
+          "result": "/nix/store/jj625xpql3xb02nd06d3sm0xfcsy4q25-drvgo-ci-be7ad87a1b71-after-4",
+          "command_output": "/nix/store/mshp75g9phgx9xvy80c0ab5wx0p7a861-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 5,
+          "warmup": false,
+          "evaluation": 0.4991514439461753,
+          "realization": 3.052664944087155,
+          "total": 3.5518163880333304,
+          "derivation": "/nix/store/in1n75nk0i7582h3mcn3ld410pds3h06-drvgo-ci-be7ad87a1b71-after-5.drv",
+          "result": "/nix/store/4w6ya9qli44cpm1ml8a2lm9xjvs0mdpq-drvgo-ci-be7ad87a1b71-after-5",
+          "command_output": "/nix/store/mshp75g9phgx9xvy80c0ab5wx0p7a861-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 5,
+          "warmup": false,
+          "evaluation": 0.46268561598844826,
+          "realization": 3.387251907028258,
+          "total": 3.849937523016706,
+          "derivation": "/nix/store/fgs962azi5yb3wpvn4xwkd48q0ilpzb0-drvgo-ci-be7ad87a1b71-before-5.drv",
+          "result": "/nix/store/zwqzxynrygbdyxp8viklnawl4wglq097-drvgo-ci-be7ad87a1b71-before-5",
+          "command_output": "/nix/store/vzlzvg2rszw3fyb245ldsiqnicnfhd9r-go-github.com-replit-upm-cmd-upm"
+        }
+      ],
+      "medians": {
+        "before": {
+          "evaluation": 0.42449982604011893,
+          "realization": 3.387251907028258,
+          "total": 3.813046043040231
+        },
+        "after": {
+          "evaluation": 0.42163802799768746,
+          "realization": 3.0088066639145836,
+          "total": 3.430444691912271
+        }
+      }
+    },
+    "evaluation": {
+      "scope": "Warm graph evaluation; no builds; iets tracing cache and Nix fallback disabled",
+      "roots": {
+        "before": "/tmp/drvgo-compressed-before-upm-export",
+        "after": "/tmp/drvgo-native-paths-upm-export"
+      },
+      "records": [
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.14989106601569802,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.044075024081394076,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.06587336398661137,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.1713262819685042,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.04687563003972173,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.06293420505244285,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.06752380100078881,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.04273698094766587,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.1356284449575469,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.056685290997847915,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.04192112502641976,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.13416264893021435,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.12977539701387286,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.041360993986018,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.059114836039952934,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.13721453899051994,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.04316748108249158,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.05950690503232181,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.058579168980941176,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.0483847880968824,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.13420402409974486,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.06649511295836419,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.0431602590251714,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.13702456397004426,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.14168433588929474,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.040707426029257476,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.07423524896148592,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.13592381589114666,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.04167831200174987,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.056263098027557135,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.06653099704999477,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.0439540030201897,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.14348258904647082,
+          "derivation": "/nix/store/8chpc2y35sw1kf769077a88m2q75qgxl-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.06088621902745217,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.047979241935536265,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.1325868209823966,
+          "derivation": "/nix/store/09vqqkzdrga5a6wkns51xr9ql65y65dy-go-github.com-replit-upm-cmd-upm.drv"
+        }
+      ],
+      "medians": {
+        "before": {
+          "nix": 0.13416264893021435,
+          "iets-1": 0.04192112502641976,
+          "iets-4": 0.06088621902745217
+        },
+        "after": {
+          "nix": 0.13592381589114666,
+          "iets-1": 0.04316748108249158,
+          "iets-4": 0.05950690503232181
+        }
+      }
+    },
+    "graph_closure": {
+      "scope": "Sum of NAR and zstd level 3 file sizes for complete closures; local binary cache, no network timing",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "toolchains": {
+        "before": {
+          "planning": {
+            "path": "/nix/store/yrsr8f4mbs1rr9jzw84bb2c51h2mj7si-drvgo-ci-49f4d1764ced-before-0-result.drv",
+            "paths": 1853,
+            "nar_bytes": 124353832,
+            "zstd_bytes": 28784367
+          },
+          "compile": {
+            "path": "/nix/store/yrsr8f4mbs1rr9jzw84bb2c51h2mj7si-drvgo-ci-49f4d1764ced-before-0-result.drv",
+            "paths": 1853,
+            "nar_bytes": 124353832,
+            "zstd_bytes": 28784367
+          },
+          "link": {
+            "path": "/nix/store/yrsr8f4mbs1rr9jzw84bb2c51h2mj7si-drvgo-ci-49f4d1764ced-before-0-result.drv",
+            "paths": 1853,
+            "nar_bytes": 124353832,
+            "zstd_bytes": 28784367
+          },
+          "native": {
+            "path": "/nix/store/yrsr8f4mbs1rr9jzw84bb2c51h2mj7si-drvgo-ci-49f4d1764ced-before-0-result.drv",
+            "paths": 1853,
+            "nar_bytes": 124353832,
+            "zstd_bytes": 28784367
+          }
+        },
+        "after": {
+          "planning": {
+            "path": "/nix/store/mzdp38vajmh1wkycida5fg754cr42y42-drvgo-ci-be7ad87a1b71-after-0-result.drv",
+            "paths": 1580,
+            "nar_bytes": 121500064,
+            "zstd_bytes": 29093728
+          },
+          "compile": {
+            "path": "/nix/store/mzdp38vajmh1wkycida5fg754cr42y42-drvgo-ci-be7ad87a1b71-after-0-result.drv",
+            "paths": 1580,
+            "nar_bytes": 121500064,
+            "zstd_bytes": 29093728
+          },
+          "link": {
+            "path": "/nix/store/mzdp38vajmh1wkycida5fg754cr42y42-drvgo-ci-be7ad87a1b71-after-0-result.drv",
+            "paths": 1580,
+            "nar_bytes": 121500064,
+            "zstd_bytes": 29093728
+          },
+          "native": {
+            "path": "/nix/store/mzdp38vajmh1wkycida5fg754cr42y42-drvgo-ci-be7ad87a1b71-after-0-result.drv",
+            "paths": 1580,
+            "nar_bytes": 121500064,
+            "zstd_bytes": 29093728
+          }
+        }
+      }
+    },
+    "toolchain_closure": {
+      "scope": "Sum of NAR and zstd level 3 file sizes for complete closures; local binary cache, no network timing",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "toolchains": {
+        "before": {
+          "planning": {
+            "path": "/nix/store/cp6119p4kb6m9mv739jbb8v0hd705dhw-go-libnix-toolchain",
+            "paths": 48,
+            "nar_bytes": 682091008,
+            "zstd_bytes": 203484609
+          },
+          "compile": {
+            "path": "/nix/store/bmm0ilamwpi10zz62rm4f67fz2nmdla5-go-libnix-compile-toolchain",
+            "paths": 4,
+            "nar_bytes": 35569576,
+            "zstd_bytes": 11511648
+          },
+          "link": {
+            "path": "/nix/store/syl4iyvjin7myizcbiwnz56rvmbxp34d-go-libnix-link-toolchain",
+            "paths": 9,
+            "nar_bytes": 79977736,
+            "zstd_bytes": 25327835
+          },
+          "native": {
+            "path": "/nix/store/gvhds187hda7y0ijgdjqpfbs6ssg5glh-go-libnix-native-toolchain",
+            "paths": 42,
+            "nar_bytes": 450201920,
+            "zstd_bytes": 141167380
+          }
+        },
+        "after": {
+          "planning": {
+            "path": "/nix/store/fgwv2wpq8abn16rjzry12s0dln9s0wyh-go-libnix-toolchain",
+            "paths": 48,
+            "nar_bytes": 682095104,
+            "zstd_bytes": 203488730
+          },
+          "compile": {
+            "path": "/nix/store/liz3wf7dvs3mdkr0bkxhs6zzf8nhq22b-go-libnix-compile-toolchain",
+            "paths": 4,
+            "nar_bytes": 35573672,
+            "zstd_bytes": 11515768
+          },
+          "link": {
+            "path": "/nix/store/d7bgfdvipfbg5bkr25ny5rbjssn11m88-go-libnix-link-toolchain",
+            "paths": 9,
+            "nar_bytes": 79981832,
+            "zstd_bytes": 25331956
+          },
+          "native": {
+            "path": "/nix/store/n58jjkmga3sfqnya8n79a38m5wsh7b3h-go-libnix-native-toolchain",
+            "paths": 42,
+            "nar_bytes": 450206016,
+            "zstd_bytes": 141171500
+          }
+        }
+      }
+    },
+    "cli_closure": {
+      "scope": "Sum of NAR and zstd level 3 file sizes for complete closures; local binary cache, no network timing",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "toolchains": {
+        "before": {
+          "planning": {
+            "path": "/nix/store/j7l9xfivjzwhfg8yk9y91caknnlf01wv-drvgo-0.1.0",
+            "paths": 2,
+            "nar_bytes": 5581112,
+            "zstd_bytes": 1653181
+          },
+          "compile": {
+            "path": "/nix/store/j7l9xfivjzwhfg8yk9y91caknnlf01wv-drvgo-0.1.0",
+            "paths": 2,
+            "nar_bytes": 5581112,
+            "zstd_bytes": 1653181
+          },
+          "link": {
+            "path": "/nix/store/j7l9xfivjzwhfg8yk9y91caknnlf01wv-drvgo-0.1.0",
+            "paths": 2,
+            "nar_bytes": 5581112,
+            "zstd_bytes": 1653181
+          },
+          "native": {
+            "path": "/nix/store/j7l9xfivjzwhfg8yk9y91caknnlf01wv-drvgo-0.1.0",
+            "paths": 2,
+            "nar_bytes": 5581112,
+            "zstd_bytes": 1653181
+          }
+        },
+        "after": {
+          "planning": {
+            "path": "/nix/store/4pmhy8r3fbrjn1fahjvq71psxqjl0bpr-drvgo-0.1.0",
+            "paths": 2,
+            "nar_bytes": 5651088,
+            "zstd_bytes": 1685646
+          },
+          "compile": {
+            "path": "/nix/store/4pmhy8r3fbrjn1fahjvq71psxqjl0bpr-drvgo-0.1.0",
+            "paths": 2,
+            "nar_bytes": 5651088,
+            "zstd_bytes": 1685646
+          },
+          "link": {
+            "path": "/nix/store/4pmhy8r3fbrjn1fahjvq71psxqjl0bpr-drvgo-0.1.0",
+            "paths": 2,
+            "nar_bytes": 5651088,
+            "zstd_bytes": 1685646
+          },
+          "native": {
+            "path": "/nix/store/4pmhy8r3fbrjn1fahjvq71psxqjl0bpr-drvgo-0.1.0",
+            "paths": 2,
+            "nar_bytes": 5651088,
+            "zstd_bytes": 1685646
+          }
+        }
+      }
+    }
   }
 }

@@ -368,10 +368,10 @@ another 7.3%, from 11.84 to 10.98 MiB. Archive replay and helper builds are fast
 the full 62-package fixture rebuild remains essentially unchanged.
 
 The [compressed snapshot round](benchmarks/ci-round5-2026-11-11.md) reduces fresh
-UPM planning from 3.78 to 3.45 seconds (8.8%). Snapshots up to 64 KiB decoded can
+UPM planning from 3.81 to 3.43 seconds (10.0%). Snapshots up to 64 KiB decoded can
 now travel compressed when their payload, filenames, and metadata fit a 16 KiB
 budget before base64 encoding. The original raw path remains for snapshots up
-to 4 KiB. This removes 273 store objects from UPM's graph while adding 0.29 MiB
+to 4 KiB. This removes 273 store objects from UPM's graph while adding 0.30 MiB
 to its compressed cache payload; package rebuild time stays essentially flat.
 
 The runner performs file operations directly and calls that Go release's build-ID
@@ -381,7 +381,8 @@ patch; it preserves Go's archive format and avoids a separate executable and
 process per append. Compiler, assembler,
 linker, and native compilation still use the pinned tools. Source snapshots are
 copied and NAR-hashed in one pass. Ordinary exports and dynamic builds preserve
-derivation contexts and share package outputs. Custom toolchains without the
+derivation contexts. They share package outputs when Go discovery emits identical
+action IDs; relative cgo include paths can currently prevent that sharing. Custom toolchains without the
 separate `compile`, `link`, or `native` attributes use the supplied full bundle;
 they must include the current native runner.
 
