@@ -343,7 +343,8 @@ planning of the same cached 1,061-unit graph from 3.77 s to 2.42 s (35.7%) with
 remote cache queries excluded. Small snapshots, up to 4 KiB including filename
 and metadata overhead, are encoded in the existing file-backed replay script.
 The native runner restores their exact bytes and executable modes in its build
-directory. Larger snapshots remain separate store objects. This avoids a store
+directory. Larger snapshots stay separate unless they fit the compression limits
+below. This avoids a store
 registration per small snapshot while preserving package-level invalidation.
 
 Pure Go and Go assembly package actions receive only the compiler, assembler,
@@ -365,6 +366,13 @@ The [fourth round](benchmarks/ci-round4-2026-11-11.md) integrates Go's archive
 tool into the native worker, reducing the compressed compile-toolchain closure
 another 7.3%, from 11.84 to 10.98 MiB. Archive replay and helper builds are faster;
 the full 62-package fixture rebuild remains essentially unchanged.
+
+The [compressed snapshot round](benchmarks/ci-round5-2026-11-11.md) reduces fresh
+UPM planning from 3.78 to 3.45 seconds (8.8%). Snapshots up to 64 KiB decoded can
+now travel compressed when their payload, filenames, and metadata fit a 16 KiB
+budget before base64 encoding. The original raw path remains for snapshots up
+to 4 KiB. This removes 273 store objects from UPM's graph while adding 0.29 MiB
+to its compressed cache payload; package rebuild time stays essentially flat.
 
 The runner performs file operations directly and calls that Go release's build-ID
 and archive implementations in process, including Mach-O signing support.
