@@ -37,6 +37,7 @@ func parse(raw, cwd string, driver Driver) ([]Unit, error) {
 	seen := map[string]bool{}
 	indices := map[string]int{}
 	actionDirs := map[string]string{}
+	customBuildIDs := map[string]bool{}
 	current := -1
 	directory := cwd
 	heredoc := false
@@ -81,6 +82,18 @@ func parse(raw, cwd string, driver Driver) ([]Unit, error) {
 		}
 		if strings.Contains(line, "/compile ") {
 			line = strings.ReplaceAll(line, " ./", " "+directory+"/")
+		}
+		if strings.Contains(line, "/link ") {
+			words, err := commandWords(line)
+			if err != nil {
+				return nil, err
+			}
+			customBuildIDs[units[current].ID] = hasCustomBuildID(words)
+		}
+		// The dry run prints this before cmd/go checks whether the caller
+		// replaced its generated ID. The standalone tool cannot do that check.
+		if customBuildIDs[units[current].ID] && strings.HasPrefix(line, "go tool buildid -w ") {
+			continue
 		}
 		// cmd/go prints file bodies without adding a newline before EOF.
 		if heredoc && strings.HasSuffix(line, "EOF") {
@@ -189,4 +202,27 @@ func parse(raw, cwd string, driver Driver) ([]Unit, error) {
 		}
 	}
 	return units, nil
+}
+
+func hasCustomBuildID(words []string) bool {
+	for i, word := range words {
+		if assignment.MatchString(word) {
+			continue
+		}
+		if !strings.HasSuffix(word, "/link") {
+			return false
+		}
+		var ids []string
+		for j := i + 1; j < len(words); j++ {
+			arg := words[j]
+			if strings.HasPrefix(arg, "-buildid=") {
+				ids = append(ids, strings.TrimPrefix(arg, "-buildid="))
+			} else if arg == "-buildid" && j+1 < len(words) {
+				j++
+				ids = append(ids, words[j])
+			}
+		}
+		return len(ids) > 1 && ids[0] != ids[len(ids)-1]
+	}
+	return false
 }

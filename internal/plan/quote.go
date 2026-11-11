@@ -30,6 +30,14 @@ func quoteCommand(line string) (string, error) {
 			break
 		}
 	}
+	words, err := commandWords(line)
+	if err != nil {
+		return "", err
+	}
+	return quoteWords(words) + suffix, nil
+}
+
+func commandWords(line string) ([]string, error) {
 	var words []string
 	for i := 0; i < len(line); {
 		if line[i] == ' ' || line[i] == '\t' {
@@ -53,12 +61,12 @@ func quoteCommand(line string) (string, error) {
 					i++
 				}
 				if i >= len(line) {
-					return "", fmt.Errorf("unterminated quoted tool argument")
+					return nil, fmt.Errorf("unterminated quoted tool argument")
 				}
 				i++
 				value, err := strconv.Unquote(line[start:i])
 				if err != nil {
-					return "", err
+					return nil, err
 				}
 				word.WriteString(value)
 			case '\'':
@@ -68,7 +76,7 @@ func quoteCommand(line string) (string, error) {
 					i++
 				}
 				if i >= len(line) {
-					return "", fmt.Errorf("unterminated environment quote")
+					return nil, fmt.Errorf("unterminated environment quote")
 				}
 				word.WriteString(line[start:i])
 				i++
@@ -79,6 +87,10 @@ func quoteCommand(line string) (string, error) {
 		}
 		words = append(words, word.String())
 	}
+	return words, nil
+}
+
+func quoteWords(words []string) string {
 	// Normalize the compiler's scheduling flag after decoding argv, so flag-like
 	// text inside a quoted filename is left intact. cmd/go omits -c on one CPU.
 	for i, w := range words {
@@ -105,5 +117,5 @@ func quoteCommand(line string) (string, error) {
 			words[i] = shellWord(w)
 		}
 	}
-	return strings.Join(words, " ") + suffix, nil
+	return strings.Join(words, " ")
 }
