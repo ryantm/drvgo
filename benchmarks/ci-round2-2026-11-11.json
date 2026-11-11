@@ -1,0 +1,3451 @@
+{
+  "baseline_revision": "16c8ce97aa001199d9cf3d383706651081a5352e",
+  "optimization_revision": "64a84f6f05c011d514c42a39084ecdeadb255463",
+  "planner_option_revision": "4fb413b91539f96d671a1f4202c699e96428b0cf",
+  "platform": "x86_64-linux",
+  "cpu": "Intel Core i7-1280P",
+  "go": "1.26.5",
+  "nested_nix": "2.34.8",
+  "inherited_always_allow_substitutes": true,
+  "configured_substituter_count": 8,
+  "sandbox": "true",
+  "reports": {
+    "ci-local": {
+      "scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
+      "source": "/tmp/drvgo-ci-synthetic",
+      "package": ".",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "roots": {
+        "before": "/tmp/drvgo-ci-round2-baseline",
+        "after": "/home/ryantm/p/drvgo"
+      },
+      "flags": [
+        "--extra-experimental-features",
+        "ca-derivations dynamic-derivations recursive-nix",
+        "--option",
+        "allow-import-from-derivation",
+        "false",
+        "--max-jobs",
+        "4",
+        "--cores",
+        "2",
+        "--option",
+        "substituters",
+        "",
+        "--option",
+        "always-allow-substitutes",
+        "false"
+      ],
+      "nonce": "6cfd965eb8a2",
+      "records": [
+        {
+          "label": "before",
+          "trial": 0,
+          "warmup": true,
+          "evaluation": 0.3895900590578094,
+          "realization": 3.37612571392674,
+          "total": 3.7657157729845494,
+          "derivation": "/nix/store/353cf2bmjvnn5w2sbp3s4pbdpjpabf7q-drvgo-ci-6cfd965eb8a2-before-0.drv",
+          "result": "/nix/store/qfgdb5sg19yg69y6639r0d6kgwsz5nvm-drvgo-ci-6cfd965eb8a2-before-0",
+          "command_output": "/nix/store/dbkxjwxh2pl6mv7p57hl9pxc0c6r1gqz-go-example.com-ci"
+        },
+        {
+          "label": "after",
+          "trial": 0,
+          "warmup": true,
+          "evaluation": 0.3940171569120139,
+          "realization": 6.467267284053378,
+          "total": 6.861284440965392,
+          "derivation": "/nix/store/vxxc4l102dyvwkbhkgrh687sdrzdijzc-drvgo-ci-6cfd965eb8a2-after-0.drv",
+          "result": "/nix/store/xdrdb879fm39alfb9l87sm0m23jqq2zw-drvgo-ci-6cfd965eb8a2-after-0",
+          "command_output": "/nix/store/3bfsp14rpfsrfc5hwfcraiqkybiak2a0-go-example.com-ci"
+        },
+        {
+          "label": "after",
+          "trial": 1,
+          "warmup": false,
+          "evaluation": 0.4052177059929818,
+          "realization": 2.028290599002503,
+          "total": 2.4335083049954847,
+          "derivation": "/nix/store/z7sjdiav91yplr7wzmb6vc70akadfq05-drvgo-ci-6cfd965eb8a2-after-1.drv",
+          "result": "/nix/store/3kxg2wg8i6gwldpsmh4rxizrkywpzwzr-drvgo-ci-6cfd965eb8a2-after-1",
+          "command_output": "/nix/store/3bfsp14rpfsrfc5hwfcraiqkybiak2a0-go-example.com-ci"
+        },
+        {
+          "label": "before",
+          "trial": 1,
+          "warmup": false,
+          "evaluation": 0.4035123729845509,
+          "realization": 3.3647736239945516,
+          "total": 3.7682859969791025,
+          "derivation": "/nix/store/b155ap79bxb0v6689gknp50qvj8ya625-drvgo-ci-6cfd965eb8a2-before-1.drv",
+          "result": "/nix/store/z9kw5bxlsxi79nd3c5n5lrncwy9r91ww-drvgo-ci-6cfd965eb8a2-before-1",
+          "command_output": "/nix/store/dbkxjwxh2pl6mv7p57hl9pxc0c6r1gqz-go-example.com-ci"
+        },
+        {
+          "label": "before",
+          "trial": 2,
+          "warmup": false,
+          "evaluation": 0.39946249802596867,
+          "realization": 3.369862693012692,
+          "total": 3.7693251910386607,
+          "derivation": "/nix/store/xl62xk7lfdlngchcrnkbg5403wdlyshn-drvgo-ci-6cfd965eb8a2-before-2.drv",
+          "result": "/nix/store/v6m8f8bhl3pw67b0lsbrq2ijq069i9l5-drvgo-ci-6cfd965eb8a2-before-2",
+          "command_output": "/nix/store/dbkxjwxh2pl6mv7p57hl9pxc0c6r1gqz-go-example.com-ci"
+        },
+        {
+          "label": "after",
+          "trial": 2,
+          "warmup": false,
+          "evaluation": 0.44765712798107415,
+          "realization": 1.9934977949596941,
+          "total": 2.4411549229407683,
+          "derivation": "/nix/store/04fv8bvpryfkg7bn1gcsi1rls33qk6hn-drvgo-ci-6cfd965eb8a2-after-2.drv",
+          "result": "/nix/store/3rck3q1ryv9110098q788ilj65axfqwz-drvgo-ci-6cfd965eb8a2-after-2",
+          "command_output": "/nix/store/3bfsp14rpfsrfc5hwfcraiqkybiak2a0-go-example.com-ci"
+        },
+        {
+          "label": "after",
+          "trial": 3,
+          "warmup": false,
+          "evaluation": 0.38768757903017104,
+          "realization": 2.0353973059682176,
+          "total": 2.4230848849983886,
+          "derivation": "/nix/store/ks8m5bqj95352qk7a8rb7x0hhnpmqdz4-drvgo-ci-6cfd965eb8a2-after-3.drv",
+          "result": "/nix/store/77hp7rxd68qyib8fq7hh7a6p3zlryyk5-drvgo-ci-6cfd965eb8a2-after-3",
+          "command_output": "/nix/store/3bfsp14rpfsrfc5hwfcraiqkybiak2a0-go-example.com-ci"
+        },
+        {
+          "label": "before",
+          "trial": 3,
+          "warmup": false,
+          "evaluation": 0.3836906040087342,
+          "realization": 3.3772989800199866,
+          "total": 3.760989584028721,
+          "derivation": "/nix/store/nqzc6zxfpx35wzs10zc1rrf1fbipk4a4-drvgo-ci-6cfd965eb8a2-before-3.drv",
+          "result": "/nix/store/880ma02f4mx1lr1nl1dpll6bknhcbhip-drvgo-ci-6cfd965eb8a2-before-3",
+          "command_output": "/nix/store/dbkxjwxh2pl6mv7p57hl9pxc0c6r1gqz-go-example.com-ci"
+        },
+        {
+          "label": "before",
+          "trial": 4,
+          "warmup": false,
+          "evaluation": 0.391803887905553,
+          "realization": 3.3163892790907994,
+          "total": 3.7081931669963524,
+          "derivation": "/nix/store/bm5sqjx94w630ygvs55ybs0wkhn38ryd-drvgo-ci-6cfd965eb8a2-before-4.drv",
+          "result": "/nix/store/45m2j9hvxfqkd6s1ga2f11cym5k2cqcq-drvgo-ci-6cfd965eb8a2-before-4",
+          "command_output": "/nix/store/dbkxjwxh2pl6mv7p57hl9pxc0c6r1gqz-go-example.com-ci"
+        },
+        {
+          "label": "after",
+          "trial": 4,
+          "warmup": false,
+          "evaluation": 0.4003568289335817,
+          "realization": 2.0025531940627843,
+          "total": 2.402910022996366,
+          "derivation": "/nix/store/rmlpfph24wqn84fm7vm2sm7zfy8b1q3a-drvgo-ci-6cfd965eb8a2-after-4.drv",
+          "result": "/nix/store/l8yjljxzr90wvf52c5dk4ai4l37gzprj-drvgo-ci-6cfd965eb8a2-after-4",
+          "command_output": "/nix/store/3bfsp14rpfsrfc5hwfcraiqkybiak2a0-go-example.com-ci"
+        },
+        {
+          "label": "after",
+          "trial": 5,
+          "warmup": false,
+          "evaluation": 0.392432018998079,
+          "realization": 2.0090157819213346,
+          "total": 2.4014478009194136,
+          "derivation": "/nix/store/yiq2b63a4fbqf7kpy1x3af8r5bivq2i3-drvgo-ci-6cfd965eb8a2-after-5.drv",
+          "result": "/nix/store/c1z0yli6mcnszlpp0agylyixyp9g3d11-drvgo-ci-6cfd965eb8a2-after-5",
+          "command_output": "/nix/store/3bfsp14rpfsrfc5hwfcraiqkybiak2a0-go-example.com-ci"
+        },
+        {
+          "label": "before",
+          "trial": 5,
+          "warmup": false,
+          "evaluation": 0.4224501579301432,
+          "realization": 3.3793734069913626,
+          "total": 3.8018235649215057,
+          "derivation": "/nix/store/d7vfgh6pqgb790qw155bqc1yanm29zzn-drvgo-ci-6cfd965eb8a2-before-5.drv",
+          "result": "/nix/store/my09k418pnyg9gaz9cxivah1116w15sb-drvgo-ci-6cfd965eb8a2-before-5",
+          "command_output": "/nix/store/dbkxjwxh2pl6mv7p57hl9pxc0c6r1gqz-go-example.com-ci"
+        }
+      ],
+      "medians": {
+        "before": {
+          "evaluation": 0.39946249802596867,
+          "realization": 3.369862693012692,
+          "total": 3.7682859969791025
+        },
+        "after": {
+          "evaluation": 0.4003568289335817,
+          "realization": 2.0090157819213346,
+          "total": 2.4230848849983886
+        }
+      }
+    },
+    "ci-hints": {
+      "scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
+      "source": "/tmp/drvgo-ci-synthetic",
+      "package": ".",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "roots": {
+        "before": "/tmp/drvgo-ci-round2-baseline",
+        "after": "/home/ryantm/p/drvgo"
+      },
+      "flags": [
+        "--extra-experimental-features",
+        "ca-derivations dynamic-derivations recursive-nix",
+        "--option",
+        "allow-import-from-derivation",
+        "false",
+        "--max-jobs",
+        "4",
+        "--cores",
+        "2",
+        "--option",
+        "always-allow-substitutes",
+        "false"
+      ],
+      "nonce": "69d7d6d29ab2",
+      "records": [
+        {
+          "label": "before",
+          "trial": 0,
+          "warmup": true,
+          "evaluation": 0.4015040589729324,
+          "realization": 7.351609900011681,
+          "total": 7.753113958984613,
+          "derivation": "/nix/store/170jyiqn8h82vhlb4cv72ffp1p3hfvcg-drvgo-ci-69d7d6d29ab2-before-0.drv",
+          "result": "/nix/store/4xmh98xrzqgnrg5dg1lbv0yz6g8ihfla-drvgo-ci-69d7d6d29ab2-before-0",
+          "command_output": "/nix/store/dbkxjwxh2pl6mv7p57hl9pxc0c6r1gqz-go-example.com-ci"
+        },
+        {
+          "label": "after",
+          "trial": 0,
+          "warmup": true,
+          "evaluation": 0.3948597520356998,
+          "realization": 1.9933103759540245,
+          "total": 2.3881701279897243,
+          "derivation": "/nix/store/kiqvwq6xwym0bmv9zms4fdnryb0k1cga-drvgo-ci-69d7d6d29ab2-after-0.drv",
+          "result": "/nix/store/a9prvpz724hv4d4cxbqf1swa6nw135c0-drvgo-ci-69d7d6d29ab2-after-0",
+          "command_output": "/nix/store/3bfsp14rpfsrfc5hwfcraiqkybiak2a0-go-example.com-ci"
+        },
+        {
+          "label": "after",
+          "trial": 1,
+          "warmup": false,
+          "evaluation": 0.40817180601879954,
+          "realization": 2.0202208219561726,
+          "total": 2.428392627974972,
+          "derivation": "/nix/store/1n42a3myyw69g8b9fysywsh7lr9w0n17-drvgo-ci-69d7d6d29ab2-after-1.drv",
+          "result": "/nix/store/xyj89dyb1z9p9xnsvv995js0894nwb1h-drvgo-ci-69d7d6d29ab2-after-1",
+          "command_output": "/nix/store/3bfsp14rpfsrfc5hwfcraiqkybiak2a0-go-example.com-ci"
+        },
+        {
+          "label": "before",
+          "trial": 1,
+          "warmup": false,
+          "evaluation": 0.4026109939441085,
+          "realization": 9.519161559059285,
+          "total": 9.921772553003393,
+          "derivation": "/nix/store/ss9k68h7d90lb405dg49brid66278krd-drvgo-ci-69d7d6d29ab2-before-1.drv",
+          "result": "/nix/store/gfr0w070lf3xq06vsqhifv185p4wp4jk-drvgo-ci-69d7d6d29ab2-before-1",
+          "command_output": "/nix/store/dbkxjwxh2pl6mv7p57hl9pxc0c6r1gqz-go-example.com-ci"
+        },
+        {
+          "label": "before",
+          "trial": 2,
+          "warmup": false,
+          "evaluation": 0.3848007390042767,
+          "realization": 11.429366516997106,
+          "total": 11.814167256001383,
+          "derivation": "/nix/store/rr6phlscbakw4a87zshcn0rdfvpdqwrn-drvgo-ci-69d7d6d29ab2-before-2.drv",
+          "result": "/nix/store/kcqhl2fdr16rv9p3ib0ylyfxqd8xayva-drvgo-ci-69d7d6d29ab2-before-2",
+          "command_output": "/nix/store/dbkxjwxh2pl6mv7p57hl9pxc0c6r1gqz-go-example.com-ci"
+        },
+        {
+          "label": "after",
+          "trial": 2,
+          "warmup": false,
+          "evaluation": 0.4425212750211358,
+          "realization": 2.0079059539129958,
+          "total": 2.4504272289341316,
+          "derivation": "/nix/store/gv4a2b25k30aqzzwdgan9j65nfl4afg1-drvgo-ci-69d7d6d29ab2-after-2.drv",
+          "result": "/nix/store/39vx3xn21gv0gyb0x1xkf5kwa93l3i7x-drvgo-ci-69d7d6d29ab2-after-2",
+          "command_output": "/nix/store/3bfsp14rpfsrfc5hwfcraiqkybiak2a0-go-example.com-ci"
+        },
+        {
+          "label": "after",
+          "trial": 3,
+          "warmup": false,
+          "evaluation": 0.41708732303231955,
+          "realization": 1.9930964100640267,
+          "total": 2.4101837330963463,
+          "derivation": "/nix/store/5qhgkf1yfhc6grdm3v7wpxd3vmqj23sp-drvgo-ci-69d7d6d29ab2-after-3.drv",
+          "result": "/nix/store/r637g7a4lxhikid1ygqryjcjkdacm1ha-drvgo-ci-69d7d6d29ab2-after-3",
+          "command_output": "/nix/store/3bfsp14rpfsrfc5hwfcraiqkybiak2a0-go-example.com-ci"
+        },
+        {
+          "label": "before",
+          "trial": 3,
+          "warmup": false,
+          "evaluation": 0.4033971620956436,
+          "realization": 12.183873327914625,
+          "total": 12.587270490010269,
+          "derivation": "/nix/store/8rprza63x1gah8g4yqm791x8m90aa3f5-drvgo-ci-69d7d6d29ab2-before-3.drv",
+          "result": "/nix/store/qzqjsxshjmpjav7i6zsqad5wkxyvj6dp-drvgo-ci-69d7d6d29ab2-before-3",
+          "command_output": "/nix/store/dbkxjwxh2pl6mv7p57hl9pxc0c6r1gqz-go-example.com-ci"
+        },
+        {
+          "label": "before",
+          "trial": 4,
+          "warmup": false,
+          "evaluation": 0.41077467892318964,
+          "realization": 12.308835080009885,
+          "total": 12.719609758933075,
+          "derivation": "/nix/store/sxsby9i9k9k94kpszyangi204k0kgqi0-drvgo-ci-69d7d6d29ab2-before-4.drv",
+          "result": "/nix/store/r2ypgd83kxjk564bnjk5al043ib6c5f4-drvgo-ci-69d7d6d29ab2-before-4",
+          "command_output": "/nix/store/dbkxjwxh2pl6mv7p57hl9pxc0c6r1gqz-go-example.com-ci"
+        },
+        {
+          "label": "after",
+          "trial": 4,
+          "warmup": false,
+          "evaluation": 0.4159824079833925,
+          "realization": 1.9870830479776487,
+          "total": 2.403065455961041,
+          "derivation": "/nix/store/zszq67v1kppxxn9cczwb97iakp9hh0hh-drvgo-ci-69d7d6d29ab2-after-4.drv",
+          "result": "/nix/store/nmc45i26sc4gzpyfrsqppw51i73abk1r-drvgo-ci-69d7d6d29ab2-after-4",
+          "command_output": "/nix/store/3bfsp14rpfsrfc5hwfcraiqkybiak2a0-go-example.com-ci"
+        },
+        {
+          "label": "after",
+          "trial": 5,
+          "warmup": false,
+          "evaluation": 0.42072336305864155,
+          "realization": 1.9556145089445636,
+          "total": 2.376337872003205,
+          "derivation": "/nix/store/5qyz3895y72cy5akhj7nv6g3nmpgrrhd-drvgo-ci-69d7d6d29ab2-after-5.drv",
+          "result": "/nix/store/zykgmdrh2qgn7w3wwq77gw19vs3j6pml-drvgo-ci-69d7d6d29ab2-after-5",
+          "command_output": "/nix/store/3bfsp14rpfsrfc5hwfcraiqkybiak2a0-go-example.com-ci"
+        },
+        {
+          "label": "before",
+          "trial": 5,
+          "warmup": false,
+          "evaluation": 0.4126695760060102,
+          "realization": 11.872662981040776,
+          "total": 12.285332557046786,
+          "derivation": "/nix/store/1q7yd9xb952vbj1hi3q3lpdlcr3vq349-drvgo-ci-69d7d6d29ab2-before-5.drv",
+          "result": "/nix/store/cd5z4zqlnh73jkbh6k8np1cdbq6j7lg5-drvgo-ci-69d7d6d29ab2-before-5",
+          "command_output": "/nix/store/dbkxjwxh2pl6mv7p57hl9pxc0c6r1gqz-go-example.com-ci"
+        }
+      ],
+      "medians": {
+        "before": {
+          "evaluation": 0.4033971620956436,
+          "realization": 11.872662981040776,
+          "total": 12.285332557046786
+        },
+        "after": {
+          "evaluation": 0.41708732303231955,
+          "realization": 1.9930964100640267,
+          "total": 2.4101837330963463
+        }
+      }
+    },
+    "ci-inherited": {
+      "scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
+      "source": "/tmp/drvgo-ci-synthetic",
+      "package": ".",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "roots": {
+        "before": "/tmp/drvgo-ci-round2-baseline",
+        "after": "/home/ryantm/p/drvgo"
+      },
+      "flags": [
+        "--extra-experimental-features",
+        "ca-derivations dynamic-derivations recursive-nix",
+        "--option",
+        "allow-import-from-derivation",
+        "false",
+        "--max-jobs",
+        "4",
+        "--cores",
+        "2"
+      ],
+      "nonce": "93b36bbe285c",
+      "records": [
+        {
+          "label": "before",
+          "trial": 0,
+          "warmup": true,
+          "evaluation": 0.4252484169555828,
+          "realization": 18.173565455013886,
+          "total": 18.59881387196947,
+          "derivation": "/nix/store/s78q61752q5kn35ry8gx6zx06bs4kgzm-drvgo-ci-93b36bbe285c-before-0.drv",
+          "result": "/nix/store/rqj56gviv9j85698sq3cjchy14845rjf-drvgo-ci-93b36bbe285c-before-0",
+          "command_output": "/nix/store/dbkxjwxh2pl6mv7p57hl9pxc0c6r1gqz-go-example.com-ci"
+        },
+        {
+          "label": "after",
+          "trial": 0,
+          "warmup": true,
+          "evaluation": 0.40804723009932786,
+          "realization": 17.02419089700561,
+          "total": 17.432238127104938,
+          "derivation": "/nix/store/fjq5gs6hk3530wnyb3c9lf2dskpmd2xr-drvgo-ci-93b36bbe285c-after-0.drv",
+          "result": "/nix/store/1zffhxvnwahzis9v8n3a28hlxq9jxlsv-drvgo-ci-93b36bbe285c-after-0",
+          "command_output": "/nix/store/3bfsp14rpfsrfc5hwfcraiqkybiak2a0-go-example.com-ci"
+        },
+        {
+          "label": "after",
+          "trial": 1,
+          "warmup": false,
+          "evaluation": 0.40061799495015293,
+          "realization": 9.09313396399375,
+          "total": 9.493751958943903,
+          "derivation": "/nix/store/mgiqg6n3f12ni50as59rv4l6hn8hyd97-drvgo-ci-93b36bbe285c-after-1.drv",
+          "result": "/nix/store/9kffbqv1dav3d5riwb8m4jjs3pbhd913-drvgo-ci-93b36bbe285c-after-1",
+          "command_output": "/nix/store/3bfsp14rpfsrfc5hwfcraiqkybiak2a0-go-example.com-ci"
+        },
+        {
+          "label": "before",
+          "trial": 1,
+          "warmup": false,
+          "evaluation": 0.4049331850837916,
+          "realization": 9.79392243293114,
+          "total": 10.198855618014932,
+          "derivation": "/nix/store/ilyn5aiy8qzmjk4zalf6dw83kja8l7rf-drvgo-ci-93b36bbe285c-before-1.drv",
+          "result": "/nix/store/xd0j984cyl1gcsvr1il281zmmiff367l-drvgo-ci-93b36bbe285c-before-1",
+          "command_output": "/nix/store/dbkxjwxh2pl6mv7p57hl9pxc0c6r1gqz-go-example.com-ci"
+        },
+        {
+          "label": "before",
+          "trial": 2,
+          "warmup": false,
+          "evaluation": 0.3999604759737849,
+          "realization": 10.796756423078477,
+          "total": 11.196716899052262,
+          "derivation": "/nix/store/p93pyif4aiaf8l82vmazkvw93gdnb3z8-drvgo-ci-93b36bbe285c-before-2.drv",
+          "result": "/nix/store/5dzaiv5sxfxh8672dw61y3bgf22g297i-drvgo-ci-93b36bbe285c-before-2",
+          "command_output": "/nix/store/dbkxjwxh2pl6mv7p57hl9pxc0c6r1gqz-go-example.com-ci"
+        },
+        {
+          "label": "after",
+          "trial": 2,
+          "warmup": false,
+          "evaluation": 0.40641088504344225,
+          "realization": 9.074959125020541,
+          "total": 9.481370010063984,
+          "derivation": "/nix/store/hx3il3fvm05inhv3pvdrgrdyix37055h-drvgo-ci-93b36bbe285c-after-2.drv",
+          "result": "/nix/store/9zlfp67lss9nixjvnidda9vrkgy5p71k-drvgo-ci-93b36bbe285c-after-2",
+          "command_output": "/nix/store/3bfsp14rpfsrfc5hwfcraiqkybiak2a0-go-example.com-ci"
+        },
+        {
+          "label": "after",
+          "trial": 3,
+          "warmup": false,
+          "evaluation": 0.38726225798018277,
+          "realization": 9.873708819970489,
+          "total": 10.260971077950671,
+          "derivation": "/nix/store/adw2r01lkb2vmcj4i9lnpn2716hr1w03-drvgo-ci-93b36bbe285c-after-3.drv",
+          "result": "/nix/store/knngvpg2brr2sf6whw5s7l2jxx7bbkqh-drvgo-ci-93b36bbe285c-after-3",
+          "command_output": "/nix/store/3bfsp14rpfsrfc5hwfcraiqkybiak2a0-go-example.com-ci"
+        },
+        {
+          "label": "before",
+          "trial": 3,
+          "warmup": false,
+          "evaluation": 0.3983454399276525,
+          "realization": 10.024368513026275,
+          "total": 10.422713952953927,
+          "derivation": "/nix/store/x7dn2wicr9y21zdjwwmprgqj7k46n2zc-drvgo-ci-93b36bbe285c-before-3.drv",
+          "result": "/nix/store/5s74p4hl3cn77wpnq512vacp5rf575hh-drvgo-ci-93b36bbe285c-before-3",
+          "command_output": "/nix/store/dbkxjwxh2pl6mv7p57hl9pxc0c6r1gqz-go-example.com-ci"
+        }
+      ],
+      "medians": {
+        "before": {
+          "evaluation": 0.3999604759737849,
+          "realization": 10.024368513026275,
+          "total": 10.422713952953927
+        },
+        "after": {
+          "evaluation": 0.40061799495015293,
+          "realization": 9.09313396399375,
+          "total": 9.493751958943903
+        }
+      }
+    },
+    "ci-fixture": {
+      "scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
+      "source": "/home/ryantm/p/drvgo/tests/fixture",
+      "package": ".",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "roots": {
+        "before": "/tmp/drvgo-ci-round2-baseline",
+        "after": "/home/ryantm/p/drvgo"
+      },
+      "flags": [
+        "--extra-experimental-features",
+        "ca-derivations dynamic-derivations recursive-nix",
+        "--option",
+        "allow-import-from-derivation",
+        "false",
+        "--max-jobs",
+        "4",
+        "--cores",
+        "2",
+        "--option",
+        "substituters",
+        "",
+        "--option",
+        "always-allow-substitutes",
+        "false"
+      ],
+      "nonce": "6db2aca4170b",
+      "records": [
+        {
+          "label": "before",
+          "trial": 0,
+          "warmup": true,
+          "evaluation": 0.39591283502522856,
+          "realization": 0.5318457849789411,
+          "total": 0.9277586200041696,
+          "derivation": "/nix/store/fpdi78vxlpg01pcaspz4c25x3p5hl9r3-drvgo-ci-6db2aca4170b-before-0.drv",
+          "result": "/nix/store/5n2ahk26dvl0p7wi61m3aphkbzvhaf3b-drvgo-ci-6db2aca4170b-before-0",
+          "command_output": "/nix/store/x8kl18xbf5wmxbdv8yl2h5zbbxyj0n1q-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "after",
+          "trial": 0,
+          "warmup": true,
+          "evaluation": 0.3829016051022336,
+          "realization": 0.523585591930896,
+          "total": 0.9064871970331296,
+          "derivation": "/nix/store/9g9gaz6rg58s621ni4spxspj3d67z5vj-drvgo-ci-6db2aca4170b-after-0.drv",
+          "result": "/nix/store/xrwnq1gr7rcy6a41zfx3y8sldxkj06xj-drvgo-ci-6db2aca4170b-after-0",
+          "command_output": "/nix/store/03r0nl9ybmp6l0783zzl6p3xkag6rp7m-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "after",
+          "trial": 1,
+          "warmup": false,
+          "evaluation": 0.37604564195498824,
+          "realization": 0.5167512489715591,
+          "total": 0.8927968909265473,
+          "derivation": "/nix/store/shl60ij4g2mpbck2m8g42d24q5r7p4z1-drvgo-ci-6db2aca4170b-after-1.drv",
+          "result": "/nix/store/s70bqf6278zwfkrr469m6rdsj5l54fj4-drvgo-ci-6db2aca4170b-after-1",
+          "command_output": "/nix/store/03r0nl9ybmp6l0783zzl6p3xkag6rp7m-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "before",
+          "trial": 1,
+          "warmup": false,
+          "evaluation": 0.38962618506047875,
+          "realization": 0.5372504310216755,
+          "total": 0.9268766160821542,
+          "derivation": "/nix/store/wkzazb5lyfksqbkjis2a47bw9myylnfh-drvgo-ci-6db2aca4170b-before-1.drv",
+          "result": "/nix/store/v4zc16n6hck761hp31jq27nvirlbvlki-drvgo-ci-6db2aca4170b-before-1",
+          "command_output": "/nix/store/x8kl18xbf5wmxbdv8yl2h5zbbxyj0n1q-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "before",
+          "trial": 2,
+          "warmup": false,
+          "evaluation": 0.40219986205920577,
+          "realization": 0.5341428830288351,
+          "total": 0.9363427450880408,
+          "derivation": "/nix/store/an08z46cj40dmhx5brwzz7851fa7rvc1-drvgo-ci-6db2aca4170b-before-2.drv",
+          "result": "/nix/store/d30xcw6racx79bkbn9zjix8hsx34rg3s-drvgo-ci-6db2aca4170b-before-2",
+          "command_output": "/nix/store/x8kl18xbf5wmxbdv8yl2h5zbbxyj0n1q-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "after",
+          "trial": 2,
+          "warmup": false,
+          "evaluation": 0.3948381569935009,
+          "realization": 0.5061078490689397,
+          "total": 0.9009460060624406,
+          "derivation": "/nix/store/v071kv8avrrdsva6db5f6mmmjxm886fk-drvgo-ci-6db2aca4170b-after-2.drv",
+          "result": "/nix/store/rydrjhr1srxcqkcd8m07fdyljr83ywp6-drvgo-ci-6db2aca4170b-after-2",
+          "command_output": "/nix/store/03r0nl9ybmp6l0783zzl6p3xkag6rp7m-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "after",
+          "trial": 3,
+          "warmup": false,
+          "evaluation": 0.39079816499724984,
+          "realization": 0.5053867300739512,
+          "total": 0.896184895071201,
+          "derivation": "/nix/store/hx9a2l91mkyvkpmbga1cnhjyy8nc3a45-drvgo-ci-6db2aca4170b-after-3.drv",
+          "result": "/nix/store/nrh16wdiwwv31ddjr6hg6sq2j51xqbsz-drvgo-ci-6db2aca4170b-after-3",
+          "command_output": "/nix/store/03r0nl9ybmp6l0783zzl6p3xkag6rp7m-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "before",
+          "trial": 3,
+          "warmup": false,
+          "evaluation": 0.3839466189965606,
+          "realization": 0.5416882180143148,
+          "total": 0.9256348370108753,
+          "derivation": "/nix/store/as01z5amacqdvfw2grmfq8jamwdsg62f-drvgo-ci-6db2aca4170b-before-3.drv",
+          "result": "/nix/store/q324l1pps32y4bc5nqhkk9411zzgz35y-drvgo-ci-6db2aca4170b-before-3",
+          "command_output": "/nix/store/x8kl18xbf5wmxbdv8yl2h5zbbxyj0n1q-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "before",
+          "trial": 4,
+          "warmup": false,
+          "evaluation": 0.3930863830028102,
+          "realization": 0.5348541740095243,
+          "total": 0.9279405570123345,
+          "derivation": "/nix/store/iq1fsxvwra5i7hkyvi0a6bkziqb2g8ra-drvgo-ci-6db2aca4170b-before-4.drv",
+          "result": "/nix/store/q86x5hwcmcmjwppfi738vzw5rvf671g3-drvgo-ci-6db2aca4170b-before-4",
+          "command_output": "/nix/store/x8kl18xbf5wmxbdv8yl2h5zbbxyj0n1q-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "after",
+          "trial": 4,
+          "warmup": false,
+          "evaluation": 0.4208023609826341,
+          "realization": 0.5137296819593757,
+          "total": 0.9345320429420099,
+          "derivation": "/nix/store/j8sr4vj97lx1svl3797h8mmddk1mh04h-drvgo-ci-6db2aca4170b-after-4.drv",
+          "result": "/nix/store/jg6w0w6a3ml9pd0pnca7064p9vqd8qw9-drvgo-ci-6db2aca4170b-after-4",
+          "command_output": "/nix/store/03r0nl9ybmp6l0783zzl6p3xkag6rp7m-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "after",
+          "trial": 5,
+          "warmup": false,
+          "evaluation": 0.3961327220313251,
+          "realization": 0.5062920459313318,
+          "total": 0.9024247679626569,
+          "derivation": "/nix/store/qwwhcyb0kklybg85ffybh4vmgciqn3pq-drvgo-ci-6db2aca4170b-after-5.drv",
+          "result": "/nix/store/nygilvzxlll3gw5gsrx4n2w42kkhai30-drvgo-ci-6db2aca4170b-after-5",
+          "command_output": "/nix/store/03r0nl9ybmp6l0783zzl6p3xkag6rp7m-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "before",
+          "trial": 5,
+          "warmup": false,
+          "evaluation": 0.38889741408638656,
+          "realization": 0.5422968280036002,
+          "total": 0.9311942420899868,
+          "derivation": "/nix/store/0q572ndwfxafyrsm5s7628kz5ak4a1x0-drvgo-ci-6db2aca4170b-before-5.drv",
+          "result": "/nix/store/ivmjvp8y7kdpy3bwnw54q5d1hbshppdk-drvgo-ci-6db2aca4170b-before-5",
+          "command_output": "/nix/store/x8kl18xbf5wmxbdv8yl2h5zbbxyj0n1q-go-example.com-libnix-fixture"
+        }
+      ],
+      "medians": {
+        "before": {
+          "evaluation": 0.38962618506047875,
+          "realization": 0.5372504310216755,
+          "total": 0.9279405570123345
+        },
+        "after": {
+          "evaluation": 0.3948381569935009,
+          "realization": 0.5062920459313318,
+          "total": 0.9009460060624406
+        }
+      }
+    },
+    "export-large": {
+      "scope": "export + evaluation only; no realization",
+      "source": "/tmp/drvgo-ci-synthetic",
+      "package": ".",
+      "tags": "",
+      "ldflags": "",
+      "module_proxy": null,
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "binaries": {
+        "before": {
+          "path": "/tmp/drvgo-round2-before",
+          "sha256": "5bf4c8bafe3ad46d36dbe3eaaba69fcbbb9222060aef6b7aeb482cb9c538d9a2"
+        },
+        "after": {
+          "path": "/tmp/drvgo-round2-after",
+          "sha256": "6637be10b9b7abcd4391d96a52713097d59b288fc5b6cd33d85a5115d1c8538e"
+        }
+      },
+      "records": [
+        {
+          "builder": "before",
+          "trial": "warmup",
+          "warmup": true,
+          "command": [
+            "/tmp/drvgo-round2-before",
+            "export",
+            "-C",
+            "/tmp/drvgo-ci-synthetic",
+            "-out",
+            "/tmp/drvgo-round2-export-large/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.49901102494914085,
+          "evaluation": 0.15709530806634575,
+          "total": 0.6561063330154866,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "builder": "after",
+          "trial": "warmup",
+          "warmup": true,
+          "command": [
+            "/tmp/drvgo-round2-after",
+            "export",
+            "-C",
+            "/tmp/drvgo-ci-synthetic",
+            "-out",
+            "/tmp/drvgo-round2-export-large/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.5196881600422785,
+          "evaluation": 0.11471112002618611,
+          "total": 0.6343992800684646,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 1,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-before",
+            "export",
+            "-C",
+            "/tmp/drvgo-ci-synthetic",
+            "-out",
+            "/tmp/drvgo-round2-export-large/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.5027499570278451,
+          "evaluation": 0.1696464519482106,
+          "total": 0.6723964089760557,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 1,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-after",
+            "export",
+            "-C",
+            "/tmp/drvgo-ci-synthetic",
+            "-out",
+            "/tmp/drvgo-round2-export-large/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.524559882003814,
+          "evaluation": 0.11843748192768544,
+          "total": 0.6429973639314994,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 2,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-after",
+            "export",
+            "-C",
+            "/tmp/drvgo-ci-synthetic",
+            "-out",
+            "/tmp/drvgo-round2-export-large/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.5126812380040064,
+          "evaluation": 0.11311994702555239,
+          "total": 0.6258011850295588,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 2,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-before",
+            "export",
+            "-C",
+            "/tmp/drvgo-ci-synthetic",
+            "-out",
+            "/tmp/drvgo-round2-export-large/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.5012850899947807,
+          "evaluation": 0.1557272089412436,
+          "total": 0.6570122989360243,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 3,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-before",
+            "export",
+            "-C",
+            "/tmp/drvgo-ci-synthetic",
+            "-out",
+            "/tmp/drvgo-round2-export-large/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.5140314609743655,
+          "evaluation": 0.14687680499628186,
+          "total": 0.6609082659706473,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 3,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-after",
+            "export",
+            "-C",
+            "/tmp/drvgo-ci-synthetic",
+            "-out",
+            "/tmp/drvgo-round2-export-large/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.5182954840129241,
+          "evaluation": 0.1136367570143193,
+          "total": 0.6319322410272434,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 4,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-after",
+            "export",
+            "-C",
+            "/tmp/drvgo-ci-synthetic",
+            "-out",
+            "/tmp/drvgo-round2-export-large/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.5124788839602843,
+          "evaluation": 0.11554777401033789,
+          "total": 0.6280266579706222,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 4,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-before",
+            "export",
+            "-C",
+            "/tmp/drvgo-ci-synthetic",
+            "-out",
+            "/tmp/drvgo-round2-export-large/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.4987078079720959,
+          "evaluation": 0.15168932697270066,
+          "total": 0.6503971349447966,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 5,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-before",
+            "export",
+            "-C",
+            "/tmp/drvgo-ci-synthetic",
+            "-out",
+            "/tmp/drvgo-round2-export-large/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.5077281219419092,
+          "evaluation": 0.14679311204236,
+          "total": 0.6545212339842692,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 5,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-after",
+            "export",
+            "-C",
+            "/tmp/drvgo-ci-synthetic",
+            "-out",
+            "/tmp/drvgo-round2-export-large/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.5253385800169781,
+          "evaluation": 0.11094728403259069,
+          "total": 0.6362858640495688,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 6,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-after",
+            "export",
+            "-C",
+            "/tmp/drvgo-ci-synthetic",
+            "-out",
+            "/tmp/drvgo-round2-export-large/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.5142711360240355,
+          "evaluation": 0.114279365981929,
+          "total": 0.6285505020059645,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 6,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-before",
+            "export",
+            "-C",
+            "/tmp/drvgo-ci-synthetic",
+            "-out",
+            "/tmp/drvgo-round2-export-large/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.5004884349182248,
+          "evaluation": 0.1471560860518366,
+          "total": 0.6476445209700614,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 7,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-before",
+            "export",
+            "-C",
+            "/tmp/drvgo-ci-synthetic",
+            "-out",
+            "/tmp/drvgo-round2-export-large/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.5032558219972998,
+          "evaluation": 0.14216095802839845,
+          "total": 0.6454167800256982,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 7,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-after",
+            "export",
+            "-C",
+            "/tmp/drvgo-ci-synthetic",
+            "-out",
+            "/tmp/drvgo-round2-export-large/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.5250955200754106,
+          "evaluation": 0.11556396493688226,
+          "total": 0.6406594850122929,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        }
+      ],
+      "medians": {
+        "before": {
+          "export": 0.5027499570278451,
+          "evaluation": 0.1471560860518366,
+          "total": 0.6545212339842692
+        },
+        "after": {
+          "export": 0.5182954840129241,
+          "evaluation": 0.114279365981929,
+          "total": 0.6319322410272434
+        }
+      }
+    },
+    "export-fixture": {
+      "scope": "export + evaluation only; no realization",
+      "source": "/home/ryantm/p/drvgo/tests/fixture",
+      "package": ".",
+      "tags": "",
+      "ldflags": "",
+      "module_proxy": null,
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "binaries": {
+        "before": {
+          "path": "/tmp/drvgo-round2-before",
+          "sha256": "5bf4c8bafe3ad46d36dbe3eaaba69fcbbb9222060aef6b7aeb482cb9c538d9a2"
+        },
+        "after": {
+          "path": "/tmp/drvgo-round2-after",
+          "sha256": "6637be10b9b7abcd4391d96a52713097d59b288fc5b6cd33d85a5115d1c8538e"
+        }
+      },
+      "records": [
+        {
+          "builder": "before",
+          "trial": "warmup",
+          "warmup": true,
+          "command": [
+            "/tmp/drvgo-round2-before",
+            "export",
+            "-C",
+            "/home/ryantm/p/drvgo/tests/fixture",
+            "-out",
+            "/tmp/drvgo-round2-export-fixture/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.3395230430178344,
+          "evaluation": 0.059834563988260925,
+          "total": 0.39935760700609535,
+          "derivation": "/nix/store/c0gas31rs91n15h7nsh9zdlv7s2z2k5k-go-example.com-libnix-fixture.drv"
+        },
+        {
+          "builder": "after",
+          "trial": "warmup",
+          "warmup": true,
+          "command": [
+            "/tmp/drvgo-round2-after",
+            "export",
+            "-C",
+            "/home/ryantm/p/drvgo/tests/fixture",
+            "-out",
+            "/tmp/drvgo-round2-export-fixture/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.34907059697434306,
+          "evaluation": 0.054600313073024154,
+          "total": 0.4036709100473672,
+          "derivation": "/nix/store/qyv3f41q2knhzqxwb363b4jqgxqnycsy-go-example.com-libnix-fixture.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 1,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-before",
+            "export",
+            "-C",
+            "/home/ryantm/p/drvgo/tests/fixture",
+            "-out",
+            "/tmp/drvgo-round2-export-fixture/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.3537701420718804,
+          "evaluation": 0.05410945194307715,
+          "total": 0.40787959401495755,
+          "derivation": "/nix/store/c0gas31rs91n15h7nsh9zdlv7s2z2k5k-go-example.com-libnix-fixture.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 1,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-after",
+            "export",
+            "-C",
+            "/home/ryantm/p/drvgo/tests/fixture",
+            "-out",
+            "/tmp/drvgo-round2-export-fixture/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.35971975699067116,
+          "evaluation": 0.05631592602003366,
+          "total": 0.4160356830107048,
+          "derivation": "/nix/store/qyv3f41q2knhzqxwb363b4jqgxqnycsy-go-example.com-libnix-fixture.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 2,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-after",
+            "export",
+            "-C",
+            "/home/ryantm/p/drvgo/tests/fixture",
+            "-out",
+            "/tmp/drvgo-round2-export-fixture/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.3485611049691215,
+          "evaluation": 0.06693190708756447,
+          "total": 0.415493012056686,
+          "derivation": "/nix/store/qyv3f41q2knhzqxwb363b4jqgxqnycsy-go-example.com-libnix-fixture.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 2,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-before",
+            "export",
+            "-C",
+            "/home/ryantm/p/drvgo/tests/fixture",
+            "-out",
+            "/tmp/drvgo-round2-export-fixture/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.3458047070307657,
+          "evaluation": 0.057578481966629624,
+          "total": 0.40338318899739534,
+          "derivation": "/nix/store/c0gas31rs91n15h7nsh9zdlv7s2z2k5k-go-example.com-libnix-fixture.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 3,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-before",
+            "export",
+            "-C",
+            "/home/ryantm/p/drvgo/tests/fixture",
+            "-out",
+            "/tmp/drvgo-round2-export-fixture/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.34635888994671404,
+          "evaluation": 0.05762730503920466,
+          "total": 0.4039861949859187,
+          "derivation": "/nix/store/c0gas31rs91n15h7nsh9zdlv7s2z2k5k-go-example.com-libnix-fixture.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 3,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-after",
+            "export",
+            "-C",
+            "/home/ryantm/p/drvgo/tests/fixture",
+            "-out",
+            "/tmp/drvgo-round2-export-fixture/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.35056075791362673,
+          "evaluation": 0.054809116991236806,
+          "total": 0.40536987490486354,
+          "derivation": "/nix/store/qyv3f41q2knhzqxwb363b4jqgxqnycsy-go-example.com-libnix-fixture.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 4,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-after",
+            "export",
+            "-C",
+            "/home/ryantm/p/drvgo/tests/fixture",
+            "-out",
+            "/tmp/drvgo-round2-export-fixture/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.35402602807153016,
+          "evaluation": 0.059669218957424164,
+          "total": 0.4136952470289543,
+          "derivation": "/nix/store/qyv3f41q2knhzqxwb363b4jqgxqnycsy-go-example.com-libnix-fixture.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 4,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-before",
+            "export",
+            "-C",
+            "/home/ryantm/p/drvgo/tests/fixture",
+            "-out",
+            "/tmp/drvgo-round2-export-fixture/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.3554008899955079,
+          "evaluation": 0.05703489598818123,
+          "total": 0.41243578598368913,
+          "derivation": "/nix/store/c0gas31rs91n15h7nsh9zdlv7s2z2k5k-go-example.com-libnix-fixture.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 5,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-before",
+            "export",
+            "-C",
+            "/home/ryantm/p/drvgo/tests/fixture",
+            "-out",
+            "/tmp/drvgo-round2-export-fixture/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.34494704799726605,
+          "evaluation": 0.05942050600424409,
+          "total": 0.40436755400151014,
+          "derivation": "/nix/store/c0gas31rs91n15h7nsh9zdlv7s2z2k5k-go-example.com-libnix-fixture.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 5,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-after",
+            "export",
+            "-C",
+            "/home/ryantm/p/drvgo/tests/fixture",
+            "-out",
+            "/tmp/drvgo-round2-export-fixture/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.3450375000247732,
+          "evaluation": 0.0559678019490093,
+          "total": 0.4010053019737825,
+          "derivation": "/nix/store/qyv3f41q2knhzqxwb363b4jqgxqnycsy-go-example.com-libnix-fixture.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 6,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-after",
+            "export",
+            "-C",
+            "/home/ryantm/p/drvgo/tests/fixture",
+            "-out",
+            "/tmp/drvgo-round2-export-fixture/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.3472969370195642,
+          "evaluation": 0.05771403503604233,
+          "total": 0.40501097205560654,
+          "derivation": "/nix/store/qyv3f41q2knhzqxwb363b4jqgxqnycsy-go-example.com-libnix-fixture.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 6,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-before",
+            "export",
+            "-C",
+            "/home/ryantm/p/drvgo/tests/fixture",
+            "-out",
+            "/tmp/drvgo-round2-export-fixture/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.3509372399421409,
+          "evaluation": 0.05788820900488645,
+          "total": 0.4088254489470273,
+          "derivation": "/nix/store/c0gas31rs91n15h7nsh9zdlv7s2z2k5k-go-example.com-libnix-fixture.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 7,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-before",
+            "export",
+            "-C",
+            "/home/ryantm/p/drvgo/tests/fixture",
+            "-out",
+            "/tmp/drvgo-round2-export-fixture/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.3523233160376549,
+          "evaluation": 0.05241881392430514,
+          "total": 0.40474212996196,
+          "derivation": "/nix/store/c0gas31rs91n15h7nsh9zdlv7s2z2k5k-go-example.com-libnix-fixture.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 7,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-after",
+            "export",
+            "-C",
+            "/home/ryantm/p/drvgo/tests/fixture",
+            "-out",
+            "/tmp/drvgo-round2-export-fixture/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "."
+          ],
+          "export": 0.35503657499793917,
+          "evaluation": 0.059251100989058614,
+          "total": 0.4142876759869978,
+          "derivation": "/nix/store/qyv3f41q2knhzqxwb363b4jqgxqnycsy-go-example.com-libnix-fixture.drv"
+        }
+      ],
+      "source_revision": "64a84f6f05c011d514c42a39084ecdeadb255463",
+      "medians": {
+        "before": {
+          "export": 0.3509372399421409,
+          "evaluation": 0.057578481966629624,
+          "total": 0.40474212996196
+        },
+        "after": {
+          "export": 0.35056075791362673,
+          "evaluation": 0.05771403503604233,
+          "total": 0.4136952470289543
+        }
+      }
+    },
+    "export-upm": {
+      "scope": "export + evaluation only; no realization",
+      "source": "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source/cmd/upm",
+      "package": ".",
+      "tags": "",
+      "ldflags": "",
+      "module_proxy": "file:///nix/store/h98rgzjab1dcnpwkz4akbggjk98zr13a-drvgo-modules-0-go-modules",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "binaries": {
+        "before": {
+          "path": "/tmp/drvgo-round2-before",
+          "sha256": "5bf4c8bafe3ad46d36dbe3eaaba69fcbbb9222060aef6b7aeb482cb9c538d9a2"
+        },
+        "after": {
+          "path": "/tmp/drvgo-round2-after",
+          "sha256": "6637be10b9b7abcd4391d96a52713097d59b288fc5b6cd33d85a5115d1c8538e"
+        }
+      },
+      "records": [
+        {
+          "builder": "before",
+          "trial": "warmup",
+          "warmup": true,
+          "command": [
+            "/tmp/drvgo-round2-before",
+            "export",
+            "-C",
+            "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source/cmd/upm",
+            "-out",
+            "/tmp/drvgo-round2-export-upm/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "-module-proxy",
+            "file:///nix/store/h98rgzjab1dcnpwkz4akbggjk98zr13a-drvgo-modules-0-go-modules",
+            "."
+          ],
+          "export": 0.554430391988717,
+          "evaluation": 0.11383538600057364,
+          "total": 0.6682657779892907,
+          "derivation": "/nix/store/4g8apk5642gbhdi4gp2p4yaab4534nxp-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "builder": "after",
+          "trial": "warmup",
+          "warmup": true,
+          "command": [
+            "/tmp/drvgo-round2-after",
+            "export",
+            "-C",
+            "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source/cmd/upm",
+            "-out",
+            "/tmp/drvgo-round2-export-upm/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "-module-proxy",
+            "file:///nix/store/h98rgzjab1dcnpwkz4akbggjk98zr13a-drvgo-modules-0-go-modules",
+            "."
+          ],
+          "export": 0.56818584096618,
+          "evaluation": 0.2869783079950139,
+          "total": 0.8551641489611939,
+          "derivation": "/nix/store/8i3rhmfl8xgr3s18i74bmdnibbmph9xp-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 1,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-before",
+            "export",
+            "-C",
+            "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source/cmd/upm",
+            "-out",
+            "/tmp/drvgo-round2-export-upm/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "-module-proxy",
+            "file:///nix/store/h98rgzjab1dcnpwkz4akbggjk98zr13a-drvgo-modules-0-go-modules",
+            "."
+          ],
+          "export": 0.6020317019429058,
+          "evaluation": 0.12284048704896122,
+          "total": 0.724872188991867,
+          "derivation": "/nix/store/4g8apk5642gbhdi4gp2p4yaab4534nxp-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 1,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-after",
+            "export",
+            "-C",
+            "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source/cmd/upm",
+            "-out",
+            "/tmp/drvgo-round2-export-upm/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "-module-proxy",
+            "file:///nix/store/h98rgzjab1dcnpwkz4akbggjk98zr13a-drvgo-modules-0-go-modules",
+            "."
+          ],
+          "export": 0.6035902249859646,
+          "evaluation": 0.1271792839979753,
+          "total": 0.7307695089839399,
+          "derivation": "/nix/store/8i3rhmfl8xgr3s18i74bmdnibbmph9xp-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 2,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-after",
+            "export",
+            "-C",
+            "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source/cmd/upm",
+            "-out",
+            "/tmp/drvgo-round2-export-upm/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "-module-proxy",
+            "file:///nix/store/h98rgzjab1dcnpwkz4akbggjk98zr13a-drvgo-modules-0-go-modules",
+            "."
+          ],
+          "export": 0.584614904015325,
+          "evaluation": 0.12718264607246965,
+          "total": 0.7117975500877947,
+          "derivation": "/nix/store/8i3rhmfl8xgr3s18i74bmdnibbmph9xp-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 2,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-before",
+            "export",
+            "-C",
+            "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source/cmd/upm",
+            "-out",
+            "/tmp/drvgo-round2-export-upm/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "-module-proxy",
+            "file:///nix/store/h98rgzjab1dcnpwkz4akbggjk98zr13a-drvgo-modules-0-go-modules",
+            "."
+          ],
+          "export": 0.5691262159962207,
+          "evaluation": 0.11825371999293566,
+          "total": 0.6873799359891564,
+          "derivation": "/nix/store/4g8apk5642gbhdi4gp2p4yaab4534nxp-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 3,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-before",
+            "export",
+            "-C",
+            "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source/cmd/upm",
+            "-out",
+            "/tmp/drvgo-round2-export-upm/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "-module-proxy",
+            "file:///nix/store/h98rgzjab1dcnpwkz4akbggjk98zr13a-drvgo-modules-0-go-modules",
+            "."
+          ],
+          "export": 0.5896768900565803,
+          "evaluation": 0.12559388601221144,
+          "total": 0.7152707760687917,
+          "derivation": "/nix/store/4g8apk5642gbhdi4gp2p4yaab4534nxp-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 3,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-after",
+            "export",
+            "-C",
+            "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source/cmd/upm",
+            "-out",
+            "/tmp/drvgo-round2-export-upm/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "-module-proxy",
+            "file:///nix/store/h98rgzjab1dcnpwkz4akbggjk98zr13a-drvgo-modules-0-go-modules",
+            "."
+          ],
+          "export": 0.5886274660006166,
+          "evaluation": 0.11895304499194026,
+          "total": 0.7075805109925568,
+          "derivation": "/nix/store/8i3rhmfl8xgr3s18i74bmdnibbmph9xp-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 4,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-after",
+            "export",
+            "-C",
+            "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source/cmd/upm",
+            "-out",
+            "/tmp/drvgo-round2-export-upm/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "-module-proxy",
+            "file:///nix/store/h98rgzjab1dcnpwkz4akbggjk98zr13a-drvgo-modules-0-go-modules",
+            "."
+          ],
+          "export": 0.5846035110298544,
+          "evaluation": 0.1285938440123573,
+          "total": 0.7131973550422117,
+          "derivation": "/nix/store/8i3rhmfl8xgr3s18i74bmdnibbmph9xp-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 4,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-before",
+            "export",
+            "-C",
+            "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source/cmd/upm",
+            "-out",
+            "/tmp/drvgo-round2-export-upm/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "-module-proxy",
+            "file:///nix/store/h98rgzjab1dcnpwkz4akbggjk98zr13a-drvgo-modules-0-go-modules",
+            "."
+          ],
+          "export": 0.5678825340000913,
+          "evaluation": 0.11922422400675714,
+          "total": 0.6871067580068484,
+          "derivation": "/nix/store/4g8apk5642gbhdi4gp2p4yaab4534nxp-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "builder": "before",
+          "trial": 5,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-before",
+            "export",
+            "-C",
+            "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source/cmd/upm",
+            "-out",
+            "/tmp/drvgo-round2-export-upm/before-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "-module-proxy",
+            "file:///nix/store/h98rgzjab1dcnpwkz4akbggjk98zr13a-drvgo-modules-0-go-modules",
+            "."
+          ],
+          "export": 0.5833001550054178,
+          "evaluation": 0.11305195896420628,
+          "total": 0.696352113969624,
+          "derivation": "/nix/store/4g8apk5642gbhdi4gp2p4yaab4534nxp-go-github.com-replit-upm-cmd-upm.drv"
+        },
+        {
+          "builder": "after",
+          "trial": 5,
+          "warmup": false,
+          "command": [
+            "/tmp/drvgo-round2-after",
+            "export",
+            "-C",
+            "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source/cmd/upm",
+            "-out",
+            "/tmp/drvgo-round2-export-upm/after-export",
+            "-tags",
+            "",
+            "-ldflags",
+            "",
+            "-module-proxy",
+            "file:///nix/store/h98rgzjab1dcnpwkz4akbggjk98zr13a-drvgo-modules-0-go-modules",
+            "."
+          ],
+          "export": 0.5724712120136246,
+          "evaluation": 0.12261185003444552,
+          "total": 0.6950830620480701,
+          "derivation": "/nix/store/8i3rhmfl8xgr3s18i74bmdnibbmph9xp-go-github.com-replit-upm-cmd-upm.drv"
+        }
+      ],
+      "medians": {
+        "before": {
+          "export": 0.5833001550054178,
+          "evaluation": 0.11922422400675714,
+          "total": 0.696352113969624
+        },
+        "after": {
+          "export": 0.584614904015325,
+          "evaluation": 0.1271792839979753,
+          "total": 0.7117975500877947
+        }
+      }
+    },
+    "build-large": {
+      "scope": "Rebuild every package with nix-build --check; warm tools, sources, and dependency outputs. No network transfer.",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "flags": [
+        "--no-out-link",
+        "--max-jobs",
+        "4",
+        "--cores",
+        "2"
+      ],
+      "roots": {
+        "before": "/tmp/drvgo-round2-export-large/before-export",
+        "after": "/tmp/drvgo-round2-export-large/after-export"
+      },
+      "records": [
+        {
+          "label": "before",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 20.666151224984787
+        },
+        {
+          "label": "after",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 20.740000983001664
+        },
+        {
+          "label": "after",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 20.801116593996994
+        },
+        {
+          "label": "before",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 20.7505382419331
+        },
+        {
+          "label": "before",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 20.837573628057726
+        },
+        {
+          "label": "after",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 20.882098547997884
+        },
+        {
+          "label": "after",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 21.105580247938633
+        },
+        {
+          "label": "before",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 20.82680027000606
+        },
+        {
+          "label": "before",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 20.788704449078068
+        },
+        {
+          "label": "after",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 20.91337422595825
+        },
+        {
+          "label": "after",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 20.67785944393836
+        },
+        {
+          "label": "before",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 20.878615677007474
+        }
+      ],
+      "medians": {
+        "before": 20.82680027000606,
+        "after": 20.882098547997884
+      }
+    },
+    "build-fixture": {
+      "scope": "Rebuild every package with nix-build --check; warm tools, sources, and dependency outputs. No network transfer.",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "flags": [
+        "--no-out-link",
+        "--max-jobs",
+        "4",
+        "--cores",
+        "2"
+      ],
+      "roots": {
+        "before": "/tmp/drvgo-round2-export-fixture/before-export",
+        "after": "/tmp/drvgo-round2-export-fixture/after-export"
+      },
+      "records": [
+        {
+          "label": "before",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 4.066321975900792
+        },
+        {
+          "label": "after",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 4.076656776946038
+        },
+        {
+          "label": "after",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 4.111350919003598
+        },
+        {
+          "label": "before",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 4.126235520932823
+        },
+        {
+          "label": "before",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 4.112740871030837
+        },
+        {
+          "label": "after",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 4.1369743150426075
+        },
+        {
+          "label": "after",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 4.104822493973188
+        },
+        {
+          "label": "before",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 4.062974089989439
+        },
+        {
+          "label": "before",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 4.128348449943587
+        },
+        {
+          "label": "after",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 4.157220192020759
+        },
+        {
+          "label": "after",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 4.156933989026584
+        },
+        {
+          "label": "before",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 4.112085581989959
+        }
+      ],
+      "medians": {
+        "before": 4.112740871030837,
+        "after": 4.1369743150426075
+      }
+    },
+    "eval": {
+      "scope": "Warm graph evaluation; no builds; iets tracing cache and Nix fallback disabled",
+      "roots": {
+        "before": "/tmp/drvgo-round2-export-large/before-export",
+        "after": "/tmp/drvgo-round2-export-large/after-export"
+      },
+      "records": [
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.16007172502577305,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.0565190709894523,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.07959322398528457,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.11874119692947716,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.04036870808340609,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.0625565079972148,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.051912119961343706,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.034780089976266026,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.11955190100707114,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.0692236500326544,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.054436673992313445,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.16317402408458292,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.15132724691648036,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.05916128994431347,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.07298322091810405,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.1161813399521634,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.03790043096523732,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.055863943067379296,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.05188889603596181,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.03587652905844152,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.11796530906576663,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.07407957094255835,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.054961869958788157,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.15442994295153767,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.15515535604208708,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.05926669808104634,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.08069993404205889,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.11372253799345344,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.03508397890254855,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.05101723095867783,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.04822577000595629,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.03410336596425623,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.12046145205385983,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.07438607804942876,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.0575798210920766,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.16060147306416184,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.1499208650784567,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.05485892191063613,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.07226046593859792,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.11835106101352721,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.03762084594927728,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.04934749810490757,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.054515246069058776,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.034227565047331154,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.11406299099326134,
+          "derivation": "/nix/store/shbkqsdnnb5wrx9hapyb5jfgaxzaa6gl-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.06984466197900474,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.05647089704871178,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.16829684702679515,
+          "derivation": "/nix/store/4vpkhs5pa3jbf26f0l3dv4pn56grawai-go-example.com-ci.drv"
+        }
+      ],
+      "medians": {
+        "before": {
+          "nix": 0.15515535604208708,
+          "iets-1": 0.05647089704871178,
+          "iets-4": 0.07298322091810405
+        },
+        "after": {
+          "nix": 0.11796530906576663,
+          "iets-1": 0.03508397890254855,
+          "iets-4": 0.05188889603596181
+        }
+      }
+    },
+    "iets": {
+      "iets": "/nix/store/4adhszix9rn77kn8xn2m5mvbj123lv0p-iets-0.2.0/bin/iets",
+      "nonce": "0850b84dc1aa",
+      "records": [
+        {
+          "case": "outer",
+          "client": "nix",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.3707525780191645,
+          "derivation": "/nix/store/6bibhccm1hx24w204v9mymrpg90hilwj-drvgo-iets-0850b84dc1aa-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "iets-1",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.20308965898584574,
+          "derivation": "/nix/store/6bibhccm1hx24w204v9mymrpg90hilwj-drvgo-iets-0850b84dc1aa-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "iets-4",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.26580613292753696,
+          "derivation": "/nix/store/6bibhccm1hx24w204v9mymrpg90hilwj-drvgo-iets-0850b84dc1aa-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "iets-4",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.10573536402080208,
+          "derivation": "/nix/store/6bibhccm1hx24w204v9mymrpg90hilwj-drvgo-iets-0850b84dc1aa-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "iets-1",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.19888473895844072,
+          "derivation": "/nix/store/6bibhccm1hx24w204v9mymrpg90hilwj-drvgo-iets-0850b84dc1aa-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "nix",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.40095323300920427,
+          "derivation": "/nix/store/6bibhccm1hx24w204v9mymrpg90hilwj-drvgo-iets-0850b84dc1aa-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "nix",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.39283276605419815,
+          "derivation": "/nix/store/6bibhccm1hx24w204v9mymrpg90hilwj-drvgo-iets-0850b84dc1aa-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "iets-1",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.19685145106632262,
+          "derivation": "/nix/store/6bibhccm1hx24w204v9mymrpg90hilwj-drvgo-iets-0850b84dc1aa-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "iets-4",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.16560848499648273,
+          "derivation": "/nix/store/6bibhccm1hx24w204v9mymrpg90hilwj-drvgo-iets-0850b84dc1aa-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "iets-4",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.10536100796889514,
+          "derivation": "/nix/store/6bibhccm1hx24w204v9mymrpg90hilwj-drvgo-iets-0850b84dc1aa-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "iets-1",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.19760334491729736,
+          "derivation": "/nix/store/6bibhccm1hx24w204v9mymrpg90hilwj-drvgo-iets-0850b84dc1aa-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "nix",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.42314939701464027,
+          "derivation": "/nix/store/6bibhccm1hx24w204v9mymrpg90hilwj-drvgo-iets-0850b84dc1aa-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "nix",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.3926228419877589,
+          "derivation": "/nix/store/6bibhccm1hx24w204v9mymrpg90hilwj-drvgo-iets-0850b84dc1aa-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "iets-1",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.20554287999402732,
+          "derivation": "/nix/store/6bibhccm1hx24w204v9mymrpg90hilwj-drvgo-iets-0850b84dc1aa-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "iets-4",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.10778438998386264,
+          "derivation": "/nix/store/6bibhccm1hx24w204v9mymrpg90hilwj-drvgo-iets-0850b84dc1aa-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "iets-4",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.10781522805336863,
+          "derivation": "/nix/store/6bibhccm1hx24w204v9mymrpg90hilwj-drvgo-iets-0850b84dc1aa-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "iets-1",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.19709737203083932,
+          "derivation": "/nix/store/6bibhccm1hx24w204v9mymrpg90hilwj-drvgo-iets-0850b84dc1aa-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "nix",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.42237049306277186,
+          "derivation": "/nix/store/6bibhccm1hx24w204v9mymrpg90hilwj-drvgo-iets-0850b84dc1aa-outer.drv"
+        },
+        {
+          "case": "nested",
+          "client": "nix",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.3961401319829747,
+          "derivation": "/nix/store/r7zrpfjxh7i25pqc66zccdwr09x4m4aq-drvgo-iets-0850b84dc1aa-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "iets-1",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.1958422240568325,
+          "derivation": "/nix/store/r7zrpfjxh7i25pqc66zccdwr09x4m4aq-drvgo-iets-0850b84dc1aa-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "iets-4",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.11649002006743103,
+          "derivation": "/nix/store/r7zrpfjxh7i25pqc66zccdwr09x4m4aq-drvgo-iets-0850b84dc1aa-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "iets-4",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.11052645393647254,
+          "derivation": "/nix/store/r7zrpfjxh7i25pqc66zccdwr09x4m4aq-drvgo-iets-0850b84dc1aa-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "iets-1",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.19315929897129536,
+          "derivation": "/nix/store/r7zrpfjxh7i25pqc66zccdwr09x4m4aq-drvgo-iets-0850b84dc1aa-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "nix",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.4121738800313324,
+          "derivation": "/nix/store/r7zrpfjxh7i25pqc66zccdwr09x4m4aq-drvgo-iets-0850b84dc1aa-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "nix",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.39440060092601925,
+          "derivation": "/nix/store/r7zrpfjxh7i25pqc66zccdwr09x4m4aq-drvgo-iets-0850b84dc1aa-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "iets-1",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.2018992149969563,
+          "derivation": "/nix/store/r7zrpfjxh7i25pqc66zccdwr09x4m4aq-drvgo-iets-0850b84dc1aa-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "iets-4",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.10867085389327258,
+          "derivation": "/nix/store/r7zrpfjxh7i25pqc66zccdwr09x4m4aq-drvgo-iets-0850b84dc1aa-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "iets-4",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.10911963297985494,
+          "derivation": "/nix/store/r7zrpfjxh7i25pqc66zccdwr09x4m4aq-drvgo-iets-0850b84dc1aa-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "iets-1",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.1921608439879492,
+          "derivation": "/nix/store/r7zrpfjxh7i25pqc66zccdwr09x4m4aq-drvgo-iets-0850b84dc1aa-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "nix",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.4160925420001149,
+          "derivation": "/nix/store/r7zrpfjxh7i25pqc66zccdwr09x4m4aq-drvgo-iets-0850b84dc1aa-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "nix",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.4171683199238032,
+          "derivation": "/nix/store/r7zrpfjxh7i25pqc66zccdwr09x4m4aq-drvgo-iets-0850b84dc1aa-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "iets-1",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.19632205204106867,
+          "derivation": "/nix/store/r7zrpfjxh7i25pqc66zccdwr09x4m4aq-drvgo-iets-0850b84dc1aa-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "iets-4",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.1060292519396171,
+          "derivation": "/nix/store/r7zrpfjxh7i25pqc66zccdwr09x4m4aq-drvgo-iets-0850b84dc1aa-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "iets-4",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.10805190994869918,
+          "derivation": "/nix/store/r7zrpfjxh7i25pqc66zccdwr09x4m4aq-drvgo-iets-0850b84dc1aa-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "iets-1",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.19604285701643676,
+          "derivation": "/nix/store/r7zrpfjxh7i25pqc66zccdwr09x4m4aq-drvgo-iets-0850b84dc1aa-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "nix",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.3980985269881785,
+          "derivation": "/nix/store/r7zrpfjxh7i25pqc66zccdwr09x4m4aq-drvgo-iets-0850b84dc1aa-nested.drv"
+        }
+      ],
+      "checks": [
+        {
+          "case": "outer",
+          "derivation": "/nix/store/6bibhccm1hx24w204v9mymrpg90hilwj-drvgo-iets-0850b84dc1aa-outer.drv",
+          "output": "/nix/store/s37d9zn1wg68ljgpcib2c0bha1mx9k7k-drvgo-iets-0850b84dc1aa-outer",
+          "command_output": "/nix/store/03r0nl9ybmp6l0783zzl6p3xkag6rp7m-go-example.com-libnix-fixture",
+          "direct_output": "/nix/store/iwkgikwzm4hxj0ci6h0yv7a3g6z7qs66-drvgo-iets-0850b84dc1aa-outer-result"
+        },
+        {
+          "case": "nested",
+          "derivation": "/nix/store/r7zrpfjxh7i25pqc66zccdwr09x4m4aq-drvgo-iets-0850b84dc1aa-nested.drv",
+          "output": "/nix/store/4jmbf3h03ri0cqrppzjnvqdiyya1wx0r-drvgo-iets-0850b84dc1aa-nested",
+          "command_output": "/nix/store/03r0nl9ybmp6l0783zzl6p3xkag6rp7m-go-example.com-libnix-fixture",
+          "direct_output": "/nix/store/gg51ricn1g7kjsnhzij8456z9iv00j8h-drvgo-iets-0850b84dc1aa-nested-result"
+        }
+      ],
+      "scope": "Warm evaluation with tracing cache disabled; real daemon builds with IFD and classic fallback disabled. Nested planning uses iets too.",
+      "version": "iets 0.2.0",
+      "nix_version": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "embed_invalidation": "passed",
+      "medians": {
+        "outer": {
+          "nix": 0.40095323300920427,
+          "iets-1": 0.19760334491729736,
+          "iets-4": 0.10778438998386264
+        },
+        "nested": {
+          "nix": 0.4121738800313324,
+          "iets-1": 0.19604285701643676,
+          "iets-4": 0.10867085389327258
+        }
+      }
+    }
+  },
+  "source_counts": {
+    "large": {
+      "before": {
+        "units": 1061,
+        "separate_source_objects": 1061,
+        "script_bytes": 854384,
+        "evaluation_bytes": 169810
+      },
+      "after": {
+        "units": 1061,
+        "separate_source_objects": 42,
+        "script_bytes": 1209185,
+        "evaluation_bytes": 82090
+      }
+    },
+    "fixture": {
+      "before": {
+        "units": 67,
+        "separate_source_objects": 67,
+        "script_bytes": 108694,
+        "evaluation_bytes": 10773
+      },
+      "after": {
+        "units": 67,
+        "separate_source_objects": 44,
+        "script_bytes": 182025,
+        "evaluation_bytes": 8709
+      }
+    },
+    "upm": {
+      "before": {
+        "units": 554,
+        "separate_source_objects": 554,
+        "script_bytes": 790286,
+        "evaluation_bytes": 95962
+      },
+      "after": {
+        "units": 554,
+        "separate_source_objects": 400,
+        "script_bytes": 1232823,
+        "evaluation_bytes": 82632
+      }
+    }
+  },
+  "toolchain_closures": {
+    "before": {
+      "compile": {
+        "path": "/nix/store/2y23aw9r98awrl642p5vy22kiq6lh35c-go-libnix-compile-toolchain",
+        "nar_bytes": 37552704,
+        "store_paths": 4
+      },
+      "link": {
+        "path": "/nix/store/mpwlcb1yc9naclmj5k2scq6yh2s7h5z1-go-libnix-link-toolchain",
+        "nar_bytes": 81960864,
+        "store_paths": 9
+      },
+      "native": {
+        "path": "/nix/store/n91l79vvv14h98vk38ih2x25n5lg8ndn-go-libnix-native-toolchain",
+        "nar_bytes": 452185048,
+        "store_paths": 42
+      },
+      "planning": {
+        "path": "/nix/store/5820jvcvrhb7kr2hrc1c1mvflfb9fsvp-go-libnix-toolchain",
+        "nar_bytes": 684074952,
+        "store_paths": 48
+      }
+    },
+    "after": {
+      "compile": {
+        "path": "/nix/store/s7nfnkdbs9a46j5ybnpq0yz7jcl0nglm-go-libnix-compile-toolchain",
+        "nar_bytes": 37560896,
+        "store_paths": 4
+      },
+      "link": {
+        "path": "/nix/store/6m23h3jy1b0swrbbcg638sq3xnk1y6ln-go-libnix-link-toolchain",
+        "nar_bytes": 81969056,
+        "store_paths": 9
+      },
+      "native": {
+        "path": "/nix/store/18ccarvbwj8028m1v95b3nvh0hajm27d-go-libnix-native-toolchain",
+        "nar_bytes": 452193240,
+        "store_paths": 42
+      },
+      "planning": {
+        "path": "/nix/store/2nvq5427mbm0yz0gzy5y3pn93q6a5n6m-go-libnix-toolchain",
+        "nar_bytes": 684083144,
+        "store_paths": 48
+      }
+    }
+  },
+  "validation": {
+    "unit_tests": "go test ./...",
+    "compatibility": {
+      "go": "go1.26.5",
+      "platform": [
+        "linux",
+        "amd64"
+      ],
+      "toolchain": "/nix/store/2nvq5427mbm0yz0gzy5y3pn93q6a5n6m-go-libnix-toolchain",
+      "cases": [
+        {
+          "name": "embed-cgo",
+          "output": "hello embedded world\nstable\nnested asset\n01 02 ff\nhidden asset\n",
+          "units": 67,
+          "store_path": "/nix/store/03r0nl9ybmp6l0783zzl6p3xkag6rp7m-go-example.com-libnix-fixture",
+          "package_derivations": {
+            "internal/goarch": "/nix/store/qmgn68xkscl45bn1cvnjq7501bagw62k-go-internal-goarch.drv",
+            "internal/goos": "/nix/store/3sknb2pyhmgcp6r7m9c6mkyf7jf91vxa-go-internal-goos.drv",
+            "internal/runtime/sys": "/nix/store/rhzn581j3v2ljdc31cavj55lghc9c356-go-internal-runtime-sys.drv",
+            "internal/abi": "/nix/store/9djfya8qbk2ghrvzg1cgi55r0gqsri89-go-internal-abi.drv",
+            "internal/race": "/nix/store/y97d2nh4wn7d1dv6a8zr6ngvkykg4jfi-go-internal-race.drv",
+            "sync/atomic": "/nix/store/shl4vdcs9v9qyggc6w4bkgjfaymn1bjg-go-sync-atomic.drv",
+            "internal/sync": "/nix/store/wm2cng0b06iawgbp8g1f2imvdd2ivg7m-go-internal-sync.drv",
+            "internal/synctest": "/nix/store/4l0am9dkl9b6vcwd8qzijl6209r9rmgd-go-internal-synctest.drv",
+            "internal/cpu": "/nix/store/097lqqhprgr7jdhbd3ssal9lhxfjdn83-go-internal-cpu.drv",
+            "internal/bytealg": "/nix/store/hkim1rqhazhjsn62i6mdmshiy6gg0q2v-go-internal-bytealg.drv",
+            "internal/byteorder": "/nix/store/3mj75g6blflah10vg73pmlpww5d497ki-go-internal-byteorder.drv",
+            "internal/chacha8rand": "/nix/store/hch0szxmj3r67yka3pzyc66agmkw59w8-go-internal-chacha8rand.drv",
+            "internal/coverage/rtcov": "/nix/store/amr1baqhw0a2xfx94hf6d0h3586cskig-go-internal-coverage-rtcov.drv",
+            "internal/godebugs": "/nix/store/agk1xnyg489pysxrz20d9sxr70j3h1dp-go-internal-godebugs.drv",
+            "internal/goexperiment": "/nix/store/j48nh6xn8zxj3mx186phkrc7p4fb27wl-go-internal-goexperiment.drv",
+            "internal/profilerecord": "/nix/store/wi5bd5v83sf5jgvs166awdl8ls7c96hy-go-internal-profilerecord.drv",
+            "internal/runtime/atomic": "/nix/store/fq2p2fg148kyxa6g0pwmix4q5f0w9rpy-go-internal-runtime-atomic.drv",
+            "internal/runtime/syscall/linux": "/nix/store/z558f9xsl061yijwr5fjpy7nzzxasqig-go-internal-runtime-syscall-linux.drv",
+            "math/bits": "/nix/store/f7wzhs7ryk2yp72hprgw5xx6ksbw6i1f-go-math-bits.drv",
+            "internal/strconv": "/nix/store/s5ag9xckb4yr6ysa6z8s1wqs58x8558r-go-internal-strconv.drv",
+            "internal/runtime/cgroup": "/nix/store/0jqhr6lhl6nzh8nxgny4kl4bgy2z5jaa-go-internal-runtime-cgroup.drv",
+            "internal/runtime/exithook": "/nix/store/kvx4lpdyhgvgnri893h8aff71czn6isg-go-internal-runtime-exithook.drv",
+            "internal/runtime/gc": "/nix/store/b90g048aas4c8s39nv4g1jb6g3hra8rw-go-internal-runtime-gc.drv",
+            "internal/runtime/gc/scan": "/nix/store/123iqvyrpq22vpf4m5q6szyvcn83k4r2-go-internal-runtime-gc-scan.drv",
+            "internal/asan": "/nix/store/ghhjf6z36nkmq0c7j867dhhvjp0ps47m-go-internal-asan.drv",
+            "internal/msan": "/nix/store/h7yss8xzgyl97cbmnax8y0ds9n9afq29-go-internal-msan.drv",
+            "internal/runtime/math": "/nix/store/hwkbp1qhaifaasxxz7cyk228sg0pi8h3-go-internal-runtime-math.drv",
+            "internal/runtime/maps": "/nix/store/fng82ck2ldl97sa827jl4pcagnas0kk9-go-internal-runtime-maps.drv",
+            "internal/runtime/pprof/label": "/nix/store/59yyqlpbv7zgcad3nysa7x61apdpa5d3-go-internal-runtime-pprof-label.drv",
+            "internal/stringslite": "/nix/store/8m8pik03j8f9a7mx9qa4hv4zdgihp69y-go-internal-stringslite.drv",
+            "internal/trace/tracev2": "/nix/store/rmy3j8nxrmrha395kn9k1w19g0plmyvj-go-internal-trace-tracev2.drv",
+            "runtime": "/nix/store/driyp3kmrwq1n33krab7wiilq58bqxw8-go-runtime.drv",
+            "sync": "/nix/store/zx8z6irg5k30a38y2wgq6a539hz6nkjw-go-sync.drv",
+            "runtime/cgo": "/nix/store/r0dn788q5j4smxz4qjs0hnkhbgz9vsh2-go-runtime-cgo.drv",
+            "internal/unsafeheader": "/nix/store/v2xa9j2nphjrfp8vw14fpbsdxplrd35l-go-internal-unsafeheader.drv",
+            "internal/reflectlite": "/nix/store/c92kxpxs4pjip0py570a7y8mr3nvl3d1-go-internal-reflectlite.drv",
+            "errors": "/nix/store/lz1xb7d6x8yhy689k4pivnmnak1zfvcm-go-errors.drv",
+            "internal/oserror": "/nix/store/ii2h5cwcwsdb3bj5dicnnb163bgds2jy-go-internal-oserror.drv",
+            "cmp": "/nix/store/g9bdfjshnxygg8haknk6mfcj9vyicv9d-go-cmp.drv",
+            "iter": "/nix/store/8rq7dsq7pfc5q72hkb7zxrb8s0k0gbij-go-iter.drv",
+            "slices": "/nix/store/d189flxsl3yhy51dw9i1ff8pyzpyl3ff-go-slices.drv",
+            "syscall": "/nix/store/31q54mbyj0np01yrbasf0xmy6n5l43fy-go-syscall.drv",
+            "example.com/libnix-fixture/cgobase": "/nix/store/xy1sh49138x3qcn6sb4giza9qi1r6rdb-go-example.com-libnix-fixture-cgobase.drv",
+            "example.com/libnix-fixture/cgouse": "/nix/store/cdgnw188hcibsjmli5s2mnsgd58ba1jf-go-example.com-libnix-fixture-cgouse.drv",
+            "example.com/libnix-fixture/dep": "/nix/store/n3inxk8qlxyyxd67rp46vyq0l4m93r9s-go-example.com-libnix-fixture-dep.drv",
+            "io": "/nix/store/sk8lr126fjcbs50w1fimbiyf47m8459a-go-io.drv",
+            "unicode/utf8": "/nix/store/adgi0cxfaqpdkk6kmapz84iaqwxrdh4m-go-unicode-utf8.drv",
+            "path": "/nix/store/gwf86aci6nr4jvcf4b5ghh9w8rkwbj3q-go-path.drv",
+            "internal/bisect": "/nix/store/72kdzrrvbih493gkspd1f3bl9vc1k54j-go-internal-bisect.drv",
+            "internal/godebug": "/nix/store/lwq33l8fc1jxmaskmg8k4f1cchsndms2-go-internal-godebug.drv",
+            "time": "/nix/store/6iz9nwm4p3n4p9blkhy4014r5zcjws2i-go-time.drv",
+            "io/fs": "/nix/store/mbrg1raansgwlpgpj69528haj87hpdkp-go-io-fs.drv",
+            "embed": "/nix/store/v7z2vjyk2vx4sfb6az806i40y7aijff3-go-embed.drv",
+            "example.com/libnix-fixture/message": "/nix/store/qlxmmxnfxpmk1jvl7a2sc7fsyhi03lhv-go-example.com-libnix-fixture-message.drv",
+            "math": "/nix/store/knm76061gq0dsn9mfd5jmpqz2h57xhgg-go-math.drv",
+            "strconv": "/nix/store/17ja5cz4w4sq8bgvi6nxsb885r6jjnn3-go-strconv.drv",
+            "unicode": "/nix/store/6n08v3fj96fpvrjhqvba6z41z9r8vg0x-go-unicode.drv",
+            "reflect": "/nix/store/vckpagfc0i69cdygnfvx1nj3dpaid5ly-go-reflect.drv",
+            "internal/fmtsort": "/nix/store/97ms6qywsdkz75dsn8i6wqrq6myzxkw5-go-internal-fmtsort.drv",
+            "internal/filepathlite": "/nix/store/agrb0j48jqdzkfpk4fvp60xskjcx9pq1-go-internal-filepathlite.drv",
+            "internal/syscall/unix": "/nix/store/3wwzp7wdqh03p8qimb8l2fzrqmy31brp-go-internal-syscall-unix.drv",
+            "internal/poll": "/nix/store/2dxqksywxav358fdjd2hbf9s4c1jgcb3-go-internal-poll.drv",
+            "internal/syscall/execenv": "/nix/store/k3k33nx3wzw74nckkij5jc5ss86p9kvg-go-internal-syscall-execenv.drv",
+            "internal/testlog": "/nix/store/3p43l08rfbsw5d02pab04g5xa42dks6a-go-internal-testlog.drv",
+            "os": "/nix/store/qn9mb4mcb8cpvyr39r8qgd877p3x0i53-go-os.drv",
+            "fmt": "/nix/store/vbk9s498dsdi63qj5lfil63l5l50iwmn-go-fmt.drv",
+            "example.com/libnix-fixture": "/nix/store/qyv3f41q2knhzqxwb363b4jqgxqnycsy-go-example.com-libnix-fixture.drv"
+          }
+        },
+        {
+          "name": "assembly",
+          "output": "42 default dev\n",
+          "units": 62,
+          "store_path": "/nix/store/h9yf9r4i9bwzgdrdz107xspp24jn3w32-go-example.com-compat",
+          "package_derivations": {
+            "example.com/compat/asm": "/nix/store/hqswc0vhqjm0iicpl5qgn7ba6cmjjipq-go-example.com-compat-asm.drv",
+            "internal/goarch": "/nix/store/qmgn68xkscl45bn1cvnjq7501bagw62k-go-internal-goarch.drv",
+            "internal/abi": "/nix/store/vs48ib48p6wvg2d04kr8hs8qmxhhjjh9-go-internal-abi.drv",
+            "internal/unsafeheader": "/nix/store/v2xa9j2nphjrfp8vw14fpbsdxplrd35l-go-internal-unsafeheader.drv",
+            "internal/cpu": "/nix/store/1zgb5zk6abcg4g8h1g0hlml1gyw8y3vc-go-internal-cpu.drv",
+            "internal/bytealg": "/nix/store/7rh73nh6dqip75ywy2cv90yw7vzb466g-go-internal-bytealg.drv",
+            "internal/byteorder": "/nix/store/3mj75g6blflah10vg73pmlpww5d497ki-go-internal-byteorder.drv",
+            "internal/chacha8rand": "/nix/store/42vffly5656p99syjxmv05swsn5k1frw-go-internal-chacha8rand.drv",
+            "internal/coverage/rtcov": "/nix/store/amr1baqhw0a2xfx94hf6d0h3586cskig-go-internal-coverage-rtcov.drv",
+            "internal/godebugs": "/nix/store/agk1xnyg489pysxrz20d9sxr70j3h1dp-go-internal-godebugs.drv",
+            "internal/goexperiment": "/nix/store/j48nh6xn8zxj3mx186phkrc7p4fb27wl-go-internal-goexperiment.drv",
+            "internal/goos": "/nix/store/3sknb2pyhmgcp6r7m9c6mkyf7jf91vxa-go-internal-goos.drv",
+            "internal/profilerecord": "/nix/store/wi5bd5v83sf5jgvs166awdl8ls7c96hy-go-internal-profilerecord.drv",
+            "internal/runtime/atomic": "/nix/store/8b7przrh2xmwyi3chgvazf3r99261si5-go-internal-runtime-atomic.drv",
+            "internal/runtime/syscall/linux": "/nix/store/qf9bm48wkv9sn37rp6szsbmj6rq8ra9m-go-internal-runtime-syscall-linux.drv",
+            "math/bits": "/nix/store/f7wzhs7ryk2yp72hprgw5xx6ksbw6i1f-go-math-bits.drv",
+            "internal/strconv": "/nix/store/s5ag9xckb4yr6ysa6z8s1wqs58x8558r-go-internal-strconv.drv",
+            "internal/runtime/cgroup": "/nix/store/vshx0w24b9grs2lnrq0k1f1lpp2qrypb-go-internal-runtime-cgroup.drv",
+            "internal/runtime/exithook": "/nix/store/w9l2i4cpbvdd8wpjsiq0sgzw3nryhig3-go-internal-runtime-exithook.drv",
+            "internal/runtime/gc": "/nix/store/b90g048aas4c8s39nv4g1jb6g3hra8rw-go-internal-runtime-gc.drv",
+            "internal/runtime/sys": "/nix/store/9sbnbcgpblqz9zg3pam58jxykfawzzhv-go-internal-runtime-sys.drv",
+            "internal/runtime/gc/scan": "/nix/store/1r44mb9pc28lgzhfspvjz1gyf1h9y3p0-go-internal-runtime-gc-scan.drv",
+            "internal/asan": "/nix/store/ghhjf6z36nkmq0c7j867dhhvjp0ps47m-go-internal-asan.drv",
+            "internal/msan": "/nix/store/h7yss8xzgyl97cbmnax8y0ds9n9afq29-go-internal-msan.drv",
+            "internal/race": "/nix/store/a3l0brbyba7gw6awzshwlkddgq29ypfy-go-internal-race.drv",
+            "internal/runtime/math": "/nix/store/hwkbp1qhaifaasxxz7cyk228sg0pi8h3-go-internal-runtime-math.drv",
+            "internal/runtime/maps": "/nix/store/9x51gjvmrbr0zqvjv3rsjllq9pygc7p1-go-internal-runtime-maps.drv",
+            "internal/runtime/pprof/label": "/nix/store/59yyqlpbv7zgcad3nysa7x61apdpa5d3-go-internal-runtime-pprof-label.drv",
+            "internal/stringslite": "/nix/store/ryvmikxcrgldkfv7yzsr1a8jyiw8jiwb-go-internal-stringslite.drv",
+            "internal/trace/tracev2": "/nix/store/rmy3j8nxrmrha395kn9k1w19g0plmyvj-go-internal-trace-tracev2.drv",
+            "runtime": "/nix/store/mz8yqv2n59ya9kbprfmsbvnw8ddyqg85-go-runtime.drv",
+            "internal/reflectlite": "/nix/store/8nv9z4a0scl1js2mxdqh85ziabpgkrqc-go-internal-reflectlite.drv",
+            "errors": "/nix/store/mf3kca6bkbn72dxi4w4d5wwg4nns1j8c-go-errors.drv",
+            "cmp": "/nix/store/g9bdfjshnxygg8haknk6mfcj9vyicv9d-go-cmp.drv",
+            "iter": "/nix/store/j04j7dv3rywacvr9j4dk4pdzn8lcsivy-go-iter.drv",
+            "math": "/nix/store/94idyhj19d373la22axksi96lphw5p70-go-math.drv",
+            "unicode/utf8": "/nix/store/adgi0cxfaqpdkk6kmapz84iaqwxrdh4m-go-unicode-utf8.drv",
+            "strconv": "/nix/store/k4ivcpd7gsraj758gw3sg165j70nmgwb-go-strconv.drv",
+            "sync/atomic": "/nix/store/b0z93244nrybgx9bc8a0g67m6vvk19il-go-sync-atomic.drv",
+            "internal/sync": "/nix/store/4km4g1dwcdbkb3jvdqyx9ixc8q8ln7ls-go-internal-sync.drv",
+            "internal/synctest": "/nix/store/86q1qay8xr2394myrr8132ld12225x68-go-internal-synctest.drv",
+            "sync": "/nix/store/c03cnhwpzi9j1chdz1wp2qcif765pbl5-go-sync.drv",
+            "unicode": "/nix/store/6n08v3fj96fpvrjhqvba6z41z9r8vg0x-go-unicode.drv",
+            "reflect": "/nix/store/vlbab4srdbk6664ivlciz2f1a5ipn05m-go-reflect.drv",
+            "slices": "/nix/store/rplg1bkpkgn8kwzxbg9kffzfikbga73a-go-slices.drv",
+            "internal/fmtsort": "/nix/store/wmpn3fmisvm47d2n2cvb2x5fh0lbfsbf-go-internal-fmtsort.drv",
+            "io": "/nix/store/b9cfrs8ndi8ah77jngskz73p0f1cr1ab-go-io.drv",
+            "internal/oserror": "/nix/store/1vb043x3ycxmhz6883dvpmg65b05smh7-go-internal-oserror.drv",
+            "path": "/nix/store/268zw5f9218rywwgv9wary47i35s3gfq-go-path.drv",
+            "internal/bisect": "/nix/store/qabx4ic0ha77ixyh80yf9rakbr0pqfyk-go-internal-bisect.drv",
+            "internal/godebug": "/nix/store/zihr095gfmjg21z286ripdhq6n7viiin-go-internal-godebug.drv",
+            "syscall": "/nix/store/2mzn2ifhbsjimk6fw8jakgba9p0s5dc7-go-syscall.drv",
+            "time": "/nix/store/brsrr0c31nf4vxsfiz2dfp1f1syz6838-go-time.drv",
+            "io/fs": "/nix/store/lc85frj248l3sg26nmh5qwi7dy8h4qfa-go-io-fs.drv",
+            "internal/filepathlite": "/nix/store/hnw86chzvdz91v4scmfp8qb7yz5bka5l-go-internal-filepathlite.drv",
+            "internal/syscall/unix": "/nix/store/vscrnv6aqxsylyfsiqblay6wiqjcdfnh-go-internal-syscall-unix.drv",
+            "internal/poll": "/nix/store/z7w276wx2jrspgr4vs83858785xrdi17-go-internal-poll.drv",
+            "internal/syscall/execenv": "/nix/store/b7d0azrd9gbqhzwk6d2z3lpr85s5c12l-go-internal-syscall-execenv.drv",
+            "internal/testlog": "/nix/store/alix5wfinxnh9crxw9hs1mhs3n3h55hx-go-internal-testlog.drv",
+            "os": "/nix/store/fan20bykydxcrhmrpcp4f3wbv251j754-go-os.drv",
+            "fmt": "/nix/store/s745jpz45ykndnacrkd3hn70w5zxicxs-go-fmt.drv",
+            "example.com/compat": "/nix/store/9dmpnhqcw20iplpsqnh2hr2qd6kzvzjm-go-example.com-compat.drv"
+          }
+        },
+        {
+          "name": "tags-ldflags",
+          "output": "42 tagged matrix\n",
+          "units": 62,
+          "store_path": "/nix/store/3wcf1r0h2k2p5p95xpms7771nhdxxi6q-go-example.com-compat",
+          "package_derivations": {
+            "example.com/compat/asm": "/nix/store/f7lxfcm02nd2r58pgiydn7fkpn7wpkdw-go-example.com-compat-asm.drv",
+            "internal/goarch": "/nix/store/qmgn68xkscl45bn1cvnjq7501bagw62k-go-internal-goarch.drv",
+            "internal/abi": "/nix/store/c48bpc564clrfrdsc4i73cqwhp2rmnf5-go-internal-abi.drv",
+            "internal/unsafeheader": "/nix/store/v2xa9j2nphjrfp8vw14fpbsdxplrd35l-go-internal-unsafeheader.drv",
+            "internal/cpu": "/nix/store/rf2p3qgb1alqxi8y7i5jslhgd4q66mx6-go-internal-cpu.drv",
+            "internal/bytealg": "/nix/store/2j2m6srv7is5cis9xx1zj0gz6184a5qv-go-internal-bytealg.drv",
+            "internal/byteorder": "/nix/store/3mj75g6blflah10vg73pmlpww5d497ki-go-internal-byteorder.drv",
+            "internal/chacha8rand": "/nix/store/73i6dncls3xblkk45xz2l9skr37r3kpf-go-internal-chacha8rand.drv",
+            "internal/coverage/rtcov": "/nix/store/amr1baqhw0a2xfx94hf6d0h3586cskig-go-internal-coverage-rtcov.drv",
+            "internal/godebugs": "/nix/store/agk1xnyg489pysxrz20d9sxr70j3h1dp-go-internal-godebugs.drv",
+            "internal/goexperiment": "/nix/store/j48nh6xn8zxj3mx186phkrc7p4fb27wl-go-internal-goexperiment.drv",
+            "internal/goos": "/nix/store/3sknb2pyhmgcp6r7m9c6mkyf7jf91vxa-go-internal-goos.drv",
+            "internal/profilerecord": "/nix/store/wi5bd5v83sf5jgvs166awdl8ls7c96hy-go-internal-profilerecord.drv",
+            "internal/runtime/atomic": "/nix/store/qkqfmm1944mrjz1ihw27djaz5wvhahq3-go-internal-runtime-atomic.drv",
+            "internal/runtime/syscall/linux": "/nix/store/niagnvay9zic21hghs9vk9i4y3k0jjqq-go-internal-runtime-syscall-linux.drv",
+            "math/bits": "/nix/store/f7wzhs7ryk2yp72hprgw5xx6ksbw6i1f-go-math-bits.drv",
+            "internal/strconv": "/nix/store/s5ag9xckb4yr6ysa6z8s1wqs58x8558r-go-internal-strconv.drv",
+            "internal/runtime/cgroup": "/nix/store/02lifl4017xwls92bncdhxrwlkfnjqiw-go-internal-runtime-cgroup.drv",
+            "internal/runtime/exithook": "/nix/store/rkh5wdz21hgvbs4bnn61i9pz6d1wvz42-go-internal-runtime-exithook.drv",
+            "internal/runtime/gc": "/nix/store/b90g048aas4c8s39nv4g1jb6g3hra8rw-go-internal-runtime-gc.drv",
+            "internal/runtime/sys": "/nix/store/cihg2p74001sibnl104hhiwa30j7dlr5-go-internal-runtime-sys.drv",
+            "internal/runtime/gc/scan": "/nix/store/7zv4mdf603nfbzxh6cplwszbk5v9nq6m-go-internal-runtime-gc-scan.drv",
+            "internal/asan": "/nix/store/ghhjf6z36nkmq0c7j867dhhvjp0ps47m-go-internal-asan.drv",
+            "internal/msan": "/nix/store/h7yss8xzgyl97cbmnax8y0ds9n9afq29-go-internal-msan.drv",
+            "internal/race": "/nix/store/xpkvdlrxgk430j76bcxwgqpgrdhcba00-go-internal-race.drv",
+            "internal/runtime/math": "/nix/store/hwkbp1qhaifaasxxz7cyk228sg0pi8h3-go-internal-runtime-math.drv",
+            "internal/runtime/maps": "/nix/store/bvr63qnf0l4njxbl2vgf0mw4a3rmhih9-go-internal-runtime-maps.drv",
+            "internal/runtime/pprof/label": "/nix/store/59yyqlpbv7zgcad3nysa7x61apdpa5d3-go-internal-runtime-pprof-label.drv",
+            "internal/stringslite": "/nix/store/wzs83c1c9nrdjxfxbnw8flqxx7mkab5b-go-internal-stringslite.drv",
+            "internal/trace/tracev2": "/nix/store/rmy3j8nxrmrha395kn9k1w19g0plmyvj-go-internal-trace-tracev2.drv",
+            "runtime": "/nix/store/blyixckq52hcwx5bnvac5ljrgiyx21as-go-runtime.drv",
+            "internal/reflectlite": "/nix/store/jkn5va9bhyd6i1b5achd4j4r150kvgav-go-internal-reflectlite.drv",
+            "errors": "/nix/store/7iiqin726kj68ai6cm5fkhg2wiq578bj-go-errors.drv",
+            "cmp": "/nix/store/g9bdfjshnxygg8haknk6mfcj9vyicv9d-go-cmp.drv",
+            "iter": "/nix/store/j89yfndpcia1jqsrqapjk04vppxn9gcw-go-iter.drv",
+            "math": "/nix/store/y9ar3va6f1qcx8gwnn1a3k5shyk7jxz3-go-math.drv",
+            "unicode/utf8": "/nix/store/adgi0cxfaqpdkk6kmapz84iaqwxrdh4m-go-unicode-utf8.drv",
+            "strconv": "/nix/store/xk24jrgbajwdq49dnh89h2lc2hgw7l12-go-strconv.drv",
+            "sync/atomic": "/nix/store/6kc9pgw2kc76vx1hpz68kc4jha92vv4n-go-sync-atomic.drv",
+            "internal/sync": "/nix/store/j7w02wfrpf91kpvd006x71blpr94pz0s-go-internal-sync.drv",
+            "internal/synctest": "/nix/store/7m45adp4zw3h90d2l8dd6ly9kwki2y7g-go-internal-synctest.drv",
+            "sync": "/nix/store/307fg2zpfqi4yy936vi1p04b2vpa0w2g-go-sync.drv",
+            "unicode": "/nix/store/6n08v3fj96fpvrjhqvba6z41z9r8vg0x-go-unicode.drv",
+            "reflect": "/nix/store/j037c4adr4d7ng0pd50v9nak9mm5fsvm-go-reflect.drv",
+            "slices": "/nix/store/2ajckdq7bqrk72dyffhkr122ddwzdzf1-go-slices.drv",
+            "internal/fmtsort": "/nix/store/ps39f0fzf06n44yzvxxpqy985clgrvf4-go-internal-fmtsort.drv",
+            "io": "/nix/store/yhwbv36y96wnbzhl6399cmi9d7lglkm3-go-io.drv",
+            "internal/oserror": "/nix/store/xjcvlk429ixmxc1pcy1q0wwdpgsj59np-go-internal-oserror.drv",
+            "path": "/nix/store/56952aminsvl1qy2yqr08ky4rgb4p3ix-go-path.drv",
+            "internal/bisect": "/nix/store/iaawfwrzhjgkw1y72byi4lk7s20d4bi4-go-internal-bisect.drv",
+            "internal/godebug": "/nix/store/hskwjgf86vqqmxhl02vnm1vn4r90xk25-go-internal-godebug.drv",
+            "syscall": "/nix/store/z427523d4b2mclyh51dwjdhlqw8cwwlf-go-syscall.drv",
+            "time": "/nix/store/2d1lnrzrd9kiad79c0yc4s3p7kly6mpq-go-time.drv",
+            "io/fs": "/nix/store/7yd40zd6qnhqh99m5cb2dk1q3b5d0jbs-go-io-fs.drv",
+            "internal/filepathlite": "/nix/store/yci57fwmad3b2lhy2018vnx4mrasrlzh-go-internal-filepathlite.drv",
+            "internal/syscall/unix": "/nix/store/591ra68mcbkvnsnmmrl47glsfhwxs69x-go-internal-syscall-unix.drv",
+            "internal/poll": "/nix/store/8ipv39fsd63kn3a8qanxx41adn0zilz3-go-internal-poll.drv",
+            "internal/syscall/execenv": "/nix/store/q6nnc47vhhc069d1k8l8p833w3c5gqx0-go-internal-syscall-execenv.drv",
+            "internal/testlog": "/nix/store/vflc61njhn96vy140ggg8xg8pcmgzj9r-go-internal-testlog.drv",
+            "os": "/nix/store/hcii4if5h5ailvibafz0zpcjbh8gkm58-go-os.drv",
+            "fmt": "/nix/store/g2vbjnpk3hlfq04bpc2wjhbjrs3s9075-go-fmt.drv",
+            "example.com/compat": "/nix/store/p4nbwp6vsfl7ivfzrnwlhl9y4lsihsqa-go-example.com-compat.drv"
+          }
+        },
+        {
+          "name": "external-link",
+          "output": "42 default dev\n",
+          "units": 63,
+          "store_path": "/nix/store/5gls922f5bm81czcvkq2g6246i0iyn5f-go-example.com-compat",
+          "package_derivations": {
+            "example.com/compat/asm": "/nix/store/hqswc0vhqjm0iicpl5qgn7ba6cmjjipq-go-example.com-compat-asm.drv",
+            "internal/goarch": "/nix/store/qmgn68xkscl45bn1cvnjq7501bagw62k-go-internal-goarch.drv",
+            "internal/abi": "/nix/store/vs48ib48p6wvg2d04kr8hs8qmxhhjjh9-go-internal-abi.drv",
+            "internal/unsafeheader": "/nix/store/v2xa9j2nphjrfp8vw14fpbsdxplrd35l-go-internal-unsafeheader.drv",
+            "internal/cpu": "/nix/store/1zgb5zk6abcg4g8h1g0hlml1gyw8y3vc-go-internal-cpu.drv",
+            "internal/bytealg": "/nix/store/7rh73nh6dqip75ywy2cv90yw7vzb466g-go-internal-bytealg.drv",
+            "internal/byteorder": "/nix/store/3mj75g6blflah10vg73pmlpww5d497ki-go-internal-byteorder.drv",
+            "internal/chacha8rand": "/nix/store/42vffly5656p99syjxmv05swsn5k1frw-go-internal-chacha8rand.drv",
+            "internal/coverage/rtcov": "/nix/store/amr1baqhw0a2xfx94hf6d0h3586cskig-go-internal-coverage-rtcov.drv",
+            "internal/godebugs": "/nix/store/agk1xnyg489pysxrz20d9sxr70j3h1dp-go-internal-godebugs.drv",
+            "internal/goexperiment": "/nix/store/j48nh6xn8zxj3mx186phkrc7p4fb27wl-go-internal-goexperiment.drv",
+            "internal/goos": "/nix/store/3sknb2pyhmgcp6r7m9c6mkyf7jf91vxa-go-internal-goos.drv",
+            "internal/profilerecord": "/nix/store/wi5bd5v83sf5jgvs166awdl8ls7c96hy-go-internal-profilerecord.drv",
+            "internal/runtime/atomic": "/nix/store/8b7przrh2xmwyi3chgvazf3r99261si5-go-internal-runtime-atomic.drv",
+            "internal/runtime/syscall/linux": "/nix/store/qf9bm48wkv9sn37rp6szsbmj6rq8ra9m-go-internal-runtime-syscall-linux.drv",
+            "math/bits": "/nix/store/f7wzhs7ryk2yp72hprgw5xx6ksbw6i1f-go-math-bits.drv",
+            "internal/strconv": "/nix/store/s5ag9xckb4yr6ysa6z8s1wqs58x8558r-go-internal-strconv.drv",
+            "internal/runtime/cgroup": "/nix/store/vshx0w24b9grs2lnrq0k1f1lpp2qrypb-go-internal-runtime-cgroup.drv",
+            "internal/runtime/exithook": "/nix/store/w9l2i4cpbvdd8wpjsiq0sgzw3nryhig3-go-internal-runtime-exithook.drv",
+            "internal/runtime/gc": "/nix/store/b90g048aas4c8s39nv4g1jb6g3hra8rw-go-internal-runtime-gc.drv",
+            "internal/runtime/sys": "/nix/store/9sbnbcgpblqz9zg3pam58jxykfawzzhv-go-internal-runtime-sys.drv",
+            "internal/runtime/gc/scan": "/nix/store/1r44mb9pc28lgzhfspvjz1gyf1h9y3p0-go-internal-runtime-gc-scan.drv",
+            "internal/asan": "/nix/store/ghhjf6z36nkmq0c7j867dhhvjp0ps47m-go-internal-asan.drv",
+            "internal/msan": "/nix/store/h7yss8xzgyl97cbmnax8y0ds9n9afq29-go-internal-msan.drv",
+            "internal/race": "/nix/store/a3l0brbyba7gw6awzshwlkddgq29ypfy-go-internal-race.drv",
+            "internal/runtime/math": "/nix/store/hwkbp1qhaifaasxxz7cyk228sg0pi8h3-go-internal-runtime-math.drv",
+            "internal/runtime/maps": "/nix/store/9x51gjvmrbr0zqvjv3rsjllq9pygc7p1-go-internal-runtime-maps.drv",
+            "internal/runtime/pprof/label": "/nix/store/59yyqlpbv7zgcad3nysa7x61apdpa5d3-go-internal-runtime-pprof-label.drv",
+            "internal/stringslite": "/nix/store/ryvmikxcrgldkfv7yzsr1a8jyiw8jiwb-go-internal-stringslite.drv",
+            "internal/trace/tracev2": "/nix/store/rmy3j8nxrmrha395kn9k1w19g0plmyvj-go-internal-trace-tracev2.drv",
+            "runtime": "/nix/store/mz8yqv2n59ya9kbprfmsbvnw8ddyqg85-go-runtime.drv",
+            "internal/reflectlite": "/nix/store/8nv9z4a0scl1js2mxdqh85ziabpgkrqc-go-internal-reflectlite.drv",
+            "errors": "/nix/store/mf3kca6bkbn72dxi4w4d5wwg4nns1j8c-go-errors.drv",
+            "cmp": "/nix/store/g9bdfjshnxygg8haknk6mfcj9vyicv9d-go-cmp.drv",
+            "iter": "/nix/store/j04j7dv3rywacvr9j4dk4pdzn8lcsivy-go-iter.drv",
+            "math": "/nix/store/94idyhj19d373la22axksi96lphw5p70-go-math.drv",
+            "unicode/utf8": "/nix/store/adgi0cxfaqpdkk6kmapz84iaqwxrdh4m-go-unicode-utf8.drv",
+            "strconv": "/nix/store/k4ivcpd7gsraj758gw3sg165j70nmgwb-go-strconv.drv",
+            "sync/atomic": "/nix/store/b0z93244nrybgx9bc8a0g67m6vvk19il-go-sync-atomic.drv",
+            "internal/sync": "/nix/store/4km4g1dwcdbkb3jvdqyx9ixc8q8ln7ls-go-internal-sync.drv",
+            "internal/synctest": "/nix/store/86q1qay8xr2394myrr8132ld12225x68-go-internal-synctest.drv",
+            "sync": "/nix/store/c03cnhwpzi9j1chdz1wp2qcif765pbl5-go-sync.drv",
+            "unicode": "/nix/store/6n08v3fj96fpvrjhqvba6z41z9r8vg0x-go-unicode.drv",
+            "reflect": "/nix/store/vlbab4srdbk6664ivlciz2f1a5ipn05m-go-reflect.drv",
+            "slices": "/nix/store/rplg1bkpkgn8kwzxbg9kffzfikbga73a-go-slices.drv",
+            "internal/fmtsort": "/nix/store/wmpn3fmisvm47d2n2cvb2x5fh0lbfsbf-go-internal-fmtsort.drv",
+            "io": "/nix/store/b9cfrs8ndi8ah77jngskz73p0f1cr1ab-go-io.drv",
+            "internal/oserror": "/nix/store/1vb043x3ycxmhz6883dvpmg65b05smh7-go-internal-oserror.drv",
+            "path": "/nix/store/268zw5f9218rywwgv9wary47i35s3gfq-go-path.drv",
+            "internal/bisect": "/nix/store/qabx4ic0ha77ixyh80yf9rakbr0pqfyk-go-internal-bisect.drv",
+            "internal/godebug": "/nix/store/zihr095gfmjg21z286ripdhq6n7viiin-go-internal-godebug.drv",
+            "syscall": "/nix/store/2mzn2ifhbsjimk6fw8jakgba9p0s5dc7-go-syscall.drv",
+            "time": "/nix/store/brsrr0c31nf4vxsfiz2dfp1f1syz6838-go-time.drv",
+            "io/fs": "/nix/store/lc85frj248l3sg26nmh5qwi7dy8h4qfa-go-io-fs.drv",
+            "internal/filepathlite": "/nix/store/hnw86chzvdz91v4scmfp8qb7yz5bka5l-go-internal-filepathlite.drv",
+            "internal/syscall/unix": "/nix/store/vscrnv6aqxsylyfsiqblay6wiqjcdfnh-go-internal-syscall-unix.drv",
+            "internal/poll": "/nix/store/z7w276wx2jrspgr4vs83858785xrdi17-go-internal-poll.drv",
+            "internal/syscall/execenv": "/nix/store/b7d0azrd9gbqhzwk6d2z3lpr85s5c12l-go-internal-syscall-execenv.drv",
+            "internal/testlog": "/nix/store/alix5wfinxnh9crxw9hs1mhs3n3h55hx-go-internal-testlog.drv",
+            "os": "/nix/store/fan20bykydxcrhmrpcp4f3wbv251j754-go-os.drv",
+            "fmt": "/nix/store/s745jpz45ykndnacrkd3hn70w5zxicxs-go-fmt.drv",
+            "runtime/cgo": "/nix/store/jwx3bfdmbv2r1y0mn56qbm7jhynmgi9f-go-runtime-cgo.drv",
+            "example.com/compat": "/nix/store/622p8vgqpx4mpkv9ynf8pzd7rqhw6289-go-example.com-compat.drv"
+          }
+        },
+        {
+          "name": "workspace",
+          "output": "workspace\n",
+          "units": 62,
+          "store_path": "/nix/store/v833nv3675ccj65gzypv673w67bs3w9l-go-example.com-app",
+          "package_derivations": {
+            "example.com/dep": "/nix/store/26aw78y1rbsq24m9xzcbr2ykashyibah-go-example.com-dep.drv",
+            "internal/goarch": "/nix/store/qmgn68xkscl45bn1cvnjq7501bagw62k-go-internal-goarch.drv",
+            "internal/abi": "/nix/store/12hdadybs49jzw0wyysi4l117i6rdl03-go-internal-abi.drv",
+            "internal/unsafeheader": "/nix/store/v2xa9j2nphjrfp8vw14fpbsdxplrd35l-go-internal-unsafeheader.drv",
+            "internal/cpu": "/nix/store/ygnmd5r3whkzbf3m2fbjakrm1rah7a9x-go-internal-cpu.drv",
+            "internal/bytealg": "/nix/store/x0dalillsh6z7x887kb9wspnb7p14im9-go-internal-bytealg.drv",
+            "internal/byteorder": "/nix/store/3mj75g6blflah10vg73pmlpww5d497ki-go-internal-byteorder.drv",
+            "internal/chacha8rand": "/nix/store/4pfflgrqg9212s5sab1gkynfyj6gflj6-go-internal-chacha8rand.drv",
+            "internal/coverage/rtcov": "/nix/store/amr1baqhw0a2xfx94hf6d0h3586cskig-go-internal-coverage-rtcov.drv",
+            "internal/godebugs": "/nix/store/agk1xnyg489pysxrz20d9sxr70j3h1dp-go-internal-godebugs.drv",
+            "internal/goexperiment": "/nix/store/j48nh6xn8zxj3mx186phkrc7p4fb27wl-go-internal-goexperiment.drv",
+            "internal/goos": "/nix/store/3sknb2pyhmgcp6r7m9c6mkyf7jf91vxa-go-internal-goos.drv",
+            "internal/profilerecord": "/nix/store/wi5bd5v83sf5jgvs166awdl8ls7c96hy-go-internal-profilerecord.drv",
+            "internal/runtime/atomic": "/nix/store/ykb8h4ayv52yszkgcm0vayvyyc2r3aiv-go-internal-runtime-atomic.drv",
+            "internal/runtime/syscall/linux": "/nix/store/fkb4jpg1bz1gfl6w56ky0m6xnxgpvpm6-go-internal-runtime-syscall-linux.drv",
+            "math/bits": "/nix/store/f7wzhs7ryk2yp72hprgw5xx6ksbw6i1f-go-math-bits.drv",
+            "internal/strconv": "/nix/store/s5ag9xckb4yr6ysa6z8s1wqs58x8558r-go-internal-strconv.drv",
+            "internal/runtime/cgroup": "/nix/store/8pp6z1h10y94mkhzxrnlyb4dnip7hkak-go-internal-runtime-cgroup.drv",
+            "internal/runtime/exithook": "/nix/store/8djd0ah7wziy4i4i5ldxcggsws04c8qa-go-internal-runtime-exithook.drv",
+            "internal/runtime/gc": "/nix/store/b90g048aas4c8s39nv4g1jb6g3hra8rw-go-internal-runtime-gc.drv",
+            "internal/runtime/sys": "/nix/store/m0n2zih3bkp69ar8gc1qd865p8wyi814-go-internal-runtime-sys.drv",
+            "internal/runtime/gc/scan": "/nix/store/rp23i54qv7ix6yfxg5kqsbqnmrs9b2zm-go-internal-runtime-gc-scan.drv",
+            "internal/asan": "/nix/store/ghhjf6z36nkmq0c7j867dhhvjp0ps47m-go-internal-asan.drv",
+            "internal/msan": "/nix/store/h7yss8xzgyl97cbmnax8y0ds9n9afq29-go-internal-msan.drv",
+            "internal/race": "/nix/store/d1i22b9z0j3v7ix38hs2qgcicg48si2f-go-internal-race.drv",
+            "internal/runtime/math": "/nix/store/hwkbp1qhaifaasxxz7cyk228sg0pi8h3-go-internal-runtime-math.drv",
+            "internal/runtime/maps": "/nix/store/kw22g4rwscb546916pdxihp6mvr6fdfp-go-internal-runtime-maps.drv",
+            "internal/runtime/pprof/label": "/nix/store/59yyqlpbv7zgcad3nysa7x61apdpa5d3-go-internal-runtime-pprof-label.drv",
+            "internal/stringslite": "/nix/store/hsif72yl6vy99d39hagabciacax7cm8d-go-internal-stringslite.drv",
+            "internal/trace/tracev2": "/nix/store/rmy3j8nxrmrha395kn9k1w19g0plmyvj-go-internal-trace-tracev2.drv",
+            "runtime": "/nix/store/rk3qcidnwpr7ls7lks3b1nh59jfzj782-go-runtime.drv",
+            "internal/reflectlite": "/nix/store/sgi0slsby69gygbz7zn2knrb1vn7682r-go-internal-reflectlite.drv",
+            "errors": "/nix/store/4drgqd6xnkas5sbw7agbcwb7xvknwl0m-go-errors.drv",
+            "cmp": "/nix/store/g9bdfjshnxygg8haknk6mfcj9vyicv9d-go-cmp.drv",
+            "iter": "/nix/store/i8m353a9bijv6zkchd4y0jv4dbnxc0c3-go-iter.drv",
+            "math": "/nix/store/0sphdx9x7vqdzf3fryv8ixk3ld1s02ma-go-math.drv",
+            "unicode/utf8": "/nix/store/adgi0cxfaqpdkk6kmapz84iaqwxrdh4m-go-unicode-utf8.drv",
+            "strconv": "/nix/store/w0khsvd4bqk0hprddaawcxkbby7q5r3x-go-strconv.drv",
+            "sync/atomic": "/nix/store/z8paqr2xm5iifig2cqimky65n55w3k2a-go-sync-atomic.drv",
+            "internal/sync": "/nix/store/hf4m9pijqv8h250diip0kfdn9z54xm12-go-internal-sync.drv",
+            "internal/synctest": "/nix/store/raqzlx8348yi72pyvg7prgyccb17n01a-go-internal-synctest.drv",
+            "sync": "/nix/store/mp0pp8di67qvi5v1jn24ssga2qzm1r4v-go-sync.drv",
+            "unicode": "/nix/store/6n08v3fj96fpvrjhqvba6z41z9r8vg0x-go-unicode.drv",
+            "reflect": "/nix/store/pzljssisl8cvydp7p5wxyzy5z1piin1a-go-reflect.drv",
+            "slices": "/nix/store/15yihv8xk6wdfx5qw9nbmra8g164rba0-go-slices.drv",
+            "internal/fmtsort": "/nix/store/zcpg9zs5zzjfpbx2bww15ikdghj48ij3-go-internal-fmtsort.drv",
+            "io": "/nix/store/glanjyzkq46h3cm4cvgab1i1sv37ssqk-go-io.drv",
+            "internal/oserror": "/nix/store/a3qn55y586kirvvy1cs3ixp3ckxhn92c-go-internal-oserror.drv",
+            "path": "/nix/store/28vrxzq6ni4ir2vbkmhj4qvps9yn0d7y-go-path.drv",
+            "internal/bisect": "/nix/store/18rpc00gpbfag3pldrb7j8vcz8ixvdnj-go-internal-bisect.drv",
+            "internal/godebug": "/nix/store/l4kqnsly20071lcnasv7vnqyqqsd2fhs-go-internal-godebug.drv",
+            "syscall": "/nix/store/s1lm7023i9jaanic0dlaahm0p4gdga7a-go-syscall.drv",
+            "time": "/nix/store/417ffx1rx4ph8iq2rxd39mrmkycpw188-go-time.drv",
+            "io/fs": "/nix/store/3rmb9lnyxcccadq1nfmk4jbba164r9q8-go-io-fs.drv",
+            "internal/filepathlite": "/nix/store/4f1azrp3rcqjifcpamyhlha8wq6iiqyx-go-internal-filepathlite.drv",
+            "internal/syscall/unix": "/nix/store/2k8dzwi46lk5vrjldkfqnjg3mxnx10db-go-internal-syscall-unix.drv",
+            "internal/poll": "/nix/store/7zv1b2xxmx4z7g4fb8xnifw8d715hyid-go-internal-poll.drv",
+            "internal/syscall/execenv": "/nix/store/kbzdxlj98f7nidblbarb28qhhnrnj5nl-go-internal-syscall-execenv.drv",
+            "internal/testlog": "/nix/store/hmndvayndjmjy42w0vfqyqvbiqs90f4l-go-internal-testlog.drv",
+            "os": "/nix/store/n41vqdxpda955wsdi510gkv40fhaxfvv-go-os.drv",
+            "fmt": "/nix/store/swh0ldwhmcpg1szm2ljvgp1bfm9dl2h2-go-fmt.drv",
+            "example.com/app": "/nix/store/8hhjrsqm697kz9szrp5s2d3vcx7m59nx-go-example.com-app.drv"
+          }
+        },
+        {
+          "name": "vendored",
+          "output": "vendored\n",
+          "units": 62,
+          "store_path": "/nix/store/hflb6nwl9xy25b8178h0vwn2r6lhpaid-go-example.com-app",
+          "package_derivations": {
+            "example.com/dep": "/nix/store/z1mh79hs85pssn7v19ywcg6hrvcs24qj-go-example.com-dep.drv",
+            "internal/goarch": "/nix/store/qmgn68xkscl45bn1cvnjq7501bagw62k-go-internal-goarch.drv",
+            "internal/abi": "/nix/store/12hdadybs49jzw0wyysi4l117i6rdl03-go-internal-abi.drv",
+            "internal/unsafeheader": "/nix/store/v2xa9j2nphjrfp8vw14fpbsdxplrd35l-go-internal-unsafeheader.drv",
+            "internal/cpu": "/nix/store/ygnmd5r3whkzbf3m2fbjakrm1rah7a9x-go-internal-cpu.drv",
+            "internal/bytealg": "/nix/store/x0dalillsh6z7x887kb9wspnb7p14im9-go-internal-bytealg.drv",
+            "internal/byteorder": "/nix/store/3mj75g6blflah10vg73pmlpww5d497ki-go-internal-byteorder.drv",
+            "internal/chacha8rand": "/nix/store/4pfflgrqg9212s5sab1gkynfyj6gflj6-go-internal-chacha8rand.drv",
+            "internal/coverage/rtcov": "/nix/store/amr1baqhw0a2xfx94hf6d0h3586cskig-go-internal-coverage-rtcov.drv",
+            "internal/godebugs": "/nix/store/agk1xnyg489pysxrz20d9sxr70j3h1dp-go-internal-godebugs.drv",
+            "internal/goexperiment": "/nix/store/j48nh6xn8zxj3mx186phkrc7p4fb27wl-go-internal-goexperiment.drv",
+            "internal/goos": "/nix/store/3sknb2pyhmgcp6r7m9c6mkyf7jf91vxa-go-internal-goos.drv",
+            "internal/profilerecord": "/nix/store/wi5bd5v83sf5jgvs166awdl8ls7c96hy-go-internal-profilerecord.drv",
+            "internal/runtime/atomic": "/nix/store/ykb8h4ayv52yszkgcm0vayvyyc2r3aiv-go-internal-runtime-atomic.drv",
+            "internal/runtime/syscall/linux": "/nix/store/fkb4jpg1bz1gfl6w56ky0m6xnxgpvpm6-go-internal-runtime-syscall-linux.drv",
+            "math/bits": "/nix/store/f7wzhs7ryk2yp72hprgw5xx6ksbw6i1f-go-math-bits.drv",
+            "internal/strconv": "/nix/store/s5ag9xckb4yr6ysa6z8s1wqs58x8558r-go-internal-strconv.drv",
+            "internal/runtime/cgroup": "/nix/store/8pp6z1h10y94mkhzxrnlyb4dnip7hkak-go-internal-runtime-cgroup.drv",
+            "internal/runtime/exithook": "/nix/store/8djd0ah7wziy4i4i5ldxcggsws04c8qa-go-internal-runtime-exithook.drv",
+            "internal/runtime/gc": "/nix/store/b90g048aas4c8s39nv4g1jb6g3hra8rw-go-internal-runtime-gc.drv",
+            "internal/runtime/sys": "/nix/store/m0n2zih3bkp69ar8gc1qd865p8wyi814-go-internal-runtime-sys.drv",
+            "internal/runtime/gc/scan": "/nix/store/rp23i54qv7ix6yfxg5kqsbqnmrs9b2zm-go-internal-runtime-gc-scan.drv",
+            "internal/asan": "/nix/store/ghhjf6z36nkmq0c7j867dhhvjp0ps47m-go-internal-asan.drv",
+            "internal/msan": "/nix/store/h7yss8xzgyl97cbmnax8y0ds9n9afq29-go-internal-msan.drv",
+            "internal/race": "/nix/store/d1i22b9z0j3v7ix38hs2qgcicg48si2f-go-internal-race.drv",
+            "internal/runtime/math": "/nix/store/hwkbp1qhaifaasxxz7cyk228sg0pi8h3-go-internal-runtime-math.drv",
+            "internal/runtime/maps": "/nix/store/kw22g4rwscb546916pdxihp6mvr6fdfp-go-internal-runtime-maps.drv",
+            "internal/runtime/pprof/label": "/nix/store/59yyqlpbv7zgcad3nysa7x61apdpa5d3-go-internal-runtime-pprof-label.drv",
+            "internal/stringslite": "/nix/store/hsif72yl6vy99d39hagabciacax7cm8d-go-internal-stringslite.drv",
+            "internal/trace/tracev2": "/nix/store/rmy3j8nxrmrha395kn9k1w19g0plmyvj-go-internal-trace-tracev2.drv",
+            "runtime": "/nix/store/rk3qcidnwpr7ls7lks3b1nh59jfzj782-go-runtime.drv",
+            "internal/reflectlite": "/nix/store/sgi0slsby69gygbz7zn2knrb1vn7682r-go-internal-reflectlite.drv",
+            "errors": "/nix/store/4drgqd6xnkas5sbw7agbcwb7xvknwl0m-go-errors.drv",
+            "cmp": "/nix/store/g9bdfjshnxygg8haknk6mfcj9vyicv9d-go-cmp.drv",
+            "iter": "/nix/store/i8m353a9bijv6zkchd4y0jv4dbnxc0c3-go-iter.drv",
+            "math": "/nix/store/0sphdx9x7vqdzf3fryv8ixk3ld1s02ma-go-math.drv",
+            "unicode/utf8": "/nix/store/adgi0cxfaqpdkk6kmapz84iaqwxrdh4m-go-unicode-utf8.drv",
+            "strconv": "/nix/store/w0khsvd4bqk0hprddaawcxkbby7q5r3x-go-strconv.drv",
+            "sync/atomic": "/nix/store/z8paqr2xm5iifig2cqimky65n55w3k2a-go-sync-atomic.drv",
+            "internal/sync": "/nix/store/hf4m9pijqv8h250diip0kfdn9z54xm12-go-internal-sync.drv",
+            "internal/synctest": "/nix/store/raqzlx8348yi72pyvg7prgyccb17n01a-go-internal-synctest.drv",
+            "sync": "/nix/store/mp0pp8di67qvi5v1jn24ssga2qzm1r4v-go-sync.drv",
+            "unicode": "/nix/store/6n08v3fj96fpvrjhqvba6z41z9r8vg0x-go-unicode.drv",
+            "reflect": "/nix/store/pzljssisl8cvydp7p5wxyzy5z1piin1a-go-reflect.drv",
+            "slices": "/nix/store/15yihv8xk6wdfx5qw9nbmra8g164rba0-go-slices.drv",
+            "internal/fmtsort": "/nix/store/zcpg9zs5zzjfpbx2bww15ikdghj48ij3-go-internal-fmtsort.drv",
+            "io": "/nix/store/glanjyzkq46h3cm4cvgab1i1sv37ssqk-go-io.drv",
+            "internal/oserror": "/nix/store/a3qn55y586kirvvy1cs3ixp3ckxhn92c-go-internal-oserror.drv",
+            "path": "/nix/store/28vrxzq6ni4ir2vbkmhj4qvps9yn0d7y-go-path.drv",
+            "internal/bisect": "/nix/store/18rpc00gpbfag3pldrb7j8vcz8ixvdnj-go-internal-bisect.drv",
+            "internal/godebug": "/nix/store/l4kqnsly20071lcnasv7vnqyqqsd2fhs-go-internal-godebug.drv",
+            "syscall": "/nix/store/s1lm7023i9jaanic0dlaahm0p4gdga7a-go-syscall.drv",
+            "time": "/nix/store/417ffx1rx4ph8iq2rxd39mrmkycpw188-go-time.drv",
+            "io/fs": "/nix/store/3rmb9lnyxcccadq1nfmk4jbba164r9q8-go-io-fs.drv",
+            "internal/filepathlite": "/nix/store/4f1azrp3rcqjifcpamyhlha8wq6iiqyx-go-internal-filepathlite.drv",
+            "internal/syscall/unix": "/nix/store/2k8dzwi46lk5vrjldkfqnjg3mxnx10db-go-internal-syscall-unix.drv",
+            "internal/poll": "/nix/store/7zv1b2xxmx4z7g4fb8xnifw8d715hyid-go-internal-poll.drv",
+            "internal/syscall/execenv": "/nix/store/kbzdxlj98f7nidblbarb28qhhnrnj5nl-go-internal-syscall-execenv.drv",
+            "internal/testlog": "/nix/store/hmndvayndjmjy42w0vfqyqvbiqs90f4l-go-internal-testlog.drv",
+            "os": "/nix/store/n41vqdxpda955wsdi510gkv40fhaxfvv-go-os.drv",
+            "fmt": "/nix/store/swh0ldwhmcpg1szm2ljvgp1bfm9dl2h2-go-fmt.drv",
+            "example.com/app": "/nix/store/5fczxml9m0qh250kx3j6p3saxc4jisxw-go-example.com-app.drv"
+          }
+        },
+        {
+          "name": "cgo-disabled",
+          "output": "7\n",
+          "units": 61,
+          "store_path": "/nix/store/82x93jxb5v65c9gh0q72ns0llmp38944-go-example.com-modes.test",
+          "package_derivations": {
+            "internal/goarch": "/nix/store/l8bv5gw44k8plzr0kbbxg15gw6i29g0i-go-internal-goarch.drv",
+            "internal/abi": "/nix/store/mckc7rp8i2qsdhr6z1mc3hwcfz66hrf6-go-internal-abi.drv",
+            "internal/unsafeheader": "/nix/store/rhxgj69x83j3lba4cqjg756m2slgz6rg-go-internal-unsafeheader.drv",
+            "internal/cpu": "/nix/store/svbkgc752499kr53arq6pqpkcqdg1fj4-go-internal-cpu.drv",
+            "internal/bytealg": "/nix/store/yjb2w4vkxz6b87fvifya05i841a1hcx7-go-internal-bytealg.drv",
+            "internal/byteorder": "/nix/store/np439ggkpf9vq5phvzkmk4qzvqr3x4nr-go-internal-byteorder.drv",
+            "internal/chacha8rand": "/nix/store/5ilg5xm274hi5r1ph6kbvg1amdx5lv0h-go-internal-chacha8rand.drv",
+            "internal/coverage/rtcov": "/nix/store/2mbdxzdprinris2vi5305z5a1hgmmw44-go-internal-coverage-rtcov.drv",
+            "internal/godebugs": "/nix/store/nq6fdn20v54fcl0g8fb15braf3dpqanz-go-internal-godebugs.drv",
+            "internal/goexperiment": "/nix/store/5sl65p1r7bkfdxjms1dp0nq1sc77r3xg-go-internal-goexperiment.drv",
+            "internal/goos": "/nix/store/0nhj1401bl9swkkx09qsz9z8jfnjmhbq-go-internal-goos.drv",
+            "internal/profilerecord": "/nix/store/ad74ws0dg5z9h63bhwp0ngs2ml9yjmz2-go-internal-profilerecord.drv",
+            "internal/runtime/atomic": "/nix/store/h30cqmsw6fa27pj858bisdfslvk4y8hy-go-internal-runtime-atomic.drv",
+            "internal/runtime/syscall/linux": "/nix/store/cglndzh3nncv5597ckgbxi16zw31iv5n-go-internal-runtime-syscall-linux.drv",
+            "math/bits": "/nix/store/1l05lnwlzpbiqhv5wrfg1y1r55i4vr6v-go-math-bits.drv",
+            "internal/strconv": "/nix/store/d1afhfanw62a17bxrk585x12gbipykfq-go-internal-strconv.drv",
+            "internal/runtime/cgroup": "/nix/store/ysb0ixy8mx8avivrjsb3abalzsz1xigp-go-internal-runtime-cgroup.drv",
+            "internal/runtime/exithook": "/nix/store/p8ajb9kym7ny4jxc17n0niwjlzdc6fpa-go-internal-runtime-exithook.drv",
+            "internal/runtime/gc": "/nix/store/1yfh941hqfaxlrvci4jgm4lxj7k72nfw-go-internal-runtime-gc.drv",
+            "internal/runtime/sys": "/nix/store/r9i3h80z43b1mildbxy5qrgm6jksv35z-go-internal-runtime-sys.drv",
+            "internal/runtime/gc/scan": "/nix/store/bg7210s71xnc4wyxbzjpv8cspx0arjs8-go-internal-runtime-gc-scan.drv",
+            "internal/asan": "/nix/store/qxcz3cppskq8i7783bagzs5q47kg9znv-go-internal-asan.drv",
+            "internal/msan": "/nix/store/kmag458malw0il8gjhfildvmans1iiqk-go-internal-msan.drv",
+            "internal/race": "/nix/store/pnrwb38n16mxf41rv7yra24wg3n50bk3-go-internal-race.drv",
+            "internal/runtime/math": "/nix/store/i0q1scsc9pb7wdr05j54psgjibnm8i37-go-internal-runtime-math.drv",
+            "internal/runtime/maps": "/nix/store/hlvbsh2gd8jpzr08m0rv847whw29m845-go-internal-runtime-maps.drv",
+            "internal/runtime/pprof/label": "/nix/store/bjjscgpdffnp9fw081iqda4j3fh2rxql-go-internal-runtime-pprof-label.drv",
+            "internal/stringslite": "/nix/store/v1hyif6dv754i4ps87fmmrq04rawl3rj-go-internal-stringslite.drv",
+            "internal/trace/tracev2": "/nix/store/54dfgrqvqck55ch7k5a446cd2sfq3484-go-internal-trace-tracev2.drv",
+            "runtime": "/nix/store/9ygpplmpaakbi87g634nvi2lcf8asy4c-go-runtime.drv",
+            "internal/reflectlite": "/nix/store/mrd95iq8j6iz3jihcaqyy34681csj6rg-go-internal-reflectlite.drv",
+            "errors": "/nix/store/7njs8iqn758z4wf4cjkvr4y65zfszdi8-go-errors.drv",
+            "cmp": "/nix/store/xf58x9563ppf6cjqsjfxfhg2h498krqn-go-cmp.drv",
+            "iter": "/nix/store/qnxl2hlpdr1hzl9k5va5vh2pv5kh8aln-go-iter.drv",
+            "math": "/nix/store/416wk42g273b04yavv2b3mi50kad0qf9-go-math.drv",
+            "unicode/utf8": "/nix/store/gh2b2bx6vdiglpzg7c8vs5jkbs4r2011-go-unicode-utf8.drv",
+            "strconv": "/nix/store/br8hw31qnbvl9ffcn0lh0f8f14xvyjci-go-strconv.drv",
+            "sync/atomic": "/nix/store/2py33aj9z8gmxrvv6s46xn65n0gvxngv-go-sync-atomic.drv",
+            "internal/sync": "/nix/store/q3rmcnhcxbfjizirc86n8j0ry4v78qxi-go-internal-sync.drv",
+            "internal/synctest": "/nix/store/kqm1k43wrp2zh4fq4kspghldmvmk69hz-go-internal-synctest.drv",
+            "sync": "/nix/store/xxd962nrzj605d4jdcyvcagxj93y801s-go-sync.drv",
+            "unicode": "/nix/store/x82di0xmc0x9mdsll1mqh8br2jhw2zwg-go-unicode.drv",
+            "reflect": "/nix/store/s010mxzbcs87h5v4w4c0h05wr69h1h7g-go-reflect.drv",
+            "slices": "/nix/store/3pz90s6630ay7axavdc6pv618p4dcwl8-go-slices.drv",
+            "internal/fmtsort": "/nix/store/h5j7diyrs8hskg3kz4i6wmsdfvykygyn-go-internal-fmtsort.drv",
+            "io": "/nix/store/3505r5l13spkk9yhl8p0k3lm68fx4dhv-go-io.drv",
+            "internal/oserror": "/nix/store/5sgahxpnfrsy9y9f9309qffnsjh2zx2a-go-internal-oserror.drv",
+            "path": "/nix/store/ffv8j8hhna36ih6yzg84g6g03y5jv6p6-go-path.drv",
+            "internal/bisect": "/nix/store/b0rfapska36md13g6lirk78rsj19qa8k-go-internal-bisect.drv",
+            "internal/godebug": "/nix/store/sfv65kzh0z3q7iw5v97jjzzad0awj5m2-go-internal-godebug.drv",
+            "syscall": "/nix/store/43ffcs3nvfgr12999qr8r0p0dvb44wip-go-syscall.drv",
+            "time": "/nix/store/9lsmplp2390a4kmfx485h9mmvbigr9dq-go-time.drv",
+            "io/fs": "/nix/store/gjrbjxdslhvajkr6zlrx9zjv72x70bg0-go-io-fs.drv",
+            "internal/filepathlite": "/nix/store/94is37kfnn13mrjrf706z515bhp1nk0i-go-internal-filepathlite.drv",
+            "internal/syscall/unix": "/nix/store/p6m0fak2b1nfaaynypxzqw6ir6im9jvv-go-internal-syscall-unix.drv",
+            "internal/poll": "/nix/store/c8bwrp19g8qz3d3canzh3fxsa408m17c-go-internal-poll.drv",
+            "internal/syscall/execenv": "/nix/store/k788zkz1g3cax57ax1v8sfww1x0yxkgg-go-internal-syscall-execenv.drv",
+            "internal/testlog": "/nix/store/62jnsivhbk5d1pfc61a4gj7fv2hzi5h9-go-internal-testlog.drv",
+            "os": "/nix/store/iwn82pqi7m99b6qmlxn96czb73zsf6vi-go-os.drv",
+            "fmt": "/nix/store/2115s7w6h4ak4msrkaygvr6gpcwq3q10-go-fmt.drv",
+            "example.com/modes.test": "/nix/store/lygg5pa95v37b1h9ny03ax5v2bb3fp8b-go-example.com-modes.test.drv"
+          }
+        },
+        {
+          "name": "race-cgo",
+          "output": "42\n",
+          "units": 64,
+          "store_path": "/nix/store/vsw978vd7jpkj289851ihkj76xajjwq0-go-example.com-modes.test",
+          "package_derivations": {
+            "internal/goarch": "/nix/store/v4a4rxpy98c9dhjy7v43hzsg72qvivap-go-internal-goarch.drv",
+            "internal/abi": "/nix/store/hqq4ir1x3729k4hjl7hsij3nd26crvdm-go-internal-abi.drv",
+            "internal/unsafeheader": "/nix/store/s95qrfkaq4x6vax54iamk64ayih3w5wq-go-internal-unsafeheader.drv",
+            "internal/cpu": "/nix/store/cndld3bqgvf5k53gwk2p0k6w5mvjgnl6-go-internal-cpu.drv",
+            "internal/bytealg": "/nix/store/wzppgvg33pkpp07nnmaj7rnpw9pdnb6m-go-internal-bytealg.drv",
+            "internal/byteorder": "/nix/store/6pq0r2a8j8sffbg077zj9261f9hlqknk-go-internal-byteorder.drv",
+            "internal/chacha8rand": "/nix/store/4w8zw4p37bx3ldp1h9gmk1w1lssfpw2s-go-internal-chacha8rand.drv",
+            "internal/coverage/rtcov": "/nix/store/bqpsv7r9wjwz6i3622yf134mqi1g4j72-go-internal-coverage-rtcov.drv",
+            "internal/godebugs": "/nix/store/89x1kjczg87xhfj0wmlw944vv60rdbdb-go-internal-godebugs.drv",
+            "internal/goexperiment": "/nix/store/pg25lfnagcs9q1gqlyi4ibsmsazhjyrl-go-internal-goexperiment.drv",
+            "internal/goos": "/nix/store/kwf84dzc05vmq485fnakz0g4k8l7a30n-go-internal-goos.drv",
+            "internal/profilerecord": "/nix/store/vf0rs7dlxg0g55frpyinwmq237qiyfab-go-internal-profilerecord.drv",
+            "internal/runtime/atomic": "/nix/store/93zm1qsbpz9yx8d8y7yg7iv18xrxg0k6-go-internal-runtime-atomic.drv",
+            "internal/runtime/syscall/linux": "/nix/store/5g2dzm7rx9zaffw2j6jxafaaxvqb88mf-go-internal-runtime-syscall-linux.drv",
+            "math/bits": "/nix/store/pff9qz0rfifh21wlsn1q6pp9vjj21c9y-go-math-bits.drv",
+            "internal/strconv": "/nix/store/q3radvj1qn9dqad3xsps7rf4vm82ng1c-go-internal-strconv.drv",
+            "internal/runtime/cgroup": "/nix/store/0rs7nv6vg173z2n1rrlfanrwm6xbv4nq-go-internal-runtime-cgroup.drv",
+            "internal/runtime/exithook": "/nix/store/bhi3mds4v5f6n2kjxy5xh9gi6sv498vk-go-internal-runtime-exithook.drv",
+            "internal/runtime/gc": "/nix/store/ba44159zq77q0dvn6v6vwbhq7nidmamc-go-internal-runtime-gc.drv",
+            "internal/runtime/sys": "/nix/store/aff9kp5xidn9v154xvq7nvy6h0fxrhxy-go-internal-runtime-sys.drv",
+            "internal/runtime/gc/scan": "/nix/store/bymmfinv74r2clm0sd4rkijzqd9pdznk-go-internal-runtime-gc-scan.drv",
+            "internal/asan": "/nix/store/ncj52h3np1c7a0f9mnzcxhhn18q1ydkd-go-internal-asan.drv",
+            "internal/msan": "/nix/store/nppmz7vbdrzbyx4dq3kdqkaim7mpxv5k-go-internal-msan.drv",
+            "internal/race": "/nix/store/abcvmq087sx5vahsx2w0i09bgza5l39a-go-internal-race.drv",
+            "internal/runtime/math": "/nix/store/h05q3vwzl04jbhwiv98nizakszvly0s6-go-internal-runtime-math.drv",
+            "internal/runtime/maps": "/nix/store/vbydvbccsz024a4xvsa3k80iq37l0q8j-go-internal-runtime-maps.drv",
+            "internal/runtime/pprof/label": "/nix/store/pfqd4cb1yidp0xbhv0q3j7vvwnz69kgm-go-internal-runtime-pprof-label.drv",
+            "internal/stringslite": "/nix/store/z2vw8r0cs2bqlg896a3xsyl157sb75lc-go-internal-stringslite.drv",
+            "internal/trace/tracev2": "/nix/store/mvimjrzsrlgsqll27idpfv9zp7rygxfg-go-internal-trace-tracev2.drv",
+            "runtime": "/nix/store/pkncxpihr8gfrh1d4mgwxj4xgnl6zv74-go-runtime.drv",
+            "internal/reflectlite": "/nix/store/6l009fkdbwvfchgn4ilgzgz6422yplin-go-internal-reflectlite.drv",
+            "errors": "/nix/store/564w90qg8dcfq8lf7gr7hfsahd79rcsv-go-errors.drv",
+            "cmp": "/nix/store/b39wf7277s25n25y5zzarfrgaxzfd39i-go-cmp.drv",
+            "iter": "/nix/store/wx35sbkb66adjcci62nkyrlcccdxm810-go-iter.drv",
+            "math": "/nix/store/ah2hrf7s4ffzm3shzl91p07n1dqynmww-go-math.drv",
+            "unicode/utf8": "/nix/store/fq34xj56k1hb1m6zj468nsa9r303p6qc-go-unicode-utf8.drv",
+            "strconv": "/nix/store/8fby49pjgx6z8c4j6hgkv5ch2j1za2dz-go-strconv.drv",
+            "sync/atomic": "/nix/store/0rj4k8g00pdmrp6kmsz0r7wxcj6cd0bg-go-sync-atomic.drv",
+            "internal/sync": "/nix/store/349fcwagqnbz92v4hxz4x4g7irsz5mwa-go-internal-sync.drv",
+            "internal/synctest": "/nix/store/bv0v5y5lk607ygblzsbhmx4szbh91fai-go-internal-synctest.drv",
+            "sync": "/nix/store/gjqrfxla62c4b5ww6zrxf42m4d458dxc-go-sync.drv",
+            "unicode": "/nix/store/nmdnl7wx0j4yl8wlqzx8g6kflizxnxwx-go-unicode.drv",
+            "reflect": "/nix/store/n4nhxvf2ylx85bmgcngd88cc9sz2lmgx-go-reflect.drv",
+            "slices": "/nix/store/hisn0ldpy06jjlcq931b4bgzgjq9bmh2-go-slices.drv",
+            "internal/fmtsort": "/nix/store/i5hpp71kkhy3wp57wly91vipbnygkhss-go-internal-fmtsort.drv",
+            "io": "/nix/store/g7fr8awgfzq9pm2f7ay2j5xvdh49vqk7-go-io.drv",
+            "internal/oserror": "/nix/store/y80wss7h3d7c6k5vp7468s4af8nzhxgr-go-internal-oserror.drv",
+            "path": "/nix/store/knslb0hf8r5ky1yvylmwsi08bh3yws5i-go-path.drv",
+            "internal/bisect": "/nix/store/fwg09gq4db5fqxlsyxdnf629241cvzxm-go-internal-bisect.drv",
+            "internal/godebug": "/nix/store/zskv7fzy1kprf3yfb47bvhy9qrim5d40-go-internal-godebug.drv",
+            "syscall": "/nix/store/zpnxwascqp7chl8vpjv0qznjrvlfpgb2-go-syscall.drv",
+            "time": "/nix/store/vrll5drps23ky86k300rxz492chqw4q2-go-time.drv",
+            "io/fs": "/nix/store/mj9lq71gyllh31qyhb0xwzhb37viiz1f-go-io-fs.drv",
+            "internal/filepathlite": "/nix/store/3b4rd5swkng7akam71am09fhrjjpwycn-go-internal-filepathlite.drv",
+            "internal/syscall/unix": "/nix/store/dfpmqhnysah215g7yl6djs2lprzahxz4-go-internal-syscall-unix.drv",
+            "internal/poll": "/nix/store/fydy0w3vghg9m8s6000d6d7v40g1wvb2-go-internal-poll.drv",
+            "internal/syscall/execenv": "/nix/store/kgrj2dvciy1r6xa733si08md8liz7y60-go-internal-syscall-execenv.drv",
+            "internal/testlog": "/nix/store/1mx5d9b86qj2arx65rsxcrfcs88vcjj4-go-internal-testlog.drv",
+            "os": "/nix/store/88j20n49c7gy1zybj2xqajrqd2gfnlaa-go-os.drv",
+            "fmt": "/nix/store/ryhqb0iqki0hg177ikglyikws4mnqmhm-go-fmt.drv",
+            "runtime/cgo": "/nix/store/dj0h6mfg6a7zbp2kw22hmrjgrczgv961-go-runtime-cgo.drv",
+            "runtime/race/internal/amd64v1": "/nix/store/ddy8mq6pc5k12xjsd1w5z2p9ra2ynyz5-go-runtime-race-internal-amd64v1.drv",
+            "runtime/race": "/nix/store/vr0klmddq2mdp7ffs8b3xclybbs57xhc-go-runtime-race.drv",
+            "example.com/modes.test": "/nix/store/6xwpfbr8khh9lp4i9dxjjbbm3c0qczsc-go-example.com-modes.test.drv"
+          }
+        },
+        {
+          "name": "cxx",
+          "output": "42\n",
+          "units": 62,
+          "store_path": "/nix/store/cwjql6w263qshxlb07iqbgv1lcj425wr-go-example.com-cxx",
+          "package_derivations": {
+            "internal/goarch": "/nix/store/qmgn68xkscl45bn1cvnjq7501bagw62k-go-internal-goarch.drv",
+            "internal/abi": "/nix/store/y2c3dv54yzk6cv7svb4hxa3nlm40h42p-go-internal-abi.drv",
+            "internal/unsafeheader": "/nix/store/v2xa9j2nphjrfp8vw14fpbsdxplrd35l-go-internal-unsafeheader.drv",
+            "internal/cpu": "/nix/store/h58znzsljpwa4069sfyaxyhbwfclgg2h-go-internal-cpu.drv",
+            "internal/bytealg": "/nix/store/v9vfz151dyzppma98n1xmvg2lzr4xc8v-go-internal-bytealg.drv",
+            "internal/byteorder": "/nix/store/3mj75g6blflah10vg73pmlpww5d497ki-go-internal-byteorder.drv",
+            "internal/chacha8rand": "/nix/store/8p6b818zas0x5h0b52clm94nz7mq56yp-go-internal-chacha8rand.drv",
+            "internal/coverage/rtcov": "/nix/store/amr1baqhw0a2xfx94hf6d0h3586cskig-go-internal-coverage-rtcov.drv",
+            "internal/godebugs": "/nix/store/agk1xnyg489pysxrz20d9sxr70j3h1dp-go-internal-godebugs.drv",
+            "internal/goexperiment": "/nix/store/j48nh6xn8zxj3mx186phkrc7p4fb27wl-go-internal-goexperiment.drv",
+            "internal/goos": "/nix/store/3sknb2pyhmgcp6r7m9c6mkyf7jf91vxa-go-internal-goos.drv",
+            "internal/profilerecord": "/nix/store/wi5bd5v83sf5jgvs166awdl8ls7c96hy-go-internal-profilerecord.drv",
+            "internal/runtime/atomic": "/nix/store/zwxhvid9hhh21dx3x28mrsg9rbsrdkmw-go-internal-runtime-atomic.drv",
+            "internal/runtime/syscall/linux": "/nix/store/chf1qsr44j1ipixdzzmvzbnxmn7mkalw-go-internal-runtime-syscall-linux.drv",
+            "math/bits": "/nix/store/f7wzhs7ryk2yp72hprgw5xx6ksbw6i1f-go-math-bits.drv",
+            "internal/strconv": "/nix/store/s5ag9xckb4yr6ysa6z8s1wqs58x8558r-go-internal-strconv.drv",
+            "internal/runtime/cgroup": "/nix/store/ks86czry9c6cpa01s6lz1hi3gb47x1s8-go-internal-runtime-cgroup.drv",
+            "internal/runtime/exithook": "/nix/store/9c87zjiihk7hfils3phcl716c6yzk9kq-go-internal-runtime-exithook.drv",
+            "internal/runtime/gc": "/nix/store/b90g048aas4c8s39nv4g1jb6g3hra8rw-go-internal-runtime-gc.drv",
+            "internal/runtime/sys": "/nix/store/k0dkcmm4i0s5glpz1rpid46pxlq5ix1j-go-internal-runtime-sys.drv",
+            "internal/runtime/gc/scan": "/nix/store/0y0mbfdgg7gkm3b8sk9nj8zf0nkq8hn2-go-internal-runtime-gc-scan.drv",
+            "internal/asan": "/nix/store/ghhjf6z36nkmq0c7j867dhhvjp0ps47m-go-internal-asan.drv",
+            "internal/msan": "/nix/store/h7yss8xzgyl97cbmnax8y0ds9n9afq29-go-internal-msan.drv",
+            "internal/race": "/nix/store/x1bl5zi6lc4i68300p8s0zk3f62p9fik-go-internal-race.drv",
+            "internal/runtime/math": "/nix/store/hwkbp1qhaifaasxxz7cyk228sg0pi8h3-go-internal-runtime-math.drv",
+            "internal/runtime/maps": "/nix/store/fp7faqanh8b52k0gvabajlbka8s7msmp-go-internal-runtime-maps.drv",
+            "internal/runtime/pprof/label": "/nix/store/59yyqlpbv7zgcad3nysa7x61apdpa5d3-go-internal-runtime-pprof-label.drv",
+            "internal/stringslite": "/nix/store/8hxsd25dmcqg7g5pbh6hkcypsvnhjbf8-go-internal-stringslite.drv",
+            "internal/trace/tracev2": "/nix/store/rmy3j8nxrmrha395kn9k1w19g0plmyvj-go-internal-trace-tracev2.drv",
+            "runtime": "/nix/store/pwxz2kyf4if3f90y0im4csz40zzy343n-go-runtime.drv",
+            "internal/reflectlite": "/nix/store/3zqy1fqg1vhslx9vjbp63gs9m2mnimyb-go-internal-reflectlite.drv",
+            "errors": "/nix/store/1m2pg331vbasfs58mzrfil3r83w0jqpr-go-errors.drv",
+            "cmp": "/nix/store/g9bdfjshnxygg8haknk6mfcj9vyicv9d-go-cmp.drv",
+            "iter": "/nix/store/9mdmf81ajigrgrljisb4p2lp8qinvmp9-go-iter.drv",
+            "math": "/nix/store/lba854a5v7rvnc0aqlwh88gbpiar4y3y-go-math.drv",
+            "unicode/utf8": "/nix/store/adgi0cxfaqpdkk6kmapz84iaqwxrdh4m-go-unicode-utf8.drv",
+            "strconv": "/nix/store/2ilhak4bh6mhzx5imvvz4z98rixb69ri-go-strconv.drv",
+            "sync/atomic": "/nix/store/0xm7wrkbzg71052y25cwp1j60xd684lk-go-sync-atomic.drv",
+            "internal/sync": "/nix/store/wgmkvy5n554acbfc6ypab1ds2x8sw41r-go-internal-sync.drv",
+            "internal/synctest": "/nix/store/11c7a1xi72al18mjn5gf5xz5vmpyf0jx-go-internal-synctest.drv",
+            "sync": "/nix/store/6hsxi59yyai6kalnq1zs2z7ykjrj9xim-go-sync.drv",
+            "unicode": "/nix/store/6n08v3fj96fpvrjhqvba6z41z9r8vg0x-go-unicode.drv",
+            "reflect": "/nix/store/3g4fqdbryzdb983y8sgcffi7f1v5qp6x-go-reflect.drv",
+            "slices": "/nix/store/6ncll6w7ljz60d5pw5s4v83k4bsrd9f6-go-slices.drv",
+            "internal/fmtsort": "/nix/store/lkg61ndkbc4ayg81iqnpbpivi0jj08bh-go-internal-fmtsort.drv",
+            "io": "/nix/store/38k62pgxhgcj6sjp2j9zb3dhcmzkws2n-go-io.drv",
+            "internal/oserror": "/nix/store/w419acp41rlaa6l6l3y6a1nnmairlmw1-go-internal-oserror.drv",
+            "path": "/nix/store/8z98zxwra65q3szjkharamyylsca1ys9-go-path.drv",
+            "internal/bisect": "/nix/store/2m7k6dabj683smwr29fb8bcpa6mqalj7-go-internal-bisect.drv",
+            "internal/godebug": "/nix/store/rjdrdkdf7dpisi35mr803w3xrmzp7g0z-go-internal-godebug.drv",
+            "syscall": "/nix/store/qnijdv1iqi3gb859sf3f88rbymc34hr9-go-syscall.drv",
+            "time": "/nix/store/ld8iqb8gg97dcmsbkwxni0wzj6hn4068-go-time.drv",
+            "io/fs": "/nix/store/adsndkfragj8z19339d14ky0wb7g69g2-go-io-fs.drv",
+            "internal/filepathlite": "/nix/store/v9v7q4jsgkyv4hjv9sflxl454djfpgcq-go-internal-filepathlite.drv",
+            "internal/syscall/unix": "/nix/store/mi5ynadd9xybbz0671i2hagnz5brzbfy-go-internal-syscall-unix.drv",
+            "internal/poll": "/nix/store/7hh6p8zl14f2d3av97r1na6dbjx074h3-go-internal-poll.drv",
+            "internal/syscall/execenv": "/nix/store/qxp3nab979fgb0maf4lxbf0bhzs4mcdq-go-internal-syscall-execenv.drv",
+            "internal/testlog": "/nix/store/9gmmwarzzy3zq48w6w4bjxrmranqypx1-go-internal-testlog.drv",
+            "os": "/nix/store/8qcz83lzcmlkbahvqa1wgp4c1jfqhcns-go-os.drv",
+            "fmt": "/nix/store/zps5hfz0xp6fgq9iyhz0bhzm54b71bsp-go-fmt.drv",
+            "runtime/cgo": "/nix/store/0885dbq6qr6mxj0pb93w2jawa64spwws-go-runtime-cgo.drv",
+            "example.com/cxx": "/nix/store/phz1yr5vffszc819437d8zqvrdjkg0fr-go-example.com-cxx.drv"
+          }
+        }
+      ],
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "dynamic_ifd_disabled": "passed",
+      "dynamic_tests": [
+        {
+          "name": "test-cgo-disabled",
+          "store_path": "/nix/store/cl5vmc4f65v5qh4sy5mxx50n3izv1x14-go-example.com-modes.test.test",
+          "cgo": "0",
+          "race": false
+        },
+        {
+          "name": "test-race-cgo",
+          "store_path": "/nix/store/jjzjvjyc7dww5myvbzrcavz15c40bwgl-go-example.com-modes.test.test",
+          "cgo": "1",
+          "race": true
+        }
+      ],
+      "incremental_cache_and_embeds": "passed",
+      "test_binaries_and_race_detection": "passed"
+    },
+    "upm": {
+      "path": "/nix/store/wih8n0sxplkcmfy5bshyg2d4slymxcnn-go-github.com-replit-upm-cmd-upm",
+      "checks": {
+        "--version": {
+          "stdout": "upm unknown version\n",
+          "stderr": ""
+        },
+        "list-languages": {
+          "stdout": "python3-uv  (unavailable)\npython3-poetry  (unavailable)\npython3-pip  (unavailable)\nbun  (unavailable)\nnodejs-npm\nnodejs-pnpm  (unavailable)\nnodejs-yarn  (unavailable)\nruby-bundler  (unavailable)\nelisp-cask  (unavailable)\ndart-pub  (unavailable)\njava-maven  (unavailable)\nrlang  (unavailable)\ndotnet  (unavailable)\nrust\nphp-composer  (unavailable)\n",
+          "stderr": ""
+        }
+      }
+    },
+    "planner_policy": {
+      "defaultPolicy": false,
+      "defaultUnchanged": true,
+      "enabledPolicy": true,
+      "resolved_outputs": [
+        "/nix/store/0c84sy9f01b3fs86m2r3k5n02pnw621m-drvgo-round2-policy",
+        "/nix/store/0c84sy9f01b3fs86m2r3k5n02pnw621m-drvgo-round2-policy"
+      ]
+    },
+    "iets_revision": "69883a64bfb0d9a95dce253dae304878e07b076e",
+    "ci_runs": [
+      "https://github.com/ryantm/drvgo/actions/runs/43058544816",
+      "https://github.com/ryantm/drvgo/actions/runs/43059966105"
+    ]
+  }
+}

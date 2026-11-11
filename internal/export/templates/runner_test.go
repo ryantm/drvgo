@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"encoding/base64"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -9,6 +11,42 @@ import (
 	"strings"
 	"testing"
 )
+
+func TestInlineSourceReplay(t *testing.T) {
+	dir := inTemp(t)
+	name := "nested/space ' $雪.bin"
+	data := []byte{0, 255, '\r', '\n', '@', '$'}
+	script := "drvgo-source 0755 'nested/space '\\'' $雪.bin' '" + base64.StdEncoding.EncodeToString(data) + "'\n" +
+		"drvgo-source 0644 empty ''\n"
+	actions, err := parse(script)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := execute(actions); err != nil {
+		t.Fatal(err)
+	}
+	got, err := os.ReadFile(filepath.Join(dir, name))
+	if err != nil || !bytes.Equal(got, data) {
+		t.Fatalf("source bytes: %x, %v", got, err)
+	}
+	info, err := os.Stat(name)
+	if err != nil || info.Mode().Perm() != 0755 {
+		t.Fatalf("executable source mode: %v, %v", info, err)
+	}
+	got, err = os.ReadFile("empty")
+	if err != nil || len(got) != 0 {
+		t.Fatalf("empty source: %q, %v", got, err)
+	}
+	for _, script := range []string{"drvgo-source 0644 bad !", "drvgo-source 0777 bad ''", "drvgo-source 0644 missing", "X=y drvgo-source 0644 bad ''"} {
+		actions, err := parse(script)
+		if err == nil {
+			err = execute(actions)
+		}
+		if err == nil {
+			t.Fatalf("invalid source action accepted: %s", script)
+		}
+	}
+}
 
 func inTemp(t *testing.T) string {
 	t.Helper()

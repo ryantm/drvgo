@@ -306,8 +306,16 @@ Nix installations without these experimental features.
 The [November 11 measurements](benchmarks/ci-2026-11-11.md) show a 33.7% faster
 full rebuild of a 1,061-unit graph and an 85.5% smaller compressed compile
 toolchain closure (81.5 MiB to 11.8 MiB). Cached dynamic planning remains roughly
-flat. The report includes the planning-closure tradeoff, iets PR 3 comparisons,
+flat in that round. The report includes the planning-closure tradeoff, iets PR 3 comparisons,
 raw samples, and the Linux/Apple Silicon compatibility results.
+
+The [next CI planning round](benchmarks/ci-round2-2026-11-11.md) reduces fresh
+planning of the same cached 1,061-unit graph from 3.77 s to 2.42 s (35.7%) with
+remote cache queries excluded. Small snapshots, up to 4 KiB including filename
+and metadata overhead, are encoded in the existing file-backed replay script.
+The native runner restores their exact bytes and executable modes in its build
+directory. Larger snapshots remain separate store objects. This avoids a store
+registration per small snapshot while preserving package-level invalidation.
 
 Pure Go and Go assembly package actions receive only the compiler, assembler,
 archive helper, and native replay runner. Selected standard-library sources and
@@ -324,10 +332,19 @@ derivation contexts and share package outputs. Custom toolchains without the
 separate `compile`, `link`, or `native` attributes use the supplied full bundle;
 they must include the current native runner.
 
-The dynamic planner uses explicit tools without stdenv setup. Its two forwarding
-outputs invoke `ln` directly, build locally, and skip binary-cache queries: each
-only creates a symlink. The planner and Go package outputs remain substitutable,
-and package compilation remains eligible for remote builders.
+The dynamic planner uses explicit tools without stdenv setup. It and its two
+forwarding outputs build locally with `allowSubstitutes = false`; forwarding
+only creates symlinks. Go package outputs remain substitutable and eligible for
+remote builders. A planner cache hit would copy its generated derivation/source
+closure, so the planner instead recomputes that graph locally.
+If your cache publishes planner outputs and CI often rebuilds an identical
+source tree on a cold worker, set `allowPlannerSubstitutes = true` in
+`mkGoPackage` to allow those hits to avoid downloading the planning toolchain.
+
+Nix's `always-allow-substitutes = true` overrides these hints. For CI, leave this
+setting at its default `false`, or pass `--option always-allow-substitutes false`
+to the build command. Otherwise cache metadata misses can dominate planning
+time, even when every compiled package is already available locally.
 
 Library outputs contain their `_pkg_.a` archive. Command outputs contain only
 `bin/<name>`; the main package archive is no longer copied alongside the binary.
@@ -370,6 +387,10 @@ outer evaluation separately from realization (planning plus forwarding), checks
 that package outputs remain identical across trials, and saves logs and timings.
 IFD stays disabled. Sources must need no downloaded modules, or supply a vendor
 tree. Cache configuration and latency affect the realization measurements.
+Use `--nix-option always-allow-substitutes false` to honor derivation hints.
+To isolate local planning costs with already available inputs, also pass
+`--nix-option substituters ''`; this disables remote lookups for that benchmark
+command only. Apply identical settings to both revisions.
 
 ### iets dynamic-derivation compatibility
 

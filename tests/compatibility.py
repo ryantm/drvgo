@@ -141,6 +141,11 @@ if a.flake_toolchain:
     assert Path(result).resolve() == Path(report['cases'][0]['store_path']), 'dynamic and standalone builds must share package outputs'
     report['dynamic_ifd_disabled']='passed'
     print(version,'dynamic/IFD-disabled PASS',flush=True)
+    planner_cached = run(['nix-build',repo/'tests/dynamic-compatibility.nix','--argstr','system',system,
+        '--argstr','toolchainAttr',a.flake_toolchain,'--arg','allowPlannerSubstitutes','true',
+        '--option','allow-import-from-derivation','false','--max-jobs','4','--cores','2','--no-out-link']).stdout.decode().strip()
+    assert planner_cached == result, 'planner cache policy changed the resolved output'
+    report['planner_substitution_policy']='passed'
     # Exercise every new helper argument, including generated test-main sources
     # inside the recursive sandbox. Dynamic and standalone outputs must match.
     write(modes/'main_test.go','package main\nimport "testing"\nfunc TestValue(t *testing.T){if Value()!=expected {t.Fatal("wrong build mode")}}\n')

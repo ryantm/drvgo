@@ -4,6 +4,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"io"
@@ -285,6 +286,26 @@ func execute(actions []action) error {
 		case "write":
 			err = os.WriteFile(a.path, []byte(a.text), 0644)
 		case "exec":
+			if a.args[0] == "drvgo-source" {
+				if len(a.args) != 4 || len(a.env) != 0 || a.path != "" || (a.args[1] != "0644" && a.args[1] != "0755") {
+					return fmt.Errorf("invalid inline source action")
+				}
+				data, err := base64.StdEncoding.DecodeString(a.args[3])
+				if err != nil {
+					return err
+				}
+				if err := os.MkdirAll(filepath.Dir(a.args[2]), 0755); err != nil {
+					return err
+				}
+				mode := os.FileMode(0644)
+				if a.args[1] == "0755" {
+					mode = 0755
+				}
+				if err := os.WriteFile(a.args[2], data, mode); err != nil {
+					return err
+				}
+				continue
+			}
 			if a.args[0] == "libnix-buildid" {
 				if rewriteBuildID == nil || len(a.args) != 3 || a.args[1] != "-w" || len(a.env) != 0 || a.path != "" {
 					return fmt.Errorf("unsupported buildid action or missing pinned buildid implementation")

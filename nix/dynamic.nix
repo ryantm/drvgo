@@ -5,6 +5,7 @@
 }:
 { src, package ? ".", vendorHash ? null, tags ? "", ldflags ? "", name ? "drvgo"
 , experimentalGo ? false, test ? false, race ? false, cgoEnabled ? null
+, allowPlannerSubstitutes ? false
 }:
 let
   pkgs = toolchain.pkgs;
@@ -37,6 +38,9 @@ let
     # Remote build hooks do not reliably copy newly generated derivation closures.
     # Plan locally; the generated package derivations can still build remotely.
     preferLocalBuild = true;
+    # A planner cache hit would copy its generated derivation/source closure.
+    # Replanning is cheap; spend cache lookups on reusable package outputs.
+    allowSubstitutes = allowPlannerSubstitutes;
     __contentAddressed = true;
     outputHashMode = "text";
     outputHashAlgo = "sha256";

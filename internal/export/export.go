@@ -304,6 +304,9 @@ func Generate(o Options) (*Graph, error) {
 	if root == "" {
 		return nil, fmt.Errorf("missing link action")
 	}
+	if err := inlineSources(staging, units); err != nil {
+		return nil, err
+	}
 	binaryName := filepath.Base(target.ImportPath)
 	if target.Target != "" {
 		binaryName = filepath.Base(target.Target)
