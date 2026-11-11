@@ -41,7 +41,7 @@ func TestEmptyTestResult(t *testing.T) {
 	if _, err := os.Stat(filepath.Join(result, "bin")); !os.IsNotExist(err) {
 		t.Fatalf("empty result has bin: %v", err)
 	}
-	g, err = Generate(Options{Dir: root, Out: out, Package: ".", Toolchain: tc, Test: true, AllowEmptyTests: true, Tags: "special"})
+	g, err = Generate(Options{Dir: root, Out: out, Package: ".", Toolchain: tc, Test: true, AllowEmptyTests: true, Tags: "'special'"})
 	if err != nil {
 		t.Fatal(err)
 	}

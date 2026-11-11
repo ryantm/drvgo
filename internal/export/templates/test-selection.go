@@ -15,7 +15,12 @@ import (
 
 func main() {
 	ctx := build.Default
-	ctx.BuildTags = strings.FieldsFunc(os.Args[2], func(r rune) bool { return r == ',' || r == ' ' })
+	var err error
+	ctx.BuildTags, err = buildTags(os.Args[2])
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
 	if os.Args[3] == "true" {
 		ctx.BuildTags = append(ctx.BuildTags, "race")
 	}
@@ -31,4 +36,33 @@ func main() {
 		Tests   bool
 		Sources bool
 	}{len(p.TestGoFiles)+len(p.XTestGoFiles) > 0, len(p.GoFiles)+len(p.CgoFiles) > 0})
+}
+
+func buildTags(s string) ([]string, error) {
+	// Match cmd/go's tagsFlag: commas normally separate tags, but a space or
+	// single quote selects the legacy, quoted-word syntax. Quotes inside a
+	// word and backslashes are literal; only a leading quote delimits a word.
+	if !strings.ContainsAny(s, " '") {
+		return strings.FieldsFunc(s, func(r rune) bool { return r == ',' }), nil
+	}
+	var tags []string
+	for s = strings.TrimLeft(s, " \t\r\n"); s != ""; s = strings.TrimLeft(s, " \t\r\n") {
+		if quote := s[0]; quote == '\'' || quote == '"' {
+			s = s[1:]
+			end := strings.IndexByte(s, quote)
+			if end < 0 {
+				return nil, fmt.Errorf("unterminated quoted build tag")
+			}
+			tags = append(tags, s[:end])
+			s = s[end+1:]
+		} else {
+			end := strings.IndexAny(s, " \t\r\n")
+			if end < 0 {
+				end = len(s)
+			}
+			tags = append(tags, s[:end])
+			s = s[end:]
+		}
+	}
+	return tags, nil
 }
