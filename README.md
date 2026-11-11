@@ -351,10 +351,10 @@ drvgo export -C /path/to/project -toolchain "$tc" -module-cache "$cache" .
 
 An explicit `moduleCache` argument accepts an already prepared cache, including
 when `vendorHash = null`. The CLI's `-module-cache` also forces offline discovery
-and takes precedence over `-module-proxy`. Share the same cache and toolchain
-between standalone and dynamic planning to keep external cgo include paths
-stable. Relative include paths in the application's own source can still give
-different automatic build IDs when that source moves.
+and takes precedence over `-module-proxy`. Sharing the cache avoids repeated
+extraction. Automatic build IDs use normalized replay inputs, so relocating a
+checkout or module cache also preserves package recipes with relative cgo
+include paths. Standalone and dynamic builds still need the same toolchain.
 
 Prepared modules compress better than an archive of module ZIPs but require more
 disk space after extraction. Preparation also adds work on the first build when
@@ -421,8 +421,13 @@ patch; it preserves Go's archive format and avoids a separate executable and
 process per append. Compiler, assembler,
 linker, and native compilation still use the pinned tools. Source snapshots are
 copied and NAR-hashed in one pass. Ordinary exports and dynamic builds preserve
-derivation contexts. They share package outputs when Go discovery emits identical
-action IDs; relative cgo include paths can currently prevent that sharing. Custom toolchains without the
+derivation contexts. Automatic Go build IDs are derived in the native worker from
+the Nix-resolved script, source/dependency paths, and selected toolchain. Temporary
+directories and core budgets are excluded. The link ID records the main archive's
+actual content ID; the selected SDK still performs content hashing and Mach-O
+signing. These generated IDs may differ from cmd/go's IDs. Explicit custom IDs,
+including empty IDs, remain unchanged. This allows package outputs to be shared
+across checkout and module-cache locations. Custom toolchains without the
 separate `compile`, `link`, or `native` attributes use the supplied full bundle;
 they must include the current native runner.
 

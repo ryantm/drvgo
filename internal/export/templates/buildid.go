@@ -12,7 +12,10 @@ import (
 	"strings"
 )
 
-func init() { rewriteBuildID = updateBuildID }
+func init() {
+	rewriteBuildID = updateBuildID
+	readBuildID = buildid.ReadFile
+}
 
 func updateBuildID(path string) error {
 	id, err := buildid.ReadFile(path)

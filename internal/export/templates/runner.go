@@ -6,6 +6,7 @@ package main
 import (
 	"bytes"
 	"compress/zlib"
+	"crypto/sha256"
 	"encoding/base64"
 	"errors"
 	"fmt"
@@ -21,6 +22,7 @@ import (
 
 type action struct {
 	op, path, text string
+	goActionID     string
 	args, env      []string
 	probe          *action
 	yes, no        []action
@@ -28,7 +30,62 @@ type action struct {
 
 // Linked against the selected Go compiler's library by toolchain-builder.nix.
 var rewriteBuildID func(string) error
+var readBuildID func(string) (string, error)
 var packArchive func([]string) error
+
+// Hash the Nix-resolved recipe before replacing temporary paths or CPU budgets.
+// Sources/dependencies are already store paths or inline data here; discovery's
+// action numbers and original checkout/module-cache paths no longer occur.
+func assignGoActionIDs(actions []action, script []byte) {
+	h := sha256.New()
+	h.Write([]byte("drvgo-go-action-v1\x00"))
+	for _, key := range []string{"GOROOT", "toolchainInput", "GOOS", "GOARCH", "CGO_ENABLED"} {
+		value := os.Getenv(key)
+		fmt.Fprintf(h, "%d:%s", len(value), value)
+	}
+	h.Write(script)
+	seed := h.Sum(nil)
+	var visit func([]action)
+	visit = func(actions []action) {
+		for i := range actions {
+			a := &actions[i]
+			if a.op == "exec" && (a.args[0] == "drvgo-compile" || a.args[0] == "drvgo-link") {
+				digest := sha256.Sum256(append(append([]byte{}, seed...), a.args[0]...))
+				// cmd/internal/buildid.HashToString uses the first 120 bits.
+				a.goActionID = base64.RawURLEncoding.EncodeToString(digest[:15])
+			}
+			if a.probe != nil {
+				probe := []action{*a.probe}
+				visit(probe)
+				*a.probe = probe[0]
+			}
+			visit(a.yes)
+			visit(a.no)
+		}
+	}
+	visit(actions)
+}
+
+func goCommand(a action) ([]string, error) {
+	if len(a.args) < 3 || a.goActionID == "" {
+		return nil, fmt.Errorf("invalid canonical Go action")
+	}
+	id := a.goActionID + "/" + a.goActionID
+	if a.args[0] == "drvgo-link" {
+		if readBuildID == nil {
+			return nil, fmt.Errorf("missing pinned buildid reader")
+		}
+		mainID, err := readBuildID(a.args[len(a.args)-1])
+		if err != nil {
+			return nil, err
+		}
+		if mainID == "" {
+			return nil, fmt.Errorf("main archive has no build ID")
+		}
+		id = a.goActionID + "/" + mainID + "/" + a.goActionID
+	}
+	return append([]string{a.args[1], "-buildid=" + id}, a.args[2:]...), nil
+}
 
 // words decodes the quoting emitted by drvgo's trace adapter. Operators are
 // separate tokens; unsupported shell syntax is rejected rather than executed.
@@ -289,6 +346,12 @@ func execute(actions []action) error {
 		case "write":
 			err = os.WriteFile(a.path, []byte(a.text), 0644)
 		case "exec":
+			if a.args[0] == "drvgo-compile" || a.args[0] == "drvgo-link" {
+				a.args, err = goCommand(a)
+				if err != nil {
+					return err
+				}
+			}
 			if a.args[0] == "drvgo-source" || a.args[0] == "drvgo-source-zlib" {
 				compressed := a.args[0] == "drvgo-source-zlib"
 				argc := 4
@@ -448,6 +511,7 @@ func build() error {
 	if err != nil {
 		return err
 	}
+	assignGoActionIDs(actions, data)
 	if err := os.Chdir(filepath.Join(tmp, "work")); err != nil {
 		return err
 	}
