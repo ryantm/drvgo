@@ -15,10 +15,21 @@ let
   }).goModules;
   # Preserve the original output context, so generated package derivations
   # have the same toolchain dependency as ordinary exports.
-  toolchainExpr = ''builtins.appendContext ${builtins.toJSON (toString toolchain)} {
-    ${builtins.toJSON (builtins.unsafeDiscardOutputDependency toolchain.drvPath)} = { outputs = [ "out" ]; };
+  outputExpr = tc: ''builtins.appendContext ${builtins.toJSON (toString tc)} {
+    ${builtins.toJSON (builtins.unsafeDiscardOutputDependency tc.drvPath)} = { outputs = [ "out" ]; };
   }'';
-  planner = pkgs.runCommand "${name}-result.drv" {
+  toolchainExpr = ''{
+    outPath = ${outputExpr toolchain};
+    compile = ${outputExpr (toolchain.compile or toolchain)};
+  }'';
+  # These wrappers only run explicit tools; a stdenv setup and its dependency
+  # closure are unnecessary on the planning and final forwarding paths.
+  planner = builtins.derivation {
+    name = "${name}-result.drv";
+    system = pkgs.stdenv.hostPlatform.system;
+    builder = "${pkgs.bash}/bin/bash";
+    args = [ "-euo" "pipefail" "-c" plannerScript ];
+    PATH = lib.makeBinPath [ drvgo pkgs.nix pkgs.coreutils ];
     # Remote build hooks do not reliably copy newly generated derivation closures.
     # Plan locally; the generated package derivations can still build remotely.
     preferLocalBuild = true;
@@ -26,25 +37,31 @@ let
     outputHashMode = "text";
     outputHashAlgo = "sha256";
     requiredSystemFeatures = [ "recursive-nix" ];
-    nativeBuildInputs = [ drvgo pkgs.nix ];
     # Make the toolchain derivation itself available to the nested evaluator.
     toolchainDrv = builtins.unsafeDiscardOutputDependency toolchain.drvPath;
+    compileToolchainDrv = builtins.unsafeDiscardOutputDependency (toolchain.compile or toolchain).drvPath;
+    coreutilsDrv = builtins.unsafeDiscardOutputDependency pkgs.coreutils.drvPath;
     inherit src;
     passAsFile = [ "expression" ];
     # The emitted derivation name must match the text-addressed .drv output.
     # A forwarding derivation supplies a stable name independent of Go import paths.
     expression = ''
       let tc = ${toolchainExpr};
+          coreutils = ${outputExpr pkgs.coreutils};
           command = (import ./graph { toolchain = tc; }).default;
       in derivation {
-        name = "${name}-result";
+        name = ${builtins.toJSON "${name}-result"};
         system = "${pkgs.stdenv.hostPlatform.system}";
-        builder = "''${tc}/bin/bash";
-        args = [ "-c" "''${tc}/bin/ln -s $command $out" ];
-        inherit command;
+        # Creating a symlink is cheaper than querying caches or shipping its
+        # inputs to a remote builder. Go package builds remain distributable.
+        preferLocalBuild = true;
+        allowSubstitutes = false;
+        builder = "''${coreutils}/bin/ln";
+        args = [ "-s" command (builtins.placeholder "out") ];
       }
     '';
-  } ''
+  };
+  plannerScript = ''
     export HOME=$TMPDIR/home
     mkdir -p "$HOME"
     export NIX_CONFIG='extra-experimental-features = nix-command ca-derivations dynamic-derivations recursive-nix
@@ -58,7 +75,12 @@ let
     drv=$(nix-instantiate "$TMPDIR/build.nix")
     cp "$drv" "$out"
   '';
-  result = pkgs.runCommand name { passthru = { inherit planner modules; }; } ''
-    ln -s ${builtins.outputOf planner.outPath "out"} "$out"
-  '';
-in result
+  result = builtins.derivation {
+    inherit name;
+    system = pkgs.stdenv.hostPlatform.system;
+    preferLocalBuild = true;
+    allowSubstitutes = false;
+    builder = "${pkgs.coreutils}/bin/ln";
+    args = [ "-s" (builtins.outputOf planner.outPath "out") (builtins.placeholder "out") ];
+  };
+in result // { inherit planner modules; passthru = { inherit planner modules; }; }

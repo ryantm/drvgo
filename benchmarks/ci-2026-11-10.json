@@ -1,0 +1,888 @@
+{
+  "baseline_commit": "957f2c8805c639848ba1ddcae3097586d50d2a25",
+  "date": "2026-11-10",
+  "platform": "x86_64-linux",
+  "cpu": "12th Gen Intel Core i7-1280P",
+  "go": "go1.26.5",
+  "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+  "sizes": {
+    "before": {
+      "path": "/nix/store/lwv9qsxvxpzyf3214h1bncajmf5v5mvb-go-libnix-toolchain",
+      "nar_bytes": 644221960,
+      "paths": 42,
+      "compressed_closure_bytes": 191608486
+    },
+    "compile": {
+      "path": "/nix/store/9mb0yqhh1pa86jb8p32v2yh0jbnnc7pw-go-libnix-compile-toolchain",
+      "nar_bytes": 306407352,
+      "paths": 21,
+      "compressed_closure_bytes": 85447068
+    },
+    "native": {
+      "path": "/nix/store/8babm6qkb7cwj4x61gxkgz7rnrby6sag-go-libnix-toolchain",
+      "nar_bytes": 648038440,
+      "paths": 43
+    },
+    "before_fixture_outputs": {
+      "count": 67,
+      "nar_bytes": 36119104
+    },
+    "after_fixture_outputs": {
+      "count": 67,
+      "nar_bytes": 36091096
+    },
+    "before_embedded_output": {
+      "path": "/nix/store/lc3c38il33la1i90x7z4bwway6bfdr3j-go-example.com-embedded",
+      "nar_bytes": 19193304,
+      "stdout": "8388608 205 83",
+      "compressed_closure_bytes": 18224621
+    },
+    "after_embedded_output": {
+      "path": "/nix/store/xva0wj040ak1njj3hx4f6ln1fkwc59g8-go-example.com-embedded",
+      "nar_bytes": 10781816,
+      "stdout": "8388608 205 83",
+      "compressed_closure_bytes": 9822975
+    },
+    "compression": "zstd level 3; sum of FileSize from Nix file binary cache narinfo for each closure; excludes protocol/metadata overhead; no network timing"
+  },
+  "package_rebuilds": {
+    "scope": "rebuild all 67 fixture package outputs with nix-build --check; dependencies already present, four jobs and two cores; checks reproducibility, not a cold-store build",
+    "records": [
+      {
+        "label": "before",
+        "trial": 0,
+        "seconds": 4.249943710980006
+      },
+      {
+        "label": "after",
+        "trial": 0,
+        "seconds": 4.199829641962424
+      },
+      {
+        "label": "after",
+        "trial": 1,
+        "seconds": 4.263814631965943
+      },
+      {
+        "label": "before",
+        "trial": 1,
+        "seconds": 4.3039419680135325
+      },
+      {
+        "label": "before",
+        "trial": 2,
+        "seconds": 4.3560074450215325
+      },
+      {
+        "label": "after",
+        "trial": 2,
+        "seconds": 4.267067590961233
+      }
+    ],
+    "medians": {
+      "before": 4.3039419680135325,
+      "after": 4.263814631965943
+    }
+  },
+  "iets_evaluation": {
+    "scope": "Isolated alternating warm evaluation, one warmup plus five measured runs; iets tracing cache disabled, IR cache warm; IFD disabled, fallback never; no builds or network transfer",
+    "iets_revision": "69883a64bfb0d9a95dce253dae304878e07b076e",
+    "iets_package": "/nix/store/4adhszix9rn77kn8xn2m5mvbj123lv0p-iets-0.2.0",
+    "records": [
+      {
+        "case": "dynamic-fixture",
+        "client": "iets-4",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.10370491805952042,
+        "derivation": "/nix/store/9md54m6czzbd5x4ay30jpbhxln1bp8rd-drvgo-fixture.drv"
+      },
+      {
+        "case": "dynamic-fixture",
+        "client": "iets-1",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.1798817969392985,
+        "derivation": "/nix/store/9md54m6czzbd5x4ay30jpbhxln1bp8rd-drvgo-fixture.drv"
+      },
+      {
+        "case": "dynamic-fixture",
+        "client": "nix",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.4092874750494957,
+        "derivation": "/nix/store/9md54m6czzbd5x4ay30jpbhxln1bp8rd-drvgo-fixture.drv"
+      },
+      {
+        "case": "dynamic-fixture",
+        "client": "nix",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.39376824104692787,
+        "derivation": "/nix/store/9md54m6czzbd5x4ay30jpbhxln1bp8rd-drvgo-fixture.drv"
+      },
+      {
+        "case": "dynamic-fixture",
+        "client": "iets-1",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.18604874797165394,
+        "derivation": "/nix/store/9md54m6czzbd5x4ay30jpbhxln1bp8rd-drvgo-fixture.drv"
+      },
+      {
+        "case": "dynamic-fixture",
+        "client": "iets-4",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.10140154196415097,
+        "derivation": "/nix/store/9md54m6czzbd5x4ay30jpbhxln1bp8rd-drvgo-fixture.drv"
+      },
+      {
+        "case": "dynamic-fixture",
+        "client": "iets-4",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 0.106544223963283,
+        "derivation": "/nix/store/9md54m6czzbd5x4ay30jpbhxln1bp8rd-drvgo-fixture.drv"
+      },
+      {
+        "case": "dynamic-fixture",
+        "client": "iets-1",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 0.1824443630175665,
+        "derivation": "/nix/store/9md54m6czzbd5x4ay30jpbhxln1bp8rd-drvgo-fixture.drv"
+      },
+      {
+        "case": "dynamic-fixture",
+        "client": "nix",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 0.3972662310115993,
+        "derivation": "/nix/store/9md54m6czzbd5x4ay30jpbhxln1bp8rd-drvgo-fixture.drv"
+      },
+      {
+        "case": "dynamic-fixture",
+        "client": "nix",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 0.3760044809896499,
+        "derivation": "/nix/store/9md54m6czzbd5x4ay30jpbhxln1bp8rd-drvgo-fixture.drv"
+      },
+      {
+        "case": "dynamic-fixture",
+        "client": "iets-1",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 0.18147043604403734,
+        "derivation": "/nix/store/9md54m6czzbd5x4ay30jpbhxln1bp8rd-drvgo-fixture.drv"
+      },
+      {
+        "case": "dynamic-fixture",
+        "client": "iets-4",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 0.10497714998200536,
+        "derivation": "/nix/store/9md54m6czzbd5x4ay30jpbhxln1bp8rd-drvgo-fixture.drv"
+      },
+      {
+        "case": "dynamic-fixture",
+        "client": "iets-4",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 0.1058722339803353,
+        "derivation": "/nix/store/9md54m6czzbd5x4ay30jpbhxln1bp8rd-drvgo-fixture.drv"
+      },
+      {
+        "case": "dynamic-fixture",
+        "client": "iets-1",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 0.1819604269694537,
+        "derivation": "/nix/store/9md54m6czzbd5x4ay30jpbhxln1bp8rd-drvgo-fixture.drv"
+      },
+      {
+        "case": "dynamic-fixture",
+        "client": "nix",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 0.3846716450061649,
+        "derivation": "/nix/store/9md54m6czzbd5x4ay30jpbhxln1bp8rd-drvgo-fixture.drv"
+      },
+      {
+        "case": "dynamic-fixture",
+        "client": "nix",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 0.39756757591385394,
+        "derivation": "/nix/store/9md54m6czzbd5x4ay30jpbhxln1bp8rd-drvgo-fixture.drv"
+      },
+      {
+        "case": "dynamic-fixture",
+        "client": "iets-1",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 0.18444908398669213,
+        "derivation": "/nix/store/9md54m6czzbd5x4ay30jpbhxln1bp8rd-drvgo-fixture.drv"
+      },
+      {
+        "case": "dynamic-fixture",
+        "client": "iets-4",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 0.10868823400232941,
+        "derivation": "/nix/store/9md54m6czzbd5x4ay30jpbhxln1bp8rd-drvgo-fixture.drv"
+      },
+      {
+        "case": "exported-fixture",
+        "client": "iets-4",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.029416462988592684,
+        "derivation": "/nix/store/hi6zb9y7v5sqqbibxhbnpjlva4wbsaln-go-example.com-libnix-fixture.drv"
+      },
+      {
+        "case": "exported-fixture",
+        "client": "iets-1",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.018834226997569203,
+        "derivation": "/nix/store/hi6zb9y7v5sqqbibxhbnpjlva4wbsaln-go-example.com-libnix-fixture.drv"
+      },
+      {
+        "case": "exported-fixture",
+        "client": "nix",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.05806604796089232,
+        "derivation": "/nix/store/hi6zb9y7v5sqqbibxhbnpjlva4wbsaln-go-example.com-libnix-fixture.drv"
+      },
+      {
+        "case": "exported-fixture",
+        "client": "nix",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.055270723067224026,
+        "derivation": "/nix/store/hi6zb9y7v5sqqbibxhbnpjlva4wbsaln-go-example.com-libnix-fixture.drv"
+      },
+      {
+        "case": "exported-fixture",
+        "client": "iets-1",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.020587011007592082,
+        "derivation": "/nix/store/hi6zb9y7v5sqqbibxhbnpjlva4wbsaln-go-example.com-libnix-fixture.drv"
+      },
+      {
+        "case": "exported-fixture",
+        "client": "iets-4",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.028585463063791394,
+        "derivation": "/nix/store/hi6zb9y7v5sqqbibxhbnpjlva4wbsaln-go-example.com-libnix-fixture.drv"
+      },
+      {
+        "case": "exported-fixture",
+        "client": "iets-4",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 0.032763196039013565,
+        "derivation": "/nix/store/hi6zb9y7v5sqqbibxhbnpjlva4wbsaln-go-example.com-libnix-fixture.drv"
+      },
+      {
+        "case": "exported-fixture",
+        "client": "iets-1",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 0.022800547070801258,
+        "derivation": "/nix/store/hi6zb9y7v5sqqbibxhbnpjlva4wbsaln-go-example.com-libnix-fixture.drv"
+      },
+      {
+        "case": "exported-fixture",
+        "client": "nix",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 0.05804064602125436,
+        "derivation": "/nix/store/hi6zb9y7v5sqqbibxhbnpjlva4wbsaln-go-example.com-libnix-fixture.drv"
+      },
+      {
+        "case": "exported-fixture",
+        "client": "nix",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 0.0563371580792591,
+        "derivation": "/nix/store/hi6zb9y7v5sqqbibxhbnpjlva4wbsaln-go-example.com-libnix-fixture.drv"
+      },
+      {
+        "case": "exported-fixture",
+        "client": "iets-1",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 0.01965483499225229,
+        "derivation": "/nix/store/hi6zb9y7v5sqqbibxhbnpjlva4wbsaln-go-example.com-libnix-fixture.drv"
+      },
+      {
+        "case": "exported-fixture",
+        "client": "iets-4",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 0.0287938549881801,
+        "derivation": "/nix/store/hi6zb9y7v5sqqbibxhbnpjlva4wbsaln-go-example.com-libnix-fixture.drv"
+      },
+      {
+        "case": "exported-fixture",
+        "client": "iets-4",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 0.029514343943446875,
+        "derivation": "/nix/store/hi6zb9y7v5sqqbibxhbnpjlva4wbsaln-go-example.com-libnix-fixture.drv"
+      },
+      {
+        "case": "exported-fixture",
+        "client": "iets-1",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 0.01843633595854044,
+        "derivation": "/nix/store/hi6zb9y7v5sqqbibxhbnpjlva4wbsaln-go-example.com-libnix-fixture.drv"
+      },
+      {
+        "case": "exported-fixture",
+        "client": "nix",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 0.05936584901064634,
+        "derivation": "/nix/store/hi6zb9y7v5sqqbibxhbnpjlva4wbsaln-go-example.com-libnix-fixture.drv"
+      },
+      {
+        "case": "exported-fixture",
+        "client": "nix",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 0.05161024001426995,
+        "derivation": "/nix/store/hi6zb9y7v5sqqbibxhbnpjlva4wbsaln-go-example.com-libnix-fixture.drv"
+      },
+      {
+        "case": "exported-fixture",
+        "client": "iets-1",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 0.01958834403194487,
+        "derivation": "/nix/store/hi6zb9y7v5sqqbibxhbnpjlva4wbsaln-go-example.com-libnix-fixture.drv"
+      },
+      {
+        "case": "exported-fixture",
+        "client": "iets-4",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 0.027778572984971106,
+        "derivation": "/nix/store/hi6zb9y7v5sqqbibxhbnpjlva4wbsaln-go-example.com-libnix-fixture.drv"
+      },
+      {
+        "case": "exported-1061-units",
+        "client": "iets-4",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.08040449908003211,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      },
+      {
+        "case": "exported-1061-units",
+        "client": "iets-1",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.04899995506275445,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      },
+      {
+        "case": "exported-1061-units",
+        "client": "nix",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.17683104996103793,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      },
+      {
+        "case": "exported-1061-units",
+        "client": "nix",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.18755692394915968,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      },
+      {
+        "case": "exported-1061-units",
+        "client": "iets-1",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.058120319969020784,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      },
+      {
+        "case": "exported-1061-units",
+        "client": "iets-4",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.07259489595890045,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      },
+      {
+        "case": "exported-1061-units",
+        "client": "iets-4",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 0.07060627499595284,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      },
+      {
+        "case": "exported-1061-units",
+        "client": "iets-1",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 0.0765379830263555,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      },
+      {
+        "case": "exported-1061-units",
+        "client": "nix",
+        "trial": 2,
+        "warmup": false,
+        "seconds": 0.1787517030024901,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      },
+      {
+        "case": "exported-1061-units",
+        "client": "nix",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 0.17198485101107508,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      },
+      {
+        "case": "exported-1061-units",
+        "client": "iets-1",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 0.05856028897687793,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      },
+      {
+        "case": "exported-1061-units",
+        "client": "iets-4",
+        "trial": 3,
+        "warmup": false,
+        "seconds": 0.07498679496347904,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      },
+      {
+        "case": "exported-1061-units",
+        "client": "iets-4",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 0.07487165299244225,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      },
+      {
+        "case": "exported-1061-units",
+        "client": "iets-1",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 0.055533522041514516,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      },
+      {
+        "case": "exported-1061-units",
+        "client": "nix",
+        "trial": 4,
+        "warmup": false,
+        "seconds": 0.16592556901741773,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      },
+      {
+        "case": "exported-1061-units",
+        "client": "nix",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 0.17440408002585173,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      },
+      {
+        "case": "exported-1061-units",
+        "client": "iets-1",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 0.049985778983682394,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      },
+      {
+        "case": "exported-1061-units",
+        "client": "iets-4",
+        "trial": 5,
+        "warmup": false,
+        "seconds": 0.0734775080345571,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      }
+    ],
+    "medians": {
+      "dynamic-fixture": {
+        "nix": 0.39376824104692787,
+        "iets-1": 0.1824443630175665,
+        "iets-4": 0.1058722339803353
+      },
+      "exported-fixture": {
+        "nix": 0.0563371580792591,
+        "iets-1": 0.01965483499225229,
+        "iets-4": 0.0287938549881801
+      },
+      "exported-1061-units": {
+        "nix": 0.17440408002585173,
+        "iets-1": 0.058120319969020784,
+        "iets-4": 0.0734775080345571
+      }
+    }
+  },
+  "iets_validation": {
+    "iets": "/nix/store/4adhszix9rn77kn8xn2m5mvbj123lv0p-iets-0.2.0/bin/iets",
+    "version": "iets 0.2.0",
+    "nix_version": "nix (Determinate Nix 3.24.1) 2.35.3",
+    "checks": [
+      {
+        "case": "outer",
+        "derivation": "/nix/store/mw9g9snaml8v4hs9z2lkgv3wp15fnlcp-drvgo-iets-2ad382a090dd-outer.drv",
+        "output": "/nix/store/a2gf8z9y41h7jy8yqllx9vyf2qjjx5w1-drvgo-iets-2ad382a090dd-outer",
+        "command_output": "/nix/store/5216v6klz44j10gypk6hasadpxs70rxz-go-example.com-libnix-fixture",
+        "direct_output": "/nix/store/n2p0lc0d93xbfam12xi6q6dg703fby30-drvgo-iets-2ad382a090dd-outer-result"
+      },
+      {
+        "case": "nested",
+        "derivation": "/nix/store/fhcjdzcv8ikkasv0pjkwbd25hqnl01sp-drvgo-iets-2ad382a090dd-nested.drv",
+        "output": "/nix/store/4yfzq5gh6550mwcn355hbza7gbwsgpq2-drvgo-iets-2ad382a090dd-nested",
+        "command_output": "/nix/store/5216v6klz44j10gypk6hasadpxs70rxz-go-example.com-libnix-fixture",
+        "direct_output": "/nix/store/gks5h7ddcd0l6ssa910av6pyc31iykss-drvgo-iets-2ad382a090dd-nested-result"
+      }
+    ],
+    "embed_invalidation": "passed"
+  },
+  "synthetic_graph": {
+    "packages": 1000,
+    "module": "example.com/ci",
+    "go_directive": "1.25.0",
+    "package_names": "p0000 through p0999",
+    "dependencies": "For i > 0, sorted unique max(0, i-1), max(0, i-10), max(0, i-50). Each exported F() int returns 1 plus the sum of dependency F() calls. p0000.F returns 1. main imports fmt and p0999 and prints p0999.F().",
+    "total_units": 1061
+  },
+  "embedded_fixture": {
+    "module": "example.com/embedded",
+    "go_directive": "1.25.0",
+    "asset": "Python random.Random(0).randbytes(8*1024*1024), embedded as a []byte in main; prints length, first byte, last byte"
+  },
+  "validation": [
+    "go test ./...",
+    "go vet ./...",
+    "go test -race ./... in pinned nix-shell",
+    "Go 1.25.12, 1.26.5, 1.26.6 compatibility on x86_64-linux: cgo, assembly, tags/ldflags, workspace, vendor, cache invalidation, standalone, dynamic IFD-disabled, matching dynamic/standalone package outputs",
+    "67 fixture outputs rebuilt reproducibly with nix-build --check, before and after",
+    "iets PR #3: matching evaluation and build paths, direct outputOf, warm reuse, nested planning with socket adapter, embed invalidation, fallback never"
+  ],
+  "limits": [
+    "No real remote network transfer timing or cold dependency build claim.",
+    "The native toolchain is still needed by cgo and final linking.",
+    "Rebuild and ordinary Nix evaluation timings were essentially unchanged; the primary optimization is smaller transfer closures and command outputs.",
+    "iets timing samples are from an isolated evaluation run after functional validation; exclude overlapping validation timings."
+  ],
+  "export_planning": {
+    "scope": "export + evaluation only; no realization",
+    "source": "/tmp/drvgo-ci-synthetic",
+    "package": ".",
+    "tags": "",
+    "ldflags": "",
+    "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+    "binaries": {
+      "before": {
+        "path": "/tmp/drvgo-before",
+        "sha256": "2d71dddca06ec41f7d22563035afc9c1be93e381c9a8f0c072afb1805b07a889"
+      },
+      "after": {
+        "path": "/tmp/drvgo-after",
+        "sha256": "3f454562ae0aa61cc8b2879b3e85cb7a85ce2baf333136d74441a693a7dcd82e"
+      }
+    },
+    "records": [
+      {
+        "builder": "before",
+        "trial": "warmup",
+        "warmup": true,
+        "command": [
+          "/tmp/drvgo-before",
+          "export",
+          "-C",
+          "/tmp/drvgo-ci-synthetic",
+          "-out",
+          "/tmp/drvgo-ci-batched-planning/before-export",
+          "-tags",
+          "",
+          "-ldflags",
+          "",
+          "."
+        ],
+        "export": 0.49063162493985146,
+        "evaluation": 0.1773814270272851,
+        "total": 0.6680130519671366,
+        "derivation": "/nix/store/bab7klb2kpa8m810h97vjjnnc8cg57na-go-example.com-ci.drv"
+      },
+      {
+        "builder": "after",
+        "trial": "warmup",
+        "warmup": true,
+        "command": [
+          "/tmp/drvgo-after",
+          "export",
+          "-C",
+          "/tmp/drvgo-ci-synthetic",
+          "-out",
+          "/tmp/drvgo-ci-batched-planning/after-export",
+          "-tags",
+          "",
+          "-ldflags",
+          "",
+          "."
+        ],
+        "export": 0.49765673896763474,
+        "evaluation": 0.18100834696087986,
+        "total": 0.6786650859285146,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      },
+      {
+        "builder": "before",
+        "trial": 1,
+        "warmup": false,
+        "command": [
+          "/tmp/drvgo-before",
+          "export",
+          "-C",
+          "/tmp/drvgo-ci-synthetic",
+          "-out",
+          "/tmp/drvgo-ci-batched-planning/before-export",
+          "-tags",
+          "",
+          "-ldflags",
+          "",
+          "."
+        ],
+        "export": 0.5004210990155116,
+        "evaluation": 0.1694478449644521,
+        "total": 0.6698689439799637,
+        "derivation": "/nix/store/bab7klb2kpa8m810h97vjjnnc8cg57na-go-example.com-ci.drv"
+      },
+      {
+        "builder": "after",
+        "trial": 1,
+        "warmup": false,
+        "command": [
+          "/tmp/drvgo-after",
+          "export",
+          "-C",
+          "/tmp/drvgo-ci-synthetic",
+          "-out",
+          "/tmp/drvgo-ci-batched-planning/after-export",
+          "-tags",
+          "",
+          "-ldflags",
+          "",
+          "."
+        ],
+        "export": 0.49946546100545675,
+        "evaluation": 0.17282165598589927,
+        "total": 0.672287116991356,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      },
+      {
+        "builder": "after",
+        "trial": 2,
+        "warmup": false,
+        "command": [
+          "/tmp/drvgo-after",
+          "export",
+          "-C",
+          "/tmp/drvgo-ci-synthetic",
+          "-out",
+          "/tmp/drvgo-ci-batched-planning/after-export",
+          "-tags",
+          "",
+          "-ldflags",
+          "",
+          "."
+        ],
+        "export": 0.49950087699107826,
+        "evaluation": 0.1746259870706126,
+        "total": 0.6741268640616909,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      },
+      {
+        "builder": "before",
+        "trial": 2,
+        "warmup": false,
+        "command": [
+          "/tmp/drvgo-before",
+          "export",
+          "-C",
+          "/tmp/drvgo-ci-synthetic",
+          "-out",
+          "/tmp/drvgo-ci-batched-planning/before-export",
+          "-tags",
+          "",
+          "-ldflags",
+          "",
+          "."
+        ],
+        "export": 0.5178965949453413,
+        "evaluation": 0.16044244705699384,
+        "total": 0.6783390420023352,
+        "derivation": "/nix/store/bab7klb2kpa8m810h97vjjnnc8cg57na-go-example.com-ci.drv"
+      },
+      {
+        "builder": "before",
+        "trial": 3,
+        "warmup": false,
+        "command": [
+          "/tmp/drvgo-before",
+          "export",
+          "-C",
+          "/tmp/drvgo-ci-synthetic",
+          "-out",
+          "/tmp/drvgo-ci-batched-planning/before-export",
+          "-tags",
+          "",
+          "-ldflags",
+          "",
+          "."
+        ],
+        "export": 0.5126877611037344,
+        "evaluation": 0.15700501296669245,
+        "total": 0.6696927740704268,
+        "derivation": "/nix/store/bab7klb2kpa8m810h97vjjnnc8cg57na-go-example.com-ci.drv"
+      },
+      {
+        "builder": "after",
+        "trial": 3,
+        "warmup": false,
+        "command": [
+          "/tmp/drvgo-after",
+          "export",
+          "-C",
+          "/tmp/drvgo-ci-synthetic",
+          "-out",
+          "/tmp/drvgo-ci-batched-planning/after-export",
+          "-tags",
+          "",
+          "-ldflags",
+          "",
+          "."
+        ],
+        "export": 0.5037888659862801,
+        "evaluation": 0.1644918960519135,
+        "total": 0.6682807620381936,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      },
+      {
+        "builder": "after",
+        "trial": 4,
+        "warmup": false,
+        "command": [
+          "/tmp/drvgo-after",
+          "export",
+          "-C",
+          "/tmp/drvgo-ci-synthetic",
+          "-out",
+          "/tmp/drvgo-ci-batched-planning/after-export",
+          "-tags",
+          "",
+          "-ldflags",
+          "",
+          "."
+        ],
+        "export": 0.5056269849883392,
+        "evaluation": 0.18657641194295138,
+        "total": 0.6922033969312906,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      },
+      {
+        "builder": "before",
+        "trial": 4,
+        "warmup": false,
+        "command": [
+          "/tmp/drvgo-before",
+          "export",
+          "-C",
+          "/tmp/drvgo-ci-synthetic",
+          "-out",
+          "/tmp/drvgo-ci-batched-planning/before-export",
+          "-tags",
+          "",
+          "-ldflags",
+          "",
+          "."
+        ],
+        "export": 0.5189145369222388,
+        "evaluation": 0.1679350290214643,
+        "total": 0.686849565943703,
+        "derivation": "/nix/store/bab7klb2kpa8m810h97vjjnnc8cg57na-go-example.com-ci.drv"
+      },
+      {
+        "builder": "before",
+        "trial": 5,
+        "warmup": false,
+        "command": [
+          "/tmp/drvgo-before",
+          "export",
+          "-C",
+          "/tmp/drvgo-ci-synthetic",
+          "-out",
+          "/tmp/drvgo-ci-batched-planning/before-export",
+          "-tags",
+          "",
+          "-ldflags",
+          "",
+          "."
+        ],
+        "export": 0.5009391860803589,
+        "evaluation": 0.1638356439070776,
+        "total": 0.6647748299874365,
+        "derivation": "/nix/store/bab7klb2kpa8m810h97vjjnnc8cg57na-go-example.com-ci.drv"
+      },
+      {
+        "builder": "after",
+        "trial": 5,
+        "warmup": false,
+        "command": [
+          "/tmp/drvgo-after",
+          "export",
+          "-C",
+          "/tmp/drvgo-ci-synthetic",
+          "-out",
+          "/tmp/drvgo-ci-batched-planning/after-export",
+          "-tags",
+          "",
+          "-ldflags",
+          "",
+          "."
+        ],
+        "export": 0.5003008920466527,
+        "evaluation": 0.18023915600497276,
+        "total": 0.6805400480516255,
+        "derivation": "/nix/store/ijf18gm42w04d4qfhxv3adbhs850mi5d-go-example.com-ci.drv"
+      }
+    ],
+    "medians": {
+      "before": {
+        "export": 0.5126877611037344,
+        "evaluation": 0.1638356439070776,
+        "total": 0.6698689439799637
+      },
+      "after": {
+        "export": 0.5003008920466527,
+        "evaluation": 0.1746259870706126,
+        "total": 0.6741268640616909
+      }
+    }
+  }
+}

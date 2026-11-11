@@ -267,6 +267,97 @@ an embedded-file edit invalidates exactly the embedding package and command.
 The existing `export`, `build`, and `run` CLI workflows remain available for
 Nix installations without these experimental features.
 
+### CI toolchain and output sizes
+
+Pure Go and Go assembly package actions use a separate compile toolchain, without
+GCC, binutils, or their development files. cgo actions and final links retain the
+full native toolchain. Both toolchains use the same pinned Go compiler. Ordinary
+exports and dynamic builds preserve both derivation contexts and share package
+outputs. Custom toolchains without a separate `compile` toolchain retain the
+full-toolchain behavior.
+
+The dynamic planner uses explicit tools without stdenv setup. Its two forwarding
+outputs invoke `ln` directly, build locally, and skip binary-cache queries: each
+only creates a symlink. The planner and Go package outputs remain substitutable,
+and package compilation remains eligible for remote builders.
+
+Library outputs contain their `_pkg_.a` archive. Command outputs contain only
+`bin/<name>`; the main package archive is no longer copied alongside the binary.
+This avoids storing embedded command assets twice. Builders move completed files
+into their outputs instead of copying them. Debug information is preserved.
+These recipe changes cause a one-time rebuild of existing package outputs.
+
+Measured on Linux amd64 with Go 1.26.5 on November 10, 2026:
+
+| Measurement | Before | After |
+| --- | ---: | ---: |
+| Pure Go builder toolchain closure, NAR bytes | 614.4 MiB | 292.2 MiB |
+| Same closure compressed with zstd level 3 | 182.7 MiB | 81.5 MiB |
+| Command with an 8 MiB embedded asset, output NAR | 18.3 MiB | 10.3 MiB |
+| Same command, compressed cache payload | 17.4 MiB | 9.4 MiB |
+
+The compressed toolchain payload is 55% smaller. These are complete closures
+from an empty file binary cache, excluding metadata and protocol overhead;
+they are byte counts, not network transfer timings. A worker that also builds
+cgo packages or links commands still needs the native toolchain (618.0 MiB).
+The embedded-asset example uses deterministic incompressible data; savings for
+other commands depend on their assets and main package size.
+Compilation and ordinary Nix evaluation were essentially unchanged: rebuilding
+the fixture's 67 outputs with `--check` took 4.30 / 4.26 s before / after, and
+exporting plus evaluating the 1,061-unit synthetic graph took 0.670 / 0.674 s.
+These are warm measurements; `--check` has dependencies already available and
+does not model a cold store. The main gain is fewer bytes to transfer.
+
+To compare dynamic CI builds from two drvgo checkouts:
+
+```sh
+python3 scripts/benchmark-ci.py \
+  --before /path/to/baseline-drvgo --after . \
+  --source tests/fixture --runs 5
+```
+
+The benchmark warms tools and package outputs, alternates checkout order, and
+forces a fresh planner on every trial with a unique forwarding name. It measures
+outer evaluation separately from realization (planning plus forwarding), checks
+that package outputs remain identical across trials, and saves logs and timings.
+IFD stays disabled. Sources must need no downloaded modules, or supply a vendor
+tree. Cache configuration and latency affect the realization measurements.
+
+### iets dynamic-derivation compatibility
+
+Tested with [replit/iets PR #3](https://github.com/replit/iets/pull/3), commit
+`69883a64bfb0d9a95dce253dae304878e07b076e`, on x86_64-linux. Evaluation produces
+the same derivation paths as Nix. Dynamic builds, direct `outputOf` installables,
+warm reuse, and embedded-file invalidation pass with IFD and classic-command
+fallback disabled. Using iets inside the recursive planner also produces the
+same Go package output as the Nix evaluator.
+
+The nested invocation needs a socket adapter: that PR does not read `NIX_REMOTE`,
+and its classic instantiator rejects `--store` pointing at a custom Unix socket.
+[tests/iets.nix](tests/iets.nix) translates recursive Nix's Unix URL to
+`NIX_DAEMON_SOCKET_PATH`. Normal outer `iets build` usage needs no adapter.
+The production planner continues to use the pinned Nix evaluator by default.
+
+Five alternating warm evaluation trials, with iets's tracing cache disabled
+and its compiled-file cache warm, measured:
+
+| Evaluation | Determinate Nix 3.24.1 | iets, 1 worker | iets, 4 workers |
+| --- | ---: | ---: | ---: |
+| Dynamic fixture, outer evaluation | 394 ms | 182 ms | 106 ms |
+| Exported fixture, 67 units | 56 ms | 20 ms | 29 ms |
+| Synthetic exported graph, 1,061 units | 174 ms | 58 ms | 73 ms |
+
+These timings exclude planning, compilation, realization, and network transfers.
+More evaluator workers help the outer Nixpkgs expression; one worker was faster
+for the generated package graph. See the [raw measurements](benchmarks/ci-2026-11-10.json).
+To repeat the compatibility checks and outer evaluation measurements:
+
+```sh
+iets=$(nix build github:replit/iets/69883a64bfb0d9a95dce253dae304878e07b076e \
+  --no-link --print-out-paths)
+python3 tests/iets.py --iets "$iets/bin/iets" --runs 5
+```
+
 ## Planning performance and CPU budgets
 
 The exporter indexes source directories once and rewrites each command script

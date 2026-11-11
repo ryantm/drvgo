@@ -14,8 +14,9 @@ sed -e "s|@SELF@|$TMPDIR/unit|g" -e "s|@WORK@|$TMPDIR/work|g" -e "s|@CORES@|$GOM
 cd "$TMPDIR/work"
 bash -euo pipefail "$TMPDIR/replay.sh" < /dev/null
 mkdir -p "$out"
-cp "$TMPDIR/unit/_pkg_.a" "$out/_pkg_.a"
 if [ "$isBinary" = 1 ]; then
   mkdir -p "$out/bin"
-  cp "$TMPDIR/unit/exe/a.out" "$out/bin/$binaryName"
+  mv "$TMPDIR/unit/exe/a.out" "$out/bin/$binaryName"
+else
+  mv "$TMPDIR/unit/_pkg_.a" "$out/_pkg_.a"
 fi

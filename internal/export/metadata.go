@@ -13,10 +13,12 @@ func writeEvaluationMetadata(dir string, g *Graph) error {
 		ID     string `json:"id"`
 		Name   string `json:"name"`
 		Binary bool   `json:"binary"`
+		Native bool   `json:"native"`
 	}
 	var units []unit
 	for _, u := range g.Units {
-		units = append(units, unit{u.ID, u.Name, u.Binary})
+		// cgo actions invoke the native compiler; linking may use it too.
+		units = append(units, unit{u.ID, u.Name, u.Binary, u.Binary || strings.Contains(u.Script, "/cgo ")})
 	}
 	data, err := json.Marshal(struct {
 		*Graph
@@ -33,24 +35,62 @@ func writeEvaluationMetadata(dir string, g *Graph) error {
 // default export can recreate its pinned recipe. Custom toolchains must be
 // supplied explicitly if their store paths are unavailable.
 func writeResolvedToolchain(dir, tc string) error {
-	// Recursive Nix may not permit querying derivation bindings. Its caller
-	// already supplies an explicit toolchain. Never silently use another one.
-	expression := "throw " + nixString("Cannot recover selected drvgo toolchain "+tc+"; import this export with an explicit toolchain argument built by drvgo.lib.mkToolchain.") + "\n"
-	path, err := filepath.EvalSymlinks(tc)
-	if err == nil {
-		drvBytes, queryErr := run("", os.Environ(), "nix-store", "--query", "--deriver", path)
-		drv := strings.TrimSpace(string(drvBytes))
-		if queryErr == nil && strings.HasSuffix(drv, ".drv") && filepath.IsAbs(drv) {
-			output, outputErr := run("", os.Environ(), "nix-store", "--query", "--binding", "out", drv)
-			if outputErr == nil && strings.TrimSpace(string(output)) == path {
-				expression = "let path = " + nixString(path) + "; drv = " + nixString(drv) + "; in\n" +
-					"if builtins.pathExists path && builtins.pathExists drv then\n" +
-					"  builtins.appendContext path { ${drv} = { outputs = [ \"out\" ]; }; }\n" +
-					"else let fallback = import ./toolchain.nix; in\n" +
-					"  if toString fallback == path then fallback else\n" +
-					"  throw " + nixString("Selected drvgo toolchain "+path+" is unavailable; rebuild it or pass the same toolchain explicitly. Refusing to substitute the default compiler.") + "\n"
-			}
-		}
+	paths := []string{tc}
+	fallbacks := []string{"import ./toolchain.nix"}
+	if data, err := os.ReadFile(filepath.Join(tc, "nix-support", "drvgo-compile-toolchain")); err == nil {
+		paths = append(paths, strings.TrimSpace(string(data)))
+		fallbacks = append(fallbacks, "(import ./toolchain.nix).compile")
+	}
+	resolved := resolvedToolchains(paths, fallbacks)
+	expression := resolved[0]
+	if len(resolved) == 2 {
+		expression = "{ outPath = (" + expression + "); compile = (" + resolved[1] + "); }\n"
 	}
 	return os.WriteFile(filepath.Join(dir, "resolved-toolchain.nix"), []byte(expression), 0644)
+}
+
+func resolvedToolchains(toolchains, fallbacks []string) []string {
+	// Recursive Nix may not permit querying derivation bindings. Its caller
+	// already supplies an explicit toolchain. Never silently use another one.
+	expressions := make([]string, len(toolchains))
+	for i, tc := range toolchains {
+		expressions[i] = "throw " + nixString("Cannot recover selected drvgo toolchain "+tc+"; import this export with an explicit toolchain argument built by drvgo.lib.mkToolchain.") + "\n"
+	}
+	paths := make([]string, len(toolchains))
+	for i, tc := range toolchains {
+		path, err := filepath.EvalSymlinks(tc)
+		if err != nil {
+			return expressions
+		}
+		paths[i] = path
+	}
+	// Query both outputs together: extra toolchains must not add a pair of Nix
+	// process startups to every export. nix-store emits one line per argument.
+	data, err := run("", os.Environ(), "nix-store", append([]string{"--query", "--deriver"}, paths...)...)
+	drvs := strings.Fields(string(data))
+	if err != nil || len(drvs) != len(paths) {
+		return expressions
+	}
+	for _, drv := range drvs {
+		if !filepath.IsAbs(drv) || !strings.HasSuffix(drv, ".drv") {
+			return expressions
+		}
+	}
+	data, err = run("", os.Environ(), "nix-store", append([]string{"--query", "--binding", "out"}, drvs...)...)
+	outputs := strings.Fields(string(data))
+	if err != nil || len(outputs) != len(paths) {
+		return expressions
+	}
+	for i, path := range paths {
+		if outputs[i] != path {
+			continue
+		}
+		expressions[i] = "let path = " + nixString(path) + "; drv = " + nixString(drvs[i]) + "; in\n" +
+			"if builtins.pathExists path && builtins.pathExists drv then\n" +
+			"  builtins.appendContext path { ${drv} = { outputs = [ \"out\" ]; }; }\n" +
+			"else let fallback = " + fallbacks[i] + "; in\n" +
+			"  if toString fallback == path then fallback else\n" +
+			"  throw " + nixString("Selected drvgo toolchain "+path+" is unavailable; rebuild it or pass the same toolchain explicitly. Refusing to substitute the default compiler.") + "\n"
+	}
+	return expressions
 }

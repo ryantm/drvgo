@@ -53,7 +53,7 @@ def case(name, source, expected, tags='', ldflags=''):
     assert actual == normal, (name,actual,normal)
     paths = json.loads(run(['nix-instantiate','--eval','--strict','--json','--expr',
         'builtins.mapAttrs (_: d: d.drvPath) (import '+str(export)+' {}).units']).stdout)
-    report['cases'].append({'name':name,'output':actual,'units':len(graph['units']),
+    report['cases'].append({'name':name,'output':actual,'units':len(graph['units']),'store_path':result,
         'package_derivations':{u['name']:paths[u['id']] for u in graph['units']}})
     (out/'results.json').write_text(json.dumps(report,indent=2)+'\n')
     print(version, name, 'PASS',len(graph['units']),'units',flush=True)
@@ -103,6 +103,7 @@ if a.flake_toolchain:
     executable = Path(result)/'bin/libnix-fixture'
     assert run([executable]).stdout.decode() == 'hello embedded world\nstable\nnested asset\n01 02 ff\nhidden asset\n'
     assert version in run([tc/'bin/go','version',executable],go=True).stdout.decode()
+    assert Path(result).resolve() == Path(report['cases'][0]['store_path']), 'dynamic and standalone builds must share package outputs'
     report['dynamic_ifd_disabled']='passed'
     print(version,'dynamic/IFD-disabled PASS',flush=True)
 report['incremental_cache_and_embeds']='passed'

@@ -49,3 +49,32 @@ func TestBuilderCoreBudget(t *testing.T) {
 		})
 	}
 }
+
+func TestBuilderPublishesOnlyExecutable(t *testing.T) {
+	root := t.TempDir()
+	script := filepath.Join(root, "script")
+	// The command archive can contain the same large embedded assets as the
+	// executable. Nothing imports a main package, so keep only its executable.
+	if err := os.WriteFile(script, []byte(`
+mkdir -p @SELF@/exe
+echo archive > @SELF@/_pkg_.a
+echo executable > @SELF@/exe/a.out
+chmod +x @SELF@/exe/a.out
+`), 0644); err != nil {
+		t.Fatal(err)
+	}
+	builder, _ := templates.ReadFile("templates/builder.sh")
+	out := filepath.Join(root, "out")
+	c := exec.Command("bash", "-c", string(builder))
+	c.Env = append(os.Environ(), "TMPDIR="+root, "out="+out, "scriptPath="+script, "isBinary=1", "binaryName=command", "NIX_BUILD_CORES=1")
+	if log, err := c.CombinedOutput(); err != nil {
+		t.Fatalf("builder: %v %s", err, log)
+	}
+	if _, err := os.Stat(filepath.Join(out, "_pkg_.a")); !os.IsNotExist(err) {
+		t.Fatalf("command archive was published: %v", err)
+	}
+	info, err := os.Stat(filepath.Join(out, "bin", "command"))
+	if err != nil || info.Mode()&0111 == 0 {
+		t.Fatalf("executable missing or not executable: %v", err)
+	}
+}

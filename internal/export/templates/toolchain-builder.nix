@@ -6,8 +6,18 @@ let
     go build -trimpath -o $out/bin/libnix-buildid cmd/buildid
     go build -trimpath -o $out/bin/libnix-pack cmd/pack
   '';
+  # Most package actions only invoke Go tools. Keep GCC and its development
+  # closure off those builders, particularly when copying inputs remotely.
+  compile = pkgs.symlinkJoin {
+    name = "go-libnix-compile-toolchain";
+    paths = [ helpers go pkgs.bash pkgs.coreutils pkgs.gnused ];
+  };
 in pkgs.symlinkJoin {
   name = "go-libnix-toolchain";
-  passthru = { inherit pkgs go; };
-  paths = [ helpers go pkgs.stdenv.cc pkgs.bash pkgs.coreutils pkgs.findutils pkgs.gnused pkgs.pkg-config ];
+  passthru = { inherit pkgs go compile; };
+  paths = [ compile pkgs.stdenv.cc pkgs.findutils pkgs.pkg-config ];
+  postBuild = ''
+    mkdir -p $out/nix-support
+    echo ${compile} > $out/nix-support/drvgo-compile-toolchain
+  '';
 }

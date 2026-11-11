@@ -10,12 +10,14 @@ let
   scripts = import ./scripts.nix units sources;
   units = builtins.listToAttrs (map (u: {
     name = u.id;
-    value = builtins.derivation {
+    value = let
+      tc = if u.native then toolchain else toolchain.compile or toolchain;
+    in builtins.derivation {
       name = "go-" + builtins.replaceStrings [ "/" "@" "+" ] [ "-" "-" "-" ] u.name;
       system = graph.system;
-      builder = "${toolchain}/bin/bash";
+      builder = "${tc}/bin/bash";
       args = [ "-e" ./builder.sh ];
-      PATH = "${toolchain}/bin";
+      PATH = "${tc}/bin";
       GOROOT = graph.goroot;
       GOOS = graph.goos;
       GOARCH = graph.goarch;
@@ -29,7 +31,7 @@ let
       script = scripts.${u.id};
       # Keep native tools and Go's real GOROOT in the input closure even though
       # the dry-run script refers to their absolute paths through JSON strings.
-      toolchainInput = toolchain;
+      toolchainInput = tc;
     };
   }) graph.units);
 in {

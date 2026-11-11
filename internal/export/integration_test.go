@@ -87,7 +87,7 @@ func TestEmbeddedAssetsAndCacheIsolation(t *testing.T) {
 	if !strings.Contains(string(resolved), "builtins.appendContext") {
 		t.Fatal("resolved toolchain fast path was not generated")
 	}
-	fallback := strings.Replace(string(resolved), "if builtins.pathExists path && builtins.pathExists drv then", "if false then", 1)
+	fallback := strings.ReplaceAll(string(resolved), "if builtins.pathExists path && builtins.pathExists drv then", "if false then")
 	if err = os.WriteFile(resolvedFile, []byte(fallback), 0644); err != nil {
 		t.Fatal(err)
 	}
@@ -96,6 +96,31 @@ func TestEmbeddedAssetsAndCacheIsolation(t *testing.T) {
 		t.Fatal(err)
 	}
 	selectedTC := os.Getenv("DRVGO_TEST_TOOLCHAIN")
+	if selectedTC == "" {
+		selectedTC = defaultTC
+	}
+	compilePath, err := os.ReadFile(filepath.Join(selectedTC, "nix-support", "drvgo-compile-toolchain"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	data, err := os.ReadFile(filepath.Join(out, "graph.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var graph Graph
+	if err = json.Unmarshal(data, &graph); err != nil {
+		t.Fatal(err)
+	}
+	for _, u := range graph.Units {
+		want := strings.TrimSpace(string(compilePath))
+		if u.Binary || strings.Contains(u.Name, "cgo") {
+			want = selectedTC
+		}
+		b, err := exec.Command("nix-store", "--query", "--binding", "toolchainInput", before[u.ID]).CombinedOutput()
+		if err != nil || strings.TrimSpace(string(b)) != want {
+			t.Fatalf("%s toolchain: got %s, want %s (%v)", u.Name, b, want, err)
+		}
+	}
 	if selectedTC == "" || selectedTC == defaultTC {
 		for id, d := range derivations() {
 			if before[id] != d {
