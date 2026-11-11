@@ -8,6 +8,7 @@
 , allowPlannerSubstitutes ? false, allowEmptyTests ? false
 , runtimeInputs ? []
 , moduleCache ? null
+, prepareModules ? true
 }:
 let
   pkgs = toolchain.pkgs;
@@ -18,6 +19,9 @@ let
     inherit src vendorHash;
     proxyVendor = true;
   }).goModules;
+  preparedModules = if moduleCache != null then moduleCache
+    else if !prepareModules || modules == null then null
+    else import ./module-cache.nix { inherit pkgs drvgo modules; go = toolchain.go; };
   # Only the recipe is needed during planning. Restore its output context in
   # the nested evaluator, so generated packages keep the same dependencies as
   # ordinary exports without making the planner fetch unused worker tools.
@@ -93,7 +97,7 @@ let
       ${lib.optionalString allowEmptyTests "-allow-empty-tests"} \
       ${lib.optionalString (cgoEnabled != null) "-cgo ${if cgoEnabled then "1" else "0"}"} \
       -toolchain ${planningToolchain} \
-      ${if moduleCache != null then "-module-cache ${lib.escapeShellArg (toString moduleCache)}"
+      ${if preparedModules != null then "-module-cache ${lib.escapeShellArg (toString preparedModules)}"
         else "-module-proxy ${lib.escapeShellArg (if modules == null then "off" else "file://${modules}")}"} \
       -tags ${lib.escapeShellArg tags} -ldflags ${lib.escapeShellArg ldflags} \
       ${lib.escapeShellArg package}
@@ -115,4 +119,5 @@ let
     builder = "${pkgs.coreutils}/bin/ln";
     args = [ "-s" (builtins.outputOf planner.outPath "out") (builtins.placeholder "out") ];
   };
-in result // { inherit planner modules; passthru = { inherit planner modules; }; }
+in result // { inherit planner modules; moduleCache = preparedModules;
+  passthru = { inherit planner modules; moduleCache = preparedModules; }; }

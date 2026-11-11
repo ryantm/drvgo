@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 
 	exporter "github.com/ryantm/drvgo/internal/export"
+	"github.com/ryantm/drvgo/internal/modcache"
 	"github.com/ryantm/drvgo/internal/storecopy"
 )
 
@@ -18,6 +19,9 @@ func main() {
 	}
 }
 func run(args []string) error {
+	if len(args) == 4 && args[0] == "internal-prepare-module-cache" {
+		return modcache.Prepare(args[1], args[2], args[3])
+	}
 	// Internal planner operation for stores not readable from the sandbox.
 	if len(args) == 3 && args[0] == "internal-copy-derivation" {
 		return storecopy.Copy(os.Getenv("NIX_REMOTE"), args[1], args[2])

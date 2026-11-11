@@ -9,6 +9,7 @@ from pathlib import Path
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -140,6 +141,10 @@ p=subprocess.run([str(a.integration_test.resolve()),'-test.run='+integration_pat
 (out/'integration.log').write_bytes(p.stdout)
 if p.returncode: raise RuntimeError(p.stdout.decode())
 if a.flake_toolchain:
+    run([sys.executable, repo/'tests/module-cache.py', '--toolchain', tc, '--drvgo', cli,
+         '--flake-toolchain', a.flake_toolchain, '--out', out/'module-cache'])
+    report['module_cache'] = json.loads((out/'module-cache/results.json').read_text())
+    print(version, 'module-cache/offline/cgo/dynamic/reuse/checksum PASS', flush=True)
     system = run(['nix','eval','--impure','--raw','--expr','builtins.currentSystem']).stdout.decode()
     result = run(['nix-build',repo/'tests/dynamic-compatibility.nix','--argstr','system',system,
         '--argstr','toolchainAttr',a.flake_toolchain,'--option','allow-import-from-derivation','false',

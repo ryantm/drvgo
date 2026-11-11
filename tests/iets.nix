@@ -3,6 +3,7 @@
 { iets, src ? ./fixture, name ? "drvgo-iets-fixture", nested ? false
 , cgoEnabled ? null, test ? false, allowEmptyTests ? false, tags ? ""
 , runtimeInputs ? [], ldflags ? ""
+, moduleCache ? null
 }:
 let
   tc = import ../internal/export/templates/toolchain.nix;
@@ -26,4 +27,5 @@ let
   toolchain = if nested then tc // { pkgs = pkgs // { nix = commands; }; } else tc;
 in (import ../nix/dynamic.nix { inherit toolchain; }) {
   inherit src name cgoEnabled test allowEmptyTests tags runtimeInputs ldflags;
+  inherit moduleCache;
 }

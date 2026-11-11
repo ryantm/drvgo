@@ -330,6 +330,36 @@ an embedded-file edit invalidates exactly the embedding package and command.
 The existing `export`, `build`, and `run` CLI workflows remain available for
 Nix installations without these experimental features.
 
+With a non-null `vendorHash`, dynamic builds prepare an immutable module cache
+once per fixed module proxy. The selected Go SDK validates and extracts the
+archives; the cache keeps checksum metadata and removes the duplicate ZIPs.
+Planning then reads dependencies offline without extracting them again after
+each source edit. The cache is content addressed, so equivalent preparation
+recipes share an output. It has no dependency on the SDK or original proxy at
+runtime, and compiled packages retain only their selected source snapshots.
+Stdlib-only and vendored builds with `vendorHash = null` need no cache.
+
+The result's `moduleCache` attribute exposes this separate output for binary-cache
+publication or for sharing with ordinary exports:
+
+```sh
+cache=$(nix build .#my-package.moduleCache --no-link --print-out-paths)
+drvgo export -C /path/to/project -toolchain "$tc" -module-cache "$cache" .
+```
+
+An explicit `moduleCache` argument accepts an already prepared cache, including
+when `vendorHash = null`. The CLI's `-module-cache` also forces offline discovery
+and takes precedence over `-module-proxy`. Share the same cache and toolchain
+between standalone and dynamic planning to keep external cgo include paths
+stable. Relative include paths in the application's own source can still give
+different automatic build IDs when that source moves.
+
+Prepared modules compress better than an archive of module ZIPs but require more
+disk space after extraction. Preparation also adds work on the first build when
+its output is absent from local and remote caches. Set `prepareModules = false`
+to keep extracting from the fixed proxy during each plan instead. An explicit
+`moduleCache` takes precedence over this setting.
+
 ### CI toolchain and output sizes
 
 The [November 11 measurements](benchmarks/ci-2026-11-11.md) show a 33.7% faster
