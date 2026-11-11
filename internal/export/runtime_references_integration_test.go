@@ -30,7 +30,7 @@ func TestRuntimeStoreReferences(t *testing.T) {
 		t.Run(fmt.Sprintf("padding-%d", padding), func(t *testing.T) {
 			root := writeTestProject(t, map[string]string{
 				"go.mod": "module example.com/runtime-reference\ngo 1.25\n",
-				"main.go": fmt.Sprintf("package main\nimport(\"fmt\";\"os\")\nfunc main(){ b,e:=os.ReadFile(%q);if e!=nil{panic(e)};fmt.Print(string(b)) }\n// /nix/store/00000000000000000000000000000000-missing-example\n// %s\n",
+				"main.go": fmt.Sprintf("package main\nimport(\"fmt\";\"os\")\nfunc main(){ b,e:=os.ReadFile(%q);if e!=nil{panic(e)};fmt.Print(string(b)) }\n// /nix/store/00000000000000000000000000000000-missing-example\n// /nix/store/00000000000000000000000000000000-.\n// /nix/store/00000000000000000000000000000000-..\n// %s\n",
 					dataPath, strings.Repeat("x", padding)),
 			})
 			out := filepath.Join(t.TempDir(), "export")
