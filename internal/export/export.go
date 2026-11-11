@@ -21,12 +21,12 @@ import (
 var templates embed.FS
 
 type Options struct {
-	Dir, Out, Package, Tags, LDFlags, Toolchain, ModuleProxy string
-	ExperimentalGo                                           bool
-	Test                                                     bool
-	AllowEmptyTests                                          bool
-	Race                                                     bool
-	CGOEnabled                                               *bool
+	Dir, Out, Package, Tags, LDFlags, Toolchain, ModuleProxy, ModuleCache string
+	ExperimentalGo                                                        bool
+	Test                                                                  bool
+	AllowEmptyTests                                                       bool
+	Race                                                                  bool
+	CGOEnabled                                                            *bool
 }
 type Module struct{ Dir string }
 
@@ -156,6 +156,17 @@ func Generate(o Options) (*Graph, error) {
 	}
 	if o.ModuleProxy != "" {
 		env = append(env, "GOPROXY="+o.ModuleProxy, "GOSUMDB=off", "GOPATH="+filepath.Join(os.TempDir(), "drvgo-go"))
+	}
+	if o.ModuleCache != "" {
+		cache, err := filepath.Abs(o.ModuleCache)
+		if err != nil {
+			return nil, err
+		}
+		cache, err = filepath.EvalSymlinks(cache)
+		if err != nil {
+			return nil, fmt.Errorf("module cache: %w", err)
+		}
+		env = append(env, "GOMODCACHE="+cache, "GOPROXY=off", "GOSUMDB=off", "GOPATH="+filepath.Join(os.TempDir(), "drvgo-go"))
 	}
 	goBin := tc + "/bin/go"
 	eb, err := run(dir, env, goBin, "env", "-json", "GOROOT", "GOOS", "GOARCH", "GOVERSION")

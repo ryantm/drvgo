@@ -7,6 +7,7 @@
 , experimentalGo ? false, test ? false, race ? false, cgoEnabled ? null
 , allowPlannerSubstitutes ? false, allowEmptyTests ? false
 , runtimeInputs ? []
+, moduleCache ? null
 }:
 let
   pkgs = toolchain.pkgs;
@@ -92,7 +93,8 @@ let
       ${lib.optionalString allowEmptyTests "-allow-empty-tests"} \
       ${lib.optionalString (cgoEnabled != null) "-cgo ${if cgoEnabled then "1" else "0"}"} \
       -toolchain ${planningToolchain} \
-      -module-proxy ${lib.escapeShellArg (if modules == null then "off" else "file://${modules}")} \
+      ${if moduleCache != null then "-module-cache ${lib.escapeShellArg (toString moduleCache)}"
+        else "-module-proxy ${lib.escapeShellArg (if modules == null then "off" else "file://${modules}")}"} \
       -tags ${lib.escapeShellArg tags} -ldflags ${lib.escapeShellArg ldflags} \
       ${lib.escapeShellArg package}
     cp "$expressionPath" "$TMPDIR/build.nix"

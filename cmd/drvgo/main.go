@@ -40,6 +40,7 @@ func run(args []string) error {
 	race := f.Bool("race", false, "enable Go's race detector")
 	cgo := f.String("cgo", "", "override cgo: 0 or 1")
 	moduleProxy := f.String("module-proxy", "", "explicit module proxy (off or file:// path for offline planning)")
+	moduleCache := f.String("module-cache", "", "prepared module cache for offline planning")
 	tags := f.String("tags", "", "Go build tags")
 	ldflags := f.String("ldflags", "", "Go linker flags")
 	if err := f.Parse(args[1:]); err != nil {
@@ -73,7 +74,7 @@ func run(args []string) error {
 		value := *cgo == "1"
 		cgoEnabled = &value
 	}
-	graph, err := exporter.Generate(exporter.Options{Dir: abs, Out: exportDir, Package: pkg, Tags: *tags, LDFlags: *ldflags, Toolchain: *toolchain, ModuleProxy: *moduleProxy, ExperimentalGo: *experimentalGo, Test: *test, AllowEmptyTests: *allowEmptyTests, Race: *race, CGOEnabled: cgoEnabled})
+	graph, err := exporter.Generate(exporter.Options{Dir: abs, Out: exportDir, Package: pkg, Tags: *tags, LDFlags: *ldflags, Toolchain: *toolchain, ModuleProxy: *moduleProxy, ModuleCache: *moduleCache, ExperimentalGo: *experimentalGo, Test: *test, AllowEmptyTests: *allowEmptyTests, Race: *race, CGOEnabled: cgoEnabled})
 	if err != nil {
 		return err
 	}
