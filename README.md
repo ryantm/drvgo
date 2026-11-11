@@ -361,6 +361,11 @@ Avoiding unnecessary helper compilation reduced fresh dynamic builds of an
 optional no-test package from 3.29 to 0.62 seconds and tagged tests from 3.79 to
 1.14 seconds, with tools and package outputs cached and remote queries disabled.
 
+The [fourth round](benchmarks/ci-round4-2026-11-11.md) integrates Go's archive
+tool into the native worker, reducing the compressed compile-toolchain closure
+another 7.3%, from 11.84 to 10.98 MiB. Archive replay and helper builds are faster;
+the full 62-package fixture rebuild remains essentially unchanged.
+
 The runner performs file operations directly and calls that Go release's build-ID
 and archive implementations in process, including Mach-O signing support.
 Archive handling uses the selected SDK's `cmd/pack` source with a small entry-point
