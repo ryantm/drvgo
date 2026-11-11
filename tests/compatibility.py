@@ -127,7 +127,7 @@ if report['platform'] == ['darwin', 'arm64']:
     write(framework/'main.go','package main\n/*\n#cgo LDFLAGS: -framework CoreFoundation\n#include <CoreFoundation/CoreFoundation.h>\nstatic int answer(void) { return (int)CFStringGetLength(CFSTR("hello")); }\n*/\nimport "C"\nimport "fmt"\nfunc main(){fmt.Println(C.answer())}\n')
     case('darwin-framework',framework,'5\n')
 checkenv=dict(os.environ,DRVGO_TEST_TOOLCHAIN=str(tc))
-p=subprocess.run([str(a.integration_test.resolve()),'-test.run=^(TestEmbeddedAssetsAndCacheIsolation|TestTestBinary.*)$','-test.v'],cwd=repo/'internal/export',env=checkenv,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+p=subprocess.run([str(a.integration_test.resolve()),'-test.run=^(TestEmbeddedAssetsAndCacheIsolation|TestNestedCommandWithoutOriginalSource|TestTestBinary.*)$','-test.v'],cwd=repo/'internal/export',env=checkenv,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
 (out/'integration.log').write_bytes(p.stdout)
 if p.returncode: raise RuntimeError(p.stdout.decode())
 if a.flake_toolchain:

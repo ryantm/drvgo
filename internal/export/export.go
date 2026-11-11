@@ -292,7 +292,12 @@ func Generate(o Options) (*Graph, error) {
 			u.Script = strings.ReplaceAll(u.Script, "cd "+dir+"\n", "cd @WORK@\n")
 		}
 		u.Script, u.Sources = paths.rewrite(u.Script)
-		u.Script = toolPaths.Replace(u.Script)
+		// A caller with no selected package files has no snapshot. cmd/go
+		// still returns there before absolute-input compile/link commands.
+		// Real package directories (including native inputs) are rewritten
+		// to source tokens above and must retain their working directory.
+		u.Script = strings.ReplaceAll(u.Script, "cd "+dir+"\n", "cd @WORK@\n")
+u.Script = toolPaths.Replace(u.Script)
 		u.Script = normalizeDirectories(u.Script)
 		if u.Binary {
 			if root != "" {
