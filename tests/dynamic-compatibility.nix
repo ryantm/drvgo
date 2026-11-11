@@ -1,11 +1,12 @@
 { system ? builtins.currentSystem, toolchainAttr ? "toolchain-go1_26"
 , src ? ./fixture, test ? false, race ? false, cgoEnabled ? null
+, allowPlannerSubstitutes ? false
 }:
 let
   drvgo = builtins.getFlake (toString ../.);
   toolchain = drvgo.packages.${system}.${toolchainAttr};
 in drvgo.lib.mkGoPackage {
-  inherit system src test race cgoEnabled;
+  inherit system src test race cgoEnabled allowPlannerSubstitutes;
   go = toolchain.go;
   name = "drvgo-compatibility-fixture";
 }

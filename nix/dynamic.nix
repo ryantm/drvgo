@@ -5,6 +5,7 @@
 }:
 { src, package ? ".", vendorHash ? null, tags ? "", ldflags ? "", name ? "drvgo"
 , experimentalGo ? false, test ? false, race ? false, cgoEnabled ? null
+, allowPlannerSubstitutes ? false
 }:
 let
   pkgs = toolchain.pkgs;
@@ -39,7 +40,7 @@ let
     preferLocalBuild = true;
     # A planner cache hit would copy its generated derivation/source closure.
     # Replanning is cheap; spend cache lookups on reusable package outputs.
-    allowSubstitutes = false;
+    allowSubstitutes = allowPlannerSubstitutes;
     __contentAddressed = true;
     outputHashMode = "text";
     outputHashAlgo = "sha256";

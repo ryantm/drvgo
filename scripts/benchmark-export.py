@@ -19,6 +19,7 @@ def main():
     parser.add_argument("--package", default=".")
     parser.add_argument("--tags", default="")
     parser.add_argument("--ldflags", default="")
+    parser.add_argument("--module-proxy", help="use the same offline module proxy for both revisions")
     parser.add_argument("--runs", type=int, default=3)
     parser.add_argument("--out", type=Path)
     args = parser.parse_args()
@@ -38,6 +39,7 @@ def main():
         "package": args.package,
         "tags": args.tags,
         "ldflags": args.ldflags,
+        "module_proxy": args.module_proxy,
         "nix": subprocess.check_output(["nix", "--version"], text=True).strip(),
         "binaries": {label: {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
                      for label, path in binaries.items()},
@@ -52,7 +54,10 @@ def main():
         export = out / (label + "-export")
         command = [str(binaries[label]), "export", "-C", str(source),
                    "-out", str(export), "-tags", args.tags,
-                   "-ldflags", args.ldflags, args.package]
+                   "-ldflags", args.ldflags]
+        if args.module_proxy is not None:
+            command.extend(["-module-proxy", args.module_proxy])
+        command.append(args.package)
         with (out / f"{label}-{trial}.log").open("w") as log:
             start = time.monotonic()
             subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, check=True)
