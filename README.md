@@ -358,8 +358,8 @@ the original worker dependencies. All bundles use the same pinned Go release.
 In the [third CI optimization round](benchmarks/ci-round3-2026-11-11.md), this
 reduced the pure-Go planner's compressed input closure from 235 to 118 MiB.
 Avoiding unnecessary helper compilation reduced fresh dynamic builds of an
-optional no-test package from 3.29 to 0.61 seconds and tagged tests from 3.77 to
-1.13 seconds, with tools and package outputs cached and remote queries disabled.
+optional no-test package from 3.29 to 0.62 seconds and tagged tests from 3.79 to
+1.14 seconds, with tools and package outputs cached and remote queries disabled.
 
 The runner performs file operations directly and calls that Go release's build-ID
 library in process, including its Mach-O signing support. Compiler, assembler,
