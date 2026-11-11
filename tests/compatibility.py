@@ -39,11 +39,12 @@ def write(path, content):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content)
 
-integration_pattern = '^(TestEmbeddedAssetsAndCacheIsolation|TestNestedCommandWithoutOriginalSource|TestCustomBuildID|TestTestBinary.*)$'
+integration_pattern = '^(TestEmbeddedAssetsAndCacheIsolation|TestNestedCommandWithoutOriginalSource|TestCustomBuildID|TestEmptyTest.*|TestTestBinary.*)$'
 integration_tests = run([a.integration_test.resolve(), '-test.list='+integration_pattern]).stdout.decode().splitlines()
 required_tests = {'TestEmbeddedAssetsAndCacheIsolation', 'TestTestBinaryInternalExternalAndFailure',
                   'TestTestBinaryMainPackage', 'TestTestBinaryRaceAndCGO', 'TestTestBinaryRejectsPackageWithoutTests',
-                  'TestNestedCommandWithoutOriginalSource', 'TestCustomBuildID'}
+                  'TestNestedCommandWithoutOriginalSource', 'TestCustomBuildID',
+                  'TestEmptyTestSelection', 'TestEmptyTestResult', 'TestEmptyTestsRequireTestMode'}
 if not required_tests.issubset(integration_tests):
     raise RuntimeError('Integration binary lacks required tests; compile it with go test -c -tags integration ./internal/export')
 
@@ -180,6 +181,16 @@ if a.flake_toolchain:
         assert 'PASS: TestValue' in output, output
         report.setdefault('dynamic_tests',[]).append({'name':name,'store_path':standalone,'cgo':cgo,'race':race})
         print(version,name,'dynamic/standalone/IFD-disabled PASS',flush=True)
+    empty = out/'empty-tests'
+    write(empty/'go.mod','module example.com/emptytests\ngo 1.25\n')
+    write(empty/'sample.go','package sample\n')
+    dynamic = run(['nix-build',repo/'tests/dynamic-compatibility.nix','--argstr','system',system,
+        '--argstr','toolchainAttr',a.flake_toolchain,'--arg','src',f'builtins.path {{ path = {json.dumps(str(empty))}; name = "source"; }}',
+        '--arg','test','true','--arg','allowEmptyTests','true',
+        '--option','allow-import-from-derivation','false','--max-jobs','4','--cores','2','--no-out-link']).stdout.decode().strip()
+    assert json.loads((Path(dynamic)/'nix-support/no-tests').read_text()) == {'version':1,'status':'no-tests'}
+    assert not (Path(dynamic)/'bin').exists()
+    report['dynamic_empty_tests']='passed'
 report['incremental_cache_and_embeds']='passed'
 report['test_binaries_and_race_detection']='passed'
 (out/'results.json').write_text(json.dumps(report,indent=2)+'\n')
