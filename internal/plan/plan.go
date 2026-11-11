@@ -15,6 +15,7 @@ type Unit struct {
 	Script  string   `json:"script"`
 	Deps    []string `json:"deps"`
 	Sources []string `json:"sources"`
+StoreReferences []string `json:"storeReferences,omitempty"`
 	Binary  bool     `json:"binary"`
 }
 

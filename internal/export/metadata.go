@@ -14,12 +14,13 @@ func writeEvaluationMetadata(dir string, g *Graph) error {
 		Name   string `json:"name"`
 		Binary bool   `json:"binary"`
 		Native bool   `json:"native"`
+StoreReferences []string `json:"storeReferences,omitempty"`
 	}
 	var units []unit
 	sourceHashes := make(map[string]string)
 	for _, u := range g.Units {
 		// cgo actions invoke the native compiler; linking may use it too.
-		units = append(units, unit{u.ID, u.Name, u.Binary, (u.Binary && g.NativeLink) || strings.Contains(u.Script, "/cgo ")})
+units = append(units, unit{u.ID, u.Name, u.Binary, (u.Binary && g.NativeLink) || strings.Contains(u.Script, "/cgo "), u.StoreReferences})
 		for _, id := range u.Sources {
 			sourceHashes[id] = g.SourceHashes[id]
 		}
