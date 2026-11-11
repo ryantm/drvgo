@@ -3,7 +3,9 @@
 { toolchain ? import ../internal/export/templates/toolchain.nix
 , drvgo ? import ./package.nix { pkgs = toolchain.pkgs; }
 }:
-{ src, package ? ".", vendorHash ? null, tags ? "", ldflags ? "", name ? "drvgo", experimentalGo ? false, test ? false, race ? false, cgoEnabled ? null }:
+{ src, package ? ".", vendorHash ? null, tags ? "", ldflags ? "", name ? "drvgo"
+, experimentalGo ? false, test ? false, race ? false, cgoEnabled ? null
+}:
 let
   pkgs = toolchain.pkgs;
   inherit (pkgs) lib;

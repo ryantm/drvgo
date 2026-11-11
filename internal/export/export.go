@@ -90,6 +90,9 @@ func controlledEnv(tc string) []string {
 var safePath = regexp.MustCompile(`^[a-zA-Z0-9/._@+!,=:~-]+$`)
 
 func Generate(o Options) (*Graph, error) {
+	if o.Race && o.CGOEnabled != nil && !*o.CGOEnabled {
+		return nil, fmt.Errorf("-race requires cgo; remove -cgo 0 or use -cgo 1")
+	}
 	dir, err := filepath.Abs(o.Dir)
 	if err != nil {
 		return nil, err
@@ -184,8 +187,11 @@ func Generate(o Options) (*Graph, error) {
 			return nil, fmt.Errorf("%s requires unsupported SWIG or Fortran tools", p.ImportPath)
 		}
 		packages = append(packages, p)
-		if !p.DepOnly && (!o.Test || strings.HasSuffix(p.ImportPath, ".test")) {
+		if !p.DepOnly && (!o.Test || isTestMain(p)) {
 			if target != nil {
+				if o.Test {
+					return nil, fmt.Errorf("select one package with tests, not multiple packages")
+				}
 				return nil, fmt.Errorf("select one command package, not multiple packages")
 			}
 			pp := p
@@ -193,6 +199,9 @@ func Generate(o Options) (*Graph, error) {
 		}
 	}
 	if target == nil || target.Name != "main" {
+		if o.Test {
+			return nil, fmt.Errorf("select one package with tests; no generated test main was found")
+		}
 		return nil, fmt.Errorf("select one main package")
 	}
 	if o.Test {
@@ -238,9 +247,13 @@ func Generate(o Options) (*Graph, error) {
 		if o.Test && u.Binary {
 			u.Script = "mkdir -p @SELF@/exe\n" + u.Script
 		}
-		// No package compilation needs the caller's working directory: source
-		// arguments are absolute. cgo/assembly have explicit package-directory cds.
-		u.Script = strings.ReplaceAll(u.Script, "cd "+dir+"\n", "cd @WORK@\n")
+		// Pure-Go compiler sources are absolute. Native tools still use
+		// relative inputs, including when their package is the project root.
+		if strings.Contains(u.Script, "/cgo ") || strings.Contains(u.Script, "/asm ") {
+			u.Script = strings.ReplaceAll(u.Script, "cd .\n", "cd "+dir+"\n")
+		} else {
+			u.Script = strings.ReplaceAll(u.Script, "cd "+dir+"\n", "cd @WORK@\n")
+		}
 		u.Script, u.Sources = paths.rewrite(u.Script)
 		u.Script = normalizeDirectories(u.Script)
 		if u.Binary {

@@ -7,6 +7,13 @@ import (
 	"strings"
 )
 
+// A package's import path may itself end in .test, including a main package.
+// cmd/go distinguishes its synthetic harness with an absolute generated source.
+func isTestMain(p Package) bool {
+	return p.Name == "main" && strings.HasSuffix(p.ImportPath, ".test") &&
+		len(p.GoFiles) == 1 && filepath.IsAbs(p.GoFiles[0])
+}
+
 // go list -test writes cmd/go's generated test main to its cache. The dry run
 // references that same source as $WORK/bNNN/_testmain.go without emitting it.
 // Snapshot the generated source; never generate a substitute test harness.
@@ -38,6 +45,9 @@ func prepareTestSources(packages []Package, target Package, trace []byte) ([]Pac
 	byDir := map[string]int{}
 	for _, p := range packages {
 		if p.ImportPath == target.ImportPath {
+			// Even a standard-library test's generated main lives in GOCACHE,
+			// outside the pinned GOROOT, and must be snapshotted.
+			p.Standard = false
 			p.Dir = filepath.Dir(generated)
 			p.GoFiles = []string{filepath.Base(generated)}
 		}

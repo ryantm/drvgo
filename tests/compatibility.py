@@ -26,8 +26,9 @@ env = {k:v for k,v in os.environ.items() if not (k.startswith(('GO','CGO_','NIX_
 env.update(PATH=str(tc/'bin')+':'+os.environ['PATH'], GOENV='off', GOFLAGS='', GOTOOLCHAIN='local', CGO_ENABLED='1',
            GOMAXPROCS='2', GOPROXY='off', CC=str(tc/'bin/gcc'), CXX=str(tc/'bin/g++'))
 
-def run(cmd, cwd=None, go=False):
-    p = subprocess.run([str(x) for x in cmd], cwd=cwd, env=env if go else None, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+def run(cmd, cwd=None, go=False, cgo=None):
+    command_env = dict(env, CGO_ENABLED=cgo) if go and cgo is not None else env if go else None
+    p = subprocess.run([str(x) for x in cmd], cwd=cwd, env=command_env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if p.returncode:
         raise RuntimeError(f'{cmd}: {p.returncode}\n{p.stdout.decode()}\n{p.stderr.decode()}')
     return p
@@ -39,14 +40,16 @@ def write(path, content):
 version = run([tc/'bin/go','env','GOVERSION'], go=True).stdout.decode().strip()
 report = {'go':version, 'toolchain':str(tc), 'cases':[], 'nix':run(['nix','--version']).stdout.decode().strip()}
 
-def case(name, source, expected, tags='', ldflags=''):
+def case(name, source, expected, tags='', ldflags='', cgo=None, race=False):
     native = out/(name+'-native')
     flags = ['-trimpath','-buildvcs=false','-tags',tags,'-ldflags',ldflags]
-    run([tc/'bin/go','build',*flags,'-o',native,'.'], cwd=source, go=True)
+    if race: flags.append('-race')
+    run([tc/'bin/go','build',*flags,'-o',native,'.'], cwd=source, go=True, cgo=cgo)
     normal = run([native]).stdout.decode()
     assert normal == expected, (name,normal,expected)
     export = out/(name+'-export')
-    run([cli,'export','-C',source,'-out',export,'-toolchain',tc,'-module-proxy','off','-tags',tags,'-ldflags',ldflags,'.'])
+    modes = (['-cgo',cgo] if cgo is not None else []) + (['-race'] if race else [])
+    run([cli,'export','-C',source,'-out',export,'-toolchain',tc,'-module-proxy','off','-tags',tags,'-ldflags',ldflags,*modes,'.'])
     graph = json.loads((export/'graph.json').read_text())
     result = run(['nix-build',export,'-A','default','--no-out-link','--max-jobs','4','--cores','2']).stdout.decode().strip()
     actual = run([Path(result)/'bin'/graph['binaryName']]).stdout.decode()
@@ -91,8 +94,15 @@ write(vendor/'main.go',(workspace/'app/main.go').read_text())
 write(vendor/'vendor/modules.txt','# example.com/dep v0.0.0\n## explicit; go 1.23.0\nexample.com/dep\n')
 write(vendor/'vendor/example.com/dep/dep.go','package dep\nconst Value="vendored"\n')
 case('vendored',vendor,'vendored\n')
+modes = out/'build-modes'
+write(modes/'go.mod','module example.com/modes.test\ngo 1.25\n')
+write(modes/'main.go','package main\nimport "fmt"\nfunc main(){fmt.Println(Value())}\n')
+write(modes/'native.go','package main\n/* static int answer(void) { return 42; } */\nimport "C"\nconst expected=42\nfunc Value() int { return int(C.answer()) }\n')
+write(modes/'pure.go','//go:build !cgo\n\npackage main\nconst expected=7\nfunc Value() int { return 7 }\n')
+case('cgo-disabled',modes,'7\n',cgo='0')
+case('race-cgo',modes,'42\n',cgo='1',race=True)
 checkenv=dict(os.environ,DRVGO_TEST_TOOLCHAIN=str(tc))
-p=subprocess.run([str(a.integration_test.resolve()),'-test.run=^TestEmbeddedAssetsAndCacheIsolation$','-test.v'],cwd=repo/'internal/export',env=checkenv,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+p=subprocess.run([str(a.integration_test.resolve()),'-test.run=^(TestEmbeddedAssetsAndCacheIsolation|TestTestBinary.*)$','-test.v'],cwd=repo/'internal/export',env=checkenv,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
 (out/'integration.log').write_bytes(p.stdout)
 if p.returncode: raise RuntimeError(p.stdout.decode())
 if a.flake_toolchain:
@@ -106,6 +116,26 @@ if a.flake_toolchain:
     assert Path(result).resolve() == Path(report['cases'][0]['store_path']), 'dynamic and standalone builds must share package outputs'
     report['dynamic_ifd_disabled']='passed'
     print(version,'dynamic/IFD-disabled PASS',flush=True)
+    # Exercise every new helper argument, including generated test-main sources
+    # inside the recursive sandbox. Dynamic and standalone outputs must match.
+    write(modes/'main_test.go','package main\nimport "testing"\nfunc TestValue(t *testing.T){if Value()!=expected {t.Fatal("wrong build mode")}}\n')
+    for name, cgo, race in [('test-cgo-disabled','0',False), ('test-race-cgo','1',True)]:
+        export = out/(name+'-export')
+        flags = ['-test','-cgo',cgo] + (['-race'] if race else [])
+        run([cli,'export','-C',modes,'-out',export,'-toolchain',tc,'-module-proxy','off',*flags,'.'])
+        graph = json.loads((export/'graph.json').read_text())
+        assert graph['cgo'] == cgo
+        standalone = run(['nix-build',export,'-A','default','--no-out-link','--max-jobs','4','--cores','2']).stdout.decode().strip()
+        dynamic = run(['nix-build',repo/'tests/dynamic-compatibility.nix','--argstr','system',system,
+            '--argstr','toolchainAttr',a.flake_toolchain,'--arg','src',f'builtins.path {{ path = {json.dumps(str(modes))}; name = "source"; }}',
+            '--arg','test','true','--arg','race',str(race).lower(),'--arg','cgoEnabled',str(cgo=='1').lower(),
+            '--option','allow-import-from-derivation','false','--max-jobs','4','--cores','2','-o',out/(name+'-dynamic')]).stdout.decode().strip()
+        assert Path(dynamic).resolve() == Path(standalone), (name, dynamic, standalone)
+        output = run([Path(dynamic)/'bin'/graph['binaryName'],'-test.v'],cwd=modes).stdout.decode()
+        assert 'PASS: TestValue' in output, output
+        report.setdefault('dynamic_tests',[]).append({'name':name,'store_path':standalone,'cgo':cgo,'race':race})
+        print(version,name,'dynamic/standalone/IFD-disabled PASS',flush=True)
 report['incremental_cache_and_embeds']='passed'
+report['test_binaries_and_race_detection']='passed'
 (out/'results.json').write_text(json.dumps(report,indent=2)+'\n')
 print(version,'incremental/cache/standalone PASS',flush=True)

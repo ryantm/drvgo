@@ -78,3 +78,47 @@ func TestRejectMalformedPlans(t *testing.T) {
 		})
 	}
 }
+
+func TestResumedActionKeepsDependenciesSeparate(t *testing.T) {
+	raw := `mkdir -p $WORK/b001/
+mkdir -p $WORK/b002/
+#
+# example/dep
+#
+/tool/compile -p example/dep -o $WORK/b002/_pkg_.a ./dep.go
+mkdir -p $WORK/b001/
+#
+# example/main.test
+#
+cat >$WORK/b001/importcfg << 'EOF' # internal
+packagefile example/dep=$WORK/b002/_pkg_.a
+EOF
+/tool/compile -p main -o $WORK/b001/_pkg_.a ./_testmain.go
+/tool/link -o $WORK/b001/exe/a.out $WORK/b001/_pkg_.a
+`
+	units, err := Parse(raw, "/project")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(units) != 2 || units[0].Name != "example/main.test" || !units[0].Binary ||
+		len(units[0].Deps) != 1 || units[0].Deps[0] != "b002" || len(units[1].Deps) != 0 {
+		t.Fatalf("resumed action graph: %+v", units)
+	}
+	if strings.Contains(units[1].Script, "_testmain.go") || strings.Contains(units[0].Script, "/project/dep.go") {
+		t.Fatal("resumed action absorbed another package's script")
+	}
+}
+
+func TestNativeToolsRestoreElidedDirectory(t *testing.T) {
+	for _, tool := range []string{"cgo", "asm"} {
+		raw := "mkdir -p $WORK/b001/\n#\n# first\n#\ncd /project/native\n/tool/compile -p first ./first.go\n" +
+			"mkdir -p $WORK/b002/\n#\n# second\n#\n/tool/" + tool + " ./native.go\n"
+		units, err := Parse(raw, "/project")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !strings.Contains(units[1].Script, "cd /project/native\n/tool/"+tool) {
+			t.Fatalf("missing elided %s directory: %s", tool, units[1].Script)
+		}
+	}
+}

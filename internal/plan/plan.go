@@ -24,8 +24,8 @@ var packageName = regexp.MustCompile(`(?:^|\n)#\n# ([^\n]+)\n#`)
 var compileName = regexp.MustCompile(` -p ([^ ]+) `)
 var cgoName = regexp.MustCompile(` -importpath ([^ ]+) `)
 
-// Parse splits at the first creation of each action directory. Relative compiler
-// source arguments are resolved against the working directory cmd/go elides.
+// Parse splits at action-directory boundaries and rejoins resumed actions.
+// Relative compiler sources use the working directory cmd/go elides.
 func Parse(raw, cwd string) ([]Unit, error) {
 	d, _ := SelectDriver("go1.26.5", false)
 	return d.Parse(raw, cwd)
@@ -36,6 +36,7 @@ func parse(raw, cwd string, driver Driver) ([]Unit, error) {
 	var script strings.Builder
 	seen := map[string]bool{}
 	indices := map[string]int{}
+	actionDirs := map[string]string{}
 	current := -1
 	directory := cwd
 	heredoc := false
@@ -54,6 +55,7 @@ func parse(raw, cwd string, driver Driver) ([]Unit, error) {
 				units = append(units, Unit{ID: m[1], Deps: []string{}, Sources: []string{}})
 				current = len(units) - 1
 				indices[m[1]] = current
+				actionDirs[m[1]] = "@WORK@"
 			}
 		}
 		if current < 0 {
@@ -66,6 +68,15 @@ func parse(raw, cwd string, driver Driver) ([]Unit, error) {
 			directory = strings.TrimPrefix(line, "cd ")
 			if directory == "." {
 				directory = cwd
+			}
+			actionDirs[units[current].ID] = directory
+		}
+		// cmd/go can elide a native tool's cd across action boundaries, but
+		// isolated actions start in their own empty work directory.
+		if (strings.Contains(line, "/cgo ") && !strings.Contains(line, " -dynimport ")) || strings.Contains(line, "/asm ") {
+			if actionDirs[units[current].ID] != directory {
+				script.WriteString("cd " + directory + "\n")
+				actionDirs[units[current].ID] = directory
 			}
 		}
 		if strings.Contains(line, "/compile ") {
