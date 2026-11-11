@@ -176,7 +176,18 @@ func logBinaryDifferences(t *testing.T, before, after string) {
 		}
 	}
 	for _, section := range ma.Sections {
-		other := mb.Section(section.Name)
+		// Zero-fill sections have no file data. Names can repeat in different
+		// segments (for example __TEXT/__rodata and __DATA_CONST/__rodata).
+		if section.Offset == 0 {
+			continue
+		}
+		var other *macho.Section
+		for _, candidate := range mb.Sections {
+			if candidate.Name == section.Name && candidate.Seg == section.Seg {
+				other = candidate
+				break
+			}
+		}
 		if other == nil {
 			continue
 		}
