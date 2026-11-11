@@ -26,6 +26,7 @@ type action struct {
 
 // Linked against the selected Go compiler's library by toolchain-builder.nix.
 var rewriteBuildID func(string) error
+var packArchive func([]string) error
 
 // words decodes the quoting emitted by drvgo's trace adapter. Operators are
 // separate tokens; unsupported shell syntax is rejected rather than executed.
@@ -315,6 +316,15 @@ func execute(actions []action) error {
 				}
 				continue
 			}
+			if a.args[0] == "libnix-pack" {
+				if packArchive == nil || len(a.args) < 3 || len(a.env) != 0 || a.path != "" {
+					return fmt.Errorf("unsupported pack action or missing pinned pack implementation")
+				}
+				if err := packArchive(a.args[1:]); err != nil {
+					return fmt.Errorf("pack %s: %w", a.args[2], err)
+				}
+				continue
+			}
 			cmd := exec.Command(a.args[0], a.args[1:]...)
 			cmd.Env = append(os.Environ(), a.env...)
 			cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
@@ -382,6 +392,8 @@ func build() error {
 		n = runtime.NumCPU()
 	}
 	os.Setenv("GOMAXPROCS", strconv.Itoa(n))
+	// Archive/build-ID helpers now run in this process as well as child tools.
+	runtime.GOMAXPROCS(n)
 	tmp := os.Getenv("TMPDIR")
 	for _, dir := range []string{"home", "cache", "unit", "work"} {
 		if err := os.MkdirAll(filepath.Join(tmp, dir), 0755); err != nil {

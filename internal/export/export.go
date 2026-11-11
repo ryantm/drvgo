@@ -17,7 +17,7 @@ import (
 	"github.com/ryantm/drvgo/internal/plan"
 )
 
-//go:embed templates/*.nix templates/runner.go templates/buildid.go templates/test-selection.go
+//go:embed templates/*.nix templates/runner.go templates/buildid.go templates/pack.go templates/pack.patch templates/test-selection.go
 var templates embed.FS
 
 type Options struct {
@@ -71,10 +71,10 @@ func run(dir string, env []string, name string, args ...string) ([]byte, error) 
 func Toolchain() (string, error) {
 	b, _ := templates.ReadFile("templates/toolchain.nix")
 	builder, _ := templates.ReadFile("templates/toolchain-builder.nix")
-	runner, _ := templates.ReadFile("templates/runner.go")
-	builder = []byte(strings.Replace(string(builder), "builtins.readFile ./runner.go", nixString(string(runner)), 1))
-	buildid, _ := templates.ReadFile("templates/buildid.go")
-	builder = []byte(strings.Replace(string(builder), "builtins.readFile ./buildid.go", nixString(string(buildid)), 1))
+	for _, name := range []string{"runner.go", "buildid.go", "pack.go", "pack.patch"} {
+		data, _ := templates.ReadFile("templates/" + name)
+		builder = []byte(strings.Replace(string(builder), "builtins.readFile ./"+name, nixString(string(data)), 1))
+	}
 	expression := strings.Replace(string(b), "import ./toolchain-builder.nix", "("+string(builder)+")", 1)
 	out, err := run("", os.Environ(), "nix-build", "--no-out-link", "--expr", expression)
 	return strings.TrimSpace(string(out)), err
@@ -342,7 +342,7 @@ func Generate(o Options) (*Graph, error) {
 	graph.BinaryName = binaryName
 	graph.Root = root
 	graph.Units = units
-	for _, name := range []string{"default.nix", "toolchain.nix", "toolchain-builder.nix", "runner.go", "buildid.go"} {
+	for _, name := range []string{"default.nix", "toolchain.nix", "toolchain-builder.nix", "runner.go", "buildid.go", "pack.go", "pack.patch"} {
 		b, _ := templates.ReadFile("templates/" + name)
 		if err = os.WriteFile(filepath.Join(staging, name), b, 0644); err != nil {
 			return nil, err

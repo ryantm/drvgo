@@ -1,0 +1,39 @@
+--- pack.go
++++ pack.go
+@@ -6,7 +6,6 @@
+ 
+ import (
+ 	"cmd/internal/archive"
+-	"cmd/internal/telemetry/counter"
+ 	"fmt"
+ 	"io"
+ 	"io/fs"
+@@ -29,10 +28,9 @@
+ 	os.Exit(2)
+ }
+ 
+-func main() {
++func packMain() error {
+ 	log.SetFlags(0)
+ 	log.SetPrefix("pack: ")
+-	counter.Open()
+ 	// need "pack op archive" at least.
+ 	if len(os.Args) < 3 {
+ 		log.Print("not enough arguments")
+@@ -40,8 +38,6 @@
+ 		usage()
+ 	}
+ 	setOp(os.Args[1])
+-	counter.Inc("pack/invocations")
+-	counter.Inc("pack/op:" + string(op))
+ 	var ar *Archive
+ 	switch op {
+ 	case 'p':
+@@ -67,6 +63,7 @@
+ 	if len(ar.files) > 0 {
+ 		log.Fatalf("file %q not in archive", ar.files[0])
+ 	}
++	return ar.a.File().Close()
+ }
+ 
+ // The unusual ancestry means the arguments are not Go-standard.
