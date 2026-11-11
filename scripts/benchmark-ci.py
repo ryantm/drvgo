@@ -22,6 +22,7 @@ def main():
     parser.add_argument("--source", type=Path, required=True, help="Go source tree")
     parser.add_argument("--vendor-hash", help="module proxy hash for sources with external dependencies")
     parser.add_argument("--after-module-cache", type=Path, help="prepared cache for the modified checkout")
+    parser.add_argument("--after-prepare-modules", action="store_true", help="enable automatic cache preparation in the modified checkout")
     parser.add_argument("--package", default=".")
     parser.add_argument("--cgo", choices=["0", "1"], help="explicitly select cgo mode")
     parser.add_argument("--test", action="store_true", help="export a test binary")
@@ -60,6 +61,7 @@ def main():
     report = {"scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
               "source": str(args.source.resolve()), "package": args.package, "vendor_hash": args.vendor_hash,
               "after_module_cache": str(args.after_module_cache) if args.after_module_cache else None,
+              "after_prepare_modules": args.after_prepare_modules,
               "cgo": args.cgo, "test": args.test, "allow_empty_tests": args.allow_empty_tests, "tags": args.tags,
               "nix": subprocess.check_output(["nix", "--version"], text=True).strip(),
               "roots": {k: str(v) for k, v in roots.items()}, "flags": flags, "nonce": nonce, "records": []}
@@ -69,6 +71,8 @@ def main():
         # source. Package recipes do not depend on this name and stay cached.
         name = f"drvgo-ci-{nonce}-{label}-{trial}"
         extra = f" moduleCache = builtins.storePath {nix_string(args.after_module_cache)};" if label == "after" and args.after_module_cache else ""
+        if label == "after" and args.after_prepare_modules:
+            extra += " prepareModules = true;"
         expression = (f"(import (builtins.toPath {nix_string(roots[label] / 'nix/dynamic.nix')}) {{}}) {{"
                       f"name = {nix_string(name)}; src = builtins.path {{ path = {nix_string(args.source.resolve())}; name = \"source\"; }}; "
                       f"package = {nix_string(args.package)};{build_options}{extra} }}")

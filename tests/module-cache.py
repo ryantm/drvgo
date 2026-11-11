@@ -114,7 +114,8 @@ def main():
         for nested in [False, True]:
             label = "iets-nested" if nested else "iets-outer"
             expr = (f'import ./tests/iets.nix {{ iets = builtins.storePath {nix_string(iets.parent.parent)}; '
-                    f'src = {source}; moduleCache = ({cache_expr}); nested = {str(nested).lower()}; }}')
+                    f'src = {source}; moduleCache = ({cache_expr}); baseToolchain = {tc_expr}; '
+                    f'nested = {str(nested).lower()}; }}')
             nix_drv = run(["nix-instantiate", *flags, "--eval", "--raw", "--read-write-mode", "--expr", f'({expr}).drvPath'], label + "-nix-eval")
             iets_drv = run([iets, "eval", "--impure", "--no-tracing-cache", "--raw", "-E", f'({expr}).drvPath'], label + "-eval", env=iets_env)
             assert nix_drv == iets_drv

@@ -4,9 +4,10 @@
 , cgoEnabled ? null, test ? false, allowEmptyTests ? false, tags ? ""
 , runtimeInputs ? [], ldflags ? ""
 , moduleCache ? null
+, baseToolchain ? import ../internal/export/templates/toolchain.nix
 }:
 let
-  tc = import ../internal/export/templates/toolchain.nix;
+  tc = baseToolchain;
   pkgs = tc.pkgs;
   instantiate = pkgs.writeShellScriptBin "nix-instantiate" ''
     export IETS_NIX_FALLBACK=never IETS_PROGRESS=false IETS_WORKERS=1 IETS_CACHE=false

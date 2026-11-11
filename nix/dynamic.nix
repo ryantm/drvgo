@@ -8,7 +8,7 @@
 , allowPlannerSubstitutes ? false, allowEmptyTests ? false
 , runtimeInputs ? []
 , moduleCache ? null
-, prepareModules ? true
+, prepareModules ? false
 }:
 let
   pkgs = toolchain.pkgs;
