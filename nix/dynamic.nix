@@ -17,9 +17,10 @@ let
     inherit src vendorHash;
     proxyVendor = true;
   }).goModules;
-  # Preserve the original output context, so generated package derivations
-  # have the same toolchain dependency as ordinary exports.
-  outputExpr = tc: ''builtins.appendContext ${builtins.toJSON (toString tc)} {
+  # Only the recipe is needed during planning. Restore its output context in
+  # the nested evaluator, so generated packages keep the same dependencies as
+  # ordinary exports without making the planner fetch unused worker tools.
+  outputExpr = tc: ''builtins.appendContext ${builtins.toJSON (builtins.unsafeDiscardStringContext (toString tc))} {
     ${builtins.toJSON (builtins.unsafeDiscardOutputDependency tc.drvPath)} = { outputs = [ "out" ]; };
   }'';
   toolchainExpr = ''{
@@ -28,6 +29,9 @@ let
     link = ${outputExpr (toolchain.link or toolchain)};
     native = ${outputExpr (toolchain.native or toolchain)};
   }'';
+  # With cgo explicitly disabled, discovery needs only the Go SDK. Worker
+  # tools are selected independently by the generated package graph.
+  planningToolchain = if cgoEnabled == false then toolchain.go else toolchain;
   # These wrappers only run explicit tools; a stdenv setup and its dependency
   # closure are unnecessary on the planning and final forwarding paths.
   planner = builtins.derivation ({
@@ -87,7 +91,7 @@ let
       ${lib.optionalString test "-test"} ${lib.optionalString race "-race"} \
       ${lib.optionalString allowEmptyTests "-allow-empty-tests"} \
       ${lib.optionalString (cgoEnabled != null) "-cgo ${if cgoEnabled then "1" else "0"}"} \
-      -toolchain ${toolchain} \
+      -toolchain ${planningToolchain} \
       -module-proxy ${lib.escapeShellArg (if modules == null then "off" else "file://${modules}")} \
       -tags ${lib.escapeShellArg tags} -ldflags ${lib.escapeShellArg ldflags} \
       ${lib.escapeShellArg package}

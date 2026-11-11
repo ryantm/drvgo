@@ -96,6 +96,57 @@ def main():
     assert run([Path(changed) / "bin/libnix-fixture"], "changed-run")[0].startswith("iets changed embed\nstable\n")
     assert changed == run(["nix-build", *features, *flags, "--no-out-link", "-E", expr], "changed-reference")[0]
     report["embed_invalidation"] = "passed"
+
+    # Exercise the SDK-only planner and optional-test fast paths with both
+    # evaluators. A cached empty output must never hide a later package error.
+    optional = out / "optional-tests"
+    optional.mkdir()
+    (optional / "go.mod").write_text("module example.com/iets-tests\ngo 1.25\n")
+    (optional / "sample.go").write_text("package sample\nconst Value = 42\n")
+    (optional / "sample_test.go").write_text(
+        '//go:build special\n\npackage sample_test\n'
+        'import ("testing"; sample "example.com/iets-tests")\n'
+        'func TestValue(t *testing.T) { if sample.Value != 42 { t.Fatal(sample.Value) } }\n')
+    optional_outputs = {}
+    invalid_commands = []
+    for nested in [False, True]:
+        mode = "nested" if nested else "outer"
+        for tags in ["", "'special'"]:
+            case = "tagged" if tags else "empty"
+            label = f"optional-{mode}-{case}"
+            expr = (f"import ./tests/iets.nix {{ iets = builtins.storePath {nix_string(package)}; "
+                    f"src = builtins.path {{ path = {nix_string(optional)}; name = \"source\"; }}; "
+                    f"name = \"drvgo-iets-{nonce}-{label}\"; nested = {str(nested).lower()}; "
+                    f"cgoEnabled = false; test = true; allowEmptyTests = true; tags = {nix_string(tags)}; }}")
+            build = [binary, "build", "--impure", *flags, "--no-tracing-cache", "-E", expr]
+            reference = ["nix-build", *features, *flags, "--no-out-link", "-E", expr]
+            result = run(build, label + "-build")[0]
+            assert result == run(reference, label + "-reference")[0]
+            resolved = Path(result).resolve()
+            if case in optional_outputs:
+                assert resolved == optional_outputs[case]
+            optional_outputs[case] = resolved
+            if tags:
+                assert not (resolved / "nix-support/no-tests").exists()
+                binaries = list((resolved / "bin").iterdir())
+                assert len(binaries) == 1
+                assert "PASS: TestValue" in run([binaries[0], "-test.v"], label + "-run")[0]
+            else:
+                assert (resolved / "nix-support/no-tests").read_bytes() == b'{"version":1,"status":"no-tests"}\n'
+                assert not (resolved / "bin").exists()
+                invalid_commands.extend([(label + "-iets", build), (label + "-nix", reference)])
+            direct = f'builtins.outputOf ({expr}).planner.outPath "out"'
+            result = run([binary, "build", "--impure", *flags, "--no-tracing-cache", "-E", direct], label + "-direct")[0]
+            assert Path(result).resolve() == resolved
+            report.setdefault("optional_tests", []).append(dict(case=label, command_output=str(resolved)))
+            print(label, "SDK-only/build/direct/run PASS", flush=True)
+    (optional / "sample.go").write_text('package sample\nvar Value int = "bad"\n')
+    for label, command in invalid_commands:
+        result = subprocess.run([str(x) for x in command], cwd=repo, env=env, text=True, capture_output=True)
+        (out / (label + "-invalid.log")).write_text(result.stderr)
+        assert result.returncode != 0 and "cannot use" in result.stderr, (label, result.stderr)
+    report["optional_tests_invalid_after_cached_empty"] = "passed"
+
     runtime_outputs = []
     for nested in [False, True]:
         for explicit in [False, True]:

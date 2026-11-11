@@ -39,11 +39,11 @@ def write(path, content):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content)
 
-integration_pattern = '^(TestEmbeddedAssetsAndCacheIsolation|TestNestedCommandWithoutOriginalSource|TestCustomBuildID|TestRuntimeStoreReferences|TestEmptyTest.*|TestTestBinary.*)$'
+integration_pattern = '^(TestEmbeddedAssetsAndCacheIsolation|TestNestedCommandWithoutOriginalSource|TestNativeObjectWithoutOriginalSource|TestCustomBuildID|TestRuntimeStoreReferences|TestEmptyTest.*|TestTestBinary.*)$'
 integration_tests = run([a.integration_test.resolve(), '-test.list='+integration_pattern]).stdout.decode().splitlines()
 required_tests = {'TestEmbeddedAssetsAndCacheIsolation', 'TestTestBinaryInternalExternalAndFailure',
                   'TestTestBinaryMainPackage', 'TestTestBinaryRaceAndCGO', 'TestTestBinaryRejectsPackageWithoutTests',
-                  'TestNestedCommandWithoutOriginalSource', 'TestCustomBuildID',
+                  'TestNestedCommandWithoutOriginalSource', 'TestNativeObjectWithoutOriginalSource', 'TestCustomBuildID',
                   'TestEmptyTestSelection', 'TestEmptyTestResult', 'TestEmptyTestsRequireTestMode', 'TestRuntimeStoreReferences'}
 if not required_tests.issubset(integration_tests):
     raise RuntimeError('Integration binary lacks required tests; compile it with go test -c -tags integration ./internal/export')
@@ -124,6 +124,12 @@ write(cxx/'go.mod','module example.com/cxx\ngo 1.23.0\n')
 write(cxx/'main.go','package main\n/* int answer(void); */\nimport "C"\nimport "fmt"\nfunc main(){fmt.Println(C.answer())}\n')
 write(cxx/'answer.cc','#include <vector>\nextern "C" int answer(void) { std::vector<int> values{20, 22}; return values[0] + values[1]; }\n')
 case('cxx',cxx,'42\n')
+syso = out/'native-object'
+write(syso/'go.mod','module example.com/nativeobject\ngo 1.25\n')
+write(syso/'main.go','package main\nimport "fmt"\nfunc main(){fmt.Println("native object")}\n')
+write(out/'unused.c','int unused_answer(void) { return 42; }\n')
+run([tc/'bin'/cc,'-c',out/'unused.c','-o',syso/'unused.syso'],go=True)
+case('native-object-cgo-disabled',syso,'native object\n',cgo='0')
 if report['platform'] == ['darwin', 'arm64']:
     framework = out/'framework'
     write(framework/'go.mod','module example.com/framework\ngo 1.23.0\n')
@@ -180,6 +186,16 @@ if a.flake_toolchain:
     assert run([tc/'bin/go','tool','buildid',executable],go=True).stdout.decode() == 'custom/ID\n'
     report['dynamic_nested_custom_buildid']='passed'
     print(version,'nested-command/custom-buildid/dynamic/IFD-disabled PASS',flush=True)
+    dynamic = run(['nix-build',repo/'tests/dynamic-compatibility.nix','--argstr','system',system,
+        '--argstr','toolchainAttr',a.flake_toolchain,'--arg','src',f'builtins.path {{ path = {json.dumps(str(syso))}; name = "source"; }}',
+        '--arg','cgoEnabled','false','--option','allow-import-from-derivation','false',
+        '--option','sandbox','true','--option','sandbox-fallback','false',
+        '--max-jobs','4','--cores','2','--no-out-link']).stdout.decode().strip()
+    syso_case = next(c for c in report['cases'] if c['name']=='native-object-cgo-disabled')
+    assert Path(dynamic).resolve() == Path(syso_case['store_path'])
+    assert run([Path(dynamic)/'bin/nativeobject']).stdout.decode() == 'native object\n'
+    report['dynamic_native_object']='passed'
+    print(version,'native-object/cgo-disabled/dynamic/IFD-disabled PASS',flush=True)
     # Exercise every new helper argument, including generated test-main sources
     # inside the recursive sandbox. Dynamic and standalone outputs must match.
     write(modes/'main_test.go','package main\nimport "testing"\nfunc TestValue(t *testing.T){if Value()!=expected {t.Fatal("wrong build mode")}}\n')
@@ -193,7 +209,8 @@ if a.flake_toolchain:
         dynamic = run(['nix-build',repo/'tests/dynamic-compatibility.nix','--argstr','system',system,
             '--argstr','toolchainAttr',a.flake_toolchain,'--arg','src',f'builtins.path {{ path = {json.dumps(str(modes))}; name = "source"; }}',
             '--arg','test','true','--arg','race',str(race).lower(),'--arg','cgoEnabled',str(cgo=='1').lower(),
-            '--option','allow-import-from-derivation','false','--max-jobs','4','--cores','2','-o',out/(name+'-dynamic')]).stdout.decode().strip()
+            '--option','allow-import-from-derivation','false','--option','sandbox','true','--option','sandbox-fallback','false',
+            '--max-jobs','4','--cores','2','-o',out/(name+'-dynamic')]).stdout.decode().strip()
         assert Path(dynamic).resolve() == Path(standalone), (name, dynamic, standalone)
         output = run([Path(dynamic)/'bin'/graph['binaryName'],'-test.v'],cwd=modes).stdout.decode()
         assert 'PASS: TestValue' in output, output
@@ -205,7 +222,8 @@ if a.flake_toolchain:
     dynamic = run(['nix-build',repo/'tests/dynamic-compatibility.nix','--argstr','system',system,
         '--argstr','toolchainAttr',a.flake_toolchain,'--arg','src',f'builtins.path {{ path = {json.dumps(str(empty))}; name = "source"; }}',
         '--arg','test','true','--arg','allowEmptyTests','true',
-        '--option','allow-import-from-derivation','false','--max-jobs','4','--cores','2','--no-out-link']).stdout.decode().strip()
+        '--option','allow-import-from-derivation','false','--option','sandbox','true','--option','sandbox-fallback','false',
+        '--max-jobs','4','--cores','2','--no-out-link']).stdout.decode().strip()
     assert json.loads((Path(dynamic)/'nix-support/no-tests').read_text()) == {'version':1,'status':'no-tests'}
     assert not (Path(dynamic)/'bin').exists()
     report['dynamic_empty_tests']='passed'
