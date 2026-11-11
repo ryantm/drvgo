@@ -155,6 +155,19 @@ if a.flake_toolchain:
     assert Path(result).resolve() == Path(report['cases'][0]['store_path']), 'dynamic and standalone builds must share package outputs'
     report['dynamic_ifd_disabled']='passed'
     print(version,'dynamic/IFD-disabled PASS',flush=True)
+    native_modes = [('cxx', cxx, ''), ('external-link', assembly, '-linkmode=external')]
+    if report['platform'] == ['darwin', 'arm64']:
+        native_modes.append(('darwin-framework', framework, ''))
+    for name, source, ldflags in native_modes:
+        dynamic_native = run(['nix-build', repo/'tests/dynamic-compatibility.nix', '--argstr', 'system', system,
+            '--argstr', 'toolchainAttr', a.flake_toolchain, '--argstr', 'ldflags', ldflags,
+            '--arg', 'src', f'builtins.path {{ path = {json.dumps(str(source))}; name = "source"; }}',
+            '--option', 'allow-import-from-derivation', 'false', '--no-out-link',
+            '--max-jobs', '4', '--cores', '2']).stdout.decode().strip()
+        expected = next(c for c in report['cases'] if c['name'] == name)
+        assert str(Path(dynamic_native).resolve()) == expected['store_path'], (name, 'SDK-only discovery changed native recipes')
+        report.setdefault('dynamic_native_modes', []).append({'name': name, 'store_path': expected['store_path']})
+        print(version, name, 'dynamic/SDK-only-planning PASS', flush=True)
     for explicit in [False, True]:
         fixture_expr = (f'import ./tests/runtime-references.nix {{ toolchain = '
                         f'(builtins.getFlake {json.dumps(str(repo))}).packages.{system}.{a.flake_toolchain}; '
