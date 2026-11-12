@@ -72,9 +72,24 @@ def case(name, source, expected, tags='', ldflags='', cgo=None, race=False):
         assert header == b'\xcf\xfa\xed\xfe\x0c\x00\x00\x01', ('expected native arm64 Mach-O', header)
     actual = run([binary]).stdout.decode()
     assert actual == normal, (name,actual,normal)
+    compact_modes = {}
+    # Check the optional archive layouts against the same native Go executable,
+    # including assembly, race, cgo, external linking, C++, workspaces and tags.
+    # All tool inputs are warm from the default build immediately above.
+    for cutoff in [False, True]:
+        mode = 'cutoff' if cutoff else 'interfaces'
+        compact = json.loads(run(['nix', 'build', '--no-link', '--json', '--impure',
+            '--extra-experimental-features', 'nix-command ca-derivations',
+            '--option', 'allow-import-from-derivation', 'false', '--option', 'sandbox', 'true',
+            '--option', 'sandbox-fallback', 'false', '--option', 'substituters', '',
+            '--option', 'always-allow-substitutes', 'false', '--max-jobs', '4', '--cores', '2',
+            '--expr', f'(import {export} {{ exportData = true; earlyCutoff = {str(cutoff).lower()}; }}).default']).stdout)
+        compact_output = compact[0]['outputs']['out']
+        assert run([Path(compact_output)/'bin'/graph['binaryName']]).stdout.decode() == normal, (name, mode)
+        compact_modes[mode] = compact_output
     paths = json.loads(run(['nix-instantiate','--eval','--strict','--json','--expr',
         'builtins.mapAttrs (_: d: d.drvPath) (import '+str(export)+' {}).units']).stdout)
-    report['cases'].append({'name':name,'output':actual,'units':len(graph['units']),'store_path':result,
+    report['cases'].append({'name':name,'output':actual,'units':len(graph['units']),'store_path':result,'compact_modes':compact_modes,
         'package_derivations':{u['name']:paths[u['id']] for u in graph['units']}})
     (out/'results.json').write_text(json.dumps(report,indent=2)+'\n')
     print(version, name, 'PASS',len(graph['units']),'units',flush=True)
@@ -141,6 +156,11 @@ p=subprocess.run([str(a.integration_test.resolve()),'-test.run='+integration_pat
 (out/'integration.log').write_bytes(p.stdout)
 if p.returncode: raise RuntimeError(p.stdout.decode())
 if a.flake_toolchain:
+    run([sys.executable, repo/'tests/export-data.py', '--toolchain', tc, '--drvgo', cli,
+         '--flake-toolchain', a.flake_toolchain, '--out', out/'export-data',
+         '--nix-option', 'substituters', '', '--nix-option', 'always-allow-substitutes', 'false'])
+    report['export_data'] = json.loads((out/'export-data/results.json').read_text())
+    print(version, 'compact-archives/private-edit/inline/API/runtime-references/dynamic PASS', flush=True)
     run([sys.executable, repo/'tests/module-cache.py', '--toolchain', tc, '--drvgo', cli,
          '--flake-toolchain', a.flake_toolchain, '--out', out/'module-cache'])
     report['module_cache'] = json.loads((out/'module-cache/results.json').read_text())

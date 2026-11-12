@@ -10,8 +10,9 @@
 , moduleCache ? null
 , prepareModules ? false
 , exportData ? false
-, earlyCutoff ? exportData
+, earlyCutoff ? false
 }:
+assert !earlyCutoff || exportData;
 let
   pkgs = toolchain.pkgs;
   inherit (pkgs) lib;

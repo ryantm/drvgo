@@ -362,6 +362,37 @@ its output is absent from local and remote caches. The default `prepareModules =
 extracts from the fixed proxy during each plan instead. An explicit
 `moduleCache` takes precedence over this setting.
 
+### Compact compiler dependencies (experimental)
+
+`mkGoPackage` and standalone generated graphs accept two independent options,
+both disabled by default:
+
+- `exportData = true` gives each library a small `api` output containing the
+  selected Go SDK's export data. Library compilation imports these interfaces;
+  final linking still uses the complete `out` archives.
+- `earlyCutoff = true` additionally makes library outputs content-addressed.
+  It requires `exportData = true` and Nix's `ca-derivations` feature. If an edit
+  leaves export data unchanged, downstream libraries can reuse their previous
+  outputs. The changed implementation still reaches the final binary. Inline
+  bodies and type information are part of export data, so changes to them
+  invalidate consumers as usual.
+
+For example, add both options to the `mkGoPackage` call above. For a standalone
+export, use the modern Nix client:
+
+```sh
+nix build --extra-experimental-features 'nix-command ca-derivations' \
+  --file ./nix-build default --arg exportData true --arg earlyCutoff true
+```
+
+These options target distributed compilation and repeated implementation edits.
+They are not a general speedup for a fully cached CI build: final linking still
+downloads full archives, extra outputs cost metadata operations, and
+content-addressed cache misses can involve many realization queries. Benchmark
+with your actual cache configuration before enabling them. The legacy
+`nix-build` client in Nix 2.34.8 failed the multi-output content-addressed probe;
+modern `nix build` passed with both 2.34.8 and 2.35.3.
+
 ### CI toolchain and output sizes
 
 The [November 11 measurements](benchmarks/ci-2026-11-11.md) show a 33.7% faster
