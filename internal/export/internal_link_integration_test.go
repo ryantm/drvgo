@@ -54,11 +54,18 @@ func TestInternalLinkToolchain(t *testing.T) {
 		}
 	}
 	for _, mode := range []struct {
-		name      string
-		cgo, race bool
-	}{{"pure", false, false}, {"cgo", true, false}, {"race", true, true}} {
+		name                             string
+		cgo, race, forceCgo, wantRuntime bool
+	}{
+		{"pure", false, false, false, false},
+		// Darwin's net and os/user call libc through Go syscall wrappers.
+		// Enabling cgo alone does not add native objects to this program.
+		{"cgo-enabled", true, false, false, runtime.GOOS != "darwin"},
+		{"native", true, false, true, true},
+		{"race", true, true, false, true},
+	} {
 		t.Run(mode.name, func(t *testing.T) {
-			source := writeTestProject(t, map[string]string{
+			files := map[string]string{
 				"go.mod": "module example.com/internallink\ngo 1.25\n",
 				"main.go": `package main
 import ("fmt"; "net"; "os/user")
@@ -68,13 +75,17 @@ func main() {
  fmt.Println("native lookups work")
 }
 `,
-			})
+			}
+			if mode.forceCgo {
+				files["native.go"] = "package main\nimport _ \"runtime/cgo\"\n"
+			}
+			source := writeTestProject(t, files)
 			out := filepath.Join(t.TempDir(), "export")
 			g, err := Generate(Options{Dir: source, Out: out, Package: ".", Toolchain: tc, CGOEnabled: &mode.cgo, Race: mode.race, LDFlags: "-linkmode=internal -buildid=internal/test"})
 			if err != nil {
 				t.Fatal(err)
 			}
-			if g.NativeLink || g.InternalLink != mode.cgo {
+			if g.NativeLink || g.InternalLink != mode.wantRuntime {
 				t.Fatalf("unexpected link selection: native=%v internal=%v", g.NativeLink, g.InternalLink)
 			}
 			binary := buildTestExport(t, out, g)
@@ -83,9 +94,11 @@ func main() {
 			if b, err := cmd.CombinedOutput(); err != nil || string(b) != "native lookups work\n" {
 				t.Fatalf("run: %s (%v)", b, err)
 			}
-			// Removing the optional role models older/custom toolchains. It must
-			// fall back to their native compiler and produce the same executable.
-			expression := "builtins.removeAttrs (import " + out + "/resolved-toolchain.nix) [ \"internalLink\" ]"
+			// Compare every case with the original full native bundle. Removing
+			// the optional role also exercises older/custom toolchain fallback
+			// when native objects are present.
+			expression := "let tc = import " + out + "/resolved-toolchain.nix; in " +
+				"(builtins.removeAttrs tc [ \"internalLink\" ]) // { link = tc.native; }"
 			cmd = exec.Command("nix-build", out, "-A", "default", "--no-out-link", "--arg", "toolchain", expression, "--max-jobs", "4", "--cores", "2")
 			var stderr strings.Builder
 			cmd.Stderr = &stderr

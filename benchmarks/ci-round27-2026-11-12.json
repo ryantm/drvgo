@@ -17839,5 +17839,17 @@
   "cli_bytes": {
     "before": 3395408,
     "after": 3403600
+  },
+  "platform_test_followup": {
+    "reason": "Darwin net/os/user uses Go syscall wrappers, so CGO_ENABLED=1 alone does not add native objects. The first assertion incorrectly required the runtime-query bundle. Tests now also force runtime/cgo on every platform and compare all variants with the full native bundle. Production code is unchanged.",
+    "initial_macos_jobs": [
+      "https://github.com/ryantm/drvgo/actions/runs/43205991291/job/131141165398",
+      "https://github.com/ryantm/drvgo/actions/runs/43205991291/job/131141165417"
+    ],
+    "focused_linux_log": "=== RUN   TestInternalLinkToolchain\n=== RUN   TestInternalLinkToolchain/pure\n=== RUN   TestInternalLinkToolchain/cgo-enabled\n=== RUN   TestInternalLinkToolchain/native\n=== RUN   TestInternalLinkToolchain/race\n--- PASS: TestInternalLinkToolchain (2.86s)\n    --- PASS: TestInternalLinkToolchain/pure (0.48s)\n    --- PASS: TestInternalLinkToolchain/cgo-enabled (0.32s)\n    --- PASS: TestInternalLinkToolchain/native (0.70s)\n    --- PASS: TestInternalLinkToolchain/race (1.34s)\nPASS\n",
+    "packaged_cli": "/nix/store/zdv9d9j0j8v7rynrfbksm4k1irydrs02-drvgo-0.1.0",
+    "binary_sha256": "5e0813e4a462490da452db14b650e07c49032c993ea7bf43ad6b12699cfbbd47",
+    "binary_identical_to_measured_implementation": true,
+    "platform_ci": "pending on corrected test head"
   }
 }
