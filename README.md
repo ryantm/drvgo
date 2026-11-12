@@ -589,6 +589,17 @@ executables and pure Go cache keys stay unchanged; native packages and their
 dependents receive new cache keys. Planner inputs lose 43 KB compressed, with
 cached CI and CLI bootstrap timings effectively flat.
 
+[Compact internal linking](benchmarks/ci-round27-2026-11-12.md) reduces the
+Linux amd64 root link's compressed tool closure from 137.62 MB to 26.82 MB
+when `ldflags = "-linkmode=internal"` is explicitly selected. A native helper
+answers Go's compiler-runtime queries using unchanged copies of the pinned
+compiler's libraries. Pure Go internal links use the existing smaller link
+bundle. Cgo compilation still uses the native compiler, and automatic or
+external linking keeps its existing bundle. Some cgo packages require external
+linking and cannot use this mode. Existing dependency cache keys stay unchanged;
+only eligible final links change. The complete discovery toolchain adds
+1.48 MB compressed, while dynamic planner inputs add about 10 KB.
+
 If your cache publishes planner outputs and CI often rebuilds an identical
 source tree on a cold worker, set `allowPlannerSubstitutes = true` in
 `mkGoPackage` to allow those hits to avoid downloading the planning toolchain.

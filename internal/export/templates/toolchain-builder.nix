@@ -3,6 +3,7 @@
 , buildidSource ? builtins.toFile "drvgo-buildid.go" (builtins.readFile ./buildid.go)
 , packSource ? builtins.toFile "drvgo-pack.go" (builtins.readFile ./pack.go)
 , packPatch ? builtins.toFile "drvgo-pack.patch" (builtins.readFile ./pack.patch)
+, ccQuerySource ? builtins.toFile "drvgo-cc-query.c.in" (builtins.readFile ./cc-query.c.in)
 }:
 let
   target = "${pkgs.stdenv.hostPlatform.go.GOOS}_${pkgs.stdenv.hostPlatform.go.GOARCH}";
@@ -58,6 +59,40 @@ let
       '';
     })
   else pkgs.stdenv.cc;
+  # Match cmd/link's hostlinkArchArgs. Internal links query the compiler for
+  # runtime archives but do not need its compiler, assembler, or external linker.
+  queryArchArgs = if pkgs.stdenv.hostPlatform.isDarwin then [ "-arch" "arm64" ]
+    else if pkgs.stdenv.hostPlatform.isx86_64 then [ "-m64" ] else [];
+  internalLinkSupport = pkgs.runCommand "go-libnix-internal-link-support" {
+    disallowedReferences = [ cc cc.cc ];
+  } ''
+    mkdir -p $out/bin $out/lib $out/nix-support
+    substitute ${ccQuerySource} "$TMPDIR/cc-query.c" \
+      --replace-fail '@ARCH_ARGS@' ${pkgs.lib.escapeShellArg (builtins.concatStringsSep "" (map (arg: builtins.toJSON arg + ", ") queryArchArgs))} \
+      --replace-fail '@QUERY_ROOT@' "$out/nix-support"
+    ${cc}/bin/cc -Os -Wall -Wextra -Werror "$TMPDIR/cc-query.c" -o $out/bin/drvgo-cc-query
+    ${pkgs.lib.optionalString pkgs.stdenv.hostPlatform.isLinux ''
+      # The wrapper adds GCC runtime search paths even though this helper only
+      # needs libc. Retain only paths that satisfy its actual ELF dependencies.
+      ${pkgs.patchelf}/bin/patchelf --shrink-rpath $out/bin/drvgo-cc-query
+    ''}
+    ln -s drvgo-cc-query $out/bin/${if pkgs.stdenv.hostPlatform.isDarwin then "clang" else "gcc"}
+    query() {
+      library="$(${cc}/bin/cc ${pkgs.lib.escapeShellArgs queryArchArgs} "$1")"
+      if [ -f "$library" ]; then
+        cp -L "$library" "$out/lib/$2.a"
+        library="$out/lib/$2.a"
+      fi
+      printf '%s\n' "$library" > "$out/nix-support/$2"
+    }
+    query --print-libgcc-file-name libgcc
+    query --print-file-name=libc_nonshared.a libc_nonshared
+    query --print-file-name=libssp_nonshared.a libssp_nonshared
+  '';
+  internalLink = pkgs.symlinkJoin {
+    name = "go-libnix-internal-link-toolchain";
+    paths = [ link internalLinkSupport ];
+  };
   native = pkgs.symlinkJoin {
     name = "go-libnix-native-toolchain";
     # Replay handles file operations itself. The compiler wrappers retain their
@@ -69,7 +104,7 @@ let
   };
 in pkgs.symlinkJoin {
   name = "go-libnix-toolchain";
-  passthru = { inherit pkgs go compile link native; };
+  passthru = { inherit pkgs go compile link native internalLink; };
   # Only discovery uses cmd/go and the complete SDK. The generated graph
   # substitutes worker tools and snapshots each selected standard package.
   paths = [ native go ];
@@ -78,5 +113,6 @@ in pkgs.symlinkJoin {
     echo ${compile} > $out/nix-support/drvgo-compile-toolchain
     echo ${link} > $out/nix-support/drvgo-link-toolchain
     echo ${native} > $out/nix-support/drvgo-native-toolchain
+    echo ${internalLink} > $out/nix-support/drvgo-internal-link-toolchain
   '';
 }

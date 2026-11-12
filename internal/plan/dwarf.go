@@ -44,38 +44,8 @@ func omitNativeDwarf(words []string, command int) []string {
 // bodies are data, and flag operands can themselves contain apparent flags.
 // Unsupported or malformed commands retain the original compiler behavior.
 func traceOmitsDwarf(lines []string) bool {
-	heredoc, strip := false, false
-	links := 0
-	for _, line := range lines {
-		if heredoc {
-			if strings.HasSuffix(line, "EOF") {
-				heredoc = false
-			}
-			continue
-		}
-		if strings.Contains(line, "<< 'EOF' # internal") {
-			heredoc = true
-			continue
-		}
-		if !strings.Contains(line, "/link") {
-			continue
-		}
-		words, err := commandWords(line)
-		if err != nil {
-			return false
-		}
-		for i, tool := range words {
-			if isAssignment(tool) {
-				continue
-			}
-			if strings.HasSuffix(tool, "/link") {
-				links++
-				strip = linkOmitsDwarf(words[i+1:])
-			}
-			break
-		}
-	}
-	return links == 1 && strip
+	args, ok := traceLinkArgs(lines)
+	return ok && linkOmitsDwarf(args)
 }
 
 func linkOmitsDwarf(args []string) bool {

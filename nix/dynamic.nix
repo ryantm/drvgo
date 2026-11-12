@@ -38,6 +38,7 @@ let
     compile = ${outputExpr (toolchain.compile or toolchain)};
     link = ${outputExpr (toolchain.link or toolchain)};
     native = ${outputExpr (toolchain.native or toolchain)};
+    internalLink = ${outputExpr (toolchain.internalLink or (toolchain.native or toolchain))};
   }'';
   # Dry-run discovery needs the driver, sources and tool-version metadata.
   # Native compiler probes are emitted for workers to replay instead.
@@ -86,6 +87,7 @@ let
     compileToolchainDrv = builtins.unsafeDiscardOutputDependency (toolchain.compile or toolchain).drvPath;
     linkToolchainDrv = builtins.unsafeDiscardOutputDependency (toolchain.link or toolchain).drvPath;
     nativeToolchainDrv = builtins.unsafeDiscardOutputDependency (toolchain.native or toolchain).drvPath;
+    internalLinkToolchainDrv = builtins.unsafeDiscardOutputDependency (toolchain.internalLink or (toolchain.native or toolchain)).drvPath;
     drvgoDrv = builtins.unsafeDiscardOutputDependency drvgo.drvPath;
     inherit src;
     passAsFile = [ "expression" ];

@@ -13,7 +13,9 @@ let
     name = u.id;
     value = let
       tc = if u.native then toolchain.native or toolchain
-        else if u.binary then toolchain.link or toolchain
+        else if u.binary then
+          (if u.internalLink or false then toolchain.internalLink or (toolchain.native or toolchain)
+           else toolchain.link or toolchain)
         else toolchain.compile or toolchain;
     in builtins.derivation ({
       name = "go-" + builtins.replaceStrings [ "/" "@" "+" ] [ "-" "-" "-" ] u.name;
