@@ -23,6 +23,8 @@ def main():
     parser.add_argument("--vendor-hash", help="module proxy hash for sources with external dependencies")
     parser.add_argument("--module-cache", type=Path, help="prepared cache for both checkouts")
     parser.add_argument("--after-module-cache", type=Path, help="prepared cache for the modified checkout")
+    parser.add_argument("--previous-plan", type=Path, help="existing planner output for both checkouts")
+    parser.add_argument("--after-previous-plan", type=Path, help="existing planner output for the modified checkout")
     parser.add_argument("--before-iets", type=Path, help="iets store output for nested planning in the baseline checkout")
     parser.add_argument("--after-iets", type=Path, help="iets store output for nested planning in the modified checkout")
     parser.add_argument("--after-prepare-modules", action="store_true", help="enable automatic cache preparation in the modified checkout")
@@ -69,6 +71,8 @@ def main():
               "source": str(args.source.resolve()), "package": args.package, "vendor_hash": args.vendor_hash,
               "after_module_cache": str(args.after_module_cache) if args.after_module_cache else None,
               "module_cache": str(args.module_cache) if args.module_cache else None,
+              "previous_plan": str(args.previous_plan) if args.previous_plan else None,
+              "after_previous_plan": str(args.after_previous_plan) if args.after_previous_plan else None,
               "before_iets": str(args.before_iets) if args.before_iets else None,
               "after_iets": str(args.after_iets) if args.after_iets else None,
               "after_prepare_modules": args.after_prepare_modules,
@@ -84,6 +88,9 @@ def main():
         name = f"drvgo-ci-{nonce}-{label}-{trial}"
         module_cache = (args.after_module_cache if label == "after" else None) or args.module_cache
         extra = f" moduleCache = builtins.storePath {nix_string(module_cache)};" if module_cache else ""
+        previous_plan = (args.after_previous_plan if label == "after" else None) or args.previous_plan
+        if previous_plan:
+            extra += f" previousPlan = builtins.storePath {nix_string(previous_plan)};"
         iets = args.after_iets if label == "after" else args.before_iets
         if iets:
             extra += f" iets = builtins.storePath {nix_string(iets)};"

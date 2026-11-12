@@ -7,6 +7,7 @@
 , experimentalGo ? false, test ? false, race ? false, cgoEnabled ? null
 , allowPlannerSubstitutes ? false, allowEmptyTests ? false
 , runtimeInputs ? []
+, previousPlan ? null
 , moduleCache ? null
 , prepareModules ? false
 , exportData ? false
@@ -104,6 +105,11 @@ let
     # retains only references found in each selected package or replay action.
     inherit runtimeInputs;
     passAsFile = [ "expression" "runtimeInputs" ];
+  } // lib.optionalAttrs (previousPlan != null) {
+    # Make an earlier graph's closure visible to the restricted store. Source
+    # discovery still runs from scratch; only identical content-addressed
+    # sources and derivation recipes can reuse their existing registrations.
+    inherit previousPlan;
   });
   plannerScript = ''
     export HOME=$TMPDIR/home

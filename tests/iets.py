@@ -8,6 +8,7 @@ from pathlib import Path
 import shutil
 import statistics
 import subprocess
+import sys
 import tempfile
 import time
 import uuid
@@ -218,6 +219,10 @@ def main():
             report["checks"].append(dict(case=label, derivation=nix_drv, output=result, command_output=str(runtime_outputs[-1])))
             print(label, "evaluation/build/direct/closure PASS", flush=True)
     assert len(set(runtime_outputs)) == 1, "runtime input declaration or nested evaluator changed package outputs"
+    run([sys.executable, repo / "tests/previous-plan.py", "--iets", binary,
+         "--out", out / "previous-plan"], "previous-plan")
+    report["previous_plan"] = json.loads((out / "previous-plan/results.json").read_text())
+    print("previous-plan/source-edits/new-dependencies/validation PASS", flush=True)
     report["medians"] = {
         case: {client: statistics.median(r["seconds"] for r in report["records"]
                                         if r["case"] == case and r["client"] == client and not r["warmup"])
