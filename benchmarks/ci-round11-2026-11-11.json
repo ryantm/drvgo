@@ -1,0 +1,2867 @@
+{
+  "date": "2026-11-11",
+  "system": "x86_64-linux",
+  "baseline": "8256da8626f776119e5b58db2341021236e76930",
+  "implementation": "031622ccf7dc96ef2e8422d28f773e8d30fded1e",
+  "scope": "Native forwarding reliability follow-up; tools and package outputs warm; stored payload sizes are not network timings",
+  "upstream_issue": "https://github.com/NixOS/nix/issues/2176#issuecomment-394341125",
+  "prior_failure": {
+    "run": 43131819767,
+    "job": 130897533848,
+    "head": "4701e0e9cc5803dae3722a51a47c795e1e654b58",
+    "stage": "dynamic runtime-reference forwarding after package compilation",
+    "signal": 9,
+    "cause": "Not conclusively established by the runner log; direct coreutils builder violates the documented EOF contract",
+    "log_sha256": "6e374755f65b9620c91cd7cc02fd08ceaaf6f25a972a7dc83bf87e481de94c9a"
+  },
+  "syscall_traces": {
+    "coreutils_ln": "close(3)                                = 0\nclose(3)                                = 0\nclose(3)                                = 0\nclose(3)                                = 0\nclose(3)                                = 0\nclose(0)                                = 0\nclose(1)                                = 0\nclose(2)                                = 0\nexit_group(0)                           = ?\n",
+    "native_helper": "3519596 close(3)                        = 0\n3519596 close(3)                        = 0\n3519596 close(3)                        = 0\n3519596 close(3)                        = 0\n3519596 exit_group(0 <unfinished ...>\n3519601 ???( <unfinished ...>\n3519596 <... exit_group resumed>)       = ?\n"
+  },
+  "orchestration": {
+    "before": "8256da8626f776119e5b58db2341021236e76930",
+    "after": "031622ccf7dc96ef2e8422d28f773e8d30fded1e",
+    "runs": [
+      {
+        "name": "fixture-ci",
+        "out": "/tmp/drvgo-native-forwarding-final-fixture-ci",
+        "command": [
+          "python3",
+          "scripts/benchmark-ci.py",
+          "--before",
+          "/tmp/drvgo-ci-planning-sdk",
+          "--after",
+          "/tmp/drvgo-ci-native-forwarding",
+          "--package",
+          ".",
+          "--source",
+          "/tmp/drvgo-ci-native-forwarding/tests/fixture",
+          "--runs",
+          "5",
+          "--nix-option",
+          "sandbox",
+          "true",
+          "--nix-option",
+          "sandbox-fallback",
+          "false",
+          "--nix-option",
+          "substituters",
+          "",
+          "--nix-option",
+          "always-allow-substitutes",
+          "false",
+          "--out",
+          "/tmp/drvgo-native-forwarding-final-fixture-ci"
+        ]
+      },
+      {
+        "name": "fixture-eval",
+        "out": "/tmp/drvgo-native-forwarding-final-fixture-eval",
+        "command": [
+          "python3",
+          "scripts/benchmark-evaluation.py",
+          "--before",
+          "/tmp/drvgo-ci-planning-sdk",
+          "--after",
+          "/tmp/drvgo-ci-native-forwarding",
+          "--package",
+          ".",
+          "--dynamic-source",
+          "/tmp/drvgo-ci-native-forwarding/tests/fixture",
+          "--iets",
+          "/nix/store/4adhszix9rn77kn8xn2m5mvbj123lv0p-iets-0.2.0/bin/iets",
+          "--runs",
+          "15",
+          "--out",
+          "/tmp/drvgo-native-forwarding-final-fixture-eval"
+        ]
+      },
+      {
+        "name": "upm-ci",
+        "out": "/tmp/drvgo-native-forwarding-final-upm-ci",
+        "command": [
+          "python3",
+          "scripts/benchmark-ci.py",
+          "--before",
+          "/tmp/drvgo-ci-planning-sdk",
+          "--after",
+          "/tmp/drvgo-ci-native-forwarding",
+          "--package",
+          "./cmd/upm",
+          "--vendor-hash",
+          "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+          "--source",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "--runs",
+          "5",
+          "--nix-option",
+          "sandbox",
+          "true",
+          "--nix-option",
+          "sandbox-fallback",
+          "false",
+          "--nix-option",
+          "substituters",
+          "",
+          "--nix-option",
+          "always-allow-substitutes",
+          "false",
+          "--out",
+          "/tmp/drvgo-native-forwarding-final-upm-ci"
+        ]
+      },
+      {
+        "name": "upm-eval",
+        "out": "/tmp/drvgo-native-forwarding-final-upm-eval",
+        "command": [
+          "python3",
+          "scripts/benchmark-evaluation.py",
+          "--before",
+          "/tmp/drvgo-ci-planning-sdk",
+          "--after",
+          "/tmp/drvgo-ci-native-forwarding",
+          "--package",
+          "./cmd/upm",
+          "--vendor-hash",
+          "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+          "--dynamic-source",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "--iets",
+          "/nix/store/4adhszix9rn77kn8xn2m5mvbj123lv0p-iets-0.2.0/bin/iets",
+          "--runs",
+          "15",
+          "--out",
+          "/tmp/drvgo-native-forwarding-final-upm-eval"
+        ]
+      }
+    ],
+    "fixture-ci_identical_package_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture",
+    "upm-ci_identical_package_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+  },
+  "timings": {
+    "fixture-ci": {
+      "scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
+      "source": "/tmp/drvgo-ci-native-forwarding/tests/fixture",
+      "package": ".",
+      "vendor_hash": null,
+      "after_module_cache": null,
+      "after_prepare_modules": false,
+      "after_export_data": false,
+      "after_early_cutoff": false,
+      "cgo": null,
+      "test": false,
+      "allow_empty_tests": false,
+      "tags": "",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "roots": {
+        "before": "/tmp/drvgo-ci-planning-sdk",
+        "after": "/tmp/drvgo-ci-native-forwarding"
+      },
+      "flags": [
+        "--extra-experimental-features",
+        "ca-derivations dynamic-derivations recursive-nix",
+        "--option",
+        "allow-import-from-derivation",
+        "false",
+        "--max-jobs",
+        "4",
+        "--cores",
+        "2",
+        "--option",
+        "sandbox",
+        "true",
+        "--option",
+        "sandbox-fallback",
+        "false",
+        "--option",
+        "substituters",
+        "",
+        "--option",
+        "always-allow-substitutes",
+        "false"
+      ],
+      "nonce": "1de47e0769b4",
+      "records": [
+        {
+          "label": "before",
+          "trial": 0,
+          "warmup": true,
+          "evaluation": 0.3709271689876914,
+          "realization": 0.497945100069046,
+          "total": 0.8688722690567374,
+          "derivation": "/nix/store/d8fags8ycbn285gs1cbgc0cgmrjn8vnm-drvgo-ci-1de47e0769b4-before-0.drv",
+          "result": "/nix/store/4mpibmynn3w5splqdzaw5bnjv4f1qxz8-drvgo-ci-1de47e0769b4-before-0",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "after",
+          "trial": 0,
+          "warmup": true,
+          "evaluation": 0.37866503302939236,
+          "realization": 0.5062062119832262,
+          "total": 0.8848712450126186,
+          "derivation": "/nix/store/cir6jl1q75w5qq3j6sjswi19gg5qwf9p-drvgo-ci-1de47e0769b4-after-0.drv",
+          "result": "/nix/store/b89wa8j8r5d5fx5mmw5lh3xhsyz3m0in-drvgo-ci-1de47e0769b4-after-0",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "after",
+          "trial": 1,
+          "warmup": false,
+          "evaluation": 0.40262199204880744,
+          "realization": 0.49275918304920197,
+          "total": 0.8953811750980094,
+          "derivation": "/nix/store/rak5nmz12yj1r18w9cq1izxv323r4afv-drvgo-ci-1de47e0769b4-after-1.drv",
+          "result": "/nix/store/s7q1i19vgwwlirb4qcprsdykmg0rf5bn-drvgo-ci-1de47e0769b4-after-1",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "before",
+          "trial": 1,
+          "warmup": false,
+          "evaluation": 0.3853624240728095,
+          "realization": 0.5216015150072053,
+          "total": 0.9069639390800148,
+          "derivation": "/nix/store/n8afibdw7x6q37vvcsm5sxqnglhyxf56-drvgo-ci-1de47e0769b4-before-1.drv",
+          "result": "/nix/store/zd41kkavyipggg4fvz9b286ywqd2z4l9-drvgo-ci-1de47e0769b4-before-1",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "before",
+          "trial": 2,
+          "warmup": false,
+          "evaluation": 0.38570300303399563,
+          "realization": 0.5011617779964581,
+          "total": 0.8868647810304537,
+          "derivation": "/nix/store/ipnzgr3hgl49hi46i2gxiyaj6yxsq6cm-drvgo-ci-1de47e0769b4-before-2.drv",
+          "result": "/nix/store/mffplmg4g5q5qfh3jq0v6b782dlkx4hd-drvgo-ci-1de47e0769b4-before-2",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "after",
+          "trial": 2,
+          "warmup": false,
+          "evaluation": 0.40683565998915583,
+          "realization": 0.5024856419768184,
+          "total": 0.9093213019659743,
+          "derivation": "/nix/store/ysqjir3820gzn72wamrx9958v43vz0jy-drvgo-ci-1de47e0769b4-after-2.drv",
+          "result": "/nix/store/k6hihdz3ngjdgd7l0jsdvd219kcdygpa-drvgo-ci-1de47e0769b4-after-2",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "after",
+          "trial": 3,
+          "warmup": false,
+          "evaluation": 0.38647873292211443,
+          "realization": 0.5040432490641251,
+          "total": 0.8905219819862396,
+          "derivation": "/nix/store/rlavgvdj8xarwb57zlz0d5n82gcppm57-drvgo-ci-1de47e0769b4-after-3.drv",
+          "result": "/nix/store/h53d1sm5qz0z0xsqrd9wisa3i4ry74hj-drvgo-ci-1de47e0769b4-after-3",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "before",
+          "trial": 3,
+          "warmup": false,
+          "evaluation": 0.3845555679872632,
+          "realization": 0.4923616989981383,
+          "total": 0.8769172669854015,
+          "derivation": "/nix/store/1vhicmmncf917afva86qar7dp66kkbcv-drvgo-ci-1de47e0769b4-before-3.drv",
+          "result": "/nix/store/mh2p0p8189d7qp2n85nb6hq52xl8v4sy-drvgo-ci-1de47e0769b4-before-3",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "before",
+          "trial": 4,
+          "warmup": false,
+          "evaluation": 0.3982819179072976,
+          "realization": 0.49305611604359,
+          "total": 0.8913380339508876,
+          "derivation": "/nix/store/6ggni39681389vi86mackvh63p4qlyly-drvgo-ci-1de47e0769b4-before-4.drv",
+          "result": "/nix/store/983cjlfl43w4vd0qvi81i47wn78fq65w-drvgo-ci-1de47e0769b4-before-4",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "after",
+          "trial": 4,
+          "warmup": false,
+          "evaluation": 0.39972144388593733,
+          "realization": 0.5093187980819494,
+          "total": 0.9090402419678867,
+          "derivation": "/nix/store/pz98ywcfv3snckm8s0g1npai50c93ixx-drvgo-ci-1de47e0769b4-after-4.drv",
+          "result": "/nix/store/93zhb7m11ysa0qzbbh8fg8cv2fnjp0s6-drvgo-ci-1de47e0769b4-after-4",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "after",
+          "trial": 5,
+          "warmup": false,
+          "evaluation": 0.38168452598620206,
+          "realization": 0.4908514521084726,
+          "total": 0.8725359780946746,
+          "derivation": "/nix/store/l5k2v9kkwqqjgcnf7n90pwrsx2hni67b-drvgo-ci-1de47e0769b4-after-5.drv",
+          "result": "/nix/store/x1s7xp9bkg1wczrdlg0lnlp4laclc49z-drvgo-ci-1de47e0769b4-after-5",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "before",
+          "trial": 5,
+          "warmup": false,
+          "evaluation": 0.4059485369361937,
+          "realization": 0.5063808410195634,
+          "total": 0.9123293779557571,
+          "derivation": "/nix/store/l35pd5x7lsfc6l5a6i8lcj8a39asnlcf-drvgo-ci-1de47e0769b4-before-5.drv",
+          "result": "/nix/store/z2qsc9km6dpk18xji5q98k22k0z9da8r-drvgo-ci-1de47e0769b4-before-5",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        }
+      ],
+      "medians": {
+        "before": {
+          "evaluation": 0.38570300303399563,
+          "realization": 0.5011617779964581,
+          "total": 0.8913380339508876
+        },
+        "after": {
+          "evaluation": 0.39972144388593733,
+          "realization": 0.5024856419768184,
+          "total": 0.8953811750980094
+        }
+      }
+    },
+    "fixture-eval": {
+      "scope": "Warm evaluation; no builds; iets tracing cache and Nix fallback disabled",
+      "dynamic_source": "/tmp/drvgo-ci-native-forwarding/tests/fixture",
+      "package": ".",
+      "vendor_hash": null,
+      "after_export_data": false,
+      "after_early_cutoff": false,
+      "roots": {
+        "before": "/tmp/drvgo-ci-planning-sdk",
+        "after": "/tmp/drvgo-ci-native-forwarding"
+      },
+      "records": [
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.38215683598537,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.1922626169398427,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.15088383597321808,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.3904584279516712,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.19325841590762138,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.11007852701004595,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.1272656510118395,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.19217392697464675,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.39312313694972545,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.11930513207335025,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.1920563350431621,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.3839306440204382,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.3792096560355276,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.1934036200400442,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.11236296291463077,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.38136220001615584,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.1945884880842641,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.11953886691480875,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.11067115201149136,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.19223306002095342,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.3738891239045188,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.11909903795458376,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.19218702998477966,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.38418014405760914,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.3831401050556451,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.19152352900709957,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.122785076033324,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.4009101709816605,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.19699177297297865,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.11049564892891794,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.11300784593913704,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.19596019899472594,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.3978522929828614,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.12460829806514084,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.19322414905764163,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.37728073401376605,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.3904964739922434,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.1933709109434858,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.11427937110420316,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.3921594759449363,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.19734986405819654,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.11367431399412453,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.10903685400262475,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.19535497901961207,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.3842649220023304,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.1574376670178026,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.1915605489630252,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.3925213529728353,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.3889133100165054,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.192204098100774,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.11146072298288345,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.39534678298514336,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.1953134910436347,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.11301807593554258,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.10815700492821634,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.19379199505783617,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.38078741705976427,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.12054579507093877,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.19377430097665638,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.37919949600473046,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.38766400096938014,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.19188728800509125,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.11357033101376146,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.4049908369779587,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.19635693705640733,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.11996275803539902,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.11391132592689246,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.19619927101302892,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.3908334419829771,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.11233767797239125,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.19411744899116457,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.39503625594079494,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.3755216689314693,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.19021676003467292,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.11970781907439232,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.3945838779909536,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.1973787099123001,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.11029980797320604,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.1445465690921992,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.19202127493917942,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.3922681469703093,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.10994919401127845,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.1946381509769708,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.3874688680516556,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.3815110200084746,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.19252646598033607,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.13332659599836916,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.3681280759628862,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.19366990006528795,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.11029922601301223,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.12451607000548393,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.19370952807366848,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.3896999830612913,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.11064003291539848,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.195753279956989,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.3848479649750516,
+          "derivation": "/nix/store/xv4fja82877s2d568alz6kazx0b8b8nw-drvgo.drv"
+        }
+      ],
+      "medians": {
+        "before": {
+          "nix": 0.38418014405760914,
+          "iets-1": 0.19252646598033607,
+          "iets-4": 0.11909903795458376
+        },
+        "after": {
+          "nix": 0.3921594759449363,
+          "iets-1": 0.1953134910436347,
+          "iets-4": 0.11301807593554258
+        }
+      }
+    },
+    "upm-ci": {
+      "scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
+      "source": "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+      "package": "./cmd/upm",
+      "vendor_hash": "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+      "after_module_cache": null,
+      "after_prepare_modules": false,
+      "after_export_data": false,
+      "after_early_cutoff": false,
+      "cgo": null,
+      "test": false,
+      "allow_empty_tests": false,
+      "tags": "",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "roots": {
+        "before": "/tmp/drvgo-ci-planning-sdk",
+        "after": "/tmp/drvgo-ci-native-forwarding"
+      },
+      "flags": [
+        "--extra-experimental-features",
+        "ca-derivations dynamic-derivations recursive-nix",
+        "--option",
+        "allow-import-from-derivation",
+        "false",
+        "--max-jobs",
+        "4",
+        "--cores",
+        "2",
+        "--option",
+        "sandbox",
+        "true",
+        "--option",
+        "sandbox-fallback",
+        "false",
+        "--option",
+        "substituters",
+        "",
+        "--option",
+        "always-allow-substitutes",
+        "false"
+      ],
+      "nonce": "d6c38dd0b8b2",
+      "records": [
+        {
+          "label": "before",
+          "trial": 0,
+          "warmup": true,
+          "evaluation": 0.4127311789197847,
+          "realization": 2.98725759901572,
+          "total": 3.399988777935505,
+          "derivation": "/nix/store/gnbmppvxdcj5z7xs3mdqa7l9j0w2sx11-drvgo-ci-d6c38dd0b8b2-before-0.drv",
+          "result": "/nix/store/li9x1ivzd34hcbi3vs0yx6brm92pfl1p-drvgo-ci-d6c38dd0b8b2-before-0",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 0,
+          "warmup": true,
+          "evaluation": 0.392769698984921,
+          "realization": 2.9834232280263677,
+          "total": 3.3761929270112887,
+          "derivation": "/nix/store/06ka8jvzq0fxfkd8jh3wgzd3164zpyl6-drvgo-ci-d6c38dd0b8b2-after-0.drv",
+          "result": "/nix/store/k6whrpg8dyhq7k3jy0dzyby3xjchabwq-drvgo-ci-d6c38dd0b8b2-after-0",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 1,
+          "warmup": false,
+          "evaluation": 0.3831655289977789,
+          "realization": 2.9766427209833637,
+          "total": 3.3598082499811426,
+          "derivation": "/nix/store/fx9l3x1y5bvgsq3mnmwwbhawf9dh79dd-drvgo-ci-d6c38dd0b8b2-after-1.drv",
+          "result": "/nix/store/9xj5idgdkb1m9rxj0j7pps39hpd3887d-drvgo-ci-d6c38dd0b8b2-after-1",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 1,
+          "warmup": false,
+          "evaluation": 0.3928290120093152,
+          "realization": 2.989953104988672,
+          "total": 3.382782116997987,
+          "derivation": "/nix/store/4dn3a7wssc895nmzgjxybdsy3b8rzl4l-drvgo-ci-d6c38dd0b8b2-before-1.drv",
+          "result": "/nix/store/9gzz6rflwq6xsrrym8gffzpssiwsr9r5-drvgo-ci-d6c38dd0b8b2-before-1",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 2,
+          "warmup": false,
+          "evaluation": 0.4075898959999904,
+          "realization": 2.9924176450585946,
+          "total": 3.400007541058585,
+          "derivation": "/nix/store/6r48axdj1igcpl1hrmz49v0a624s3blm-drvgo-ci-d6c38dd0b8b2-before-2.drv",
+          "result": "/nix/store/lf0pvpq3fx50q3v65acaakcdcd3y4png-drvgo-ci-d6c38dd0b8b2-before-2",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 2,
+          "warmup": false,
+          "evaluation": 0.4138842810643837,
+          "realization": 3.120346002979204,
+          "total": 3.5342302840435877,
+          "derivation": "/nix/store/gf2xp5fa2z80g25bckmg1w7d1wqlivfq-drvgo-ci-d6c38dd0b8b2-after-2.drv",
+          "result": "/nix/store/n908y42q3fgpvlcnrrkf44ca8rcj26pf-drvgo-ci-d6c38dd0b8b2-after-2",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 3,
+          "warmup": false,
+          "evaluation": 0.4028299719793722,
+          "realization": 3.0453453180380166,
+          "total": 3.4481752900173888,
+          "derivation": "/nix/store/cyx3g341qr67sihj11kkpqp5rfyp64w0-drvgo-ci-d6c38dd0b8b2-after-3.drv",
+          "result": "/nix/store/dfzw8yxpas659zpbacin54a4hj2hlr6i-drvgo-ci-d6c38dd0b8b2-after-3",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 3,
+          "warmup": false,
+          "evaluation": 0.3948944410076365,
+          "realization": 2.9992363289929926,
+          "total": 3.394130770000629,
+          "derivation": "/nix/store/y6can1zp9il9y5xn6lh5p4hmh40prr5i-drvgo-ci-d6c38dd0b8b2-before-3.drv",
+          "result": "/nix/store/04ms1lhqxgmfjqayf4plh9jf2l81rz4p-drvgo-ci-d6c38dd0b8b2-before-3",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 4,
+          "warmup": false,
+          "evaluation": 0.3975419079652056,
+          "realization": 3.066528570954688,
+          "total": 3.4640704789198935,
+          "derivation": "/nix/store/xa8nhl2l7s5a5qkrkd6qh06l4lm0147b-drvgo-ci-d6c38dd0b8b2-before-4.drv",
+          "result": "/nix/store/yczqnphl2qm40bn2hki6ncwdsgx298xy-drvgo-ci-d6c38dd0b8b2-before-4",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 4,
+          "warmup": false,
+          "evaluation": 0.399291644920595,
+          "realization": 3.0098677970236167,
+          "total": 3.4091594419442117,
+          "derivation": "/nix/store/lf2pbz062qwnspawhm8z7ic1ba5vd1ls-drvgo-ci-d6c38dd0b8b2-after-4.drv",
+          "result": "/nix/store/qvfw90kppbmjknqgqvmnwf0hm4mdls2j-drvgo-ci-d6c38dd0b8b2-after-4",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 5,
+          "warmup": false,
+          "evaluation": 0.4100623910780996,
+          "realization": 3.075995215913281,
+          "total": 3.4860576069913805,
+          "derivation": "/nix/store/s6i564ppmsa9bpp57gwwcqmbk06qvjxr-drvgo-ci-d6c38dd0b8b2-after-5.drv",
+          "result": "/nix/store/z3fbvzx4qjqgr1hp9kch2ynwr6fg8vga-drvgo-ci-d6c38dd0b8b2-after-5",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 5,
+          "warmup": false,
+          "evaluation": 0.3922333640512079,
+          "realization": 3.1743538129376248,
+          "total": 3.5665871769888327,
+          "derivation": "/nix/store/hgai4gr4zrsr1lqsnjgazzmhdwnvbxin-drvgo-ci-d6c38dd0b8b2-before-5.drv",
+          "result": "/nix/store/1vh521iri63pf6gfsnn3934c2k0sqfzp-drvgo-ci-d6c38dd0b8b2-before-5",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        }
+      ],
+      "medians": {
+        "before": {
+          "evaluation": 0.3948944410076365,
+          "realization": 2.9992363289929926,
+          "total": 3.400007541058585
+        },
+        "after": {
+          "evaluation": 0.4028299719793722,
+          "realization": 3.0453453180380166,
+          "total": 3.4481752900173888
+        }
+      }
+    },
+    "upm-eval": {
+      "scope": "Warm evaluation; no builds; iets tracing cache and Nix fallback disabled",
+      "dynamic_source": "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+      "package": "./cmd/upm",
+      "vendor_hash": "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+      "after_export_data": false,
+      "after_early_cutoff": false,
+      "roots": {
+        "before": "/tmp/drvgo-ci-planning-sdk",
+        "after": "/tmp/drvgo-ci-native-forwarding"
+      },
+      "records": [
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.4101172829978168,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.2648034649901092,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.15828869899269193,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.430788159952499,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.2774798070313409,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.1561038929503411,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.18748669605702162,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.2875904890242964,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.4075136400060728,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.14979068096727133,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.2506076209247112,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.4129901749547571,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.40987422596663237,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.24985443893820047,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.14052530599292368,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.4002144819824025,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.2619000900303945,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.14761391002684832,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.14999007899314165,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.24605806299950927,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.39616624894551933,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.1415961739839986,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.26612576097249985,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.41779052501078695,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.38787368196062744,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.2639097450301051,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.13695824902970344,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.3937992830760777,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.2695158589631319,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.14723420003429055,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.13255924894474447,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.22575034899637103,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.42378398904111236,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.13204028201289475,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.22315088205505162,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.4292557688895613,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.3842588959960267,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.23052382410969585,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.14798049302771688,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.407637523021549,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.2282152600819245,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.12349019199609756,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.14717803592793643,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.22739733895286918,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.4119759879540652,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.13337541103828698,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.2237168389838189,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.3999758259160444,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.40752206603065133,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.2557943291030824,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.12407519901171327,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.4455641470849514,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.22958474792540073,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.1358993009198457,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.12655360903590918,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.22231635998468846,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.4145928520010784,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.13981259299907833,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.22402462095487863,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.4182351599447429,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.4179028100334108,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.2304543290520087,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.1711575899971649,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.4140727079939097,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.2294340810040012,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.12194757198449224,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.1305346789304167,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.22660518100019544,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.422732254024595,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.13706978503614664,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.24522212205920368,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.41703224705997854,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.4160725260153413,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.2311539949150756,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.12082038295920938,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.4258772279135883,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.24591208901256323,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.12203775497619063,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.1546582489972934,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.22557447501458228,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.40641860908363014,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.1325939439702779,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.22554389794822782,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.3967030879575759,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.41454981197603047,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.26015090802684426,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.1284341459395364,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.4083225840004161,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.23008381493855268,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.13984184502623975,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.13850060396362096,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.22612347197718918,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.41407213103957474,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.1387350889854133,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.22193714196328074,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.40124630893114954,
+          "derivation": "/nix/store/4pvjbinqv7zk26h6r3039i5slhpv2z7q-drvgo.drv"
+        }
+      ],
+      "medians": {
+        "before": {
+          "nix": 0.4129901749547571,
+          "iets-1": 0.2311539949150756,
+          "iets-4": 0.13706978503614664
+        },
+        "after": {
+          "nix": 0.4119759879540652,
+          "iets-1": 0.2294340810040012,
+          "iets-4": 0.13850060396362096
+        }
+      }
+    }
+  },
+  "closures": {
+    "fixture": {
+      "scope": "Planner input closures, including raw derivation metadata; local zstd level 3 cache; no network timing",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "planners": {
+        "before": {
+          "derivation": "/nix/store/l313kc8gm5dwl42rb07ah4hhmv9943qn-drvgo-result.drv.drv",
+          "roots": [
+            "/nix/store/1lgzmpghizh752ar5knmljrzipx1gj9p-source",
+            "/nix/store/30nsyykw4l7wfjps1kzr14pg0p4kdfpc-go-libnix-toolchain.drv",
+            "/nix/store/3c2knj1p6gsadavbcb76wbbpy6cw06ws-go-libnix-compile-toolchain.drv",
+            "/nix/store/4il68xw7r1n1aj10j44v3qkwqgn7kx6a-drvgo-0.1.0",
+            "/nix/store/90nk33c4fkyg4x4dfk5cykqiryf2nlqq-bash-interactive-5.3p15",
+            "/nix/store/97d5ygrvqj55f4nx1x34wfdcc7qn11c0-coreutils-9.11",
+            "/nix/store/fknhv943140n2074n97va7hcavzif90c-coreutils-9.11.drv",
+            "/nix/store/hgf6ai3vmxmammq2jgpkkkwkl7vrc29v-go-libnix-native-toolchain.drv",
+            "/nix/store/r4yd7hpfwpx5s8ily1ipwjc17cl087mn-nix-2.34.8",
+            "/nix/store/yqmbc5la2lpf7arxnzdd4bd6n677fyh4-go-libnix-link-toolchain.drv",
+            "/nix/store/yx1d8x0p4i35hm41aj11f68ml7b8cfs5-go-libnix-planning-toolchain"
+          ],
+          "paths": 962,
+          "nar_bytes": 338909712,
+          "zstd_bytes": 97357118
+        },
+        "after": {
+          "derivation": "/nix/store/ia500vm6v17dq3id0s1brr9kdmh50v98-drvgo-result.drv.drv",
+          "roots": [
+            "/nix/store/1lgzmpghizh752ar5knmljrzipx1gj9p-source",
+            "/nix/store/30nsyykw4l7wfjps1kzr14pg0p4kdfpc-go-libnix-toolchain.drv",
+            "/nix/store/3c2knj1p6gsadavbcb76wbbpy6cw06ws-go-libnix-compile-toolchain.drv",
+            "/nix/store/90nk33c4fkyg4x4dfk5cykqiryf2nlqq-bash-interactive-5.3p15",
+            "/nix/store/97d5ygrvqj55f4nx1x34wfdcc7qn11c0-coreutils-9.11",
+            "/nix/store/hgf6ai3vmxmammq2jgpkkkwkl7vrc29v-go-libnix-native-toolchain.drv",
+            "/nix/store/krrd953szwm1c5q29bpw7rxr7cznlrki-drvgo-0.1.0.drv",
+            "/nix/store/pjjg5pcn2fcj5c26r5s185h02jdd7brh-go-libnix-planning-toolchain",
+            "/nix/store/r4yd7hpfwpx5s8ily1ipwjc17cl087mn-nix-2.34.8",
+            "/nix/store/rz5pwdv6mjz1my25x155qnlbhflvyd46-drvgo-0.1.0",
+            "/nix/store/yqmbc5la2lpf7arxnzdd4bd6n677fyh4-go-libnix-link-toolchain.drv"
+          ],
+          "paths": 964,
+          "nar_bytes": 339198952,
+          "zstd_bytes": 97467066
+        }
+      }
+    },
+    "upm": {
+      "scope": "Planner input closures, including raw derivation metadata; local zstd level 3 cache; no network timing",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "planners": {
+        "before": {
+          "derivation": "/nix/store/2066ivhzsn03xjhq588jfm8jhnfl97d1-drvgo-result.drv.drv",
+          "roots": [
+            "/nix/store/30nsyykw4l7wfjps1kzr14pg0p4kdfpc-go-libnix-toolchain.drv",
+            "/nix/store/3c2knj1p6gsadavbcb76wbbpy6cw06ws-go-libnix-compile-toolchain.drv",
+            "/nix/store/4il68xw7r1n1aj10j44v3qkwqgn7kx6a-drvgo-0.1.0",
+            "/nix/store/90nk33c4fkyg4x4dfk5cykqiryf2nlqq-bash-interactive-5.3p15",
+            "/nix/store/97d5ygrvqj55f4nx1x34wfdcc7qn11c0-coreutils-9.11",
+            "/nix/store/fknhv943140n2074n97va7hcavzif90c-coreutils-9.11.drv",
+            "/nix/store/h98rgzjab1dcnpwkz4akbggjk98zr13a-drvgo-modules-0-go-modules",
+            "/nix/store/hgf6ai3vmxmammq2jgpkkkwkl7vrc29v-go-libnix-native-toolchain.drv",
+            "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+            "/nix/store/r4yd7hpfwpx5s8ily1ipwjc17cl087mn-nix-2.34.8",
+            "/nix/store/yqmbc5la2lpf7arxnzdd4bd6n677fyh4-go-libnix-link-toolchain.drv",
+            "/nix/store/yx1d8x0p4i35hm41aj11f68ml7b8cfs5-go-libnix-planning-toolchain"
+          ],
+          "paths": 963,
+          "nar_bytes": 573123392,
+          "zstd_bytes": 290142836
+        },
+        "after": {
+          "derivation": "/nix/store/0mfnj9fsffjaa4p60v6xwc0p4y77qh20-drvgo-result.drv.drv",
+          "roots": [
+            "/nix/store/30nsyykw4l7wfjps1kzr14pg0p4kdfpc-go-libnix-toolchain.drv",
+            "/nix/store/3c2knj1p6gsadavbcb76wbbpy6cw06ws-go-libnix-compile-toolchain.drv",
+            "/nix/store/90nk33c4fkyg4x4dfk5cykqiryf2nlqq-bash-interactive-5.3p15",
+            "/nix/store/97d5ygrvqj55f4nx1x34wfdcc7qn11c0-coreutils-9.11",
+            "/nix/store/h98rgzjab1dcnpwkz4akbggjk98zr13a-drvgo-modules-0-go-modules",
+            "/nix/store/hgf6ai3vmxmammq2jgpkkkwkl7vrc29v-go-libnix-native-toolchain.drv",
+            "/nix/store/krrd953szwm1c5q29bpw7rxr7cznlrki-drvgo-0.1.0.drv",
+            "/nix/store/pjjg5pcn2fcj5c26r5s185h02jdd7brh-go-libnix-planning-toolchain",
+            "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+            "/nix/store/r4yd7hpfwpx5s8ily1ipwjc17cl087mn-nix-2.34.8",
+            "/nix/store/rz5pwdv6mjz1my25x155qnlbhflvyd46-drvgo-0.1.0",
+            "/nix/store/yqmbc5la2lpf7arxnzdd4bd6n677fyh4-go-libnix-link-toolchain.drv"
+          ],
+          "paths": 965,
+          "nar_bytes": 573412632,
+          "zstd_bytes": 290252784
+        }
+      }
+    }
+  },
+  "stress": {
+    "count": 200,
+    "nonce": "37a480bff09b",
+    "outputs": [
+      "/nix/store/72vxfk266zgfbza27bnjvv2r9iw83vjf-drvgo-forwarding-37a480bff09b-0",
+      "/nix/store/9mmxncvih2vx3648vg5b53h81qjg75i4-drvgo-forwarding-37a480bff09b-1",
+      "/nix/store/zy20h28nrmvf495gvbw6yd2rnqi9fl0p-drvgo-forwarding-37a480bff09b-2",
+      "/nix/store/9x6siiqlx2l910lq7clayggr1zp294kg-drvgo-forwarding-37a480bff09b-3",
+      "/nix/store/l3gipcb1qyjwa7jks2jhgxpfr39dwbwi-drvgo-forwarding-37a480bff09b-4",
+      "/nix/store/p4dkkbwjpws23b8s2d2g4p8wdbxmlk9b-drvgo-forwarding-37a480bff09b-5",
+      "/nix/store/2dl6dlx5g5b4hx5pgc8lcc4a7qvqsnhf-drvgo-forwarding-37a480bff09b-6",
+      "/nix/store/3kph94r0rsrp7d644k3ngjqqayrhs25w-drvgo-forwarding-37a480bff09b-7",
+      "/nix/store/ba7cwxp2dhi7ixq69yssbzw96k91v71q-drvgo-forwarding-37a480bff09b-8",
+      "/nix/store/fmaik7nhh1lx5yswxibjhj2rx57mvyih-drvgo-forwarding-37a480bff09b-9",
+      "/nix/store/42h9dkbs12r29kxn8wf16p8xxjbjd8jm-drvgo-forwarding-37a480bff09b-10",
+      "/nix/store/gig4swillzig7mix9hyn16d2y8712i6k-drvgo-forwarding-37a480bff09b-11",
+      "/nix/store/f4271nv7z3wg6spg0c39pg5ij0mdp3kc-drvgo-forwarding-37a480bff09b-12",
+      "/nix/store/rxvh8zy0dfa3x6z49pjd4kbka9q442hk-drvgo-forwarding-37a480bff09b-13",
+      "/nix/store/wziy8476d0xi7fm993ny94hi2aa4j2gk-drvgo-forwarding-37a480bff09b-14",
+      "/nix/store/s312qxdv71cs0kjlxqbrwdf6qq3906k2-drvgo-forwarding-37a480bff09b-15",
+      "/nix/store/icdk8ps0gxq7wdyprsih7b2cw2cbh6cz-drvgo-forwarding-37a480bff09b-16",
+      "/nix/store/6114xnshf4wi6a01faywjg5s14r3cbz8-drvgo-forwarding-37a480bff09b-17",
+      "/nix/store/49xp5vzjs2x1rfgrdl2kqsn3imslrw88-drvgo-forwarding-37a480bff09b-18",
+      "/nix/store/bp6b4ir9lbx7x5yb2n0gi4r7gghwfxvv-drvgo-forwarding-37a480bff09b-19",
+      "/nix/store/3nwdbn3wafn0c9c975y04b0mkh1nm012-drvgo-forwarding-37a480bff09b-20",
+      "/nix/store/cjwsx9c8alzbqd5xl2vac86sbxr9r3bq-drvgo-forwarding-37a480bff09b-21",
+      "/nix/store/j36jh0y110xwv5ars56bsw5pa5bj8fa3-drvgo-forwarding-37a480bff09b-22",
+      "/nix/store/68x7f1r9md0pfl6946j4a49smys0896s-drvgo-forwarding-37a480bff09b-23",
+      "/nix/store/7g41l1gln2dbwxg0gcx6dad17cm7xc2h-drvgo-forwarding-37a480bff09b-24",
+      "/nix/store/i2d6a8pwmbryqsp71sjxsq8vws6didfp-drvgo-forwarding-37a480bff09b-25",
+      "/nix/store/lvrryv1f5bb9dmrfsda73dd9ilx00fmv-drvgo-forwarding-37a480bff09b-26",
+      "/nix/store/nyyfw03q2ahp5ycwqkq0qz0zc64zw670-drvgo-forwarding-37a480bff09b-27",
+      "/nix/store/0fp0pywi35jf47ypmm2krpjwb7glllrc-drvgo-forwarding-37a480bff09b-28",
+      "/nix/store/xn4gb9cgqvk5bmskg8qmcdq1wlb93i6v-drvgo-forwarding-37a480bff09b-29",
+      "/nix/store/c7w26lfs97mnrdlys6r66g89zpk0jayq-drvgo-forwarding-37a480bff09b-30",
+      "/nix/store/gvfmph6p9kz4h66rh76wsdvrlcw4qpd7-drvgo-forwarding-37a480bff09b-31",
+      "/nix/store/i6vqig5b7wmp0m90qr3x4gdrkxpvqmz5-drvgo-forwarding-37a480bff09b-32",
+      "/nix/store/0dp4l2cskb1srrwj05ikk6y6xkrhzr32-drvgo-forwarding-37a480bff09b-33",
+      "/nix/store/g7j5zd3r733b86jqa8nb5an8kxplf2y4-drvgo-forwarding-37a480bff09b-34",
+      "/nix/store/vz9xz1yc5qi77hrnmx5vln9bn8b9ak57-drvgo-forwarding-37a480bff09b-35",
+      "/nix/store/ymmgsj5nd6qdda622zjw64rsvxqxa47s-drvgo-forwarding-37a480bff09b-36",
+      "/nix/store/hcal515180105l1cs8rkhd7saww8yj8c-drvgo-forwarding-37a480bff09b-37",
+      "/nix/store/54h8fdwy58gf8b8yrl0x2i653dp6h3wj-drvgo-forwarding-37a480bff09b-38",
+      "/nix/store/f39736pd0ahmx1a1qskimhh9saiiqlyf-drvgo-forwarding-37a480bff09b-39",
+      "/nix/store/mm556yigm8cszigbal1z3sawwgwsm1km-drvgo-forwarding-37a480bff09b-40",
+      "/nix/store/idpzqnrlq6v4x7psnza19yyhv119g9a4-drvgo-forwarding-37a480bff09b-41",
+      "/nix/store/ahai1vfb147fjmxk2b1wwxgd80808mhj-drvgo-forwarding-37a480bff09b-42",
+      "/nix/store/g1rbv7f2kwhiqd17la2h334ilghx8096-drvgo-forwarding-37a480bff09b-43",
+      "/nix/store/w3yc68bavln51k1l368qacfm8gy6pnd5-drvgo-forwarding-37a480bff09b-44",
+      "/nix/store/2ac7j9b8qqc9lqzv41asvln2dsvj8sli-drvgo-forwarding-37a480bff09b-45",
+      "/nix/store/rir6znxva8x5d5dw0n43wxqkxvj497sw-drvgo-forwarding-37a480bff09b-46",
+      "/nix/store/cvq5am2ja02ywsrbm23sv27003b83fnc-drvgo-forwarding-37a480bff09b-47",
+      "/nix/store/vy47b8p05ml9lxicb8z8200261d9rld5-drvgo-forwarding-37a480bff09b-48",
+      "/nix/store/kfcffb3p1qrm5s0k5vy68c0p13zlza82-drvgo-forwarding-37a480bff09b-49",
+      "/nix/store/96c3488092xy2ghg8pm2saqfwhn20kv1-drvgo-forwarding-37a480bff09b-50",
+      "/nix/store/3xs5hbcr9x4m4p0cpd86d651jwfmkijn-drvgo-forwarding-37a480bff09b-51",
+      "/nix/store/yyvisp5gs5n32f4jcvbgslrppy85jy0m-drvgo-forwarding-37a480bff09b-52",
+      "/nix/store/z44dmihqmq3023jp4zr2w9khigba9rin-drvgo-forwarding-37a480bff09b-53",
+      "/nix/store/n0j2a2ckqqqjm69hwl42kcdzgj3lg9l5-drvgo-forwarding-37a480bff09b-54",
+      "/nix/store/745gv1gx9d041fhqzyrj8aw8qh29qa4q-drvgo-forwarding-37a480bff09b-55",
+      "/nix/store/r9hpvi4z9h8jbf820p523swvcv049s6i-drvgo-forwarding-37a480bff09b-56",
+      "/nix/store/wyyvp7fxw4r50vbbmja1ccr0l52pxhf1-drvgo-forwarding-37a480bff09b-57",
+      "/nix/store/wpygkd3ym61338m7ih1swziswn2ajw6j-drvgo-forwarding-37a480bff09b-58",
+      "/nix/store/cbnjdjvnhgwm6sb6lc9mjkvashsfbpfk-drvgo-forwarding-37a480bff09b-59",
+      "/nix/store/2swy4gd8z20l0bzzp9qkysxnc9bhqn9n-drvgo-forwarding-37a480bff09b-60",
+      "/nix/store/867hpbkbz1w46wpqflcwsd2mx14ld5vn-drvgo-forwarding-37a480bff09b-61",
+      "/nix/store/04krqnljbyb9abc7pkmhc7ijf38j7v6f-drvgo-forwarding-37a480bff09b-62",
+      "/nix/store/2665l74b0h1zyv7c9aclhyz0cbqrzj8k-drvgo-forwarding-37a480bff09b-63",
+      "/nix/store/dbhhgv0f31cfnndabrm93ja5fnm6xjgq-drvgo-forwarding-37a480bff09b-64",
+      "/nix/store/w5c2lv0b0p4fzqpy348vfbgvmxri2rg5-drvgo-forwarding-37a480bff09b-65",
+      "/nix/store/ca88nml4pi171i3yijazn4dg59hcnxl3-drvgo-forwarding-37a480bff09b-66",
+      "/nix/store/h79k9b3hvzg1i0pcw2fy9nnl8s3cx7q2-drvgo-forwarding-37a480bff09b-67",
+      "/nix/store/kwi268fzxqcvlx5mbn9yg88jygn13ijl-drvgo-forwarding-37a480bff09b-68",
+      "/nix/store/jm7wj91ncz61xmlci5q2fkf37qkpi4hy-drvgo-forwarding-37a480bff09b-69",
+      "/nix/store/dpg0gpvvn4dfl8jx7iank5x98dzy52gr-drvgo-forwarding-37a480bff09b-70",
+      "/nix/store/w9qsv0s48knwh7jvkh0w0xsk3r93crk7-drvgo-forwarding-37a480bff09b-71",
+      "/nix/store/qvdsivh4jd1m13xqas6d3xg6cjvpnlp9-drvgo-forwarding-37a480bff09b-72",
+      "/nix/store/17mxhywlqlxqgkbiri7q2aj0k1ck1gv6-drvgo-forwarding-37a480bff09b-73",
+      "/nix/store/md9fd4848w6g855mqzw1fg57w8k5h0h0-drvgo-forwarding-37a480bff09b-74",
+      "/nix/store/mncl3zcjfff02nywy9nhs866qajiay5p-drvgo-forwarding-37a480bff09b-75",
+      "/nix/store/rvkk5z9120g19p0m7cc34qj4frixhqdx-drvgo-forwarding-37a480bff09b-76",
+      "/nix/store/8f8idz3nnqssj6mkd3vjw9qxgdzk76i0-drvgo-forwarding-37a480bff09b-77",
+      "/nix/store/vjx2285kivpwxy66gybcf4kbr474anjq-drvgo-forwarding-37a480bff09b-78",
+      "/nix/store/2h4hxh08lrir8hyr637zagcrpf3yfm66-drvgo-forwarding-37a480bff09b-79",
+      "/nix/store/l1mk2wwsn9li0gj35vxhwrg0wr43n8ry-drvgo-forwarding-37a480bff09b-80",
+      "/nix/store/6zq4g0r9fvxbl2728svlnxc9c143y2wi-drvgo-forwarding-37a480bff09b-81",
+      "/nix/store/r0cgbg3bbi5k6v6qxbpa3mn5xjnyl3c9-drvgo-forwarding-37a480bff09b-82",
+      "/nix/store/y0q5fjs6hxj84mzvpp4ad36i2w6giakq-drvgo-forwarding-37a480bff09b-83",
+      "/nix/store/yf3lkl0v9lq3hy1qsvdaxi6w4bkxwc8w-drvgo-forwarding-37a480bff09b-84",
+      "/nix/store/jxrjaz6sxdw1ms086ab3z0x9n03v55zx-drvgo-forwarding-37a480bff09b-85",
+      "/nix/store/vh05pffahc72g07ppj8gwivf05x391w8-drvgo-forwarding-37a480bff09b-86",
+      "/nix/store/n5ymx98r8c1d56qgrb8bmgbwaksjlvjf-drvgo-forwarding-37a480bff09b-87",
+      "/nix/store/nnn0gvv75mi66d2kzy8v1d14kfb69hbn-drvgo-forwarding-37a480bff09b-88",
+      "/nix/store/az7ibzvh068cc9jbrky66j25bczm99hz-drvgo-forwarding-37a480bff09b-89",
+      "/nix/store/n8lv0dfkx5wbwfdjn2p3csfn5q4hyyvr-drvgo-forwarding-37a480bff09b-90",
+      "/nix/store/h92x40qnqswyq0ww3mb10yj564p054i5-drvgo-forwarding-37a480bff09b-91",
+      "/nix/store/scz4wbcnxip2wx345hlx0dzxs7p131ad-drvgo-forwarding-37a480bff09b-92",
+      "/nix/store/w5csckggk9idvy3dg2afpx3d7vvv9x34-drvgo-forwarding-37a480bff09b-93",
+      "/nix/store/lhm3d6397hhc5gw3l2nyp9mjnvmmfyfs-drvgo-forwarding-37a480bff09b-94",
+      "/nix/store/p4n10r5c3dnw7y1dbkzzy0vbvrfm4lry-drvgo-forwarding-37a480bff09b-95",
+      "/nix/store/3pmm3wabaag75hzymz96j6w95i570244-drvgo-forwarding-37a480bff09b-96",
+      "/nix/store/9jvr4d94x5y5irx4w7m4sifp64m2gsds-drvgo-forwarding-37a480bff09b-97",
+      "/nix/store/l0id9vq56rrdkmi1m4bswccjs7xwn8hi-drvgo-forwarding-37a480bff09b-98",
+      "/nix/store/ny2izak040br6i93nzdcxirhwbip7rhk-drvgo-forwarding-37a480bff09b-99",
+      "/nix/store/8ibg6d5aq1frzjl71z25rcl29v9qvp4a-drvgo-forwarding-37a480bff09b-100",
+      "/nix/store/flfjli5ypcnwvl7ann4yw682iccaypnp-drvgo-forwarding-37a480bff09b-101",
+      "/nix/store/8k867whry644lj3hghbwk7dkk2nbs7hp-drvgo-forwarding-37a480bff09b-102",
+      "/nix/store/1lk4w5hpz7d542gk0dzaclfvn91v9qan-drvgo-forwarding-37a480bff09b-103",
+      "/nix/store/6k8y93jawwh7pn4zs79hp3904vr36p2d-drvgo-forwarding-37a480bff09b-104",
+      "/nix/store/vbddfssxzyqyqzzp5nxhipkbysyymwbz-drvgo-forwarding-37a480bff09b-105",
+      "/nix/store/9jfj9qzfkrampi9hjwkp8098q05yw3d0-drvgo-forwarding-37a480bff09b-106",
+      "/nix/store/r8h1sk5vkgaya1cp40kc4m9f55qrh3lr-drvgo-forwarding-37a480bff09b-107",
+      "/nix/store/wvhy78z7893dgnz779kkdb32ya3dw811-drvgo-forwarding-37a480bff09b-108",
+      "/nix/store/c2hnpkymqbmzv5gb98z5j64i0n3ijya0-drvgo-forwarding-37a480bff09b-109",
+      "/nix/store/rzsnrjyl2dalzjd5r0j7pgrza3yn7amc-drvgo-forwarding-37a480bff09b-110",
+      "/nix/store/x6ggi0cr7pxy3r9r7h4142ksa4a8a4yn-drvgo-forwarding-37a480bff09b-111",
+      "/nix/store/rx8j7mxbmn7886s55c9vsgnmhvxwh0pa-drvgo-forwarding-37a480bff09b-112",
+      "/nix/store/gxpy1kdj06wyyv1qipmi8m0yjdin2gw9-drvgo-forwarding-37a480bff09b-113",
+      "/nix/store/yqpmcddhgah3iapfm6hz1mmhmgq4dkww-drvgo-forwarding-37a480bff09b-114",
+      "/nix/store/a8cdhk90h1m2z2j4nydixqx74pqmfd06-drvgo-forwarding-37a480bff09b-115",
+      "/nix/store/hxgi6z2rk8v4jn85yq3ysf9sa41nw4xg-drvgo-forwarding-37a480bff09b-116",
+      "/nix/store/wqa290mjcx6wdcznxxnq1744cr8jxzk7-drvgo-forwarding-37a480bff09b-117",
+      "/nix/store/x31dadiyp9y30k1n1408f4dvfcm0f9jc-drvgo-forwarding-37a480bff09b-118",
+      "/nix/store/3vq3gb5yrc9zxx13qd32n85vbwvminq7-drvgo-forwarding-37a480bff09b-119",
+      "/nix/store/y6amq1mxgh0n0ybx2gy9zy8hi0fvvdpw-drvgo-forwarding-37a480bff09b-120",
+      "/nix/store/p888w4yqlid03wfajsim7hx780gxq1fy-drvgo-forwarding-37a480bff09b-121",
+      "/nix/store/smvmvbw87r1r6pw30dkpfhwrlyasmc5p-drvgo-forwarding-37a480bff09b-122",
+      "/nix/store/n07vqicr8jfhqf3s0256pczaqxflwx8g-drvgo-forwarding-37a480bff09b-123",
+      "/nix/store/84gak6c854vgdfgi455q26hgkwz4cijz-drvgo-forwarding-37a480bff09b-124",
+      "/nix/store/vbk13zjwnnjj2g2b5dad0iaiz4hr6cq0-drvgo-forwarding-37a480bff09b-125",
+      "/nix/store/sxw32fgk7f0dfk2ib2jw8s15zs6pb87l-drvgo-forwarding-37a480bff09b-126",
+      "/nix/store/wxb6zlxb4df2mchzq05f4m5iwgx5211s-drvgo-forwarding-37a480bff09b-127",
+      "/nix/store/b6w56hmgbpv8s6n0xhdnkh19y1qnk8fk-drvgo-forwarding-37a480bff09b-128",
+      "/nix/store/00akhpygksbaraiim6zspbs36592ar28-drvgo-forwarding-37a480bff09b-129",
+      "/nix/store/i8j7yyzhg8mq8ghrrr4q7i3y83n4f5qp-drvgo-forwarding-37a480bff09b-130",
+      "/nix/store/x8f2vrhi0ccqrzy67gzg6c3i9aza8y77-drvgo-forwarding-37a480bff09b-131",
+      "/nix/store/z3gsnhb7f7pz38kissqf4r91bgah633x-drvgo-forwarding-37a480bff09b-132",
+      "/nix/store/lpgp3hl2akiy1ab3jbja8avkm7amh4g9-drvgo-forwarding-37a480bff09b-133",
+      "/nix/store/35q49rjmk527f5azq6q8jljrp4k7sbqq-drvgo-forwarding-37a480bff09b-134",
+      "/nix/store/ylssn8ip7yv2ly245ykcmcwdzcmnc21v-drvgo-forwarding-37a480bff09b-135",
+      "/nix/store/7f2m0mvnjbj7lpzc783xwrfbkp38kwkp-drvgo-forwarding-37a480bff09b-136",
+      "/nix/store/3nch416h13bgknvdzs1wnza6bbcy4465-drvgo-forwarding-37a480bff09b-137",
+      "/nix/store/9v0fbh8w4jsx71r6x0c1k497l7gh579x-drvgo-forwarding-37a480bff09b-138",
+      "/nix/store/6lrxng0xjsk9wf2xkpa1126lnlhb76ac-drvgo-forwarding-37a480bff09b-139",
+      "/nix/store/2arw4x78fz4hmns1x186b79acsml4zbh-drvgo-forwarding-37a480bff09b-140",
+      "/nix/store/33v3pfw6nc6v9cydp0vblz3gvmhjcb89-drvgo-forwarding-37a480bff09b-141",
+      "/nix/store/13ikpwdviydfmp467y10w0g6ak0mwc5x-drvgo-forwarding-37a480bff09b-142",
+      "/nix/store/0zvapm3hn0m952m71ymnz686qga37q8d-drvgo-forwarding-37a480bff09b-143",
+      "/nix/store/qa5lkikn2w5y429d7yp3532w0hm61hli-drvgo-forwarding-37a480bff09b-144",
+      "/nix/store/4kfpmasgwyiwp559yk4p0c84k3kayz2s-drvgo-forwarding-37a480bff09b-145",
+      "/nix/store/3n44131bx6y5l3wx8ihy05mv592apmva-drvgo-forwarding-37a480bff09b-146",
+      "/nix/store/gkdl4x8wqb8mqpz327204wvaljazph20-drvgo-forwarding-37a480bff09b-147",
+      "/nix/store/b06lj5bbpqisk43dr0bb0hmlzlwqqv6m-drvgo-forwarding-37a480bff09b-148",
+      "/nix/store/p00pyam9xabqrzil6yjzf6vsddnpgz2d-drvgo-forwarding-37a480bff09b-149",
+      "/nix/store/9w3z5v0cacx6p7gpnxg8kxj7pppj8ci0-drvgo-forwarding-37a480bff09b-150",
+      "/nix/store/qhap8593dfvqav92l2vps00mf7s7r6k4-drvgo-forwarding-37a480bff09b-151",
+      "/nix/store/zy0vx34dc42c3k4i75z5mw2b5iln11hx-drvgo-forwarding-37a480bff09b-152",
+      "/nix/store/q2jdhk7xj7jsaz7pi8z2shfiscqalqz3-drvgo-forwarding-37a480bff09b-153",
+      "/nix/store/d0nhp1xv0qjvn2pynjh8j7hk5bn9wmr2-drvgo-forwarding-37a480bff09b-154",
+      "/nix/store/i8h5y5ww2v13l2j15q6slaf838hfh399-drvgo-forwarding-37a480bff09b-155",
+      "/nix/store/77cmcsgj0pffy6yjb5zir2bqwp8zaqqf-drvgo-forwarding-37a480bff09b-156",
+      "/nix/store/j7nvdvbd787w34wgyc58qlvf4aqi2blp-drvgo-forwarding-37a480bff09b-157",
+      "/nix/store/kgascqvxfd85jgq5y9qsncm6kj5amadk-drvgo-forwarding-37a480bff09b-158",
+      "/nix/store/jzbadaz8n5fma78y89ms2v70vzvxzci3-drvgo-forwarding-37a480bff09b-159",
+      "/nix/store/brwva86jqkl9z8lh2w64g4wyrfxjj4fd-drvgo-forwarding-37a480bff09b-160",
+      "/nix/store/vmzzw51f2ba1ivcmggkfan5ac5n06d3m-drvgo-forwarding-37a480bff09b-161",
+      "/nix/store/cyj5cakfwsshnw67y599kfg99zg6qkai-drvgo-forwarding-37a480bff09b-162",
+      "/nix/store/pjxkkkc3bm6167inkam18hiv1hff7wxq-drvgo-forwarding-37a480bff09b-163",
+      "/nix/store/q1b5awx6668bihasvs4hmjyrm6sf0zh4-drvgo-forwarding-37a480bff09b-164",
+      "/nix/store/dp0129fyq52z92v53154qkcr1plhd5av-drvgo-forwarding-37a480bff09b-165",
+      "/nix/store/rv9bxpfaxkr84h6pvl0pl5y0d7hdb5xd-drvgo-forwarding-37a480bff09b-166",
+      "/nix/store/smckr1h4idqrk9bl2y7yhzhxfr9pww36-drvgo-forwarding-37a480bff09b-167",
+      "/nix/store/42ff20cps5j451wqdvgm9vy8in8qvq01-drvgo-forwarding-37a480bff09b-168",
+      "/nix/store/pr7sdrkc3ivx3kklb33a6fagincmhpx3-drvgo-forwarding-37a480bff09b-169",
+      "/nix/store/imxjd3dd82jfbhj5ln5h3i0mbn53hy69-drvgo-forwarding-37a480bff09b-170",
+      "/nix/store/2671fgf0lfsqqx4i977cyzp2s3ray43g-drvgo-forwarding-37a480bff09b-171",
+      "/nix/store/8icz81l8g14sg2q6s3242ksgqm1zdd2q-drvgo-forwarding-37a480bff09b-172",
+      "/nix/store/ilk504icnjjpn2ylkilnsyw7qm0f5mzx-drvgo-forwarding-37a480bff09b-173",
+      "/nix/store/pdkmid827kavwhqpbii1f6gdgw5vi7iy-drvgo-forwarding-37a480bff09b-174",
+      "/nix/store/sn4955gbvk402rg41k1rdfrxmniqvp1y-drvgo-forwarding-37a480bff09b-175",
+      "/nix/store/1jfa3cfz2iq6i043lpaiafx9jlxqfkjn-drvgo-forwarding-37a480bff09b-176",
+      "/nix/store/hi74gxdmn5wn8x2xdssrbassp5ss2fc0-drvgo-forwarding-37a480bff09b-177",
+      "/nix/store/7bl3p3668j51wlbwgbfpra71cx0cx993-drvgo-forwarding-37a480bff09b-178",
+      "/nix/store/jr2ym8ndf55n8sxsd5f20l4hjb50bc37-drvgo-forwarding-37a480bff09b-179",
+      "/nix/store/b1xqnbhd7ini58s2pp7c6f2jzwmnxyc5-drvgo-forwarding-37a480bff09b-180",
+      "/nix/store/w4w5iph8agysvh8nyahbp2541w352081-drvgo-forwarding-37a480bff09b-181",
+      "/nix/store/m0bgskn8zdz6q7l6bk2ybcg9ip6cl861-drvgo-forwarding-37a480bff09b-182",
+      "/nix/store/hvycaslfbyq538g23piq34kkg5y92rdl-drvgo-forwarding-37a480bff09b-183",
+      "/nix/store/iacfcxykhizpzymj8pyddj5d4f9rz17x-drvgo-forwarding-37a480bff09b-184",
+      "/nix/store/9smqxy40r72x5ic27a3q1vjwwngiprqs-drvgo-forwarding-37a480bff09b-185",
+      "/nix/store/nyqaw8dl86nhvmskzg9mw7pbm7rkavy4-drvgo-forwarding-37a480bff09b-186",
+      "/nix/store/pjkkxznd7kdw8i3ghsp9aja4jzggrpxs-drvgo-forwarding-37a480bff09b-187",
+      "/nix/store/kxz8kxpiakva46g89djj5ayzgar8c57d-drvgo-forwarding-37a480bff09b-188",
+      "/nix/store/rwdhcfyb0n81g36liam1jk5lv14d2527-drvgo-forwarding-37a480bff09b-189",
+      "/nix/store/rx46afw7llsj2caf7lv4vfmi47dch7rc-drvgo-forwarding-37a480bff09b-190",
+      "/nix/store/qwjnz38h5w09sk18g6bsxlhkmpyilkhn-drvgo-forwarding-37a480bff09b-191",
+      "/nix/store/z3rxdn4wh1231vdbk7aisvrj59kq4c4c-drvgo-forwarding-37a480bff09b-192",
+      "/nix/store/f5ygjjx619bgdb1qndxlinqqfpv2pqcy-drvgo-forwarding-37a480bff09b-193",
+      "/nix/store/ynr4ysydbq1pq131h982akgww4mfwdfs-drvgo-forwarding-37a480bff09b-194",
+      "/nix/store/lmrpczkjmf847a0ar5b2wbz7vwkri4jj-drvgo-forwarding-37a480bff09b-195",
+      "/nix/store/535fzx0i19g7sniv6ksqi6547zcn77dp-drvgo-forwarding-37a480bff09b-196",
+      "/nix/store/fli3by9zlpf9jy09lkq18arwgl1ll6qk-drvgo-forwarding-37a480bff09b-197",
+      "/nix/store/k912qrk5mmfq4w58ddyphw4np35kn7s5-drvgo-forwarding-37a480bff09b-198",
+      "/nix/store/wr6am940m05vc9hkd16gfzhinzn2smay-drvgo-forwarding-37a480bff09b-199"
+    ],
+    "target": "/nix/store/fbjhcabp0rc1i3v3jl9cz66bd3xvh2j4-drvgo-forwarding-target",
+    "sandboxed_short_builders": "passed"
+  },
+  "iets": {
+    "iets": "/nix/store/4adhszix9rn77kn8xn2m5mvbj123lv0p-iets-0.2.0/bin/iets",
+    "nonce": "298d4254d7ec",
+    "records": [
+      {
+        "case": "outer",
+        "client": "nix",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.45267926598899066,
+        "derivation": "/nix/store/dnvzxc5ymcbnv4aakwijjzf8i6w4v85f-drvgo-iets-298d4254d7ec-outer.drv"
+      },
+      {
+        "case": "outer",
+        "client": "iets-1",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.22931358707137406,
+        "derivation": "/nix/store/dnvzxc5ymcbnv4aakwijjzf8i6w4v85f-drvgo-iets-298d4254d7ec-outer.drv"
+      },
+      {
+        "case": "outer",
+        "client": "iets-4",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.1324952649883926,
+        "derivation": "/nix/store/dnvzxc5ymcbnv4aakwijjzf8i6w4v85f-drvgo-iets-298d4254d7ec-outer.drv"
+      },
+      {
+        "case": "outer",
+        "client": "iets-4",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.11588047700934112,
+        "derivation": "/nix/store/dnvzxc5ymcbnv4aakwijjzf8i6w4v85f-drvgo-iets-298d4254d7ec-outer.drv"
+      },
+      {
+        "case": "outer",
+        "client": "iets-1",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.20105654699727893,
+        "derivation": "/nix/store/dnvzxc5ymcbnv4aakwijjzf8i6w4v85f-drvgo-iets-298d4254d7ec-outer.drv"
+      },
+      {
+        "case": "outer",
+        "client": "nix",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.41572564002126455,
+        "derivation": "/nix/store/dnvzxc5ymcbnv4aakwijjzf8i6w4v85f-drvgo-iets-298d4254d7ec-outer.drv"
+      },
+      {
+        "case": "nested",
+        "client": "nix",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.45190444902982563,
+        "derivation": "/nix/store/ri136zvdb105lvzd5sznh99ah6ajmc2c-drvgo-iets-298d4254d7ec-nested.drv"
+      },
+      {
+        "case": "nested",
+        "client": "iets-1",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.2287771509727463,
+        "derivation": "/nix/store/ri136zvdb105lvzd5sznh99ah6ajmc2c-drvgo-iets-298d4254d7ec-nested.drv"
+      },
+      {
+        "case": "nested",
+        "client": "iets-4",
+        "trial": 0,
+        "warmup": true,
+        "seconds": 0.11497069604229182,
+        "derivation": "/nix/store/ri136zvdb105lvzd5sznh99ah6ajmc2c-drvgo-iets-298d4254d7ec-nested.drv"
+      },
+      {
+        "case": "nested",
+        "client": "iets-4",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.17842011502943933,
+        "derivation": "/nix/store/ri136zvdb105lvzd5sznh99ah6ajmc2c-drvgo-iets-298d4254d7ec-nested.drv"
+      },
+      {
+        "case": "nested",
+        "client": "iets-1",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.23167185205966234,
+        "derivation": "/nix/store/ri136zvdb105lvzd5sznh99ah6ajmc2c-drvgo-iets-298d4254d7ec-nested.drv"
+      },
+      {
+        "case": "nested",
+        "client": "nix",
+        "trial": 1,
+        "warmup": false,
+        "seconds": 0.4366621329681948,
+        "derivation": "/nix/store/ri136zvdb105lvzd5sznh99ah6ajmc2c-drvgo-iets-298d4254d7ec-nested.drv"
+      }
+    ],
+    "checks": [
+      {
+        "case": "outer",
+        "derivation": "/nix/store/dnvzxc5ymcbnv4aakwijjzf8i6w4v85f-drvgo-iets-298d4254d7ec-outer.drv",
+        "output": "/nix/store/q5ri15y8pbmalv3919lwxdrnmwil7jgp-drvgo-iets-298d4254d7ec-outer",
+        "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture",
+        "direct_output": "/nix/store/k5slr2pcmf0pnddjmc0y5w8mhaw8k4sk-drvgo-iets-298d4254d7ec-outer-result"
+      },
+      {
+        "case": "nested",
+        "derivation": "/nix/store/ri136zvdb105lvzd5sznh99ah6ajmc2c-drvgo-iets-298d4254d7ec-nested.drv",
+        "output": "/nix/store/4gax773vprrfb0fhakjxnkxc98zfz2d7-drvgo-iets-298d4254d7ec-nested",
+        "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture",
+        "direct_output": "/nix/store/4q64p3ysaccwncghbjcbnhv5gbajfg5y-drvgo-iets-298d4254d7ec-nested-result"
+      },
+      {
+        "case": "runtime-nested-False-explicit-False",
+        "derivation": "/nix/store/3armzmqhyiizizgj2yqsn8l4in8rr3pa-drvgo-iets-298d4254d7ec-runtime-nested-False-explicit-False.drv",
+        "output": "/nix/store/da100v1rb5w0v61y8vdysy1hj3rna0nx-drvgo-iets-298d4254d7ec-runtime-nested-False-explicit-False",
+        "command_output": "/nix/store/ya3gdy1jp3cbh2n7ddxz5hxmx1w0l982-go-example.com-runtime-reference"
+      },
+      {
+        "case": "runtime-nested-False-explicit-True",
+        "derivation": "/nix/store/87zakcvxai7vzyvd8z4gir80r9g0glfp-drvgo-iets-298d4254d7ec-runtime-nested-False-explicit-True.drv",
+        "output": "/nix/store/rsdg63rkiw51dll3nhcsl36i9ycqfkn7-drvgo-iets-298d4254d7ec-runtime-nested-False-explicit-True",
+        "command_output": "/nix/store/ya3gdy1jp3cbh2n7ddxz5hxmx1w0l982-go-example.com-runtime-reference"
+      },
+      {
+        "case": "runtime-nested-True-explicit-False",
+        "derivation": "/nix/store/6dqbvnqqsdiz7wvgvszhjv5m6cdfsyww-drvgo-iets-298d4254d7ec-runtime-nested-True-explicit-False.drv",
+        "output": "/nix/store/hhqykhr4xg4sxxgsym6gscf9fi7jnzv9-drvgo-iets-298d4254d7ec-runtime-nested-True-explicit-False",
+        "command_output": "/nix/store/ya3gdy1jp3cbh2n7ddxz5hxmx1w0l982-go-example.com-runtime-reference"
+      },
+      {
+        "case": "runtime-nested-True-explicit-True",
+        "derivation": "/nix/store/wvn971jb7qjn7qirmdda7cfn8h9g6isd-drvgo-iets-298d4254d7ec-runtime-nested-True-explicit-True.drv",
+        "output": "/nix/store/r3vwgm8jy6ih1yr4wmvywcvprsshfvz0-drvgo-iets-298d4254d7ec-runtime-nested-True-explicit-True",
+        "command_output": "/nix/store/ya3gdy1jp3cbh2n7ddxz5hxmx1w0l982-go-example.com-runtime-reference"
+      }
+    ],
+    "scope": "Warm evaluation with tracing cache disabled; real daemon builds with IFD and classic fallback disabled. Nested planning uses iets too.",
+    "version": "iets 0.2.0",
+    "nix_version": "nix (Determinate Nix 3.24.1) 2.35.3",
+    "embed_invalidation": "passed",
+    "optional_tests": [
+      {
+        "case": "optional-outer-empty",
+        "command_output": "/nix/store/1lbg54dinvq7y19h5jmr8shgx1zrq1fz-go-empty-tests"
+      },
+      {
+        "case": "optional-outer-tagged",
+        "command_output": "/nix/store/97q356nrha62x10y9xgy2kx7a0mc25bg-go-example.com-iets-tests.test"
+      },
+      {
+        "case": "optional-nested-empty",
+        "command_output": "/nix/store/1lbg54dinvq7y19h5jmr8shgx1zrq1fz-go-empty-tests"
+      },
+      {
+        "case": "optional-nested-tagged",
+        "command_output": "/nix/store/97q356nrha62x10y9xgy2kx7a0mc25bg-go-example.com-iets-tests.test"
+      }
+    ],
+    "optional_tests_invalid_after_cached_empty": "passed",
+    "native_optional_tests": [
+      {
+        "case": "native-optional-outer",
+        "command_output": "/nix/store/1lbg54dinvq7y19h5jmr8shgx1zrq1fz-go-empty-tests"
+      },
+      {
+        "case": "native-optional-nested",
+        "command_output": "/nix/store/1lbg54dinvq7y19h5jmr8shgx1zrq1fz-go-empty-tests"
+      }
+    ],
+    "native_optional_tests_invalid_after_cached_empty": "passed",
+    "medians": {
+      "outer": {
+        "nix": 0.41572564002126455,
+        "iets-1": 0.20105654699727893,
+        "iets-4": 0.11588047700934112
+      },
+      "nested": {
+        "nix": 0.4366621329681948,
+        "iets-1": 0.23167185205966234,
+        "iets-4": 0.17842011502943933
+      }
+    }
+  },
+  "compatibility": {
+    "go": "go1.26.5",
+    "platform": [
+      "linux",
+      "amd64"
+    ],
+    "toolchain": "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+    "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+    "forwarding": {
+      "count": 200,
+      "nonce": "f6e4fd9504cf",
+      "outputs": [
+        "/nix/store/l4jv1vamchbhvqdm61n5xacgdm09qpvv-drvgo-forwarding-f6e4fd9504cf-0",
+        "/nix/store/fvpnk6vph75f1syj8m9434b26l84aqbw-drvgo-forwarding-f6e4fd9504cf-1",
+        "/nix/store/cymy6nslnkbxpa9y2b6jql7c9f7ai3gx-drvgo-forwarding-f6e4fd9504cf-2",
+        "/nix/store/zfkkyvg2g7zmm5ki487kxwb1nhakxj0c-drvgo-forwarding-f6e4fd9504cf-3",
+        "/nix/store/jck026jcqc4g3mhidj5102nzs7slqz5f-drvgo-forwarding-f6e4fd9504cf-4",
+        "/nix/store/id6dmbx5yr1apd771pqv4r3g3k3lmd2h-drvgo-forwarding-f6e4fd9504cf-5",
+        "/nix/store/sgc0gmx0vdpsfkv2wbj4jli06z6shr81-drvgo-forwarding-f6e4fd9504cf-6",
+        "/nix/store/1kwliajcazx1p71lh0g72g2hskr8l6jq-drvgo-forwarding-f6e4fd9504cf-7",
+        "/nix/store/zxb1wgb1dh0rxmrxjz5ijai51iq0vsq7-drvgo-forwarding-f6e4fd9504cf-8",
+        "/nix/store/hmzqlp1avjc0zz5jkvhmqhribw663qql-drvgo-forwarding-f6e4fd9504cf-9",
+        "/nix/store/82qw5qbayb4p97j7za8j7s1mzxldznc4-drvgo-forwarding-f6e4fd9504cf-10",
+        "/nix/store/dbbc1j8qbf33y6i8ismaqxvnymzyy8m3-drvgo-forwarding-f6e4fd9504cf-11",
+        "/nix/store/q6134jv2ff6d842a77fvdbz8xcw1f7g4-drvgo-forwarding-f6e4fd9504cf-12",
+        "/nix/store/n5w1may245c4qwq4aqasryd6sx4nydy8-drvgo-forwarding-f6e4fd9504cf-13",
+        "/nix/store/g0fj8vswic3wncxi4b4gqdxvv2y165fw-drvgo-forwarding-f6e4fd9504cf-14",
+        "/nix/store/8i2hdf3ya33ikwk8nbnm1mlp8rby6b8k-drvgo-forwarding-f6e4fd9504cf-15",
+        "/nix/store/anzxnjpv10dlmvl1fjfhrnjd6dxrmph9-drvgo-forwarding-f6e4fd9504cf-16",
+        "/nix/store/20ymfw20kh7jil49abpqrmv2i5hlk5a4-drvgo-forwarding-f6e4fd9504cf-17",
+        "/nix/store/zcbxryyv75nrx50116nb1xj2g6jqc2z1-drvgo-forwarding-f6e4fd9504cf-18",
+        "/nix/store/h8f6jp1bqfxmii6mvx0phg42jnyd0qw9-drvgo-forwarding-f6e4fd9504cf-19",
+        "/nix/store/9cf47fxykgrn97mfabp18m2bqmcjn4pa-drvgo-forwarding-f6e4fd9504cf-20",
+        "/nix/store/pwcid746kn98fdkvwcpkfr5cz7varsmm-drvgo-forwarding-f6e4fd9504cf-21",
+        "/nix/store/3s6jf4cn37xscjq61wrav9f0v44azfaw-drvgo-forwarding-f6e4fd9504cf-22",
+        "/nix/store/0x0cg8jdcmxw8k6x4340spxm90h02fvx-drvgo-forwarding-f6e4fd9504cf-23",
+        "/nix/store/p18059vx47zxv2i0j4l64qhxjm23714f-drvgo-forwarding-f6e4fd9504cf-24",
+        "/nix/store/p29shccvwkdq137r1isv77ws2vwd2b0b-drvgo-forwarding-f6e4fd9504cf-25",
+        "/nix/store/6hkcmfw2bki8v5bvbhrij6y5k9ry57q0-drvgo-forwarding-f6e4fd9504cf-26",
+        "/nix/store/3c8gccajhpydwwf5fjdbs7flgsdqic05-drvgo-forwarding-f6e4fd9504cf-27",
+        "/nix/store/axc2hilybmv9anxi5nkwydca9hkwjy1s-drvgo-forwarding-f6e4fd9504cf-28",
+        "/nix/store/d4m4220pknfls7fil0h9qf7qq5i6xgk4-drvgo-forwarding-f6e4fd9504cf-29",
+        "/nix/store/6v4cy43c132i9awqrf82625v7502315k-drvgo-forwarding-f6e4fd9504cf-30",
+        "/nix/store/q9k8g02xb0sw2jnl7wz1saq6am7xgg0d-drvgo-forwarding-f6e4fd9504cf-31",
+        "/nix/store/6dmxm5i1k3h3a67l39k8gr5hvi8vvv2c-drvgo-forwarding-f6e4fd9504cf-32",
+        "/nix/store/l2ighz78s4gsshay77a8qrfr7fkhb11m-drvgo-forwarding-f6e4fd9504cf-33",
+        "/nix/store/fw5is09ch0dzjwvzanyzd0js5x6anx1n-drvgo-forwarding-f6e4fd9504cf-34",
+        "/nix/store/r0p70dl9xvkgyxm4pqmdl8wf11ljjdzn-drvgo-forwarding-f6e4fd9504cf-35",
+        "/nix/store/5zs43mh8fzkwb8p4yn83lr0r8697vqdi-drvgo-forwarding-f6e4fd9504cf-36",
+        "/nix/store/qgfaw5mrmh1njfaz4j1gpgiayd2i67jp-drvgo-forwarding-f6e4fd9504cf-37",
+        "/nix/store/2ll92z9sjs9r7cpnplib53vvxybxg5bb-drvgo-forwarding-f6e4fd9504cf-38",
+        "/nix/store/7h41i26m9wfvwj0wzgdnvh32xm28mxc4-drvgo-forwarding-f6e4fd9504cf-39",
+        "/nix/store/d90w15isshm7jyyfb0gpl255crbv9vzb-drvgo-forwarding-f6e4fd9504cf-40",
+        "/nix/store/csw5zngmh5g9cdzg8hhc43l13xz5pdpy-drvgo-forwarding-f6e4fd9504cf-41",
+        "/nix/store/6mhg51jq9lxhg3pljx0wgf6yzm09cb57-drvgo-forwarding-f6e4fd9504cf-42",
+        "/nix/store/8gpxy63dqqrjc1321ny0r66dgixi1j55-drvgo-forwarding-f6e4fd9504cf-43",
+        "/nix/store/yc8s7w7zk3i89vjwyj2qxvdx83vrf803-drvgo-forwarding-f6e4fd9504cf-44",
+        "/nix/store/06zc7qsshypbg7g65zpmyv8yh4fm9jj8-drvgo-forwarding-f6e4fd9504cf-45",
+        "/nix/store/jryhpc5c6anlhf1xv8psgmx3pd4rinqi-drvgo-forwarding-f6e4fd9504cf-46",
+        "/nix/store/nsn57iyq15ln5z9wq1hn1s0y2jc2qzjz-drvgo-forwarding-f6e4fd9504cf-47",
+        "/nix/store/cdkc24ky1hdfbcp9hsylwz4ymw6jfr7c-drvgo-forwarding-f6e4fd9504cf-48",
+        "/nix/store/4vdfgv8achyirj9g2arhyrpbjf79wnz5-drvgo-forwarding-f6e4fd9504cf-49",
+        "/nix/store/kplnc5zz3psjahq68w1gggnp73px84rh-drvgo-forwarding-f6e4fd9504cf-50",
+        "/nix/store/a2916m58vpbhr67c63hbmmq5p6q1v0ik-drvgo-forwarding-f6e4fd9504cf-51",
+        "/nix/store/19bgmkzf1n28ks3x9cm0m82378prvcm6-drvgo-forwarding-f6e4fd9504cf-52",
+        "/nix/store/nvcpnqma386klg84hr3l2djz4nwbh151-drvgo-forwarding-f6e4fd9504cf-53",
+        "/nix/store/1rrn2spya414kkr7qavzi2gy0fwssk5v-drvgo-forwarding-f6e4fd9504cf-54",
+        "/nix/store/5abir0mshc5g1lclhc9p7lvyzvzlmil4-drvgo-forwarding-f6e4fd9504cf-55",
+        "/nix/store/w8x3ilyi67qxdkm1vl7gqkd04nhifpkh-drvgo-forwarding-f6e4fd9504cf-56",
+        "/nix/store/cfrqnd6k3520gpnsa222163f9qix4gjy-drvgo-forwarding-f6e4fd9504cf-57",
+        "/nix/store/ynzs30cjlncrpxzi8qqzfxcciqk5wwds-drvgo-forwarding-f6e4fd9504cf-58",
+        "/nix/store/r5ngnd7xc2zpl74g8f0114dza2v6vri6-drvgo-forwarding-f6e4fd9504cf-59",
+        "/nix/store/mrvzaaynka10wdm2wjj3gmr721p8ghxw-drvgo-forwarding-f6e4fd9504cf-60",
+        "/nix/store/d23maqfvls9yglwkbkpw9h5184n6lfrl-drvgo-forwarding-f6e4fd9504cf-61",
+        "/nix/store/qdfzqc11ysb03zj4imzqfr7isjxj5rjm-drvgo-forwarding-f6e4fd9504cf-62",
+        "/nix/store/qdmqivg2zq5hc2argafm3qdjjk82d5p3-drvgo-forwarding-f6e4fd9504cf-63",
+        "/nix/store/pmka36y0rg5lsiq1qh9x5fbvz0vv52nq-drvgo-forwarding-f6e4fd9504cf-64",
+        "/nix/store/39nq72q80258jx30zxx1mrvs3y55qrxp-drvgo-forwarding-f6e4fd9504cf-65",
+        "/nix/store/5ic8n29lvwm0a15y5dns7fh5jg6d2wqq-drvgo-forwarding-f6e4fd9504cf-66",
+        "/nix/store/yw359y89ms1k9is59alldjpjn4l8fj6z-drvgo-forwarding-f6e4fd9504cf-67",
+        "/nix/store/mb9k0n92yxn1yvsfcw2vpm16r7a00mm9-drvgo-forwarding-f6e4fd9504cf-68",
+        "/nix/store/r7dg9nr0bkv8nq2rcy0ab6v9ikr85ssv-drvgo-forwarding-f6e4fd9504cf-69",
+        "/nix/store/wgyr1ccjmcm83zss1a3fplkwbxw1rhgv-drvgo-forwarding-f6e4fd9504cf-70",
+        "/nix/store/7cl87gfamqkmfkipf89kzfw3m34czq3q-drvgo-forwarding-f6e4fd9504cf-71",
+        "/nix/store/xxcmch2pzmwfbj45zgrjhqv03b5savks-drvgo-forwarding-f6e4fd9504cf-72",
+        "/nix/store/jfp97a1d905ngy3ayplndk75nwbn8nnp-drvgo-forwarding-f6e4fd9504cf-73",
+        "/nix/store/7nzmji8mrn5ljmrv3hkjvw4qxnhg4k07-drvgo-forwarding-f6e4fd9504cf-74",
+        "/nix/store/kl0bnvn36ddk1s0g49z10x8blfz19gp4-drvgo-forwarding-f6e4fd9504cf-75",
+        "/nix/store/ak9waiikdpk592qlcxf64bxd7ysfdz9c-drvgo-forwarding-f6e4fd9504cf-76",
+        "/nix/store/vbgqhslppv5my0h67zqg0zwkjn31z24c-drvgo-forwarding-f6e4fd9504cf-77",
+        "/nix/store/82yvn81sl6qi3gr5rnhcy71r0y735j1y-drvgo-forwarding-f6e4fd9504cf-78",
+        "/nix/store/adrv619r77nwgqada07mk1n38z7nv4fh-drvgo-forwarding-f6e4fd9504cf-79",
+        "/nix/store/hy0ks9rb19shlcam9qlb9xndgy0bhwj2-drvgo-forwarding-f6e4fd9504cf-80",
+        "/nix/store/z66sm5r84vxd0mzvsjayij6gdy8yk59k-drvgo-forwarding-f6e4fd9504cf-81",
+        "/nix/store/f51ak34xll398yhnxs2ibw15100mjpca-drvgo-forwarding-f6e4fd9504cf-82",
+        "/nix/store/all6jwpkwzfy463zlq3wapnl90k99vc7-drvgo-forwarding-f6e4fd9504cf-83",
+        "/nix/store/m7vc434pzkxnkwx05zk4d2m02pcvkkmh-drvgo-forwarding-f6e4fd9504cf-84",
+        "/nix/store/m7pk2bfgzvsysjq8bmnm03lqnq1dn5q3-drvgo-forwarding-f6e4fd9504cf-85",
+        "/nix/store/s2sqggzybqy83mb5k7p1vqivfbci1y9r-drvgo-forwarding-f6e4fd9504cf-86",
+        "/nix/store/hkirhgnmks3mm8gsc470i8bmvid3846m-drvgo-forwarding-f6e4fd9504cf-87",
+        "/nix/store/r9rk9pvx9vqy8ra8gj9shjcnr69qas27-drvgo-forwarding-f6e4fd9504cf-88",
+        "/nix/store/658nwcnbsznvc7fds0bqpimih5si8pal-drvgo-forwarding-f6e4fd9504cf-89",
+        "/nix/store/20wafwzm86v19jlsqgyrm0cgr5h4s0cy-drvgo-forwarding-f6e4fd9504cf-90",
+        "/nix/store/r7b5mni3cvwjgx84kxql9kn0d8hykglf-drvgo-forwarding-f6e4fd9504cf-91",
+        "/nix/store/l4bbrcvnpckkw4sv6b1s6sz6im1rbvkk-drvgo-forwarding-f6e4fd9504cf-92",
+        "/nix/store/xnjkybwpyz1gy49qf8300q2j1f8d5zbr-drvgo-forwarding-f6e4fd9504cf-93",
+        "/nix/store/8kg1dwzgzgcrwjljhpqvbb9ivdlp5jzv-drvgo-forwarding-f6e4fd9504cf-94",
+        "/nix/store/hh68rswj2qzr20089lw1lm4m23mamh8r-drvgo-forwarding-f6e4fd9504cf-95",
+        "/nix/store/3vbm94l5pm92hab8y83llix4qr0aghj9-drvgo-forwarding-f6e4fd9504cf-96",
+        "/nix/store/8k4fig2chqp22s7ssk9ykazadvn8b14n-drvgo-forwarding-f6e4fd9504cf-97",
+        "/nix/store/6kq3lvxdw5rdqvrw1nv6pzg01a0lcxlj-drvgo-forwarding-f6e4fd9504cf-98",
+        "/nix/store/5s1p02z4i0wvma5byzq376v2rippjw37-drvgo-forwarding-f6e4fd9504cf-99",
+        "/nix/store/2z94rlgg7iq18n6wchzbhf5gvzpykjn7-drvgo-forwarding-f6e4fd9504cf-100",
+        "/nix/store/sbvv49mvd01jn02mpfk1f9bcf88qz0sx-drvgo-forwarding-f6e4fd9504cf-101",
+        "/nix/store/5zljpxg7birbjzzlb9ll4ra8bi4szf8s-drvgo-forwarding-f6e4fd9504cf-102",
+        "/nix/store/2gyalvcbjg6ch56589ianqrksp64v01q-drvgo-forwarding-f6e4fd9504cf-103",
+        "/nix/store/as86fqfzq6a969zyphrm95wxc5fvnx0n-drvgo-forwarding-f6e4fd9504cf-104",
+        "/nix/store/w60pl12nnwp30hp6srmwmag5i38knqz2-drvgo-forwarding-f6e4fd9504cf-105",
+        "/nix/store/xhwi2j632whrh5nmfrmq7f99f36p5ghy-drvgo-forwarding-f6e4fd9504cf-106",
+        "/nix/store/kmfhkv48qb4ijpb1xkr0gpl2rlmczv02-drvgo-forwarding-f6e4fd9504cf-107",
+        "/nix/store/6i4pzh9d9yrvhvclm0fpcvralpvcrd0z-drvgo-forwarding-f6e4fd9504cf-108",
+        "/nix/store/wrlggfgma7ggs4g8jg2hx5s7sjis0xs1-drvgo-forwarding-f6e4fd9504cf-109",
+        "/nix/store/y75xvx422wlc88bl878z6b4ragi5vn7y-drvgo-forwarding-f6e4fd9504cf-110",
+        "/nix/store/wvj7fhgyk82b3r4j12sxiwf0av0wws4j-drvgo-forwarding-f6e4fd9504cf-111",
+        "/nix/store/1mxy39ca57c7i7xykvqmcjv36apbnww1-drvgo-forwarding-f6e4fd9504cf-112",
+        "/nix/store/amrknwnxhj3gypb68ia2b7z241pfjw5h-drvgo-forwarding-f6e4fd9504cf-113",
+        "/nix/store/p7yv790gla05yg54646wmiwlqyixnkxn-drvgo-forwarding-f6e4fd9504cf-114",
+        "/nix/store/8fal309g0qg6jy3n79rq2kf58pls80xs-drvgo-forwarding-f6e4fd9504cf-115",
+        "/nix/store/q91bfz89jgjnhcz2mk083zdz1wq4wajw-drvgo-forwarding-f6e4fd9504cf-116",
+        "/nix/store/fxk3lq2x3xzf3xpm1rh951mdfgqapa3v-drvgo-forwarding-f6e4fd9504cf-117",
+        "/nix/store/i871b6n2b2pzj81c798pykdb0krgls2p-drvgo-forwarding-f6e4fd9504cf-118",
+        "/nix/store/qshprp18gizbglp8vp42cncg4dsza2m1-drvgo-forwarding-f6e4fd9504cf-119",
+        "/nix/store/v87lgxbsrm03jz7wdgr35rdckyfrw940-drvgo-forwarding-f6e4fd9504cf-120",
+        "/nix/store/3ga893h98p0xds4pjv4xxdn3a4z5cj4s-drvgo-forwarding-f6e4fd9504cf-121",
+        "/nix/store/5jsh73cyipalsqdl9h4m3ggqgggqpcl5-drvgo-forwarding-f6e4fd9504cf-122",
+        "/nix/store/gi29c2fn6nzybp7cnkrsxv6xk1q3jpbp-drvgo-forwarding-f6e4fd9504cf-123",
+        "/nix/store/0m4kj4w83q7w2djhvcbg1f947qb7gdiy-drvgo-forwarding-f6e4fd9504cf-124",
+        "/nix/store/03mc3bvmwbskvidq2g72gmbc65n08hb5-drvgo-forwarding-f6e4fd9504cf-125",
+        "/nix/store/1srqf7326m03c3b7j1sn67qxdwhm41fc-drvgo-forwarding-f6e4fd9504cf-126",
+        "/nix/store/3vidnh7f3zn0bw447ji90m7ga4r4vc8j-drvgo-forwarding-f6e4fd9504cf-127",
+        "/nix/store/gpy0mc23pqvg1246w3b094gsnrjnrbpy-drvgo-forwarding-f6e4fd9504cf-128",
+        "/nix/store/gpgly7i8yjlkhnb0gp58v69qkid40ryj-drvgo-forwarding-f6e4fd9504cf-129",
+        "/nix/store/n5488a74dqbczqh2k1dnp00z19ana89r-drvgo-forwarding-f6e4fd9504cf-130",
+        "/nix/store/gaiyjb6czlq24rqsshn1mk5byg4j9yi4-drvgo-forwarding-f6e4fd9504cf-131",
+        "/nix/store/2gckq32kbrbm1lq2rfsh4zpfyj1m7vyz-drvgo-forwarding-f6e4fd9504cf-132",
+        "/nix/store/nsfzmr0z3q9vgv6gi78r9l1y9823wyq8-drvgo-forwarding-f6e4fd9504cf-133",
+        "/nix/store/l2fx2qdbc963g1lxrrp8d547a729zmvn-drvgo-forwarding-f6e4fd9504cf-134",
+        "/nix/store/2xmck30xkk26j6b12a1ksdmwrr7p6b19-drvgo-forwarding-f6e4fd9504cf-135",
+        "/nix/store/470klavhlsf1axp5lllpik8x47c6sj14-drvgo-forwarding-f6e4fd9504cf-136",
+        "/nix/store/ci4aqkqnmynbfzbga8h0xb1l45b47lrf-drvgo-forwarding-f6e4fd9504cf-137",
+        "/nix/store/1bybbiajbrmv2mik49lgwgwpb2aspc82-drvgo-forwarding-f6e4fd9504cf-138",
+        "/nix/store/wq3hg15ymvq78jlmss0pcl00vx9bpmc6-drvgo-forwarding-f6e4fd9504cf-139",
+        "/nix/store/0b63ksq7sxhq79imxzfq90swgfi34i7w-drvgo-forwarding-f6e4fd9504cf-140",
+        "/nix/store/31p1zd8ac48bjjp2cxnkm42b1jm9pgi5-drvgo-forwarding-f6e4fd9504cf-141",
+        "/nix/store/xhf32rbif28d9yfvmplpzgclp943vzhf-drvgo-forwarding-f6e4fd9504cf-142",
+        "/nix/store/lv5lcccphf5k4nmvp85hj7gwfjhslhkd-drvgo-forwarding-f6e4fd9504cf-143",
+        "/nix/store/kliiij2jr4s7dikf0grf9w1dk8plwxfw-drvgo-forwarding-f6e4fd9504cf-144",
+        "/nix/store/z8y7lsm2za15xc10y8sdqzwnr4ficskm-drvgo-forwarding-f6e4fd9504cf-145",
+        "/nix/store/q3l5s2x3bn4z92h61ra5hnanhhcjd657-drvgo-forwarding-f6e4fd9504cf-146",
+        "/nix/store/yyb04fhgpdbdrn6qb06pcqh95865q81y-drvgo-forwarding-f6e4fd9504cf-147",
+        "/nix/store/17zj1y20nfs0vnmb6g37ik5djbdhi31h-drvgo-forwarding-f6e4fd9504cf-148",
+        "/nix/store/lk5rf1dcfp47gvlyf967klbv2vzgd7vm-drvgo-forwarding-f6e4fd9504cf-149",
+        "/nix/store/sfrps5440iahrxb1ixzvznhsqpw1y5xc-drvgo-forwarding-f6e4fd9504cf-150",
+        "/nix/store/yjchg4zqc94w127bs3wwzijbds93xl6v-drvgo-forwarding-f6e4fd9504cf-151",
+        "/nix/store/4wd7r8x6q2h8w0zflsbw7ahygbz774if-drvgo-forwarding-f6e4fd9504cf-152",
+        "/nix/store/2a7vdrr16fs3rivnzd0bi0sjrzy58lag-drvgo-forwarding-f6e4fd9504cf-153",
+        "/nix/store/r4srj9g075b09klg1wg80vnz6ybxashd-drvgo-forwarding-f6e4fd9504cf-154",
+        "/nix/store/afg6j710xi93bli621zvsfsv3a5qh4d7-drvgo-forwarding-f6e4fd9504cf-155",
+        "/nix/store/01a184lxc5bcmlzqi7xm1n2ljc24avgw-drvgo-forwarding-f6e4fd9504cf-156",
+        "/nix/store/9nkk29ghl82gxvskwsxhw50akshi3rc7-drvgo-forwarding-f6e4fd9504cf-157",
+        "/nix/store/w218wgw710wj2mn35d19ix8rvi2b470d-drvgo-forwarding-f6e4fd9504cf-158",
+        "/nix/store/02xchkk0jxfw3yimcvdlkvqgvmiy8yx9-drvgo-forwarding-f6e4fd9504cf-159",
+        "/nix/store/0vdmpb331n1774qc7674q2jah2c3nvry-drvgo-forwarding-f6e4fd9504cf-160",
+        "/nix/store/g4iiryvph52p04ay27zpgqgq43g20jrs-drvgo-forwarding-f6e4fd9504cf-161",
+        "/nix/store/qybb7fl9nr752kl2dwrxxvhkmkrh0kv8-drvgo-forwarding-f6e4fd9504cf-162",
+        "/nix/store/rl0yj0mghp95mxc8nbg1141mcjmdxwhj-drvgo-forwarding-f6e4fd9504cf-163",
+        "/nix/store/qa55xhhmssrzj1c0w2ybkyv06gx342kp-drvgo-forwarding-f6e4fd9504cf-164",
+        "/nix/store/93ljh0i77xdm96khwialn1d0vhhq7apr-drvgo-forwarding-f6e4fd9504cf-165",
+        "/nix/store/azqlp0p7vzml90jkds3hlipb0s923f16-drvgo-forwarding-f6e4fd9504cf-166",
+        "/nix/store/24nmyipwa75652k01x78ys20ri09s3c6-drvgo-forwarding-f6e4fd9504cf-167",
+        "/nix/store/i6apycr4s0anak9jpy2xlxlsz2sd5skv-drvgo-forwarding-f6e4fd9504cf-168",
+        "/nix/store/2rws09mvhknal0m4rjala0jr5zac21yy-drvgo-forwarding-f6e4fd9504cf-169",
+        "/nix/store/52bncx0vp77x1d40pxiszj7ya5fdwpki-drvgo-forwarding-f6e4fd9504cf-170",
+        "/nix/store/k7s8qddprcn6ywd2zynpgwqhf9hr23nm-drvgo-forwarding-f6e4fd9504cf-171",
+        "/nix/store/9kjw2jzvhl1z1psdkmmydb90i9q5iv36-drvgo-forwarding-f6e4fd9504cf-172",
+        "/nix/store/p1n3ffy7p67ljfvkavrqz0jy68idwn97-drvgo-forwarding-f6e4fd9504cf-173",
+        "/nix/store/p0qivr2h9d0p9y9fdizm394sb83g8g84-drvgo-forwarding-f6e4fd9504cf-174",
+        "/nix/store/i1szm3w52jv2fvafvbaf567hxk05lj6q-drvgo-forwarding-f6e4fd9504cf-175",
+        "/nix/store/23bx05dh8bc2lcvbziy258d4a18zd8nj-drvgo-forwarding-f6e4fd9504cf-176",
+        "/nix/store/1xlsv4dqhw4141qhr09w5c58rwqiw95z-drvgo-forwarding-f6e4fd9504cf-177",
+        "/nix/store/0xb60vdasqi65x8j2ykvvwiqc021g6sg-drvgo-forwarding-f6e4fd9504cf-178",
+        "/nix/store/61qjlrh6msl118j5ssy0sg4czg55rm3j-drvgo-forwarding-f6e4fd9504cf-179",
+        "/nix/store/zq6ldh2ab2mzfrn5qj4qlnnswb5aak3w-drvgo-forwarding-f6e4fd9504cf-180",
+        "/nix/store/0vbb1n8hjc97yrx9vxip79ni1b0qdh5f-drvgo-forwarding-f6e4fd9504cf-181",
+        "/nix/store/rqdq4hli7bfkj51x4y9wkmfbp773c4xc-drvgo-forwarding-f6e4fd9504cf-182",
+        "/nix/store/69ll1pl96cmk0pm2pr9c8rlnz5b36191-drvgo-forwarding-f6e4fd9504cf-183",
+        "/nix/store/pa7dq4d4jj6xpknzxar59iwilhadzg5k-drvgo-forwarding-f6e4fd9504cf-184",
+        "/nix/store/rphkkwvc7xpd0syyprd2y2x2hhya5168-drvgo-forwarding-f6e4fd9504cf-185",
+        "/nix/store/cy2sdqkqjabwsw4l8lh8z265y47i3cj1-drvgo-forwarding-f6e4fd9504cf-186",
+        "/nix/store/0cys8zbphkkllh05djw2j78cm37mmjzx-drvgo-forwarding-f6e4fd9504cf-187",
+        "/nix/store/vvib3as0pi80nxh3vkviw5v2b2rhfzdw-drvgo-forwarding-f6e4fd9504cf-188",
+        "/nix/store/yxym3ria5kyn2gjmks5nryjhmmd5w8vb-drvgo-forwarding-f6e4fd9504cf-189",
+        "/nix/store/0403hdb8fjn9hbrwh837pbalxbq00b69-drvgo-forwarding-f6e4fd9504cf-190",
+        "/nix/store/lpsvdmdg9lb0c7l84cc7ma0p085gpqwd-drvgo-forwarding-f6e4fd9504cf-191",
+        "/nix/store/a0zmjfvww61jfk82p82hcy4hkvsbs8ma-drvgo-forwarding-f6e4fd9504cf-192",
+        "/nix/store/rc1mbbv5is4zjhhn6gcipng4yjv8yxq7-drvgo-forwarding-f6e4fd9504cf-193",
+        "/nix/store/g2q24djwfbxa8m84vbs2d1zsxxzg9j9j-drvgo-forwarding-f6e4fd9504cf-194",
+        "/nix/store/vcnxasw8a5dm3bg504qm80r5x1kh92c1-drvgo-forwarding-f6e4fd9504cf-195",
+        "/nix/store/7z3aalzn09p6lhi155nix20r051l13im-drvgo-forwarding-f6e4fd9504cf-196",
+        "/nix/store/mxpn8wdcficijbyq27j9p2d74h3x0ad8-drvgo-forwarding-f6e4fd9504cf-197",
+        "/nix/store/0705vjmscikdpjvpwcf4x0fiixq5g2hl-drvgo-forwarding-f6e4fd9504cf-198",
+        "/nix/store/29n2448ch1g8j123f87167p5pli61an3-drvgo-forwarding-f6e4fd9504cf-199"
+      ],
+      "target": "/nix/store/fbjhcabp0rc1i3v3jl9cz66bd3xvh2j4-drvgo-forwarding-target",
+      "sandboxed_short_builders": "passed"
+    },
+    "dynamic_ifd_disabled": "passed",
+    "dynamic_native_modes": [
+      {
+        "name": "cxx",
+        "store_path": "/nix/store/f7c0inikbn1da1q9jkq8l9qy7hr50757-go-example.com-cxx"
+      },
+      {
+        "name": "external-link",
+        "store_path": "/nix/store/09baxlc247qbigr423xrc3iv513flbz4-go-example.com-compat"
+      }
+    ],
+    "dynamic_runtime_references": [
+      {
+        "explicit_inputs": false,
+        "output": "/nix/store/h6h9dh982rzqwf537g67bnfisfdk6z3m-drvgo-compatibility-fixture"
+      },
+      {
+        "explicit_inputs": true,
+        "output": "/nix/store/h6h9dh982rzqwf537g67bnfisfdk6z3m-drvgo-compatibility-fixture"
+      }
+    ],
+    "planner_substitution_policy": "passed",
+    "dynamic_nested_custom_buildid": "passed",
+    "dynamic_native_object": "passed",
+    "dynamic_tests": [
+      {
+        "name": "test-cgo-disabled",
+        "store_path": "/nix/store/18lic4qkdhc90addgzl20qby2zbrgdx7-go-example.com-modes.test.test",
+        "cgo": "0",
+        "race": false
+      },
+      {
+        "name": "test-race-cgo",
+        "store_path": "/nix/store/q118zbphfdki3grf13grkmj6cckllslg-go-example.com-modes.test.test",
+        "cgo": "1",
+        "race": true
+      }
+    ],
+    "dynamic_empty_tests": "passed",
+    "incremental_cache_and_embeds": "passed",
+    "test_binaries_and_race_detection": "passed",
+    "cases": [
+      "embed-cgo",
+      "assembly",
+      "tags-ldflags",
+      "external-link",
+      "workspace",
+      "vendored",
+      "cgo-disabled",
+      "race-cgo",
+      "cxx",
+      "native-object-cgo-disabled"
+    ]
+  }
+}
