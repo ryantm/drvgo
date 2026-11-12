@@ -576,6 +576,13 @@ standalone UPM export by about 2%, with unchanged package recipes. Full cached
 CI and CLI bootstrap timings remain effectively flat; complete planner inputs
 add 609 compressed bytes.
 
+[Skipping discarded native debug data](benchmarks/ci-round25-2026-11-12.md)
+extends that optimization to ordinary C/C++ compilation for stripped commands.
+UPM dependency rebuilds improve by 16.7%; compressed package data shrinks by
+3.02 MB, or 5.59 MB including its full closure. The small fixture, cached CI
+and CLI bootstrap stay effectively flat. Planner inputs add 3 KB compressed;
+default debug builds and custom native debug formats retain their recipes.
+
 If your cache publishes planner outputs and CI often rebuilds an identical
 source tree on a cold worker, set `allowPlannerSubstitutes = true` in
 `mkGoPackage` to allow those hits to avoid downloading the planning toolchain.
@@ -588,7 +595,7 @@ time, even when every compiled package is already available locally.
 Library outputs contain their `_pkg_.a` archive. Command outputs contain only
 `bin/<name>`; the main package archive is no longer copied alongside the binary.
 This avoids storing embedded command assets twice. Builders move completed files
-into their outputs instead of copying them. Debug information is preserved.
+into their outputs instead of copying them. Default builds preserve debug information.
 These recipe changes cause a one-time rebuild of existing package outputs.
 
 Measured on Linux amd64 with Go 1.26.5 on November 10, 2026:
