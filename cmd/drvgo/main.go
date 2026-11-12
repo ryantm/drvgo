@@ -27,6 +27,9 @@ func main() {
 	}
 }
 func run(args []string) error {
+	if len(args) >= 3 && args[0] == "internal-plan" {
+		return plan(args[1], args[2], args[3:])
+	}
 	// A Nix builder must keep stdout/stderr open until exit. Coreutils ln
 	// closes both early, which can race Nix's EOF-triggered process cleanup.
 	if len(args) == 3 && args[0] == "internal-symlink" {

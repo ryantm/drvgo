@@ -53,11 +53,22 @@ let
   planner = builtins.derivation ({
     name = "${name}-result.drv";
     system = pkgs.stdenv.hostPlatform.system;
-    builder = "${pkgs.bash}/bin/bash";
-    args = [ "-euo" "pipefail" "-c" plannerScript ];
+    builder = "${drvgo}/bin/drvgo";
+    args = [ "internal-plan"
+      (if iets == null then "${pkgs.nix}/bin/nix-instantiate" else "${iets}/bin/iets")
+      (if iets == null then "nix" else "iets")
+    ] ++ lib.optional experimentalGo "-experimental-go"
+      ++ lib.optional test "-test"
+      ++ lib.optional race "-race"
+      ++ lib.optional allowEmptyTests "-allow-empty-tests"
+      ++ lib.optionals (cgoEnabled != null) [ "-cgo" (if cgoEnabled then "1" else "0") ]
+      ++ [ "-toolchain" planningToolchain ]
+      ++ (if preparedModules != null then [ "-module-cache" preparedModules ]
+          else [ "-module-proxy" (if modules == null then "off" else "file://${modules}") ])
+      ++ [ "-tags" tags "-ldflags" ldflags package ];
     # The exporter queries the recursive daemon directly. Only the default
     # evaluator needs Nix's command-line tools in the planner's input closure.
-    PATH = lib.makeBinPath ([ drvgo ] ++ lib.optional (iets == null) pkgs.nix ++ [ pkgs.coreutils ]);
+    PATH = lib.makeBinPath ([ drvgo ] ++ lib.optional (iets == null) pkgs.nix);
     # Remote build hooks do not reliably copy newly generated derivation closures.
     # Plan locally; the generated package derivations can still build remotely.
     preferLocalBuild = true;
@@ -111,41 +122,6 @@ let
     # sources and derivation recipes can reuse their existing registrations.
     inherit previousPlan;
   });
-  plannerScript = ''
-    export HOME=$TMPDIR/home
-    mkdir -p "$HOME"
-    export NIX_CONFIG='extra-experimental-features = nix-command ca-derivations dynamic-derivations recursive-nix
-    allow-import-from-derivation = false'
-    drvgo export -C "$src" -out "$TMPDIR/graph" ${lib.optionalString experimentalGo "-experimental-go"} \
-      ${lib.optionalString test "-test"} ${lib.optionalString race "-race"} \
-      ${lib.optionalString allowEmptyTests "-allow-empty-tests"} \
-      ${lib.optionalString (cgoEnabled != null) "-cgo ${if cgoEnabled then "1" else "0"}"} \
-      -toolchain ${planningToolchain} \
-      ${if preparedModules != null then "-module-cache ${lib.escapeShellArg (toString preparedModules)}"
-        else "-module-proxy ${lib.escapeShellArg (if modules == null then "off" else "file://${modules}")}"} \
-      -tags ${lib.escapeShellArg tags} -ldflags ${lib.escapeShellArg ldflags} \
-      ${lib.escapeShellArg package}
-    cp "$expressionPath" "$TMPDIR/build.nix"
-    ${if iets == null then ''drv=$(nix-instantiate "$TMPDIR/build.nix")'' else ''
-      drv=$(
-        export IETS_NIX_FALLBACK=never IETS_PROGRESS=false IETS_WORKERS=1 IETS_CACHE=false
-        # iets PR #3's classic evaluator uses the local-daemon transport.
-        # Route it to the restricted recursive store supplied by this build.
-        case "''${NIX_REMOTE:-}" in
-          unix://*) export NIX_DAEMON_SOCKET_PATH="''${NIX_REMOTE#unix://}" ;;
-          *) echo "expected a recursive Nix Unix socket, got ''${NIX_REMOTE:-unset}" >&2; exit 1 ;;
-        esac
-        exec -a nix-instantiate ${iets}/bin/iets "$TMPDIR/build.nix"
-      )
-    ''}
-    ${if pkgs.stdenv.hostPlatform.isDarwin then ''
-      # macOS cannot extend the sandbox's filesystem permissions for a newly
-      # registered derivation. Read it through the restricted daemon instead.
-      drvgo internal-copy-derivation "$drv" "$out"
-    '' else ''
-      cp "$drv" "$out"
-    ''}
-  '';
   result = builtins.derivation {
     inherit name;
     system = pkgs.stdenv.hostPlatform.system;
