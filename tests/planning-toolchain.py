@@ -46,6 +46,13 @@ def main():
     profile = Path(run(["nix", "build", *flags, "--impure", "--no-link", "--print-out-paths", "--expr", profile_expr], "profile"))
     closure = run(["nix-store", "--query", "--requisites", profile], "closure").splitlines()
     assert str(sdk) not in closure, closure
+    preserved = {}
+    for relative in ["src", "lib", "pkg/include", "bin/go", "go.env", "VERSION"]:
+        label = relative.replace("/", "-")
+        original_hash = run(["nix", "hash", "path", sdk / "share/go" / relative], label + "-original-hash")
+        compact_hash = run(["nix", "hash", "path", profile / "share/go" / relative], label + "-compact-hash")
+        assert original_hash == compact_hash, relative
+        preserved[relative] = compact_hash
     target = run([sdk / "bin/go", "env", "GOOS", "GOARCH"], "target").replace("\n", "_")
     for tool in ["asm", "cgo", "compile", "link", "preprofile", "vet"]:
         original = sdk / "share/go/pkg/tool" / target / tool
@@ -86,7 +93,7 @@ def main():
     assert json.loads((native_marker / "nix-support/no-tests").read_text()) == {"version": 1, "status": "no-tests"}
     (empty / "value.go").write_text(native.replace("/* static", "/*\n#error DRVGO_CGO_VALIDATION\nstatic"))
     run(["nix", "build", *flags, "--impure", "--no-link", "--expr", empty_expr], "empty-native-error", failure="DRVGO_CGO_VALIDATION")
-    report = {"profile": str(profile), "sdk": str(sdk), "closure": closure,
+    report = {"profile": str(profile), "sdk": str(sdk), "closure": closure, "preserved": preserved,
               "identical_recipes": recipes["compact"], "version_metadata": "passed",
               "real_compilation_rejected": True, "empty_test_type_error_rejected": True,
               "empty_excluded_selector": str(marker), "empty_native_validation": str(native_marker),
