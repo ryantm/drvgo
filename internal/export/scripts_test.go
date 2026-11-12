@@ -41,3 +41,30 @@ func TestNixScriptsPreserveTextAndContext(t *testing.T) {
 		t.Fatalf("rendered replay differs: %s", out)
 	}
 }
+
+func TestNixScriptsSelectCompileInterface(t *testing.T) {
+	nix, err := exec.LookPath("nix-instantiate")
+	if err != nil {
+		t.Skip("nix-instantiate unavailable")
+	}
+	file := filepath.Join(t.TempDir(), "scripts.nix")
+	units := []plan.Unit{
+		{ID: "compile", Script: "@DEP:dep@/_pkg_.a", Deps: []string{"dep"}},
+		{ID: "link", Script: "@DEP:dep@/_pkg_.a", Deps: []string{"dep"}, Binary: true},
+	}
+	if err := os.WriteFile(file, []byte(nixScripts(units)), 0644); err != nil {
+		t.Fatal(err)
+	}
+	expr := `let
+  full = builtins.toFile "drvgo-full-archive" "full";
+  api = builtins.toFile "drvgo-export-archive" "export data";
+  scripts = import ` + file + ` { dep = { outPath = full; inherit api; }; } {};
+in assert scripts.compile == "${api}/_pkg_.a";
+   assert scripts.link == "${full}/_pkg_.a";
+   assert builtins.getContext scripts.compile == builtins.getContext api;
+   assert builtins.getContext scripts.link == builtins.getContext full;
+   true`
+	if b, err := exec.Command(nix, "--eval", "--strict", "--expr", expr).CombinedOutput(); err != nil {
+		t.Fatalf("interface context: %s (%v)", b, err)
+	}
+}

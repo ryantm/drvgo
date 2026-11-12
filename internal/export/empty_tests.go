@@ -102,7 +102,8 @@ func exportEmptyTests(out, tc string, g *Graph) (*Graph, error) {
 	if err != nil {
 		return nil, err
 	}
-	expression := `{ toolchain ? import ./resolved-toolchain.nix }:
+	expression := `{ toolchain ? import ./resolved-toolchain.nix, exportData ? false, earlyCutoff ? false }:
+assert !earlyCutoff || exportData;
 { units = {}; default = builtins.derivation {
 name = "go-empty-tests"; system = ` + nixString(g.System) + `;
 builder = "${toolchain.compile or toolchain}/bin/drvgo-builder";

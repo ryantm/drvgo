@@ -4,6 +4,7 @@
 , package ? ".", ldflags ? ""
 , runtimeInputs ? []
 , moduleCache ? null, prepareModules ? false
+, exportData ? false, earlyCutoff ? false
 }:
 let
   drvgo = builtins.getFlake (toString ../.);
@@ -11,6 +12,7 @@ let
 in drvgo.lib.mkGoPackage {
   inherit system src test race cgoEnabled allowPlannerSubstitutes allowEmptyTests package ldflags runtimeInputs;
   inherit moduleCache prepareModules;
+  inherit exportData earlyCutoff;
   go = toolchain.go;
   name = "drvgo-compatibility-fixture";
 }

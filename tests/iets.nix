@@ -4,6 +4,7 @@
 , cgoEnabled ? null, test ? false, allowEmptyTests ? false, tags ? ""
 , runtimeInputs ? [], ldflags ? ""
 , moduleCache ? null
+, exportData ? false, earlyCutoff ? false
 , baseToolchain ? import ../internal/export/templates/toolchain.nix
 }:
 let
@@ -29,4 +30,5 @@ let
 in (import ../nix/dynamic.nix { inherit toolchain; }) {
   inherit src name cgoEnabled test allowEmptyTests tags runtimeInputs ldflags;
   inherit moduleCache;
+  inherit exportData earlyCutoff;
 }

@@ -9,7 +9,10 @@
 , runtimeInputs ? []
 , moduleCache ? null
 , prepareModules ? false
+, exportData ? false
+, earlyCutoff ? false
 }:
+assert !earlyCutoff || exportData;
 let
   pkgs = toolchain.pkgs;
   inherit (pkgs) lib;
@@ -69,7 +72,11 @@ let
     expression = ''
       let tc = ${toolchainExpr};
           coreutils = ${outputExpr pkgs.coreutils};
-          command = (import ./graph { toolchain = tc; }).default;
+          command = (import ./graph {
+            toolchain = tc;
+            exportData = ${builtins.toJSON exportData};
+            earlyCutoff = ${builtins.toJSON earlyCutoff};
+          }).default;
       in derivation {
         name = ${builtins.toJSON "${name}-result"};
         system = "${pkgs.stdenv.hostPlatform.system}";

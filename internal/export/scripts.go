@@ -25,7 +25,11 @@ func nixScripts(units []plan.Unit) string {
 	for _, u := range units {
 		pairs := make([]string, 0, 2*(len(u.Deps)+len(u.Sources)))
 		for _, id := range u.Deps {
-			pairs = append(pairs, "@DEP:"+id+"@", "${units."+nixString(id)+"}")
+			dep := "units." + nixString(id)
+			if !u.Binary {
+				dep = dep + ".api or " + dep
+			}
+			pairs = append(pairs, "@DEP:"+id+"@", "${"+dep+"}")
 		}
 		for _, id := range u.Sources {
 			pairs = append(pairs, "@SRC:"+id+"@", "${sources."+nixString(id)+"}")
