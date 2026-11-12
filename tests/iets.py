@@ -147,6 +147,40 @@ def main():
         assert result.returncode != 0 and "cannot use" in result.stderr, (label, result.stderr)
     report["optional_tests_invalid_after_cached_empty"] = "passed"
 
+    # Empty cgo packages need real native compilers during validation. Exercise
+    # both nested evaluators, then reject a C error after caching the marker.
+    native = out / "native-optional-tests"
+    native.mkdir()
+    (native / "go.mod").write_text("module example.com/iets-native-tests\ngo 1.25\n")
+    native_source = 'package sample\n/* static int answer(void) { return 42; } */\nimport "C"\nfunc Value() int { return int(C.answer()) }\n'
+    (native / "sample.go").write_text(native_source)
+    native_commands = []
+    native_outputs = []
+    for nested in [False, True]:
+        label = "native-optional-" + ("nested" if nested else "outer")
+        expr = (f"import ./tests/iets.nix {{ iets = builtins.storePath {nix_string(package)}; "
+                f"src = builtins.path {{ path = {nix_string(native)}; name = \"source\"; }}; "
+                f"name = \"drvgo-iets-{nonce}-{label}\"; nested = {str(nested).lower()}; "
+                f"test = true; allowEmptyTests = true; }}")
+        build = [binary, "build", "--impure", *flags, "--no-tracing-cache", "-E", expr]
+        reference = ["nix-build", *features, *flags, "--no-out-link", "-E", expr]
+        result = run(build, label + "-build")[0]
+        assert result == run(reference, label + "-reference")[0]
+        resolved = Path(result).resolve()
+        assert (resolved / "nix-support/no-tests").read_bytes() == b'{"version":1,"status":"no-tests"}\n'
+        assert not (resolved / "bin").exists()
+        native_outputs.append(resolved)
+        native_commands.extend([(label + "-iets", build), (label + "-nix", reference)])
+        report.setdefault("native_optional_tests", []).append(dict(case=label, command_output=str(resolved)))
+        print(label, "native validation/empty marker PASS", flush=True)
+    assert native_outputs[0] == native_outputs[1]
+    (native / "sample.go").write_text(native_source.replace("/* static", "/*\n#error DRVGO_IETS_CGO_VALIDATION\nstatic"))
+    for label, command in native_commands:
+        result = subprocess.run([str(x) for x in command], cwd=repo, env=env, text=True, capture_output=True)
+        (out / (label + "-invalid.log")).write_text(result.stderr)
+        assert result.returncode != 0 and "DRVGO_IETS_CGO_VALIDATION" in result.stderr, (label, result.stderr)
+    report["native_optional_tests_invalid_after_cached_empty"] = "passed"
+
     runtime_outputs = []
     for nested in [False, True]:
         for explicit in [False, True]:
