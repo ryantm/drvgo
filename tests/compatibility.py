@@ -156,15 +156,17 @@ p=subprocess.run([str(a.integration_test.resolve()),'-test.run='+integration_pat
 (out/'integration.log').write_bytes(p.stdout)
 if p.returncode: raise RuntimeError(p.stdout.decode())
 if a.flake_toolchain:
+    run([sys.executable, repo/'tests/module-cache.py', '--toolchain', tc, '--drvgo', cli,
+         '--flake-toolchain', a.flake_toolchain, '--out', out/'module-cache'])
+    report['module_cache'] = json.loads((out/'module-cache/results.json').read_text())
+    print(version, 'module-cache/offline/cgo/dynamic/reuse/checksum PASS', flush=True)
+    # The dynamic checks above fetch the planner's pinned Nix and CLI. A
+    # standalone toolchain alone does not make those inputs available offline.
     run([sys.executable, repo/'tests/export-data.py', '--toolchain', tc, '--drvgo', cli,
          '--flake-toolchain', a.flake_toolchain, '--out', out/'export-data',
          '--nix-option', 'substituters', '', '--nix-option', 'always-allow-substitutes', 'false'])
     report['export_data'] = json.loads((out/'export-data/results.json').read_text())
     print(version, 'compact-archives/private-edit/inline/API/runtime-references/dynamic PASS', flush=True)
-    run([sys.executable, repo/'tests/module-cache.py', '--toolchain', tc, '--drvgo', cli,
-         '--flake-toolchain', a.flake_toolchain, '--out', out/'module-cache'])
-    report['module_cache'] = json.loads((out/'module-cache/results.json').read_text())
-    print(version, 'module-cache/offline/cgo/dynamic/reuse/checksum PASS', flush=True)
     system = run(['nix','eval','--impure','--raw','--expr','builtins.currentSystem']).stdout.decode()
     result = run(['nix-build',repo/'tests/dynamic-compatibility.nix','--argstr','system',system,
         '--argstr','toolchainAttr',a.flake_toolchain,'--option','allow-import-from-derivation','false',
