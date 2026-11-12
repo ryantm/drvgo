@@ -84,7 +84,9 @@ func TestNativePackMatchesGo(t *testing.T) {
 			}
 			out := filepath.Join(dir, "out")
 			// Leaking even one archive descriptor per action exceeds this limit.
-			cmd := exec.Command(filepath.Join(tc, "bin", "bash"), "-c", `ulimit -n 64; exec "$1"`, "pack-test", filepath.Join(tc, "bin", "drvgo-builder"))
+			// The test host's shell sets the child limit; the worker itself
+			// does not need a shell in its toolchain.
+			cmd := exec.Command("sh", "-c", `ulimit -n 64 && exec "$1"`, "pack-test", filepath.Join(tc, "bin", "drvgo-builder"))
 			cmd.Env = append(os.Environ(), "TMPDIR="+dir, "scriptPath="+path, "out="+out, "isBinary=0", "emptyTests=0", "NIX_BUILD_CORES=1")
 			b, err = cmd.CombinedOutput()
 			if err != nil {
