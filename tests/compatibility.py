@@ -160,6 +160,12 @@ if a.flake_toolchain:
          '--flake-toolchain', a.flake_toolchain, '--out', out/'module-cache'])
     report['module_cache'] = json.loads((out/'module-cache/results.json').read_text())
     print(version, 'module-cache/offline/cgo/dynamic/reuse/checksum PASS', flush=True)
+    # The forwarding CLI is built with the default SDK regardless of the
+    # worker SDK; exercise many short-lived builders once per platform.
+    if a.flake_toolchain == 'toolchain-go1_26':
+        run([sys.executable, repo/'tests/forwarding.py', '--out', out/'forwarding'])
+        report['forwarding'] = json.loads((out/'forwarding/results.json').read_text())
+        print(version, 'native-forwarding/stress PASS', flush=True)
     run([sys.executable, repo/'tests/planning-toolchain.py', '--toolchain', tc, '--drvgo', cli,
          '--flake-toolchain', a.flake_toolchain, '--out', out/'planning-toolchain'])
     report['planning_toolchain'] = json.loads((out/'planning-toolchain/results.json').read_text())

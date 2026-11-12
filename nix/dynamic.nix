@@ -69,14 +69,14 @@ let
     compileToolchainDrv = builtins.unsafeDiscardOutputDependency (toolchain.compile or toolchain).drvPath;
     linkToolchainDrv = builtins.unsafeDiscardOutputDependency (toolchain.link or toolchain).drvPath;
     nativeToolchainDrv = builtins.unsafeDiscardOutputDependency (toolchain.native or toolchain).drvPath;
-    coreutilsDrv = builtins.unsafeDiscardOutputDependency pkgs.coreutils.drvPath;
+    drvgoDrv = builtins.unsafeDiscardOutputDependency drvgo.drvPath;
     inherit src;
     passAsFile = [ "expression" ];
     # The emitted derivation name must match the text-addressed .drv output.
     # A forwarding derivation supplies a stable name independent of Go import paths.
     expression = ''
       let tc = ${toolchainExpr};
-          coreutils = ${outputExpr pkgs.coreutils};
+          drvgo = ${outputExpr drvgo};
           command = (import ./graph {
             toolchain = tc;
             exportData = ${builtins.toJSON exportData};
@@ -89,8 +89,10 @@ let
         # inputs to a remote builder. Go package builds remain distributable.
         preferLocalBuild = true;
         allowSubstitutes = false;
-        builder = "''${coreutils}/bin/ln";
-        args = [ "-s" command (builtins.placeholder "out") ];
+        # Unlike coreutils ln, the native helper leaves stdout/stderr open
+        # until exit, avoiding Nix's EOF-triggered builder cleanup race.
+        builder = "''${drvgo}/bin/drvgo";
+        args = [ "internal-symlink" command (builtins.placeholder "out") ];
       }
     '';
   } // lib.optionalAttrs (runtimeInputs != []) {
@@ -129,8 +131,8 @@ let
     system = pkgs.stdenv.hostPlatform.system;
     preferLocalBuild = true;
     allowSubstitutes = false;
-    builder = "${pkgs.coreutils}/bin/ln";
-    args = [ "-s" (builtins.outputOf planner.outPath "out") (builtins.placeholder "out") ];
+    builder = "${drvgo}/bin/drvgo";
+    args = [ "internal-symlink" (builtins.outputOf planner.outPath "out") (builtins.placeholder "out") ];
   };
 in result // { inherit planner modules planningToolchain; moduleCache = preparedModules;
   passthru = { inherit planner modules planningToolchain; moduleCache = preparedModules; }; }
