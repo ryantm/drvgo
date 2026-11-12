@@ -68,16 +68,16 @@ def main():
     seed = plan('seed')
     expected = 'hello embedded world\nstable\nnested asset\n01 02 ff\nhidden asset'
 
-    def compare(label, expected):
-        plain = expression(label+'-plain')
-        cached = expression(label+'-cached', seed)
+    def compare(label, expected, previous=seed, extra=''):
+        plain = expression(label+'-plain', extra=extra)
+        cached = expression(label+'-cached', previous, extra=extra)
         outputs = [str(Path(build(e, label+'-'+str(i))).resolve()) for i, e in enumerate([plain, cached])]
         assert outputs[0] == outputs[1], (label, outputs)
         assert run([Path(outputs[0])/'bin/libnix-fixture'], label+'-run') == expected
         # The public helper must carry the prior graph as a real planner input.
         drv = run(['nix-instantiate', *flags, '--expr', f'({cached}).planner'], label+'-planner')
         refs = run(['nix-store', '--query', '--references', drv], label+'-inputs').splitlines()
-        assert seed in refs, (seed, refs)
+        assert previous in refs, (previous, refs)
         if iets:
             nix_drv = run(['nix-instantiate', *flags, '--eval', '--read-write-mode', '--raw',
                            '--expr', f'({cached}).drvPath'], label+'-nix-eval')
@@ -91,6 +91,11 @@ def main():
         return outputs[0]
 
     original = compare('unchanged', expected)
+    for cutoff in [False, True]:
+        mode = 'cutoff' if cutoff else 'interfaces'
+        extra = f'exportData = true; earlyCutoff = {str(cutoff).lower()};'
+        mode_plan = plan(mode+'-plan', extra=extra)
+        compare(mode, expected, mode_plan, extra)
     (source/'message/assets/message.txt').write_text('previous plan changed embed\n')
     expected = expected.replace('hello embedded world', 'previous plan changed embed')
     changed = compare('embed-edit', expected)
