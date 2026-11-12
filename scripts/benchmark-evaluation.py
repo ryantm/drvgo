@@ -21,6 +21,7 @@ def main():
     parser.add_argument('--package', default='.')
     parser.add_argument('--vendor-hash', help='module proxy hash for dynamic helpers')
     parser.add_argument('--module-cache', type=Path, help='prepared cache for both dynamic helpers')
+    parser.add_argument('--before-iets', type=Path, help='iets store output for the baseline dynamic helper')
     parser.add_argument('--after-iets', type=Path, help='iets store output for the modified dynamic helper')
     parser.add_argument('--after-export-data', action='store_true')
     parser.add_argument('--after-early-cutoff', action='store_true')
@@ -33,8 +34,8 @@ def main():
         parser.error('--after-early-cutoff requires --after-export-data')
     if args.vendor_hash and not args.dynamic_source:
         parser.error('--vendor-hash requires --dynamic-source')
-    if (args.module_cache or args.after_iets) and not args.dynamic_source:
-        parser.error('--module-cache and --after-iets require --dynamic-source')
+    if (args.module_cache or args.before_iets or args.after_iets) and not args.dynamic_source:
+        parser.error('--module-cache, --before-iets and --after-iets require --dynamic-source')
     out = (args.out or Path(tempfile.mkdtemp(prefix='drvgo-evaluation-'))).resolve()
     out.mkdir(parents=True, exist_ok=True)
     if any(out.iterdir()):
@@ -50,6 +51,7 @@ def main():
               'dynamic_source': str(args.dynamic_source.resolve()) if args.dynamic_source else None,
               'package': args.package, 'vendor_hash': args.vendor_hash,
               'module_cache': str(args.module_cache) if args.module_cache else None,
+              'before_iets': str(args.before_iets) if args.before_iets else None,
               'after_iets': str(args.after_iets) if args.after_iets else None,
               'after_export_data': args.after_export_data, 'after_early_cutoff': args.after_early_cutoff,
               'roots': {k: str(v) for k, v in roots.items()}, 'records': []}
@@ -72,8 +74,9 @@ def main():
                     options += f'vendorHash = {nix_string(args.vendor_hash)};'
                 if args.module_cache:
                     options += f'moduleCache = builtins.storePath {nix_string(args.module_cache)};'
-                if label == 'after' and args.after_iets:
-                    options += f'iets = builtins.storePath {nix_string(args.after_iets)};'
+                iets = args.after_iets if label == 'after' else args.before_iets
+                if iets:
+                    options += f'iets = builtins.storePath {nix_string(iets)};'
                 expression = (f'((import (builtins.toPath {nix_string(roots[label] / "nix/dynamic.nix")}) {{}}) {{'
                               f'src = builtins.path {{ path = {nix_string(args.dynamic_source.resolve())}; name = "source"; }};'
                               f'package = {nix_string(args.package)};{options} }}).drvPath')

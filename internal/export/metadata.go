@@ -5,6 +5,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/ryantm/drvgo/internal/nixstore"
 )
 
 // Keep graph.json as the complete diagnostic graph. Nix only needs these fields.
@@ -78,19 +80,30 @@ func resolvedToolchains(toolchains, fallbacks []string) []string {
 		}
 		paths[i] = path
 	}
-	// Query all outputs together: extra toolchains must not add a pair of Nix
-	// process startups to every export. nix-store emits one line per argument.
-	data, err := run("", os.Environ(), "nix-store", append([]string{"--query", "--deriver"}, paths...)...)
-	drvs := strings.Fields(string(data))
-	if err != nil || len(drvs) != len(paths) {
-		return expressions
+	var drvs []string
+	if remote := os.Getenv("NIX_REMOTE"); nixstore.IsUnixSocket(remote) {
+		// The recursive daemon censors derivers. Read its authoritative view
+		// directly, keeping the explicit-toolchain requirement when absent.
+		var err error
+		drvs, err = nixstore.Derivers(remote, paths)
+		if err != nil {
+			return expressions
+		}
+	} else {
+		// Query all outputs together: extra toolchains must not add a pair of
+		// Nix process startups to every export. Preserve other store transports.
+		data, err := run("", os.Environ(), "nix-store", append([]string{"--query", "--deriver"}, paths...)...)
+		drvs = strings.Fields(string(data))
+		if err != nil || len(drvs) != len(paths) {
+			return expressions
+		}
 	}
 	for _, drv := range drvs {
 		if !filepath.IsAbs(drv) || !strings.HasSuffix(drv, ".drv") {
 			return expressions
 		}
 	}
-	data, err = run("", os.Environ(), "nix-store", append([]string{"--query", "--binding", "out"}, drvs...)...)
+	data, err := run("", os.Environ(), "nix-store", append([]string{"--query", "--binding", "out"}, drvs...)...)
 	outputs := strings.Fields(string(data))
 	if err != nil || len(outputs) != len(paths) {
 		return expressions

@@ -9,7 +9,7 @@ import (
 
 	exporter "github.com/ryantm/drvgo/internal/export"
 	"github.com/ryantm/drvgo/internal/modcache"
-	"github.com/ryantm/drvgo/internal/storecopy"
+	"github.com/ryantm/drvgo/internal/nixstore"
 	"github.com/ryantm/drvgo/internal/toolversion"
 )
 
@@ -37,7 +37,7 @@ func run(args []string) error {
 	}
 	// Internal planner operation for stores not readable from the sandbox.
 	if len(args) == 3 && args[0] == "internal-copy-derivation" {
-		return storecopy.Copy(os.Getenv("NIX_REMOTE"), args[1], args[2])
+		return nixstore.Copy(os.Getenv("NIX_REMOTE"), args[1], args[2])
 	}
 	if len(args) == 0 {
 		return fmt.Errorf("usage: drvgo {build|export|run} [-C dir] [-out .drvgo] [-o result] [-tags tags] [-ldflags flags] [package] [-- program args]")

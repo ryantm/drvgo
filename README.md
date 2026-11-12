@@ -585,8 +585,11 @@ drvgo.lib.mkGoPackage {
 The default `iets = null` uses the pinned Nix evaluator. The optional iets path
 uses one worker, disables tracing and Nix fallback, and translates recursive
 Nix's Unix URL to `NIX_DAEMON_SOCKET_PATH` for PR #3. Normal outer `iets build`
-usage needs no adapter. Nix's store-query commands remain available to the
-exporter for runtime-reference validation and toolchain metadata.
+usage needs no adapter. The exporter uses native read-only daemon queries for
+runtime-reference validation and toolchain metadata through Unix sockets, so
+the iets planner does not need Nix's command-line tools as inputs. Other store
+transports continue to use Nix's query commands. A failed recursive runtime
+query fails the export; it never falls back to another store.
 
 The upstream static Linux package has no runtime dependencies. Its measured
 compressed closure is 5.1 MB, compared with 59.7 MB for the default dynamic
@@ -601,6 +604,13 @@ seconds with prepared modules. The small fixture remained approximately
 unchanged. All comparisons preserve identical Go package outputs. See the
 [nested-planner measurements](benchmarks/ci-round12-2026-11-11.md) for individual
 trials, complete input sizes and reproduction commands.
+
+The [native-query follow-up](benchmarks/ci-round13-2026-11-11.md) removes another
+40.8 MB of compressed inputs and 56 store paths from the iets planner. It also
+reduces outer evaluation work: fixture builds fall from 0.874 to 0.675 seconds,
+and UPM with prepared modules from 2.238 to 2.132 seconds, with the same iets
+package on both sides. Package outputs remain identical. The default Nix path
+has approximately unchanged timings and adds about 5 KB of compressed code.
 
 Five alternating warm evaluation trials, with iets's tracing cache disabled
 and its compiled-file cache warm, measured:

@@ -166,6 +166,9 @@ if a.flake_toolchain:
         run([sys.executable, repo/'tests/forwarding.py', '--out', out/'forwarding'])
         report['forwarding'] = json.loads((out/'forwarding/results.json').read_text())
         print(version, 'native-forwarding/stress PASS', flush=True)
+        run([sys.executable, repo/'tests/native-store-queries.py', '--out', out/'native-store-queries'])
+        report['native_store_queries'] = json.loads((out/'native-store-queries/results.json').read_text())
+        print(version, 'native-store-queries/restricted-visibility/fatal-errors PASS', flush=True)
     run([sys.executable, repo/'tests/planning-toolchain.py', '--toolchain', tc, '--drvgo', cli,
          '--flake-toolchain', a.flake_toolchain, '--out', out/'planning-toolchain'])
     report['planning_toolchain'] = json.loads((out/'planning-toolchain/results.json').read_text())
