@@ -47,6 +47,8 @@ func inlineSources(units []plan.Unit, snapshots map[string]preparedSource) {
 
 // Return an empty script for an oversized snapshot; never inline just a prefix
 // of its files. File names and metadata count toward the limit too.
+// onFile observes the bytes read for encoding. An empty script can mean only
+// a prefix was read; callers needing every file must scan rejected snapshots.
 func (e *sourceEncoder) snapshot(root, dest string, onFile func([]byte)) (string, error) {
 	type file struct {
 		rel  string
