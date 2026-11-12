@@ -27,6 +27,11 @@ func main() {
 	}
 }
 func run(args []string) error {
+	// A Nix builder must keep stdout/stderr open until exit. Coreutils ln
+	// closes both early, which can race Nix's EOF-triggered process cleanup.
+	if len(args) == 3 && args[0] == "internal-symlink" {
+		return os.Symlink(args[1], args[2])
+	}
 	if len(args) == 4 && args[0] == "internal-prepare-module-cache" {
 		return modcache.Prepare(args[1], args[2], args[3])
 	}
