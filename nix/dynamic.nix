@@ -11,6 +11,7 @@
 , prepareModules ? false
 , exportData ? false
 , earlyCutoff ? false
+, iets ? null
 }:
 assert !earlyCutoff || exportData;
 let
@@ -53,6 +54,8 @@ let
     system = pkgs.stdenv.hostPlatform.system;
     builder = "${pkgs.bash}/bin/bash";
     args = [ "-euo" "pipefail" "-c" plannerScript ];
+    # Even with iets, the exporter needs Nix's store queries to validate runtime
+    # references and preserve toolchain derivation context.
     PATH = lib.makeBinPath [ drvgo pkgs.nix pkgs.coreutils ];
     # Remote build hooks do not reliably copy newly generated derivation closures.
     # Plan locally; the generated package derivations can still build remotely.
@@ -117,7 +120,18 @@ let
       -tags ${lib.escapeShellArg tags} -ldflags ${lib.escapeShellArg ldflags} \
       ${lib.escapeShellArg package}
     cp "$expressionPath" "$TMPDIR/build.nix"
-    drv=$(nix-instantiate "$TMPDIR/build.nix")
+    ${if iets == null then ''drv=$(nix-instantiate "$TMPDIR/build.nix")'' else ''
+      drv=$(
+        export IETS_NIX_FALLBACK=never IETS_PROGRESS=false IETS_WORKERS=1 IETS_CACHE=false
+        # iets PR #3's classic evaluator uses the local-daemon transport.
+        # Route it to the restricted recursive store supplied by this build.
+        case "''${NIX_REMOTE:-}" in
+          unix://*) export NIX_DAEMON_SOCKET_PATH="''${NIX_REMOTE#unix://}" ;;
+          *) echo "expected a recursive Nix Unix socket, got ''${NIX_REMOTE:-unset}" >&2; exit 1 ;;
+        esac
+        exec -a nix-instantiate ${iets}/bin/iets "$TMPDIR/build.nix"
+      )
+    ''}
     ${if pkgs.stdenv.hostPlatform.isDarwin then ''
       # macOS cannot extend the sandbox's filesystem permissions for a newly
       # registered derivation. Read it through the restricted daemon instead.
