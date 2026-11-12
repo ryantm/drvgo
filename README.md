@@ -25,6 +25,12 @@ nix-build /path/to/project/nix-build -A default
 
 Flags must precede the package argument. `-tags` and `-ldflags` pass through to Go. `-out` selects the export directory (default `.drvgo`); `-o` selects the Nix result symlink (default `result`). Both are relative to `-C`. The result is a directory with `bin/<command>`, not a single executable file.
 
+With a tested Go SDK, linking with `-w` or `-s` also skips compiler DWARF in
+dependency archives. This speeds compilation and reduces binary-cache payloads.
+Go's runtime stack traces remain available. Explicit `-w=false` preserves DWARF,
+including with `-s`; ordinary debug builds and experimental SDKs keep their
+existing compiler recipes. Stripped and debug builds use separate archive caches.
+
 The generated directory contains `default.nix`, `toolchain.nix`, `toolchain-builder.nix`, `runner.go`, `buildid.go`, `pack.go`, `pack.patch`, `scripts.nix`, `graph.json`, `evaluation.json`, `resolved-toolchain.nix`, and `sources/`. It can be moved or checked in and built without the original checkout, Go module cache, or this CLI. Its toolchain pin supports fetching the same tools on another machine. Nix's result symlink roots the built output against garbage collection.
 
 The project also includes `devenv.nix`/`devenv.yaml`. The tested `nix-shell` entry point and generated builds use the same immutable nixpkgs revision. No directory trust or shell hooks are changed automatically.
@@ -559,6 +565,11 @@ with effectively unchanged warm CI and CLI bootstrap times.
 fresh package builds, including tests and vet, from 6.518 s to 6.192 s (5.0%).
 The installed CLI is 7.5% smaller, and complete planner inputs lose 62 KB
 compressed. Worker toolchains are identical and cached CI latency stays flat.
+
+[Skipping discarded dependency debug data](benchmarks/ci-round23-2026-11-12.md)
+reduces package rebuild time by 7.5% for the fixture and 5.4% for UPM when linking
+with `-s -w`. Compressed package outputs shrink by 1.90 MB and 14.20 MB,
+respectively. Default debug exports retain their existing recipes.
 
 If your cache publishes planner outputs and CI often rebuilds an identical
 source tree on a cold worker, set `allowPlannerSubstitutes = true` in
