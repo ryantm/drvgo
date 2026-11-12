@@ -1,0 +1,3754 @@
+{
+  "title": "Optional nested iets planner",
+  "benchmark_runs": {
+    "before": "3e8a3abf112cec19216baedc7f85b715bae2c607",
+    "after": "d30cce7fbbf250d0be6db64cf941fc4868ad202d",
+    "runs": [
+      {
+        "name": "fixture-ci",
+        "out": "/tmp/drvgo-public-iets-final-fixture-ci",
+        "command": [
+          "python3",
+          "scripts/benchmark-ci.py",
+          "--before",
+          "/tmp/drvgo-ci-native-forwarding",
+          "--after",
+          "/tmp/drvgo-ci-iets-planner",
+          "--after-iets",
+          "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+          "--package",
+          ".",
+          "--source",
+          "/tmp/drvgo-ci-iets-planner/tests/fixture",
+          "--runs",
+          "5",
+          "--nix-option",
+          "sandbox",
+          "true",
+          "--nix-option",
+          "sandbox-fallback",
+          "false",
+          "--nix-option",
+          "substituters",
+          "",
+          "--nix-option",
+          "always-allow-substitutes",
+          "false",
+          "--out",
+          "/tmp/drvgo-public-iets-final-fixture-ci"
+        ]
+      },
+      {
+        "name": "fixture-eval",
+        "out": "/tmp/drvgo-public-iets-final-fixture-eval",
+        "command": [
+          "python3",
+          "scripts/benchmark-evaluation.py",
+          "--before",
+          "/tmp/drvgo-ci-native-forwarding",
+          "--after",
+          "/tmp/drvgo-ci-iets-planner",
+          "--after-iets",
+          "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+          "--package",
+          ".",
+          "--dynamic-source",
+          "/tmp/drvgo-ci-iets-planner/tests/fixture",
+          "--iets",
+          "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0/bin/iets",
+          "--runs",
+          "15",
+          "--out",
+          "/tmp/drvgo-public-iets-final-fixture-eval"
+        ]
+      },
+      {
+        "name": "upm-proxy-ci",
+        "out": "/tmp/drvgo-public-iets-final-upm-proxy-ci",
+        "command": [
+          "python3",
+          "scripts/benchmark-ci.py",
+          "--before",
+          "/tmp/drvgo-ci-native-forwarding",
+          "--after",
+          "/tmp/drvgo-ci-iets-planner",
+          "--after-iets",
+          "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+          "--package",
+          "./cmd/upm",
+          "--vendor-hash",
+          "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+          "--source",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "--runs",
+          "5",
+          "--nix-option",
+          "sandbox",
+          "true",
+          "--nix-option",
+          "sandbox-fallback",
+          "false",
+          "--nix-option",
+          "substituters",
+          "",
+          "--nix-option",
+          "always-allow-substitutes",
+          "false",
+          "--out",
+          "/tmp/drvgo-public-iets-final-upm-proxy-ci"
+        ]
+      },
+      {
+        "name": "upm-proxy-eval",
+        "out": "/tmp/drvgo-public-iets-final-upm-proxy-eval",
+        "command": [
+          "python3",
+          "scripts/benchmark-evaluation.py",
+          "--before",
+          "/tmp/drvgo-ci-native-forwarding",
+          "--after",
+          "/tmp/drvgo-ci-iets-planner",
+          "--after-iets",
+          "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+          "--package",
+          "./cmd/upm",
+          "--vendor-hash",
+          "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+          "--dynamic-source",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "--iets",
+          "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0/bin/iets",
+          "--runs",
+          "15",
+          "--out",
+          "/tmp/drvgo-public-iets-final-upm-proxy-eval"
+        ]
+      },
+      {
+        "name": "upm-prepared-ci",
+        "out": "/tmp/drvgo-public-iets-final-upm-prepared-ci",
+        "command": [
+          "python3",
+          "scripts/benchmark-ci.py",
+          "--before",
+          "/tmp/drvgo-ci-native-forwarding",
+          "--after",
+          "/tmp/drvgo-ci-iets-planner",
+          "--after-iets",
+          "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+          "--package",
+          "./cmd/upm",
+          "--module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "--source",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "--runs",
+          "5",
+          "--nix-option",
+          "sandbox",
+          "true",
+          "--nix-option",
+          "sandbox-fallback",
+          "false",
+          "--nix-option",
+          "substituters",
+          "",
+          "--nix-option",
+          "always-allow-substitutes",
+          "false",
+          "--out",
+          "/tmp/drvgo-public-iets-final-upm-prepared-ci"
+        ]
+      },
+      {
+        "name": "upm-prepared-eval",
+        "out": "/tmp/drvgo-public-iets-final-upm-prepared-eval",
+        "command": [
+          "python3",
+          "scripts/benchmark-evaluation.py",
+          "--before",
+          "/tmp/drvgo-ci-native-forwarding",
+          "--after",
+          "/tmp/drvgo-ci-iets-planner",
+          "--after-iets",
+          "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+          "--package",
+          "./cmd/upm",
+          "--module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "--dynamic-source",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "--iets",
+          "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0/bin/iets",
+          "--runs",
+          "15",
+          "--out",
+          "/tmp/drvgo-public-iets-final-upm-prepared-eval"
+        ]
+      }
+    ],
+    "fixture-ci_identical_package_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture",
+    "upm-proxy-ci_identical_package_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm",
+    "upm-prepared-ci_identical_package_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+  },
+  "benchmarks": {
+    "fixture-ci": {
+      "scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
+      "source": "/tmp/drvgo-ci-iets-planner/tests/fixture",
+      "package": ".",
+      "vendor_hash": null,
+      "after_module_cache": null,
+      "module_cache": null,
+      "after_iets": "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+      "after_prepare_modules": false,
+      "after_export_data": false,
+      "after_early_cutoff": false,
+      "cgo": null,
+      "test": false,
+      "allow_empty_tests": false,
+      "tags": "",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "roots": {
+        "before": "/tmp/drvgo-ci-native-forwarding",
+        "after": "/tmp/drvgo-ci-iets-planner"
+      },
+      "flags": [
+        "--extra-experimental-features",
+        "ca-derivations dynamic-derivations recursive-nix",
+        "--option",
+        "allow-import-from-derivation",
+        "false",
+        "--max-jobs",
+        "4",
+        "--cores",
+        "2",
+        "--option",
+        "sandbox",
+        "true",
+        "--option",
+        "sandbox-fallback",
+        "false",
+        "--option",
+        "substituters",
+        "",
+        "--option",
+        "always-allow-substitutes",
+        "false"
+      ],
+      "nonce": "85e3a456b24c",
+      "records": [
+        {
+          "label": "before",
+          "trial": 0,
+          "warmup": true,
+          "evaluation": 0.39698979107197374,
+          "realization": 0.49697688792366534,
+          "total": 0.8939666789956391,
+          "derivation": "/nix/store/wpkgkx6als028aa4cdzz3db51lpfm9gj-drvgo-ci-85e3a456b24c-before-0.drv",
+          "result": "/nix/store/6shc3nfdj6f1s7yyzdnxc335h58gnnfz-drvgo-ci-85e3a456b24c-before-0",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "after",
+          "trial": 0,
+          "warmup": true,
+          "evaluation": 0.39978304505348206,
+          "realization": 0.48946030903607607,
+          "total": 0.8892433540895581,
+          "derivation": "/nix/store/5zhb4ghfjizm4zv5vd8n9c0z5nqacdy2-drvgo-ci-85e3a456b24c-after-0.drv",
+          "result": "/nix/store/mbc7m8vvdhv3hqb9wy9r1x8q3ngkj9a4-drvgo-ci-85e3a456b24c-after-0",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "after",
+          "trial": 1,
+          "warmup": false,
+          "evaluation": 0.38686673203483224,
+          "realization": 0.48519498901441693,
+          "total": 0.8720617210492492,
+          "derivation": "/nix/store/vcpmkv848nlpand5id5m3h7wpisgmjqp-drvgo-ci-85e3a456b24c-after-1.drv",
+          "result": "/nix/store/7q7rql0bi4h8sjadvql7kp7vrypcrvfv-drvgo-ci-85e3a456b24c-after-1",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "before",
+          "trial": 1,
+          "warmup": false,
+          "evaluation": 0.383406168082729,
+          "realization": 0.49316039693076164,
+          "total": 0.8765665650134906,
+          "derivation": "/nix/store/7v57d0hf2sdzb437y9askc3h6kds26fh-drvgo-ci-85e3a456b24c-before-1.drv",
+          "result": "/nix/store/n5mx1pv547i7kq6g849nlkbi7bp4pg0c-drvgo-ci-85e3a456b24c-before-1",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "before",
+          "trial": 2,
+          "warmup": false,
+          "evaluation": 0.3935034020105377,
+          "realization": 0.4975306030828506,
+          "total": 0.8910340050933883,
+          "derivation": "/nix/store/0rrvwas9aldpv0rmh2kknzppipld5zdl-drvgo-ci-85e3a456b24c-before-2.drv",
+          "result": "/nix/store/z31vyw1h9x8cyv7gqllznhhn99aj2x6g-drvgo-ci-85e3a456b24c-before-2",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "after",
+          "trial": 2,
+          "warmup": false,
+          "evaluation": 0.39002580498345196,
+          "realization": 0.47679559292737395,
+          "total": 0.8668213979108259,
+          "derivation": "/nix/store/w11laqbygs2kdyzjdfisraidrkmcfapz-drvgo-ci-85e3a456b24c-after-2.drv",
+          "result": "/nix/store/s0kmz8zryn8fc8vc8sy5jzi07d0vpj6c-drvgo-ci-85e3a456b24c-after-2",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "after",
+          "trial": 3,
+          "warmup": false,
+          "evaluation": 0.395908496924676,
+          "realization": 0.4815659410087392,
+          "total": 0.8774744379334152,
+          "derivation": "/nix/store/cq91m0a192997j123pwbhm2j0csjg6qx-drvgo-ci-85e3a456b24c-after-3.drv",
+          "result": "/nix/store/ms17wmxpbnslmmwhsmi7i9899c1ar43r-drvgo-ci-85e3a456b24c-after-3",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "before",
+          "trial": 3,
+          "warmup": false,
+          "evaluation": 0.39877309394069016,
+          "realization": 0.5038570050382987,
+          "total": 0.9026300989789888,
+          "derivation": "/nix/store/1hxrf614h4qr452wzqcwn1lxvjz1bg4g-drvgo-ci-85e3a456b24c-before-3.drv",
+          "result": "/nix/store/zbc730qvdvf5ck70arnwvdhfjx6af7lc-drvgo-ci-85e3a456b24c-before-3",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "before",
+          "trial": 4,
+          "warmup": false,
+          "evaluation": 0.37686913402285427,
+          "realization": 0.4893982260255143,
+          "total": 0.8662673600483686,
+          "derivation": "/nix/store/1wvj5l22ds7cp53w6lkgra7xcin24jxz-drvgo-ci-85e3a456b24c-before-4.drv",
+          "result": "/nix/store/fmsjgb2d8051qw70wshrpy0wv8d75j4a-drvgo-ci-85e3a456b24c-before-4",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "after",
+          "trial": 4,
+          "warmup": false,
+          "evaluation": 0.3878981899470091,
+          "realization": 0.48185823298990726,
+          "total": 0.8697564229369164,
+          "derivation": "/nix/store/vm1lajw7s44z1abnm3azcmf6mc036zck-drvgo-ci-85e3a456b24c-after-4.drv",
+          "result": "/nix/store/nan0iqa9z1y4xhl2gvm1lppqahbjqw0n-drvgo-ci-85e3a456b24c-after-4",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "after",
+          "trial": 5,
+          "warmup": false,
+          "evaluation": 0.3918577180011198,
+          "realization": 0.49227056198287755,
+          "total": 0.8841282799839973,
+          "derivation": "/nix/store/ii7qr12h1yay95qb0x7wgdzdakrjkb5b-drvgo-ci-85e3a456b24c-after-5.drv",
+          "result": "/nix/store/q5zi5hcam4sf4nvhq4pyvlpk27253m5f-drvgo-ci-85e3a456b24c-after-5",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "label": "before",
+          "trial": 5,
+          "warmup": false,
+          "evaluation": 0.3686696399236098,
+          "realization": 0.5028640470700338,
+          "total": 0.8715336869936436,
+          "derivation": "/nix/store/ybbwzgm4h8xxlyrspgq79lmk1y2l3zjf-drvgo-ci-85e3a456b24c-before-5.drv",
+          "result": "/nix/store/dd1lnpab5i55pjdzxsvcvcid90h12v1p-drvgo-ci-85e3a456b24c-before-5",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        }
+      ],
+      "medians": {
+        "before": {
+          "evaluation": 0.383406168082729,
+          "realization": 0.4975306030828506,
+          "total": 0.8765665650134906
+        },
+        "after": {
+          "evaluation": 0.39002580498345196,
+          "realization": 0.48185823298990726,
+          "total": 0.8720617210492492
+        }
+      }
+    },
+    "fixture-eval": {
+      "scope": "Warm evaluation; no builds; iets tracing cache and Nix fallback disabled",
+      "dynamic_source": "/tmp/drvgo-ci-iets-planner/tests/fixture",
+      "package": ".",
+      "vendor_hash": null,
+      "module_cache": null,
+      "after_iets": "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+      "after_export_data": false,
+      "after_early_cutoff": false,
+      "roots": {
+        "before": "/tmp/drvgo-ci-native-forwarding",
+        "after": "/tmp/drvgo-ci-iets-planner"
+      },
+      "records": [
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.3865660559386015,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.23995413701049984,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.12594622606411576,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.38446669199038297,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.2398152119712904,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.1265443420270458,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.1293849110370502,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.23922129708807915,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.37717986200004816,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.13209041801746935,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.24005078698974103,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.3863534959964454,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.37982490297872573,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.2429394320352003,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.12511946691665798,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.3958616309100762,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.2397814280120656,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.12889027106575668,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.13139168510679156,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.25806248700246215,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.37301200604997575,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.12966071895789355,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.24615386908408254,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.39387411705683917,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.3899555690586567,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.2444719229824841,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.12436146207619458,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.3796003410825506,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.2428450130391866,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.1289241190534085,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.1341956800315529,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.24338139803148806,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.390394990099594,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.12793291604612023,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.25352684897370636,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.3915475190151483,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.3815128590213135,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.24281915300525725,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.12721541989594698,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.39482229901477695,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.2426394020440057,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.12490739789791405,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.12740714405663311,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.2452609270112589,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.37514501402620226,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.13158905995078385,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.24959715094882995,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.3889187180902809,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.3811886339681223,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.24536258599255234,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.12416434602346271,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.3698585469974205,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.24353005189914256,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.12520787899848074,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.12904689298011363,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.24478335701860487,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.3758277209708467,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.13350147695746273,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.24559871607925743,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.4006801740033552,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.3889667959883809,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.25005834095645696,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.12337749497964978,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.4079691949300468,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.24365343200042844,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.12501113198231906,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.13127331400755793,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.2447974750539288,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.38933135708794,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.12373214494436979,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.24483143200632185,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.3893532110378146,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.3952670270809904,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.25004518195055425,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.12801708502229303,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.3984768259106204,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.24277083005290478,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.12357747601345181,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.1297601629048586,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.2436392359668389,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.3848562539787963,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.12483513506595045,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.251394442981109,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.39620400592684746,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.400498069007881,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.2439494540449232,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.12487440498080105,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.37528398900758475,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.24499801802448928,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.12868102395441383,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.12706069997511804,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.24485956504940987,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.3972867300035432,
+          "derivation": "/nix/store/i8w74ll25vadbhasa45f0l7w0jrp7mci-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.12671306601259857,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.24649624794255942,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.38700552901718765,
+          "derivation": "/nix/store/34s069ppapg7hz59cdv3srqi8s82rcvm-drvgo.drv"
+        }
+      ],
+      "medians": {
+        "before": {
+          "nix": 0.3893532110378146,
+          "iets-1": 0.24559871607925743,
+          "iets-4": 0.12671306601259857
+        },
+        "after": {
+          "nix": 0.3848562539787963,
+          "iets-1": 0.2436392359668389,
+          "iets-4": 0.12889027106575668
+        }
+      }
+    },
+    "upm-proxy-ci": {
+      "scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
+      "source": "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+      "package": "./cmd/upm",
+      "vendor_hash": "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+      "after_module_cache": null,
+      "module_cache": null,
+      "after_iets": "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+      "after_prepare_modules": false,
+      "after_export_data": false,
+      "after_early_cutoff": false,
+      "cgo": null,
+      "test": false,
+      "allow_empty_tests": false,
+      "tags": "",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "roots": {
+        "before": "/tmp/drvgo-ci-native-forwarding",
+        "after": "/tmp/drvgo-ci-iets-planner"
+      },
+      "flags": [
+        "--extra-experimental-features",
+        "ca-derivations dynamic-derivations recursive-nix",
+        "--option",
+        "allow-import-from-derivation",
+        "false",
+        "--max-jobs",
+        "4",
+        "--cores",
+        "2",
+        "--option",
+        "sandbox",
+        "true",
+        "--option",
+        "sandbox-fallback",
+        "false",
+        "--option",
+        "substituters",
+        "",
+        "--option",
+        "always-allow-substitutes",
+        "false"
+      ],
+      "nonce": "d182ec8b5d39",
+      "records": [
+        {
+          "label": "before",
+          "trial": 0,
+          "warmup": true,
+          "evaluation": 0.42614474706351757,
+          "realization": 2.9783144529210404,
+          "total": 3.404459199984558,
+          "derivation": "/nix/store/jxzsyzra4gvhspsr23wsch2hhawanjnq-drvgo-ci-d182ec8b5d39-before-0.drv",
+          "result": "/nix/store/rhq7jazxby8ha3dwbf7zlrpjk8clnpqq-drvgo-ci-d182ec8b5d39-before-0",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 0,
+          "warmup": true,
+          "evaluation": 0.40075363602954894,
+          "realization": 2.6870523740071803,
+          "total": 3.0878060100367293,
+          "derivation": "/nix/store/7i9zkx0d7p1qm929rij0fbpqwa8rskll-drvgo-ci-d182ec8b5d39-after-0.drv",
+          "result": "/nix/store/ybz6xnf0qa5g56mvg6f9xxhajqqcy3ic-drvgo-ci-d182ec8b5d39-after-0",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 1,
+          "warmup": false,
+          "evaluation": 0.4153103380231187,
+          "realization": 2.667230819002725,
+          "total": 3.082541157025844,
+          "derivation": "/nix/store/y1iwg2d19virxym2ygvgdzca2iidk0hr-drvgo-ci-d182ec8b5d39-after-1.drv",
+          "result": "/nix/store/8h0g14paj9d6ywza36ss4dkwc0jl4d5w-drvgo-ci-d182ec8b5d39-after-1",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 1,
+          "warmup": false,
+          "evaluation": 0.41518811299465597,
+          "realization": 3.1228617220185697,
+          "total": 3.5380498350132257,
+          "derivation": "/nix/store/l58kx5xxczb0rs3ccai2nwbvd6imsb11-drvgo-ci-d182ec8b5d39-before-1.drv",
+          "result": "/nix/store/i9sdzg6x16ncwzfq2nwv7y78lmycgxvz-drvgo-ci-d182ec8b5d39-before-1",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 2,
+          "warmup": false,
+          "evaluation": 0.40704616403672844,
+          "realization": 3.852796206017956,
+          "total": 4.259842370054685,
+          "derivation": "/nix/store/7j2qqpchmzkqnkrzb8hv9mwr2n6nl4pp-drvgo-ci-d182ec8b5d39-before-2.drv",
+          "result": "/nix/store/p4lrdfs4hdfaw89blypqz4immhm22p53-drvgo-ci-d182ec8b5d39-before-2",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 2,
+          "warmup": false,
+          "evaluation": 0.42813235707581043,
+          "realization": 2.685918970964849,
+          "total": 3.1140513280406594,
+          "derivation": "/nix/store/0x9918w7l24glzijzybny3v1n5x9m8c7-drvgo-ci-d182ec8b5d39-after-2.drv",
+          "result": "/nix/store/1lcnz2gsglnwmqkks8m4s21yxkcylc3x-drvgo-ci-d182ec8b5d39-after-2",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 3,
+          "warmup": false,
+          "evaluation": 0.4208412610460073,
+          "realization": 2.7158226009923965,
+          "total": 3.1366638620384037,
+          "derivation": "/nix/store/v4pw23z4sgdx90h5q3cq6jg6pfavfmjc-drvgo-ci-d182ec8b5d39-after-3.drv",
+          "result": "/nix/store/3j00xaak8b8pxzrphxq6dgczlrcc708n-drvgo-ci-d182ec8b5d39-after-3",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 3,
+          "warmup": false,
+          "evaluation": 0.397134089958854,
+          "realization": 3.067295641056262,
+          "total": 3.464429731015116,
+          "derivation": "/nix/store/12wj7rkpv1ajbygvyi245rzfnglal4sw-drvgo-ci-d182ec8b5d39-before-3.drv",
+          "result": "/nix/store/j841xl1s7wi5nni451363434csgbrn0s-drvgo-ci-d182ec8b5d39-before-3",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 4,
+          "warmup": false,
+          "evaluation": 0.42631082294974476,
+          "realization": 2.958955041016452,
+          "total": 3.3852658639661968,
+          "derivation": "/nix/store/asmnyw5mpip042cvs0rx1j471s13pmpf-drvgo-ci-d182ec8b5d39-before-4.drv",
+          "result": "/nix/store/yaz8k61lz0x5dl3igdjj9wmq8nj96cww-drvgo-ci-d182ec8b5d39-before-4",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 4,
+          "warmup": false,
+          "evaluation": 0.4346234480617568,
+          "realization": 2.7642609518952668,
+          "total": 3.1988843999570236,
+          "derivation": "/nix/store/wf7bw8v1cwkc9xy0i7sqh39mshqj82qb-drvgo-ci-d182ec8b5d39-after-4.drv",
+          "result": "/nix/store/avzyz1nmm8957jlkwzxknalipfvhldy3-drvgo-ci-d182ec8b5d39-after-4",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 5,
+          "warmup": false,
+          "evaluation": 0.4344713070895523,
+          "realization": 2.695070671965368,
+          "total": 3.1295419790549204,
+          "derivation": "/nix/store/a471rwi2qlsf0nnbmc3ky13194zq1f5n-drvgo-ci-d182ec8b5d39-after-5.drv",
+          "result": "/nix/store/38gya9q09jg1isw3sn2pf6856rm6a5fp-drvgo-ci-d182ec8b5d39-after-5",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 5,
+          "warmup": false,
+          "evaluation": 0.42109502595849335,
+          "realization": 3.0593602370936424,
+          "total": 3.4804552630521357,
+          "derivation": "/nix/store/47m9wjjim76k4x47glzhmg519mhc406l-drvgo-ci-d182ec8b5d39-before-5.drv",
+          "result": "/nix/store/xzmzigr651mjxgvclarvgzhy9143z5dz-drvgo-ci-d182ec8b5d39-before-5",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        }
+      ],
+      "medians": {
+        "before": {
+          "evaluation": 0.41518811299465597,
+          "realization": 3.067295641056262,
+          "total": 3.4804552630521357
+        },
+        "after": {
+          "evaluation": 0.42813235707581043,
+          "realization": 2.695070671965368,
+          "total": 3.1295419790549204
+        }
+      }
+    },
+    "upm-proxy-eval": {
+      "scope": "Warm evaluation; no builds; iets tracing cache and Nix fallback disabled",
+      "dynamic_source": "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+      "package": "./cmd/upm",
+      "vendor_hash": "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+      "module_cache": null,
+      "after_iets": "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+      "after_export_data": false,
+      "after_early_cutoff": false,
+      "roots": {
+        "before": "/tmp/drvgo-ci-native-forwarding",
+        "after": "/tmp/drvgo-ci-iets-planner"
+      },
+      "records": [
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.4197623709915206,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.27016276796348393,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.12910069699864835,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.41364259098190814,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.27059049590025097,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.1307669780217111,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.1343219269765541,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.27385489898733795,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.4144687879597768,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.1388601859798655,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.26913897902704775,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.4068896659882739,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.4273824359988794,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.27427440707106143,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.13385072501841933,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.4110338910249993,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.2691983700497076,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.13088305189739913,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.13292075006756932,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.2776246160501614,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.38653617398813367,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.12970449007116258,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.2725162459537387,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.4044963379856199,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.39332825201563537,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.2756469330051914,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.15402681299019605,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.40998002199921757,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.27222137805074453,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.1291926819831133,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.1277052810182795,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.2720793209737167,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.41880404599942267,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.13962859800085425,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.2714188810205087,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.40377897897269577,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.4154989889357239,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.2723531380761415,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.13920983800198883,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.4110911689931527,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.2722551500191912,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.1311541050672531,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.13438254303764552,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.2787826069397852,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.4222116449382156,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.13173411996103823,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.2746386310318485,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.4118633239995688,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.4005151350283995,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.28135924006346613,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.1308677209308371,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.41277784795966,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.27370672090910375,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.1309399389429018,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.12979808391537517,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.27256203698925674,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.41581844992469996,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.1359402999514714,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.2752452470595017,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.4213422619504854,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.413032133015804,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.2718506399542093,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.1328341169282794,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.4264104289468378,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.27608187694568187,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.12930491904262453,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.13246388093102723,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.27455244306474924,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.4048657478997484,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.13187390996608883,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.2761516770115122,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.39086067699827254,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.3940663560060784,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.2715556889306754,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.13724769896361977,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.3865056000649929,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.27456831210292876,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.12781654496211559,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.13708109594881535,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.2757722201058641,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.4334073920035735,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.1351345549337566,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.2742400639690459,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.41297458996996284,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.39003484998829663,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.27404119598213583,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.13400453596841544,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.40898809605278075,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.2729241519700736,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.13070871005766094,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.131649962044321,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.2735181780299172,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.407229537027888,
+          "derivation": "/nix/store/x4rrvi1q1nqbw1mbgia2n3i08x3az3j0-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.13424512697383761,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.28152024501468986,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.4176957519957796,
+          "derivation": "/nix/store/9vgqkx6744cwizyfq4jg68vci40p182j-drvgo.drv"
+        }
+      ],
+      "medians": {
+        "before": {
+          "nix": 0.4068896659882739,
+          "iets-1": 0.2742400639690459,
+          "iets-4": 0.13424512697383761
+        },
+        "after": {
+          "nix": 0.4110911689931527,
+          "iets-1": 0.27370672090910375,
+          "iets-4": 0.1309399389429018
+        }
+      }
+    },
+    "upm-prepared-ci": {
+      "scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
+      "source": "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+      "package": "./cmd/upm",
+      "vendor_hash": null,
+      "after_module_cache": null,
+      "module_cache": "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+      "after_iets": "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+      "after_prepare_modules": false,
+      "after_export_data": false,
+      "after_early_cutoff": false,
+      "cgo": null,
+      "test": false,
+      "allow_empty_tests": false,
+      "tags": "",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "roots": {
+        "before": "/tmp/drvgo-ci-native-forwarding",
+        "after": "/tmp/drvgo-ci-iets-planner"
+      },
+      "flags": [
+        "--extra-experimental-features",
+        "ca-derivations dynamic-derivations recursive-nix",
+        "--option",
+        "allow-import-from-derivation",
+        "false",
+        "--max-jobs",
+        "4",
+        "--cores",
+        "2",
+        "--option",
+        "sandbox",
+        "true",
+        "--option",
+        "sandbox-fallback",
+        "false",
+        "--option",
+        "substituters",
+        "",
+        "--option",
+        "always-allow-substitutes",
+        "false"
+      ],
+      "nonce": "4a5f6e74d552",
+      "records": [
+        {
+          "label": "before",
+          "trial": 0,
+          "warmup": true,
+          "evaluation": 0.3956351689994335,
+          "realization": 2.1255588959902525,
+          "total": 2.521194064989686,
+          "derivation": "/nix/store/28xxbc68fvp53qbs9d4sagxxn7anxdyb-drvgo-ci-4a5f6e74d552-before-0.drv",
+          "result": "/nix/store/hdanih30b2w7ivf90qfx68g44cn5zpha-drvgo-ci-4a5f6e74d552-before-0",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 0,
+          "warmup": true,
+          "evaluation": 0.40057325293309987,
+          "realization": 1.8111336959991604,
+          "total": 2.2117069489322603,
+          "derivation": "/nix/store/h0w3jxb40xy84sgyww17a7v5wjlscs4l-drvgo-ci-4a5f6e74d552-after-0.drv",
+          "result": "/nix/store/mbd1imxgz6p3vdhg6lmm99cayqgwl07c-drvgo-ci-4a5f6e74d552-after-0",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 1,
+          "warmup": false,
+          "evaluation": 0.40258727001491934,
+          "realization": 1.7909652590751648,
+          "total": 2.193552529090084,
+          "derivation": "/nix/store/fhy359q8cgjb3xrkyfmjfypy3ilkis6c-drvgo-ci-4a5f6e74d552-after-1.drv",
+          "result": "/nix/store/dn65kym9pa1pmv666d7mmbfs3w1mr25j-drvgo-ci-4a5f6e74d552-after-1",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 1,
+          "warmup": false,
+          "evaluation": 0.40889133396558464,
+          "realization": 2.1023076800629497,
+          "total": 2.5111990140285343,
+          "derivation": "/nix/store/cmz32c3zwar2fgmknky6xx7ay7pv427d-drvgo-ci-4a5f6e74d552-before-1.drv",
+          "result": "/nix/store/4ycr5kvp48zfbcl3sbm8zjas65pzxs26-drvgo-ci-4a5f6e74d552-before-1",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 2,
+          "warmup": false,
+          "evaluation": 0.3964317369973287,
+          "realization": 2.124541318975389,
+          "total": 2.5209730559727177,
+          "derivation": "/nix/store/06dkhbssc2x7bsnf3m9kga244v2xyxwz-drvgo-ci-4a5f6e74d552-before-2.drv",
+          "result": "/nix/store/47wrdk0f1slkfb72zy6z4vvf163ypgp0-drvgo-ci-4a5f6e74d552-before-2",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 2,
+          "warmup": false,
+          "evaluation": 0.40861619799397886,
+          "realization": 1.816554207005538,
+          "total": 2.225170404999517,
+          "derivation": "/nix/store/kisrk4nr3zv7hq61mm66wcnfnzhygy6s-drvgo-ci-4a5f6e74d552-after-2.drv",
+          "result": "/nix/store/incrja0mq6l70gd5zghzjapjvlshd1w0-drvgo-ci-4a5f6e74d552-after-2",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 3,
+          "warmup": false,
+          "evaluation": 0.3981101979734376,
+          "realization": 1.8255252640228719,
+          "total": 2.2236354619963095,
+          "derivation": "/nix/store/q6zcq0xifq6hf89jm5vxm9cbwkwic9sp-drvgo-ci-4a5f6e74d552-after-3.drv",
+          "result": "/nix/store/b1ggl3p7cqh6vfn9ah3fis7ibblixk7y-drvgo-ci-4a5f6e74d552-after-3",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 3,
+          "warmup": false,
+          "evaluation": 0.4214215879328549,
+          "realization": 2.1638295450247824,
+          "total": 2.5852511329576373,
+          "derivation": "/nix/store/0nzx7jy3fa66al0k8yzdham846phixxh-drvgo-ci-4a5f6e74d552-before-3.drv",
+          "result": "/nix/store/2bsh21766nz3pyq9z6gs3rjs8zjb77vh-drvgo-ci-4a5f6e74d552-before-3",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 4,
+          "warmup": false,
+          "evaluation": 0.40850788599345833,
+          "realization": 2.1253139750333503,
+          "total": 2.5338218610268086,
+          "derivation": "/nix/store/5jxjwig6l756ic8adysbylyfvwf4kfn7-drvgo-ci-4a5f6e74d552-before-4.drv",
+          "result": "/nix/store/1k1s5r501in5v2sqxcvz1gfqwbn59dbg-drvgo-ci-4a5f6e74d552-before-4",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 4,
+          "warmup": false,
+          "evaluation": 0.41125493694562465,
+          "realization": 1.8271551730576903,
+          "total": 2.238410110003315,
+          "derivation": "/nix/store/crnnlsv02bk3w1ba9sifcyllams0qcad-drvgo-ci-4a5f6e74d552-after-4.drv",
+          "result": "/nix/store/64qns22643zpp9ajlgw2592dh0kgc8wb-drvgo-ci-4a5f6e74d552-after-4",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "after",
+          "trial": 5,
+          "warmup": false,
+          "evaluation": 0.41449544206261635,
+          "realization": 1.8448839290067554,
+          "total": 2.2593793710693717,
+          "derivation": "/nix/store/ayyb6bhi405kvwnkwwm7q12ip2n5yfjw-drvgo-ci-4a5f6e74d552-after-5.drv",
+          "result": "/nix/store/pmsvvnw6k9lycx00wkrmxgagpncnk8m4-drvgo-ci-4a5f6e74d552-after-5",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        },
+        {
+          "label": "before",
+          "trial": 5,
+          "warmup": false,
+          "evaluation": 0.40958579699508846,
+          "realization": 2.13176568900235,
+          "total": 2.5413514859974384,
+          "derivation": "/nix/store/g4fz3kkzmyg7bjydljaj5j7d7nc3c34y-drvgo-ci-4a5f6e74d552-before-5.drv",
+          "result": "/nix/store/04abkg0xjrwarg7sp14yxabag2pwidj6-drvgo-ci-4a5f6e74d552-before-5",
+          "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+        }
+      ],
+      "medians": {
+        "before": {
+          "evaluation": 0.40889133396558464,
+          "realization": 2.1253139750333503,
+          "total": 2.5338218610268086
+        },
+        "after": {
+          "evaluation": 0.40861619799397886,
+          "realization": 1.8255252640228719,
+          "total": 2.225170404999517
+        }
+      }
+    },
+    "upm-prepared-eval": {
+      "scope": "Warm evaluation; no builds; iets tracing cache and Nix fallback disabled",
+      "dynamic_source": "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+      "package": "./cmd/upm",
+      "vendor_hash": null,
+      "module_cache": "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+      "after_iets": "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+      "after_export_data": false,
+      "after_early_cutoff": false,
+      "roots": {
+        "before": "/tmp/drvgo-ci-native-forwarding",
+        "after": "/tmp/drvgo-ci-iets-planner"
+      },
+      "records": [
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.420875460957177,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.2849796750815585,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.13751051703002304,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.42574323201552033,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.27155563805717975,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.13428485300391912,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.14553428592626005,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.2701302719069645,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.40218787896446884,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.13196694396901876,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.273472112021409,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.39777880208566785,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.4052165070315823,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.2774129309691489,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.13035378698259592,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.39867016300559044,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.28007522400002927,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 2,
+          "warmup": false,
+          "seconds": 0.12792485603131354,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.13060050399508327,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.27110431902110577,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.4012715369462967,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.1359776590252295,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.2688451890135184,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 3,
+          "warmup": false,
+          "seconds": 0.40360935498028994,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.4164552700240165,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.27347201702650636,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.1350942370481789,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.4036250379867852,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.27124085591640323,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 4,
+          "warmup": false,
+          "seconds": 0.1333351640496403,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.1359314719447866,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.27167600102256984,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.4102874309755862,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.1294931439915672,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.28167637693695724,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 5,
+          "warmup": false,
+          "seconds": 0.3922891690162942,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.43073668505530804,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.2714991200482473,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.13880627392791212,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.40302326693199575,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.26874772901646793,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 6,
+          "warmup": false,
+          "seconds": 0.1344066789606586,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.13743226998485625,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.2708084430778399,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.39438639604486525,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.1332373950863257,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.2778683240758255,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 7,
+          "warmup": false,
+          "seconds": 0.4541603809921071,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.40886826103087515,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.2730579921044409,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.13926390500273556,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.41128440690226853,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.2816279660910368,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 8,
+          "warmup": false,
+          "seconds": 0.1314286730485037,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.13057134801056236,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.27030723402276635,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.4095723780337721,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.13580794294830412,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.28186877397820354,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 9,
+          "warmup": false,
+          "seconds": 0.40917426405940205,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.39336123899556696,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.2730437640566379,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.13582770701032132,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.396945663029328,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.27253685297910124,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 10,
+          "warmup": false,
+          "seconds": 0.13689491106197238,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.1343622379936278,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.27489952405449003,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.3974418599391356,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.13258954498451203,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.27959324000403285,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 11,
+          "warmup": false,
+          "seconds": 0.3838766480330378,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.41375932504888624,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.2715755819808692,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.13465629506390542,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.4179099639877677,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.28410009597428143,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 12,
+          "warmup": false,
+          "seconds": 0.1342137729516253,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.13559361593797803,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.27844581298995763,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.41667678707744926,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.13839977502357215,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.27416355395689607,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 13,
+          "warmup": false,
+          "seconds": 0.3997830810258165,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.4069202879909426,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.2875134650385007,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.13680584903340787,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.42096834094263613,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.2885501680430025,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 14,
+          "warmup": false,
+          "seconds": 0.136067560990341,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-4",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.13166716799605638,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "iets-1",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.2753829740686342,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "after",
+          "client": "nix",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.4012582720024511,
+          "derivation": "/nix/store/24rwksbqdp1fkardna4y0w0f2ca18nn1-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-4",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.1318427830701694,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "iets-1",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.272987573989667,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        },
+        {
+          "label": "before",
+          "client": "nix",
+          "trial": 15,
+          "warmup": false,
+          "seconds": 0.40192649501841515,
+          "derivation": "/nix/store/29ld8g3hwm71vm8slgzlp4yxymg6jcsd-drvgo.drv"
+        }
+      ],
+      "medians": {
+        "before": {
+          "nix": 0.4052165070315823,
+          "iets-1": 0.273472112021409,
+          "iets-4": 0.1350942370481789
+        },
+        "after": {
+          "nix": 0.40302326693199575,
+          "iets-1": 0.27253685297910124,
+          "iets-4": 0.1343622379936278
+        }
+      }
+    }
+  },
+  "closures": {
+    "fixture": {
+      "scope": "Planner input closures, including raw derivation metadata; local zstd level 3 cache; no network timing",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "planners": {
+        "before": {
+          "derivation": "/nix/store/pi6j9d9mfxg280n11rpl82x2ky6ng14j-drvgo-public-iets-closure-fixture-result.drv.drv",
+          "roots": [
+            "/nix/store/1lgzmpghizh752ar5knmljrzipx1gj9p-source",
+            "/nix/store/30nsyykw4l7wfjps1kzr14pg0p4kdfpc-go-libnix-toolchain.drv",
+            "/nix/store/3c2knj1p6gsadavbcb76wbbpy6cw06ws-go-libnix-compile-toolchain.drv",
+            "/nix/store/90nk33c4fkyg4x4dfk5cykqiryf2nlqq-bash-interactive-5.3p15",
+            "/nix/store/97d5ygrvqj55f4nx1x34wfdcc7qn11c0-coreutils-9.11",
+            "/nix/store/hgf6ai3vmxmammq2jgpkkkwkl7vrc29v-go-libnix-native-toolchain.drv",
+            "/nix/store/krrd953szwm1c5q29bpw7rxr7cznlrki-drvgo-0.1.0.drv",
+            "/nix/store/pjjg5pcn2fcj5c26r5s185h02jdd7brh-go-libnix-planning-toolchain",
+            "/nix/store/r4yd7hpfwpx5s8ily1ipwjc17cl087mn-nix-2.34.8",
+            "/nix/store/rz5pwdv6mjz1my25x155qnlbhflvyd46-drvgo-0.1.0",
+            "/nix/store/yqmbc5la2lpf7arxnzdd4bd6n677fyh4-go-libnix-link-toolchain.drv"
+          ],
+          "paths": 964,
+          "nar_bytes": 339198952,
+          "zstd_bytes": 97467066
+        },
+        "after": {
+          "derivation": "/nix/store/86sxwsc5kzazgbl9r1jxrs58n6x5dd2p-drvgo-public-iets-closure-fixture-result.drv.drv",
+          "roots": [
+            "/nix/store/1lgzmpghizh752ar5knmljrzipx1gj9p-source",
+            "/nix/store/30nsyykw4l7wfjps1kzr14pg0p4kdfpc-go-libnix-toolchain.drv",
+            "/nix/store/3c2knj1p6gsadavbcb76wbbpy6cw06ws-go-libnix-compile-toolchain.drv",
+            "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+            "/nix/store/90nk33c4fkyg4x4dfk5cykqiryf2nlqq-bash-interactive-5.3p15",
+            "/nix/store/97d5ygrvqj55f4nx1x34wfdcc7qn11c0-coreutils-9.11",
+            "/nix/store/hgf6ai3vmxmammq2jgpkkkwkl7vrc29v-go-libnix-native-toolchain.drv",
+            "/nix/store/krrd953szwm1c5q29bpw7rxr7cznlrki-drvgo-0.1.0.drv",
+            "/nix/store/pjjg5pcn2fcj5c26r5s185h02jdd7brh-go-libnix-planning-toolchain",
+            "/nix/store/r4yd7hpfwpx5s8ily1ipwjc17cl087mn-nix-2.34.8",
+            "/nix/store/rz5pwdv6mjz1my25x155qnlbhflvyd46-drvgo-0.1.0",
+            "/nix/store/yqmbc5la2lpf7arxnzdd4bd6n677fyh4-go-libnix-link-toolchain.drv"
+          ],
+          "paths": 965,
+          "nar_bytes": 353648848,
+          "zstd_bytes": 102597609
+        }
+      }
+    },
+    "upm-prepared": {
+      "scope": "Planner input closures, including raw derivation metadata; local zstd level 3 cache; no network timing",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "planners": {
+        "before": {
+          "derivation": "/nix/store/7xmdwq2rsii8ayx6fkyxasdynja0q7yq-drvgo-public-iets-closure-upm-prepared-result.drv.drv",
+          "roots": [
+            "/nix/store/30nsyykw4l7wfjps1kzr14pg0p4kdfpc-go-libnix-toolchain.drv",
+            "/nix/store/3c2knj1p6gsadavbcb76wbbpy6cw06ws-go-libnix-compile-toolchain.drv",
+            "/nix/store/90nk33c4fkyg4x4dfk5cykqiryf2nlqq-bash-interactive-5.3p15",
+            "/nix/store/97d5ygrvqj55f4nx1x34wfdcc7qn11c0-coreutils-9.11",
+            "/nix/store/hgf6ai3vmxmammq2jgpkkkwkl7vrc29v-go-libnix-native-toolchain.drv",
+            "/nix/store/krrd953szwm1c5q29bpw7rxr7cznlrki-drvgo-0.1.0.drv",
+            "/nix/store/pjjg5pcn2fcj5c26r5s185h02jdd7brh-go-libnix-planning-toolchain",
+            "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+            "/nix/store/r4yd7hpfwpx5s8ily1ipwjc17cl087mn-nix-2.34.8",
+            "/nix/store/rz5pwdv6mjz1my25x155qnlbhflvyd46-drvgo-0.1.0",
+            "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+            "/nix/store/yqmbc5la2lpf7arxnzdd4bd6n677fyh4-go-libnix-link-toolchain.drv"
+          ],
+          "paths": 965,
+          "nar_bytes": 1389995792,
+          "zstd_bytes": 251486086
+        },
+        "after": {
+          "derivation": "/nix/store/857c2vn6dbyjchxymdb8bhsjspr4mc30-drvgo-public-iets-closure-upm-prepared-result.drv.drv",
+          "roots": [
+            "/nix/store/30nsyykw4l7wfjps1kzr14pg0p4kdfpc-go-libnix-toolchain.drv",
+            "/nix/store/3c2knj1p6gsadavbcb76wbbpy6cw06ws-go-libnix-compile-toolchain.drv",
+            "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+            "/nix/store/90nk33c4fkyg4x4dfk5cykqiryf2nlqq-bash-interactive-5.3p15",
+            "/nix/store/97d5ygrvqj55f4nx1x34wfdcc7qn11c0-coreutils-9.11",
+            "/nix/store/hgf6ai3vmxmammq2jgpkkkwkl7vrc29v-go-libnix-native-toolchain.drv",
+            "/nix/store/krrd953szwm1c5q29bpw7rxr7cznlrki-drvgo-0.1.0.drv",
+            "/nix/store/pjjg5pcn2fcj5c26r5s185h02jdd7brh-go-libnix-planning-toolchain",
+            "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+            "/nix/store/r4yd7hpfwpx5s8ily1ipwjc17cl087mn-nix-2.34.8",
+            "/nix/store/rz5pwdv6mjz1my25x155qnlbhflvyd46-drvgo-0.1.0",
+            "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+            "/nix/store/yqmbc5la2lpf7arxnzdd4bd6n677fyh4-go-libnix-link-toolchain.drv"
+          ],
+          "paths": 966,
+          "nar_bytes": 1404445688,
+          "zstd_bytes": 256616629
+        }
+      }
+    }
+  },
+  "validation": {
+    "static_integration": {
+      "iets": "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0/bin/iets",
+      "nonce": "3e99b2eb4f84",
+      "records": [
+        {
+          "case": "outer",
+          "client": "nix",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.4839970429893583,
+          "derivation": "/nix/store/dwmbxrbrnvrrd9l2layc3qjw3qd5jhjg-drvgo-iets-3e99b2eb4f84-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "iets-1",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.22883810591883957,
+          "derivation": "/nix/store/dwmbxrbrnvrrd9l2layc3qjw3qd5jhjg-drvgo-iets-3e99b2eb4f84-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "iets-4",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.12837199703790247,
+          "derivation": "/nix/store/dwmbxrbrnvrrd9l2layc3qjw3qd5jhjg-drvgo-iets-3e99b2eb4f84-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "iets-4",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.16352799395099282,
+          "derivation": "/nix/store/dwmbxrbrnvrrd9l2layc3qjw3qd5jhjg-drvgo-iets-3e99b2eb4f84-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "iets-1",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.24853605404496193,
+          "derivation": "/nix/store/dwmbxrbrnvrrd9l2layc3qjw3qd5jhjg-drvgo-iets-3e99b2eb4f84-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "nix",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.4146008600946516,
+          "derivation": "/nix/store/dwmbxrbrnvrrd9l2layc3qjw3qd5jhjg-drvgo-iets-3e99b2eb4f84-outer.drv"
+        },
+        {
+          "case": "nested",
+          "client": "nix",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.40389237098861486,
+          "derivation": "/nix/store/gmjhgiqsx80ahaicc5nrfkyxxgn9bh15-drvgo-iets-3e99b2eb4f84-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "iets-1",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.2300066740717739,
+          "derivation": "/nix/store/gmjhgiqsx80ahaicc5nrfkyxxgn9bh15-drvgo-iets-3e99b2eb4f84-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "iets-4",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.12681536795571446,
+          "derivation": "/nix/store/gmjhgiqsx80ahaicc5nrfkyxxgn9bh15-drvgo-iets-3e99b2eb4f84-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "iets-4",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.12030529708135873,
+          "derivation": "/nix/store/gmjhgiqsx80ahaicc5nrfkyxxgn9bh15-drvgo-iets-3e99b2eb4f84-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "iets-1",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.2291963209863752,
+          "derivation": "/nix/store/gmjhgiqsx80ahaicc5nrfkyxxgn9bh15-drvgo-iets-3e99b2eb4f84-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "nix",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.4025645609945059,
+          "derivation": "/nix/store/gmjhgiqsx80ahaicc5nrfkyxxgn9bh15-drvgo-iets-3e99b2eb4f84-nested.drv"
+        }
+      ],
+      "checks": [
+        {
+          "case": "outer",
+          "derivation": "/nix/store/dwmbxrbrnvrrd9l2layc3qjw3qd5jhjg-drvgo-iets-3e99b2eb4f84-outer.drv",
+          "output": "/nix/store/a6a83dr2xkkyqlp4nsq7pyd2jri7yywa-drvgo-iets-3e99b2eb4f84-outer",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture",
+          "direct_output": "/nix/store/dbw99lwfzyiymd7l7cz4m5p9g66hzsin-drvgo-iets-3e99b2eb4f84-outer-result"
+        },
+        {
+          "case": "nested",
+          "derivation": "/nix/store/gmjhgiqsx80ahaicc5nrfkyxxgn9bh15-drvgo-iets-3e99b2eb4f84-nested.drv",
+          "output": "/nix/store/1i3ca21crkmz2zr2mjwwcs7r6ndjqhp6-drvgo-iets-3e99b2eb4f84-nested",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture",
+          "direct_output": "/nix/store/wf140ibigkb1ypx19c9bl5sbw2f34xjg-drvgo-iets-3e99b2eb4f84-nested-result"
+        },
+        {
+          "case": "runtime-nested-False-explicit-False",
+          "derivation": "/nix/store/hm18kilvlpigrphl5g4ram9yak5p0j3l-drvgo-iets-3e99b2eb4f84-runtime-nested-False-explicit-False.drv",
+          "output": "/nix/store/g41dncb2wjj4cvk6czf089iw61cb2ds5-drvgo-iets-3e99b2eb4f84-runtime-nested-False-explicit-False",
+          "command_output": "/nix/store/ya3gdy1jp3cbh2n7ddxz5hxmx1w0l982-go-example.com-runtime-reference"
+        },
+        {
+          "case": "runtime-nested-False-explicit-True",
+          "derivation": "/nix/store/0cv334h8is3zv2476lziagrn4bdzv0k7-drvgo-iets-3e99b2eb4f84-runtime-nested-False-explicit-True.drv",
+          "output": "/nix/store/68qkiv80lrz5q0lp29hyzkdj8rck48dd-drvgo-iets-3e99b2eb4f84-runtime-nested-False-explicit-True",
+          "command_output": "/nix/store/ya3gdy1jp3cbh2n7ddxz5hxmx1w0l982-go-example.com-runtime-reference"
+        },
+        {
+          "case": "runtime-nested-True-explicit-False",
+          "derivation": "/nix/store/p1954v4kjpwljbwgy1ahb3q4h5d02m4i-drvgo-iets-3e99b2eb4f84-runtime-nested-True-explicit-False.drv",
+          "output": "/nix/store/9zx8iq7jnm7rhrmrjmkiv3jr2bfkdl2y-drvgo-iets-3e99b2eb4f84-runtime-nested-True-explicit-False",
+          "command_output": "/nix/store/ya3gdy1jp3cbh2n7ddxz5hxmx1w0l982-go-example.com-runtime-reference"
+        },
+        {
+          "case": "runtime-nested-True-explicit-True",
+          "derivation": "/nix/store/ik2i0cb2q5nv6by9f1f06wg6py1ax9qp-drvgo-iets-3e99b2eb4f84-runtime-nested-True-explicit-True.drv",
+          "output": "/nix/store/98d15q9h6z6gmlfkwcjgs3yjlcbsa77y-drvgo-iets-3e99b2eb4f84-runtime-nested-True-explicit-True",
+          "command_output": "/nix/store/ya3gdy1jp3cbh2n7ddxz5hxmx1w0l982-go-example.com-runtime-reference"
+        }
+      ],
+      "scope": "Warm evaluation with tracing cache disabled; real daemon builds with IFD and classic fallback disabled. Nested planning uses iets too.",
+      "version": "iets 0.2.0",
+      "nix_version": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "embed_invalidation": "passed",
+      "optional_tests": [
+        {
+          "case": "optional-outer-empty",
+          "command_output": "/nix/store/1lbg54dinvq7y19h5jmr8shgx1zrq1fz-go-empty-tests"
+        },
+        {
+          "case": "optional-outer-tagged",
+          "command_output": "/nix/store/97q356nrha62x10y9xgy2kx7a0mc25bg-go-example.com-iets-tests.test"
+        },
+        {
+          "case": "optional-nested-empty",
+          "command_output": "/nix/store/1lbg54dinvq7y19h5jmr8shgx1zrq1fz-go-empty-tests"
+        },
+        {
+          "case": "optional-nested-tagged",
+          "command_output": "/nix/store/97q356nrha62x10y9xgy2kx7a0mc25bg-go-example.com-iets-tests.test"
+        }
+      ],
+      "optional_tests_invalid_after_cached_empty": "passed",
+      "native_optional_tests": [
+        {
+          "case": "native-optional-outer",
+          "command_output": "/nix/store/1lbg54dinvq7y19h5jmr8shgx1zrq1fz-go-empty-tests"
+        },
+        {
+          "case": "native-optional-nested",
+          "command_output": "/nix/store/1lbg54dinvq7y19h5jmr8shgx1zrq1fz-go-empty-tests"
+        }
+      ],
+      "native_optional_tests_invalid_after_cached_empty": "passed",
+      "medians": {
+        "outer": {
+          "nix": 0.4146008600946516,
+          "iets-1": 0.24853605404496193,
+          "iets-4": 0.16352799395099282
+        },
+        "nested": {
+          "nix": 0.4025645609945059,
+          "iets-1": 0.2291963209863752,
+          "iets-4": 0.12030529708135873
+        }
+      }
+    },
+    "no_git_integration": {
+      "iets": "/nix/store/ab5rsxb86c2l1k9spxfa7vcpa5swc68n-iets-0.2.0/bin/iets",
+      "nonce": "e34e8d39e466",
+      "records": [
+        {
+          "case": "outer",
+          "client": "nix",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.5067473379895091,
+          "derivation": "/nix/store/q6zycgay1rqvjr768j4il2nxg3wadnpb-drvgo-iets-e34e8d39e466-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "iets-1",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.4539056950015947,
+          "derivation": "/nix/store/q6zycgay1rqvjr768j4il2nxg3wadnpb-drvgo-iets-e34e8d39e466-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "iets-4",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.14242126001045108,
+          "derivation": "/nix/store/q6zycgay1rqvjr768j4il2nxg3wadnpb-drvgo-iets-e34e8d39e466-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "iets-4",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.20107463595923036,
+          "derivation": "/nix/store/q6zycgay1rqvjr768j4il2nxg3wadnpb-drvgo-iets-e34e8d39e466-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "iets-1",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.19427854591049254,
+          "derivation": "/nix/store/q6zycgay1rqvjr768j4il2nxg3wadnpb-drvgo-iets-e34e8d39e466-outer.drv"
+        },
+        {
+          "case": "outer",
+          "client": "nix",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.3796758169773966,
+          "derivation": "/nix/store/q6zycgay1rqvjr768j4il2nxg3wadnpb-drvgo-iets-e34e8d39e466-outer.drv"
+        },
+        {
+          "case": "nested",
+          "client": "nix",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.4340282230405137,
+          "derivation": "/nix/store/v3qz5drl79v5l89ffh1jl9y4zmj3pxvm-drvgo-iets-e34e8d39e466-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "iets-1",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.2051485989941284,
+          "derivation": "/nix/store/v3qz5drl79v5l89ffh1jl9y4zmj3pxvm-drvgo-iets-e34e8d39e466-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "iets-4",
+          "trial": 0,
+          "warmup": true,
+          "seconds": 0.11742516700178385,
+          "derivation": "/nix/store/v3qz5drl79v5l89ffh1jl9y4zmj3pxvm-drvgo-iets-e34e8d39e466-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "iets-4",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.12350830400828272,
+          "derivation": "/nix/store/v3qz5drl79v5l89ffh1jl9y4zmj3pxvm-drvgo-iets-e34e8d39e466-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "iets-1",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.3355167170520872,
+          "derivation": "/nix/store/v3qz5drl79v5l89ffh1jl9y4zmj3pxvm-drvgo-iets-e34e8d39e466-nested.drv"
+        },
+        {
+          "case": "nested",
+          "client": "nix",
+          "trial": 1,
+          "warmup": false,
+          "seconds": 0.45554094400722533,
+          "derivation": "/nix/store/v3qz5drl79v5l89ffh1jl9y4zmj3pxvm-drvgo-iets-e34e8d39e466-nested.drv"
+        }
+      ],
+      "checks": [
+        {
+          "case": "outer",
+          "derivation": "/nix/store/q6zycgay1rqvjr768j4il2nxg3wadnpb-drvgo-iets-e34e8d39e466-outer.drv",
+          "output": "/nix/store/kfnjgc7k6al50kbkdagss7j7wam12yk2-drvgo-iets-e34e8d39e466-outer",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture",
+          "direct_output": "/nix/store/agpgrxz79qf41wx85q6ihxl65ys8s40j-drvgo-iets-e34e8d39e466-outer-result"
+        },
+        {
+          "case": "nested",
+          "derivation": "/nix/store/v3qz5drl79v5l89ffh1jl9y4zmj3pxvm-drvgo-iets-e34e8d39e466-nested.drv",
+          "output": "/nix/store/8y8aaazbyknwcm7avhw3s1n928mmkw48-drvgo-iets-e34e8d39e466-nested",
+          "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture",
+          "direct_output": "/nix/store/0b4cj856v75925if6jw0bvac5vx4z8r9-drvgo-iets-e34e8d39e466-nested-result"
+        },
+        {
+          "case": "runtime-nested-False-explicit-False",
+          "derivation": "/nix/store/3xw8carmajw2ap87gziiyzik3vfm14ag-drvgo-iets-e34e8d39e466-runtime-nested-False-explicit-False.drv",
+          "output": "/nix/store/ca84y1wbq31paf374afwrqa0g8b6ikcp-drvgo-iets-e34e8d39e466-runtime-nested-False-explicit-False",
+          "command_output": "/nix/store/ya3gdy1jp3cbh2n7ddxz5hxmx1w0l982-go-example.com-runtime-reference"
+        },
+        {
+          "case": "runtime-nested-False-explicit-True",
+          "derivation": "/nix/store/n7vw73yv37hlbzm37gj1psl4cqvgaf95-drvgo-iets-e34e8d39e466-runtime-nested-False-explicit-True.drv",
+          "output": "/nix/store/w8li6q75rdbg0cnw4wy71k1bzfvjjjwh-drvgo-iets-e34e8d39e466-runtime-nested-False-explicit-True",
+          "command_output": "/nix/store/ya3gdy1jp3cbh2n7ddxz5hxmx1w0l982-go-example.com-runtime-reference"
+        },
+        {
+          "case": "runtime-nested-True-explicit-False",
+          "derivation": "/nix/store/3qw7glqj08nq1g7qrncb3h4d1xixzscp-drvgo-iets-e34e8d39e466-runtime-nested-True-explicit-False.drv",
+          "output": "/nix/store/qdnv8qkb8vz8xkjh546gp3mxjq9jz55w-drvgo-iets-e34e8d39e466-runtime-nested-True-explicit-False",
+          "command_output": "/nix/store/ya3gdy1jp3cbh2n7ddxz5hxmx1w0l982-go-example.com-runtime-reference"
+        },
+        {
+          "case": "runtime-nested-True-explicit-True",
+          "derivation": "/nix/store/3hq1b2ps94fp16iqpcm5sb9bac05cb9l-drvgo-iets-e34e8d39e466-runtime-nested-True-explicit-True.drv",
+          "output": "/nix/store/qzxlkz0kr6387jjb9l7b2ci8k7552j4j-drvgo-iets-e34e8d39e466-runtime-nested-True-explicit-True",
+          "command_output": "/nix/store/ya3gdy1jp3cbh2n7ddxz5hxmx1w0l982-go-example.com-runtime-reference"
+        }
+      ],
+      "scope": "Warm evaluation with tracing cache disabled; real daemon builds with IFD and classic fallback disabled. Nested planning uses iets too.",
+      "version": "iets 0.2.0",
+      "nix_version": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "flake_helper": {
+        "output": "/nix/store/bdxbsd37xf6hn6vswf9l4swnvmn1711i-drvgo-iets-e34e8d39e466-flake",
+        "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+      },
+      "embed_invalidation": "passed",
+      "optional_tests": [
+        {
+          "case": "optional-outer-empty",
+          "command_output": "/nix/store/1lbg54dinvq7y19h5jmr8shgx1zrq1fz-go-empty-tests"
+        },
+        {
+          "case": "optional-outer-tagged",
+          "command_output": "/nix/store/97q356nrha62x10y9xgy2kx7a0mc25bg-go-example.com-iets-tests.test"
+        },
+        {
+          "case": "optional-nested-empty",
+          "command_output": "/nix/store/1lbg54dinvq7y19h5jmr8shgx1zrq1fz-go-empty-tests"
+        },
+        {
+          "case": "optional-nested-tagged",
+          "command_output": "/nix/store/97q356nrha62x10y9xgy2kx7a0mc25bg-go-example.com-iets-tests.test"
+        }
+      ],
+      "optional_tests_invalid_after_cached_empty": "passed",
+      "native_optional_tests": [
+        {
+          "case": "native-optional-outer",
+          "command_output": "/nix/store/1lbg54dinvq7y19h5jmr8shgx1zrq1fz-go-empty-tests"
+        },
+        {
+          "case": "native-optional-nested",
+          "command_output": "/nix/store/1lbg54dinvq7y19h5jmr8shgx1zrq1fz-go-empty-tests"
+        }
+      ],
+      "native_optional_tests_invalid_after_cached_empty": "passed",
+      "medians": {
+        "outer": {
+          "nix": 0.3796758169773966,
+          "iets-1": 0.19427854591049254,
+          "iets-4": 0.20107463595923036
+        },
+        "nested": {
+          "nix": 0.45554094400722533,
+          "iets-1": 0.3355167170520872,
+          "iets-4": 0.12350830400828272
+        }
+      }
+    },
+    "static_flake_and_archive_modes": [
+      {
+        "mode": "default",
+        "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+      },
+      {
+        "mode": "api",
+        "command_output": "/nix/store/pnw4bg7kkxm67wa8cfz272dfa303b08x-go-example.com-libnix-fixture"
+      },
+      {
+        "mode": "cutoff",
+        "command_output": "/nix/store/d89kn2psd98kk1ys89ziywz0nhl9gj1d-go-example.com-libnix-fixture"
+      }
+    ],
+    "default_planner_identity_matrix": {
+      "x86_64-linux/toolchain-go1_25": {
+        "after": "/nix/store/bj40pbsaq707dbv3nh5hsz325ahapmgc-default-planner-identity-result.drv.drv",
+        "before": "/nix/store/bj40pbsaq707dbv3nh5hsz325ahapmgc-default-planner-identity-result.drv.drv"
+      },
+      "x86_64-linux/toolchain-go1_26": {
+        "after": "/nix/store/k589ygxva12bh9ch6khf9lqzf5pp91r2-default-planner-identity-result.drv.drv",
+        "before": "/nix/store/k589ygxva12bh9ch6khf9lqzf5pp91r2-default-planner-identity-result.drv.drv"
+      },
+      "x86_64-linux/toolchain-go1_26_6": {
+        "after": "/nix/store/qqpaiss572jashbmsmpvrbz046zhj1sy-default-planner-identity-result.drv.drv",
+        "before": "/nix/store/qqpaiss572jashbmsmpvrbz046zhj1sy-default-planner-identity-result.drv.drv"
+      },
+      "aarch64-linux/toolchain-go1_25": {
+        "after": "/nix/store/wbldlh8gxmgvq0pvzls60fmwjbn7a5bk-default-planner-identity-result.drv.drv",
+        "before": "/nix/store/wbldlh8gxmgvq0pvzls60fmwjbn7a5bk-default-planner-identity-result.drv.drv"
+      },
+      "aarch64-linux/toolchain-go1_26": {
+        "after": "/nix/store/2h54l3zq6xmr5nrb4w0q1312sfy1xa6d-default-planner-identity-result.drv.drv",
+        "before": "/nix/store/2h54l3zq6xmr5nrb4w0q1312sfy1xa6d-default-planner-identity-result.drv.drv"
+      },
+      "aarch64-linux/toolchain-go1_26_6": {
+        "after": "/nix/store/40n6qbf2nvnabihz43jk1705dv0gh7p3-default-planner-identity-result.drv.drv",
+        "before": "/nix/store/40n6qbf2nvnabihz43jk1705dv0gh7p3-default-planner-identity-result.drv.drv"
+      },
+      "aarch64-darwin/toolchain-go1_25": {
+        "after": "/nix/store/nqqc6lh1w30pbihnvqgms0zmx04l7nar-default-planner-identity-result.drv.drv",
+        "before": "/nix/store/nqqc6lh1w30pbihnvqgms0zmx04l7nar-default-planner-identity-result.drv.drv"
+      },
+      "aarch64-darwin/toolchain-go1_26": {
+        "after": "/nix/store/vzxj826yxrnd04k9gfk6g9n3ffyl4hvr-default-planner-identity-result.drv.drv",
+        "before": "/nix/store/vzxj826yxrnd04k9gfk6g9n3ffyl4hvr-default-planner-identity-result.drv.drv"
+      },
+      "aarch64-darwin/toolchain-go1_26_6": {
+        "after": "/nix/store/wmhg2c7il7q4k4mfbwzdc9gdf2m754v5-default-planner-identity-result.drv.drv",
+        "before": "/nix/store/wmhg2c7il7q4k4mfbwzdc9gdf2m754v5-default-planner-identity-result.drv.drv"
+      }
+    },
+    "integration_timings_are_benchmarks": false
+  },
+  "iets_variants": {
+    "original": {
+      "path": "/nix/store/4adhszix9rn77kn8xn2m5mvbj123lv0p-iets-0.2.0",
+      "closure": [
+        "/nix/store/bx7jdvkba26sy20ryr4l617qqmzj9hff-libunistring-1.4.2",
+        "/nix/store/00fs4zz9c0jjcvs62wg39b91dydz7zqb-libidn2-2.3.8",
+        "/nix/store/pkkjnyk4z46n18fkyqwlg24p272apb69-xgcc-16.2.0-libgcc",
+        "/nix/store/pqyiidz5mi73wv5f91d48s9plcqyj5bz-glibc-2.44-57",
+        "/nix/store/2aw3zp99m9jc250ajl42rhaankp2kjav-nghttp2-1.70.0-lib",
+        "/nix/store/lazac5vw20j0pyahzbaxz8z8hyf7m9zf-openssl-3.5.9",
+        "/nix/store/2b7h6rnav6a0s6npjk8y76f6rjs86lvw-ngtcp2-1.23.0",
+        "/nix/store/42in9mqs4kcmha55xd0i3ahbnibbzwkb-zlib-ng-2.3.3",
+        "/nix/store/3sj8msrsym648f35mk3gb3pp385hhk8r-gcc-16.2.0-libgcc",
+        "/nix/store/7a2cjhcgzyym5zaz6m4fksw47qvm150w-gcc-16.2.0-lib",
+        "/nix/store/7rx5im6jbgyfhrl0lc0kyxd9yf14rdxc-expat-2.9.0",
+        "/nix/store/nnm9gdr70ihc6zc9298mzz8jpcgaciql-bash-5.3p20",
+        "/nix/store/8qdw9shgr7dd3315jim8sfva2dnhq86c-gettext-1.0",
+        "/nix/store/9wc73n5izv0m7ppjbibi4hbr68rba1lj-gnused-4.10",
+        "/nix/store/p5dwcn4wpyjmhnnzj6iwwwjynyc6yif0-pcre2-10.49",
+        "/nix/store/c3f45pxlb81gzz4w1nym7lpznfypva7s-gnugrep-3.12",
+        "/nix/store/3hk1ngk4hsk4s53v2s7sg096irdania4-acl-2.4.0",
+        "/nix/store/pnwvsvwppd1lsamcxmiw6g7fp1k1g2j0-attr-2.6.0",
+        "/nix/store/vs4bjcgq2r93adg875isf55hyn29dk09-gmp-with-cxx-6.3.0",
+        "/nix/store/cb987zkxvsv0490753ilrvn5yk7ylgxi-coreutils-9.12",
+        "/nix/store/b8g0didzv422qhw67dh67wldkc9wkpdf-brotli-1.2.0-lib",
+        "/nix/store/f5r77q40xh7rj30dfkajv8y6jwbf4xh2-zstd-1.5.7",
+        "/nix/store/ji36842higmp6b06hbbpmzbd59g1c07c-zlib-1.3.2",
+        "/nix/store/hy7qsmyk9nbhcylcxbsf2aapsx8c6khb-libssh2-1.11.1",
+        "/nix/store/m27950v147ga4008dr5xwnjq22ysr49q-publicsuffix-list-0-unstable-2026-09-02",
+        "/nix/store/njx84z0ra0xj8498l67y4yczhkg7wca7-libpsl-0.21.5",
+        "/nix/store/p40lblcsw1qwzqja83rfdpq0l15w4xv7-nghttp3-1.18.0",
+        "/nix/store/djf269aylbphr1ynvd52nh3dana5jh91-keyutils-1.6.3-lib",
+        "/nix/store/qbvmi6qgfw0ipjvfndy9f6k69rnip42m-krb5-1.22.2-lib",
+        "/nix/store/p9i1b7jgfj4fl5bx557jnwbdsafl434i-curl-8.22.0",
+        "/nix/store/2wlays4ahsvdx02v84s3x91ri2623qbl-git-minimal-2.56.0",
+        "/nix/store/4adhszix9rn77kn8xn2m5mvbj123lv0p-iets-0.2.0"
+      ],
+      "paths": 32,
+      "nar_bytes": 175337640,
+      "zstd_bytes": 59686867
+    },
+    "no_git": {
+      "path": "/nix/store/ab5rsxb86c2l1k9spxfa7vcpa5swc68n-iets-0.2.0",
+      "closure": [
+        "/nix/store/bx7jdvkba26sy20ryr4l617qqmzj9hff-libunistring-1.4.2",
+        "/nix/store/00fs4zz9c0jjcvs62wg39b91dydz7zqb-libidn2-2.3.8",
+        "/nix/store/3sj8msrsym648f35mk3gb3pp385hhk8r-gcc-16.2.0-libgcc",
+        "/nix/store/pkkjnyk4z46n18fkyqwlg24p272apb69-xgcc-16.2.0-libgcc",
+        "/nix/store/pqyiidz5mi73wv5f91d48s9plcqyj5bz-glibc-2.44-57",
+        "/nix/store/7a2cjhcgzyym5zaz6m4fksw47qvm150w-gcc-16.2.0-lib",
+        "/nix/store/ab5rsxb86c2l1k9spxfa7vcpa5swc68n-iets-0.2.0"
+      ],
+      "paths": 7,
+      "nar_bytes": 63477512,
+      "zstd_bytes": 19663269
+    },
+    "static": {
+      "path": "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+      "closure": [
+        "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0"
+      ],
+      "paths": 1,
+      "nar_bytes": 14449896,
+      "zstd_bytes": 5130543
+    }
+  },
+  "iets_revision": "69883a64bfb0d9a95dce253dae304878e07b076e",
+  "scope": "Linux amd64 Go 1.26.5; strict sandbox, IFD disabled; static iets for nested planning and outer iets evaluation; timings sequential after all local tests/closure copies; local zstd3 payload sizes are not network timings"
+}

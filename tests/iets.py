@@ -90,6 +90,17 @@ def main():
         report["checks"].append(dict(case=label, derivation=expected, output=result, command_output=str(results[-1]), direct_output=direct_result))
         print(label, "evaluation/build/warm/direct PASS", flush=True)
     assert results[0] == results[1], "nested evaluator changed package derivations"
+    # Exercise the public flake helper too: callers should not need to replace
+    # toolchain.pkgs.nix or install a command wrapper to select nested iets.
+    flake_expr = (f"let f = builtins.getFlake {nix_string(repo)}; in f.lib.mkGoPackage {{ "
+                  f"system = builtins.currentSystem; iets = builtins.storePath {nix_string(package)}; "
+                  f"src = builtins.path {{ path = {nix_string(source)}; name = \"source\"; }}; "
+                  f'name = "drvgo-iets-{nonce}-flake"; }}')
+    flake_result = run([binary, "build", "--impure", *flags, "--no-tracing-cache", "-E", flake_expr], "flake-build")[0]
+    assert flake_result == run(["nix-build", *features, *flags, "--no-out-link", "-E", flake_expr], "flake-reference")[0]
+    assert Path(flake_result).resolve() == results[0]
+    report["flake_helper"] = dict(output=flake_result, command_output=str(results[0]))
+    print("flake helper/nested/build/output identity PASS", flush=True)
     (source / "message/assets/message.txt").write_text("iets changed embed\n")
     changed = run(build, "changed-build")[0]
     assert Path(changed).resolve() != results[-1]

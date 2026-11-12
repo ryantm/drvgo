@@ -21,7 +21,9 @@ def main():
     parser.add_argument("--after", type=Path, required=True, help="modified drvgo checkout")
     parser.add_argument("--source", type=Path, required=True, help="Go source tree")
     parser.add_argument("--vendor-hash", help="module proxy hash for sources with external dependencies")
+    parser.add_argument("--module-cache", type=Path, help="prepared cache for both checkouts")
     parser.add_argument("--after-module-cache", type=Path, help="prepared cache for the modified checkout")
+    parser.add_argument("--after-iets", type=Path, help="iets store output for nested planning in the modified checkout")
     parser.add_argument("--after-prepare-modules", action="store_true", help="enable automatic cache preparation in the modified checkout")
     parser.add_argument("--after-export-data", action="store_true", help="enable compiler export archives in the modified checkout")
     parser.add_argument("--after-early-cutoff", action="store_true", help="enable content-addressed package outputs")
@@ -65,6 +67,8 @@ def main():
     report = {"scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
               "source": str(args.source.resolve()), "package": args.package, "vendor_hash": args.vendor_hash,
               "after_module_cache": str(args.after_module_cache) if args.after_module_cache else None,
+              "module_cache": str(args.module_cache) if args.module_cache else None,
+              "after_iets": str(args.after_iets) if args.after_iets else None,
               "after_prepare_modules": args.after_prepare_modules,
               "after_export_data": args.after_export_data,
               "after_early_cutoff": args.after_early_cutoff,
@@ -76,7 +80,10 @@ def main():
         # The unique forwarding name forces planning even with an unchanged
         # source. Package recipes do not depend on this name and stay cached.
         name = f"drvgo-ci-{nonce}-{label}-{trial}"
-        extra = f" moduleCache = builtins.storePath {nix_string(args.after_module_cache)};" if label == "after" and args.after_module_cache else ""
+        module_cache = (args.after_module_cache if label == "after" else None) or args.module_cache
+        extra = f" moduleCache = builtins.storePath {nix_string(module_cache)};" if module_cache else ""
+        if label == "after" and args.after_iets:
+            extra += f" iets = builtins.storePath {nix_string(args.after_iets)};"
         if label == "after" and args.after_prepare_modules:
             extra += " prepareModules = true;"
         if label == "after" and args.after_export_data:

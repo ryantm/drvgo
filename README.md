@@ -554,6 +554,10 @@ Use `--nix-option always-allow-substitutes false` to honor derivation hints.
 To isolate local planning costs with already available inputs, also pass
 `--nix-option substituters ''`; this disables remote lookups for that benchmark
 command only. Apply identical settings to both revisions.
+Use `--after-iets /nix/store/...-iets` to compare nested iets with the default
+Nix planner. `--module-cache /nix/store/...-drvgo-module-cache` supplies the same
+prepared dependencies to both sides, isolating evaluator changes from module
+extraction costs.
 
 ### iets dynamic-derivation compatibility
 
@@ -564,11 +568,39 @@ warm reuse, and embedded-file invalidation pass with IFD and classic-command
 fallback disabled. Using iets inside the recursive planner also produces the
 same Go package output as the Nix evaluator.
 
-The nested invocation needs a socket adapter: that PR does not read `NIX_REMOTE`,
-and its classic instantiator rejects `--store` pointing at a custom Unix socket.
-[tests/iets.nix](tests/iets.nix) translates recursive Nix's Unix URL to
-`NIX_DAEMON_SOCKET_PATH`. Normal outer `iets build` usage needs no adapter.
-The production planner continues to use the pinned Nix evaluator by default.
+Pass an iets package as `iets` to `nix/dynamic.nix` or `lib.mkGoPackage` to use
+it inside the recursive planner. For example, with an `iets` flake input pinned
+to the revision above, on Linux:
+
+```nix
+drvgo.lib.mkGoPackage {
+  inherit system;
+  src = ./my-project;
+  package = "./cmd/my-command";
+  vendorHash = "sha256-...";
+  iets = inputs.iets.packages.${system}.static;
+}
+```
+
+The default `iets = null` uses the pinned Nix evaluator. The optional iets path
+uses one worker, disables tracing and Nix fallback, and translates recursive
+Nix's Unix URL to `NIX_DAEMON_SOCKET_PATH` for PR #3. Normal outer `iets build`
+usage needs no adapter. Nix's store-query commands remain available to the
+exporter for runtime-reference validation and toolchain metadata.
+
+The upstream static Linux package has no runtime dependencies. Its measured
+compressed closure is 5.1 MB, compared with 59.7 MB for the default dynamic
+package at this pin. Publish the selected iets output to your binary cache to
+avoid compiling the evaluator on cold CI machines. Nested iets is opt-in and
+has been validated on x86_64-linux; the default Nix path remains tested on all
+supported platforms.
+
+With warm package outputs and a fresh planner, nested static iets reduced UPM
+builds from 3.48 to 3.13 seconds using the module proxy, and from 2.53 to 2.23
+seconds with prepared modules. The small fixture remained approximately
+unchanged. All comparisons preserve identical Go package outputs. See the
+[nested-planner measurements](benchmarks/ci-round12-2026-11-11.md) for individual
+trials, complete input sizes and reproduction commands.
 
 Five alternating warm evaluation trials, with iets's tracing cache disabled
 and its compiled-file cache warm, measured:
