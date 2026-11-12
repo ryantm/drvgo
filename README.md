@@ -477,6 +477,26 @@ forwarding outputs build locally with `allowSubstitutes = false`; forwarding
 only creates symlinks. Go package outputs remain substitutable and eligible for
 remote builders. A planner cache hit would copy its generated derivation/source
 closure, so the planner instead recomputes that graph locally.
+Normal discovery uses a compact bundle containing the Go driver, all SDK source
+and library data, and exact tool-version responses captured from the selected
+SDK. Compilation and linking still use the original worker tools and preserve
+their package recipes. The bundle rejects attempts to execute a compiler.
+`allowEmptyTests = true` retains real compilation tools for semantic validation,
+including native tools when cgo is enabled. `cgoEnabled = false` avoids those
+native dependencies while retaining the full Go SDK for validation.
+
+Creating the discovery bundle initially requires the full SDK and additional
+store space. Publish `my-package.planningToolchain` to your binary cache to let
+fresh CI workers fetch the smaller bundle directly:
+
+```sh
+nix build .#my-package.planningToolchain --no-link --print-out-paths
+```
+
+The [compact discovery measurements](benchmarks/ci-round10-2026-11-11.md) save
+26.9 MB of compressed planner inputs for both the fixture and UPM. Warm CI and
+iets evaluation remain approximately unchanged; package outputs are identical.
+
 If your cache publishes planner outputs and CI often rebuilds an identical
 source tree on a cold worker, set `allowPlannerSubstitutes = true` in
 `mkGoPackage` to allow those hits to avoid downloading the planning toolchain.

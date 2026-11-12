@@ -10,9 +10,17 @@ import (
 	exporter "github.com/ryantm/drvgo/internal/export"
 	"github.com/ryantm/drvgo/internal/modcache"
 	"github.com/ryantm/drvgo/internal/storecopy"
+	"github.com/ryantm/drvgo/internal/toolversion"
 )
 
 func main() {
+	if toolversion.IsTool(os.Args[0]) {
+		if err := toolversion.Print(os.Stdout, os.Args[0], os.Args[1:]); err != nil {
+			fmt.Fprintln(os.Stderr, "drvgo:", err)
+			os.Exit(1)
+		}
+		return
+	}
 	if err := run(os.Args[1:]); err != nil {
 		fmt.Fprintln(os.Stderr, "drvgo:", err)
 		os.Exit(1)

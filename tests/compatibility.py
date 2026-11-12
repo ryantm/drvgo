@@ -160,6 +160,10 @@ if a.flake_toolchain:
          '--flake-toolchain', a.flake_toolchain, '--out', out/'module-cache'])
     report['module_cache'] = json.loads((out/'module-cache/results.json').read_text())
     print(version, 'module-cache/offline/cgo/dynamic/reuse/checksum PASS', flush=True)
+    run([sys.executable, repo/'tests/planning-toolchain.py', '--toolchain', tc, '--drvgo', cli,
+         '--flake-toolchain', a.flake_toolchain, '--out', out/'planning-toolchain'])
+    report['planning_toolchain'] = json.loads((out/'planning-toolchain/results.json').read_text())
+    print(version, 'compact-discovery/recipes/version-metadata/full-SDK-validation PASS', flush=True)
     # The dynamic checks above fetch the planner's pinned Nix and CLI. A
     # standalone toolchain alone does not make those inputs available offline.
     run([sys.executable, repo/'tests/export-data.py', '--toolchain', tc, '--drvgo', cli,

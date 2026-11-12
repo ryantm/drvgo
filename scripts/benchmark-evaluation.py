@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compare Nix and iets evaluation of already-exported graphs, without builds."""
+"""Compare Nix and iets evaluation of exported graphs or dynamic helpers, without builds."""
 
 import argparse
 import json
@@ -16,6 +16,10 @@ def main():
     parser.add_argument('--before', type=Path, required=True)
     parser.add_argument('--after', type=Path, required=True)
     parser.add_argument('--iets', type=Path, required=True)
+    parser.add_argument('--dynamic-source', type=Path,
+                        help='evaluate dynamic helpers from the before/after checkouts for this source')
+    parser.add_argument('--package', default='.')
+    parser.add_argument('--vendor-hash', help='module proxy hash for dynamic helpers')
     parser.add_argument('--after-export-data', action='store_true')
     parser.add_argument('--after-early-cutoff', action='store_true')
     parser.add_argument('--runs', type=int, default=7)
@@ -25,6 +29,8 @@ def main():
         parser.error('--runs must be positive')
     if args.after_early_cutoff and not args.after_export_data:
         parser.error('--after-early-cutoff requires --after-export-data')
+    if args.vendor_hash and not args.dynamic_source:
+        parser.error('--vendor-hash requires --dynamic-source')
     out = (args.out or Path(tempfile.mkdtemp(prefix='drvgo-evaluation-'))).resolve()
     out.mkdir(parents=True, exist_ok=True)
     if any(out.iterdir()):
@@ -36,9 +42,14 @@ def main():
         'iets-4': [str(args.iets.resolve()), 'eval', '--impure', '--raw', '--no-tracing-cache', '--workers', '4'],
     }
     roots = {'before': args.before.resolve(), 'after': args.after.resolve()}
-    report = {'scope': 'Warm graph evaluation; no builds; iets tracing cache and Nix fallback disabled',
+    report = {'scope': 'Warm evaluation; no builds; iets tracing cache and Nix fallback disabled',
+              'dynamic_source': str(args.dynamic_source.resolve()) if args.dynamic_source else None,
+              'package': args.package, 'vendor_hash': args.vendor_hash,
               'after_export_data': args.after_export_data, 'after_early_cutoff': args.after_early_cutoff,
               'roots': {k: str(v) for k, v in roots.items()}, 'records': []}
+    def nix_string(value):
+        return json.dumps(str(value)).replace('${', r'\${')
+
     expected = {}
     cases = [(label, client) for label in roots for client in commands]
     for trial in range(args.runs + 1):
@@ -48,8 +59,17 @@ def main():
                 options += 'exportData = true;'
             if label == 'after' and args.after_early_cutoff:
                 options += 'earlyCutoff = true;'
-            expression = '(import (builtins.toPath ' + json.dumps(str(roots[label])).replace('${', r'\${') + ') {' + options + '}).default.drvPath'
-            command = [*commands[client], '--extra-experimental-features', 'ca-derivations',
+            features = 'ca-derivations'
+            if args.dynamic_source:
+                features += ' dynamic-derivations recursive-nix'
+                if args.vendor_hash:
+                    options += f'vendorHash = {nix_string(args.vendor_hash)};'
+                expression = (f'((import (builtins.toPath {nix_string(roots[label] / "nix/dynamic.nix")}) {{}}) {{'
+                              f'src = builtins.path {{ path = {nix_string(args.dynamic_source.resolve())}; name = "source"; }};'
+                              f'package = {nix_string(args.package)};{options} }}).drvPath')
+            else:
+                expression = f'(import (builtins.toPath {nix_string(roots[label])}) {{{options}}}).default.drvPath'
+            command = [*commands[client], '--extra-experimental-features', features,
                        '--option', 'allow-import-from-derivation', 'false', '-E', expression]
             with (out / f'{label}-{client}-{trial}.log').open('w') as log:
                 start = time.monotonic()
