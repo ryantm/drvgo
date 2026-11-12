@@ -34,11 +34,12 @@ func nixScripts(units []plan.Unit) string {
 		for _, id := range u.Sources {
 			pairs = append(pairs, "@SRC:"+id+"@", "${sources."+nixString(id)+"}")
 		}
-		script := strings.NewReplacer(pairs...).Replace(nixString(u.Script))
 		out.WriteString(nixString(u.ID))
-		out.WriteString(" = ")
-		out.WriteString(script)
-		out.WriteString(";\n")
+		out.WriteString(" = \"")
+		// Escape before interpolating, writing directly into the final buffer
+		// instead of allocating quoted and replaced copies of the script.
+		strings.NewReplacer(pairs...).WriteString(&out, nixEscapes.Replace(u.Script))
+		out.WriteString("\";\n")
 	}
 	out.WriteString("}\n")
 	return out.String()

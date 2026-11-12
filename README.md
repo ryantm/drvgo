@@ -540,6 +540,11 @@ allocated bytes per UPM export by 11.4%, with identical graph files and package
 outputs. Full CI latency and compressed dependency size are effectively unchanged;
 this measures allocation volume, not peak memory.
 
+[Direct replay-script rendering](benchmarks/ci-round18-2026-11-11.md) avoids full
+intermediate string copies, reducing exporter allocations by a further 10.8% in
+the paired UPM benchmark. Isolated rendering is 4.5% faster; full CI latency is
+effectively unchanged. Planner inputs add about 3.7 KB compressed and no paths.
+
 If your cache publishes planner outputs and CI often rebuilds an identical
 source tree on a cold worker, set `allowPlannerSubstitutes = true` in
 `mkGoPackage` to allow those hits to avoid downloading the planning toolchain.
