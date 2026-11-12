@@ -59,6 +59,10 @@ func shellWord(s string) string {
 // cmd/go prints Go-quoted argv, which is not shell quoting (notably $, backticks,
 // and Go's \x escapes). Decode those words and quote them for the replay shell.
 func quoteCommand(line string) (string, error) {
+	return quoteCommandWithDwarf(line, false)
+}
+
+func quoteCommandWithDwarf(line string, omitDwarf bool) (string, error) {
 	suffix := ""
 	for _, s := range []string{" # internal", " # test for internal linking errors (succeeded)", " || true"} {
 		if strings.HasSuffix(line, s) {
@@ -71,7 +75,7 @@ func quoteCommand(line string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	quoted, err := quoteWords(words)
+	quoted, err := quoteWordsWithDwarf(words, omitDwarf)
 	return quoted + suffix, err
 }
 
@@ -132,6 +136,10 @@ func commandWords(line string) ([]string, error) {
 }
 
 func quoteWords(words []string) (string, error) {
+	return quoteWordsWithDwarf(words, false)
+}
+
+func quoteWordsWithDwarf(words []string, omitDwarf bool) (string, error) {
 	// Normalize the compiler's scheduling flag after decoding argv, so flag-like
 	// text inside a quoted filename is left intact. cmd/go omits -c on one CPU.
 	for i, w := range words {
@@ -140,6 +148,9 @@ func quoteWords(words []string) (string, error) {
 		}
 		if strings.HasSuffix(w, "/compile") {
 			args := append([]string{}, words[:i+1]...)
+			if omitDwarf {
+				args = append(args, "-dwarf=false")
+			}
 			args = append(args, "-c=@CORES@")
 			for _, arg := range words[i+1:] {
 				if !isCompilerConcurrency(arg) {

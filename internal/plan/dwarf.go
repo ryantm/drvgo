@@ -1,0 +1,80 @@
+package plan
+
+import (
+	"strconv"
+	"strings"
+)
+
+// Only optimize a single link action that explicitly discards DWARF. File
+// bodies are data, and flag operands can themselves contain apparent flags.
+// Unsupported or malformed commands retain the original compiler behavior.
+func traceOmitsDwarf(lines []string) bool {
+	heredoc, strip := false, false
+	links := 0
+	for _, line := range lines {
+		if heredoc {
+			if strings.HasSuffix(line, "EOF") {
+				heredoc = false
+			}
+			continue
+		}
+		if strings.Contains(line, "<< 'EOF' # internal") {
+			heredoc = true
+			continue
+		}
+		if !strings.Contains(line, "/link") {
+			continue
+		}
+		words, err := commandWords(line)
+		if err != nil {
+			return false
+		}
+		for i, tool := range words {
+			if isAssignment(tool) {
+				continue
+			}
+			if strings.HasSuffix(tool, "/link") {
+				links++
+				strip = linkOmitsDwarf(words[i+1:])
+			}
+			break
+		}
+	}
+	return links == 1 && strip
+}
+
+func linkOmitsDwarf(args []string) bool {
+	strip, dwarf, explicitDwarf := false, false, false
+	for i := 0; i < len(args); i++ {
+		arg := args[i]
+		if !strings.HasPrefix(arg, "-") || arg == "-" || arg == "--" {
+			break
+		}
+		name, value, inline := strings.Cut(strings.TrimPrefix(strings.TrimPrefix(arg, "-"), "-"), "=")
+		if name == "s" || name == "w" {
+			if !inline {
+				value = "true"
+			}
+			v, err := strconv.ParseBool(value)
+			if err != nil {
+				return false
+			}
+			if name == "s" {
+				strip = v
+			} else {
+				dwarf, explicitDwarf = v, true
+			}
+		} else if !inline && (name == "buildid" || linkerFlagTakesValue(name)) {
+			i++
+			if i == len(args) {
+				return false
+			}
+		}
+	}
+	// cmd/link treats -w as a ternary flag: -s implies -w only when -w
+	// was never set. In particular, -s -w=false must keep compiler DWARF.
+	if explicitDwarf {
+		return dwarf
+	}
+	return strip
+}

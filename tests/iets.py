@@ -102,6 +102,26 @@ def main():
     assert Path(flake_result).resolve() == results[0]
     report["flake_helper"] = dict(output=flake_result, command_output=str(results[0]))
     print("flake helper/nested/build/output identity PASS", flush=True)
+    stripped_outputs = {}
+    for ldflags in ["-s -w", "-s -w=false"]:
+        mode = "strip" if ldflags == "-s -w" else "keep-dwarf"
+        for nested in [False, True]:
+            label = f"{mode}-nested-{nested}"
+            strip_expr = (f"import ./tests/iets.nix {{ iets = builtins.storePath {nix_string(package)}; "
+                          f"src = builtins.path {{ path = {nix_string(source)}; name = \"source\"; }}; "
+                          f"name = \"drvgo-iets-{nonce}-{label}\"; nested = {str(nested).lower()}; "
+                          f"ldflags = {nix_string(ldflags)}; }}")
+            strip_build = [binary, "build", "--impure", *flags, "--no-tracing-cache", "-E", strip_expr]
+            result = run(strip_build, label + "-build")[0]
+            assert result == run(["nix-build", *features, *flags, "--no-out-link", "-E", strip_expr], label + "-reference")[0]
+            assert run([Path(result) / "bin/libnix-fixture"], label + "-run")[0] == expected_stdout
+            resolved = str(Path(result).resolve())
+            if mode in stripped_outputs:
+                assert resolved == stripped_outputs[mode], "nested evaluator changed stripped recipes"
+            stripped_outputs[mode] = resolved
+            report["checks"].append(dict(case=label, command_output=resolved))
+            print(label, "build/output identity/behavior PASS", flush=True)
+    assert len(set(stripped_outputs.values())) == 2, "strip flags must use separate package recipes"
     (source / "message/assets/message.txt").write_text("iets changed embed\n")
     changed = run(build, "changed-build")[0]
     assert Path(changed).resolve() != results[-1]

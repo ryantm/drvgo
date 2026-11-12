@@ -40,12 +40,12 @@ def write(path, content):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content)
 
-integration_pattern = '^(TestEmbeddedAssetsAndCacheIsolation|TestNestedCommandWithoutOriginalSource|TestNativeObjectWithoutOriginalSource|TestNativePackMatchesGo|TestCompressedNativeSources|TestCustomBuildID|TestCanonicalBuildIDRelocation|TestRuntimeStoreReferences|TestEmptyTest.*|TestTestBinary.*)$'
+integration_pattern = '^(TestEmbeddedAssetsAndCacheIsolation|TestNestedCommandWithoutOriginalSource|TestNativeObjectWithoutOriginalSource|TestNativePackMatchesGo|TestCompressedNativeSources|TestCustomBuildID|TestCanonicalBuildIDRelocation|TestStrippedCompilerDwarf|TestRuntimeStoreReferences|TestEmptyTest.*|TestTestBinary.*)$'
 integration_tests = run([a.integration_test.resolve(), '-test.list='+integration_pattern]).stdout.decode().splitlines()
 required_tests = {'TestEmbeddedAssetsAndCacheIsolation', 'TestTestBinaryInternalExternalAndFailure',
                   'TestTestBinaryMainPackage', 'TestTestBinaryRaceAndCGO', 'TestTestBinaryRejectsPackageWithoutTests',
                   'TestNestedCommandWithoutOriginalSource', 'TestNativeObjectWithoutOriginalSource', 'TestNativePackMatchesGo', 'TestCompressedNativeSources', 'TestCustomBuildID',
-                  'TestEmptyTestSelection', 'TestEmptyTestResult', 'TestEmptyTestsRequireTestMode', 'TestRuntimeStoreReferences', 'TestCanonicalBuildIDRelocation'}
+                  'TestEmptyTestSelection', 'TestEmptyTestResult', 'TestEmptyTestsRequireTestMode', 'TestRuntimeStoreReferences', 'TestCanonicalBuildIDRelocation', 'TestStrippedCompilerDwarf'}
 if not required_tests.issubset(integration_tests):
     raise RuntimeError('Integration binary lacks required tests; compile it with go test -c -tags integration ./internal/export')
 
@@ -115,6 +115,7 @@ write(assembly/'asm/answer_arm64.s','#include "textflag.h"\nTEXT ·Answer(SB), N
 case('assembly',assembly,'42 default dev\n')
 case('tags-ldflags',assembly,'42 tagged matrix\n',tags='compat',ldflags='-X main.release=matrix')
 case('external-link',assembly,'42 default dev\n',ldflags='-linkmode=external')
+case('stripped-assembly-external',assembly,'42 default dev\n',ldflags='-s -w -linkmode=external')
 workspace=out/'workspace'
 write(workspace/'go.work','go 1.23.0\nuse (\n ./app\n ./dep\n)\n')
 write(workspace/'app/go.mod','module example.com/app\ngo 1.23.0\nrequire example.com/dep v0.0.0\n')
@@ -135,6 +136,7 @@ write(modes/'native.go','package main\n/*\n#cgo CFLAGS: -I.\nstatic int answer(v
 write(modes/'pure.go','//go:build !cgo\n\npackage main\nconst expected=7\nfunc Value() int { return 7 }\n')
 case('cgo-disabled',modes,'7\n',cgo='0')
 case('race-cgo',modes,'42\n',cgo='1',race=True)
+case('stripped-race-cgo',modes,'42\n',cgo='1',race=True,ldflags='-s -w')
 cxx = out/'cxx'
 write(cxx/'go.mod','module example.com/cxx\ngo 1.23.0\n')
 write(cxx/'main.go','package main\n/* int answer(void); */\nimport "C"\nimport "fmt"\nfunc main(){fmt.Println(C.answer())}\n')
@@ -146,6 +148,7 @@ write(syso/'main.go','package main\nimport "fmt"\nfunc main(){fmt.Println("nativ
 write(out/'unused.c','int unused_answer(void) { return 42; }\n')
 run([tc/'bin'/cc,'-c',out/'unused.c','-o',syso/'unused.syso'],go=True)
 case('native-object-cgo-disabled',syso,'native object\n',cgo='0')
+case('stripped-native-object',syso,'native object\n',cgo='0',ldflags='-s -w')
 if report['platform'] == ['darwin', 'arm64']:
     framework = out/'framework'
     write(framework/'go.mod','module example.com/framework\ngo 1.23.0\n')
@@ -194,7 +197,8 @@ if a.flake_toolchain:
     assert Path(result).resolve() == Path(report['cases'][0]['store_path']), 'dynamic and standalone builds must share package outputs'
     report['dynamic_ifd_disabled']='passed'
     print(version,'dynamic/IFD-disabled PASS',flush=True)
-    native_modes = [('cxx', cxx, ''), ('external-link', assembly, '-linkmode=external')]
+    native_modes = [('cxx', cxx, ''), ('external-link', assembly, '-linkmode=external'),
+                    ('stripped-assembly-external', assembly, '-s -w -linkmode=external')]
     if report['platform'] == ['darwin', 'arm64']:
         native_modes.append(('darwin-framework', framework, ''))
     for name, source, ldflags in native_modes:
