@@ -545,6 +545,11 @@ intermediate string copies, reducing exporter allocations by a further 10.8% in
 the paired UPM benchmark. Isolated rendering is 4.5% faster; full CI latency is
 effectively unchanged. Planner inputs add about 3.7 KB compressed and no paths.
 
+[Reusing Go compilation during CLI checks](benchmarks/ci-round19-2026-11-11.md)
+reduces a fresh drvgo package build, including tests and vet, from 9.755 s to
+6.535 s (33.0%) in seven paired trials. Installed output bytes stay identical;
+this improves CLI bootstrap time, with downstream planning effectively unchanged.
+
 If your cache publishes planner outputs and CI often rebuilds an identical
 source tree on a cold worker, set `allowPlannerSubstitutes = true` in
 `mkGoPackage` to allow those hits to avoid downloading the planning toolchain.
