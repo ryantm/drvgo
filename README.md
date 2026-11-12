@@ -474,7 +474,10 @@ they must include the current native runner.
 
 The dynamic planner uses explicit tools without stdenv setup. It and its two
 forwarding outputs build locally with `allowSubstitutes = false`; forwarding
-only creates symlinks. Go package outputs remain substitutable and eligible for
+only creates symlinks using drvgo's native helper. It keeps stdout and stderr
+open until process exit, avoiding the [Nix EOF/cleanup race](https://github.com/NixOS/nix/issues/2176)
+that can affect coreutils used directly as builders.
+Go package outputs remain substitutable and eligible for
 remote builders. A planner cache hit would copy its generated derivation/source
 closure, so the planner instead recomputes that graph locally.
 Normal discovery uses a compact bundle containing the Go driver, all SDK source
