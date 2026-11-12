@@ -54,8 +54,10 @@ let
     name = "${name}-result.drv";
     system = pkgs.stdenv.hostPlatform.system;
     builder = "${drvgo}/bin/drvgo";
+    # Keep evaluator selection separate from exporter arguments so Nix can
+    # evaluate their dependencies independently.
+    plannerEvaluator = if iets == null then "${pkgs.nix}/bin/nix-instantiate" else "${iets}/bin/iets";
     args = [ "internal-plan"
-      (if iets == null then "${pkgs.nix}/bin/nix-instantiate" else "${iets}/bin/iets")
       (if iets == null then "nix" else "iets")
     ] ++ lib.optional experimentalGo "-experimental-go"
       ++ lib.optional test "-test"

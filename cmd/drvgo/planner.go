@@ -11,7 +11,7 @@ import (
 	"github.com/ryantm/drvgo/internal/nixstore"
 )
 
-// plan runs the recursive builder without a shell or coreutils in its inputs.
+// plan runs the recursive builder without invoking a shell or coreutils.
 // Keep the exporter in a child process so its heap is released before starting
 // the evaluator. The parent keeps stdout/stderr open until the builder exits.
 func plan(evaluator, mode string, args []string) error {
