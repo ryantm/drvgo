@@ -585,8 +585,11 @@ drvgo.lib.mkGoPackage {
 The default `iets = null` uses the pinned Nix evaluator. The optional iets path
 uses one worker, disables tracing and Nix fallback, and translates recursive
 Nix's Unix URL to `NIX_DAEMON_SOCKET_PATH` for PR #3. Normal outer `iets build`
-usage needs no adapter. Nix's store-query commands remain available to the
-exporter for runtime-reference validation and toolchain metadata.
+usage needs no adapter. The exporter uses native read-only daemon queries for
+runtime-reference validation and toolchain metadata through Unix sockets, so
+the iets planner does not need Nix's command-line tools as inputs. Other store
+transports continue to use Nix's query commands. A failed recursive runtime
+query fails the export; it never falls back to another store.
 
 The upstream static Linux package has no runtime dependencies. Its measured
 compressed closure is 5.1 MB, compared with 59.7 MB for the default dynamic

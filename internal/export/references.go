@@ -12,6 +12,7 @@ import (
 	"regexp"
 	"sort"
 
+	"github.com/ryantm/drvgo/internal/nixstore"
 	"github.com/ryantm/drvgo/internal/plan"
 )
 
@@ -89,6 +90,30 @@ func collectStoreReferences(dir string, units []plan.Unit) error {
 		paths = append(paths, path)
 	}
 	sort.Strings(paths)
+	valid, err := queryStoreReferences(paths)
+	if err != nil {
+		return err
+	}
+	for i := range units {
+		refs := units[i].StoreReferences[:0]
+		for _, path := range units[i].StoreReferences {
+			if valid[path] {
+				refs = append(refs, path)
+			}
+		}
+		units[i].StoreReferences = refs
+	}
+	return nil
+}
+
+func queryStoreReferences(paths []string) (map[string]bool, error) {
+	if remote := os.Getenv("NIX_REMOTE"); nixstore.IsUnixSocket(remote) {
+		valid, err := nixstore.ValidPaths(remote, paths)
+		if err != nil {
+			return nil, fmt.Errorf("query runtime references: %w", err)
+		}
+		return valid, nil
+	}
 	valid := make(map[string]bool)
 	queryArgs := []string{"--extra-experimental-features", "nix-command", "path-info", "--json", "--json-format", "1"}
 	for start := 0; start < len(paths); start += storeReferenceBatch {
@@ -107,32 +132,23 @@ func collectStoreReferences(dir string, units []plan.Unit) error {
 			data, err = cmd.Output()
 		}
 		if err != nil {
-			return fmt.Errorf("query runtime references: %w\n%s", err, stderr.String())
+			return nil, fmt.Errorf("query runtime references: %w\n%s", err, stderr.String())
 		}
 		// Missing paths have null values with a successful query. A failed or
 		// partial query must not silently discard a runtime dependency.
 		var info map[string]*struct{}
 		if err := json.Unmarshal(data, &info); err != nil {
-			return fmt.Errorf("decode runtime references: %w", err)
+			return nil, fmt.Errorf("decode runtime references: %w", err)
 		}
 		for _, path := range batch {
 			value, ok := info[path]
 			if !ok {
-				return fmt.Errorf("query runtime references omitted %s", path)
+				return nil, fmt.Errorf("query runtime references omitted %s", path)
 			}
 			valid[path] = value != nil
 		}
 	}
-	for i := range units {
-		refs := units[i].StoreReferences[:0]
-		for _, path := range units[i].StoreReferences {
-			if valid[path] {
-				refs = append(refs, path)
-			}
-		}
-		units[i].StoreReferences = refs
-	}
-	return nil
+	return valid, nil
 }
 
 func scanStoreReferences(r io.Reader, buffer []byte, add func(string)) error {

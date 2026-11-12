@@ -1,4 +1,4 @@
-package storecopy
+package nixstore
 
 import (
 	"bytes"

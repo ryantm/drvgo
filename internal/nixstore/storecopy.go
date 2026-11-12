@@ -1,7 +1,6 @@
-// Package storecopy reads a generated derivation through the recursive daemon.
-// Nix's Unix-socket CLI client reads NARs directly from the filesystem, which
-// cannot access newly registered paths inside a macOS sandbox.
-package storecopy
+// Package nixstore provides read-only access to a Nix daemon's Unix socket.
+// The recursive daemon enforces the calling build's restricted store view.
+package nixstore
 
 import (
 	"encoding/binary"
@@ -15,23 +14,14 @@ import (
 // Copy uses only the daemon's read-only NarFromPath operation. Its restricted
 // store enforces access to the build's inputs and newly registered paths.
 func Copy(remote, path, out string) error {
-	socket, ok := strings.CutPrefix(remote, "unix://")
-	if !ok || !strings.HasPrefix(socket, "/") || strings.Contains(socket, "?") {
-		return fmt.Errorf("expected a recursive Nix Unix socket, got %q", remote)
-	}
 	if !strings.HasSuffix(path, ".drv") {
 		return fmt.Errorf("expected a derivation path, got %q", path)
 	}
-	fd, err := syscall.Socket(syscall.AF_UNIX, syscall.SOCK_STREAM, 0)
+	conn, err := connect(remote)
 	if err != nil {
 		return err
 	}
-	syscall.CloseOnExec(fd)
-	conn := os.NewFile(uintptr(fd), "recursive-nix")
 	defer conn.Close()
-	if err := syscall.Connect(fd, &syscall.SockaddrUnix{Name: socket}); err != nil {
-		return err
-	}
 	data, err := readDerivation(conn, path)
 	if err != nil {
 		return err
@@ -39,8 +29,33 @@ func Copy(remote, path, out string) error {
 	return os.WriteFile(out, data, 0644)
 }
 
-func readDerivation(conn io.ReadWriter, path string) ([]byte, error) {
-	p := protocol{conn: conn}
+func connect(remote string) (*os.File, error) {
+	if !IsUnixSocket(remote) {
+		return nil, fmt.Errorf("expected a Nix Unix socket, got %q", remote)
+	}
+	socket := strings.TrimPrefix(remote, "unix://")
+	fd, err := syscall.Socket(syscall.AF_UNIX, syscall.SOCK_STREAM, 0)
+	if err != nil {
+		return nil, err
+	}
+	syscall.CloseOnExec(fd)
+	conn := os.NewFile(uintptr(fd), "recursive-nix")
+	if err := syscall.Connect(fd, &syscall.SockaddrUnix{Name: socket}); err != nil {
+		conn.Close()
+		return nil, err
+	}
+	return conn, nil
+}
+
+// IsUnixSocket identifies plain absolute Unix-socket URLs. Keep other store
+// transports and URLs with options or escapes on the ordinary Nix CLI path.
+func IsUnixSocket(remote string) bool {
+	socket, ok := strings.CutPrefix(remote, "unix://")
+	return ok && strings.HasPrefix(socket, "/") && !strings.ContainsAny(socket, "?%#")
+}
+
+func handshake(conn io.ReadWriter) *protocol {
+	p := &protocol{conn: conn}
 	// Negotiate the stable 1.21 subset: no activity messages, feature exchange,
 	// or structured errors. Current Nix daemons retain this wire protocol.
 	// See Nix's worker-protocol-connection.cc and worker-protocol.hh.
@@ -56,6 +71,11 @@ func readDerivation(conn io.ReadWriter, path string) ([]byte, error) {
 	p.writeUint(0) // obsolete CPU affinity
 	p.writeUint(0) // obsolete reserve-space flag
 	p.stderr()
+	return p
+}
+
+func readDerivation(conn io.ReadWriter, path string) ([]byte, error) {
+	p := handshake(conn)
 	p.writeUint(38) // NarFromPath; no builds, registration, or configuration writes
 	p.writeString(path)
 	p.stderr()

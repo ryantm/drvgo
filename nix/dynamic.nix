@@ -54,9 +54,9 @@ let
     system = pkgs.stdenv.hostPlatform.system;
     builder = "${pkgs.bash}/bin/bash";
     args = [ "-euo" "pipefail" "-c" plannerScript ];
-    # Even with iets, the exporter needs Nix's store queries to validate runtime
-    # references and preserve toolchain derivation context.
-    PATH = lib.makeBinPath [ drvgo pkgs.nix pkgs.coreutils ];
+    # The exporter queries the recursive daemon directly. Only the default
+    # evaluator needs Nix's command-line tools in the planner's input closure.
+    PATH = lib.makeBinPath ([ drvgo ] ++ lib.optional (iets == null) pkgs.nix ++ [ pkgs.coreutils ]);
     # Remote build hooks do not reliably copy newly generated derivation closures.
     # Plan locally; the generated package derivations can still build remotely.
     preferLocalBuild = true;

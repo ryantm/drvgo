@@ -156,3 +156,23 @@ func TestScanStoreReferences(t *testing.T) {
 type failingReferenceReader struct{ err error }
 
 func (r failingReferenceReader) Read([]byte) (int, error) { return 0, r.err }
+
+func TestStoreReferenceDaemonFailureDoesNotFallBack(t *testing.T) {
+	// A broken recursive connection must not query a different store or silently
+	// lose runtime references, even if a working Nix command is in PATH.
+	dir := t.TempDir()
+	marker := filepath.Join(dir, "fallback-called")
+	mock := filepath.Join(dir, "nix")
+	if err := os.WriteFile(mock, []byte("#!/bin/sh\necho called > '"+marker+"'\nprintf '{}'\n"), 0755); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("PATH", dir)
+	t.Setenv("NIX_REMOTE", "unix://"+filepath.Join(dir, "missing-socket"))
+	units := []plan.Unit{{Script: "/nix/store/11111111111111111111111111111111-runtime-data"}}
+	if err := collectStoreReferences(dir, units); err == nil || !strings.Contains(err.Error(), "query runtime references") {
+		t.Fatalf("expected daemon failure, got %v", err)
+	}
+	if _, err := os.Stat(marker); !errors.Is(err, os.ErrNotExist) {
+		t.Fatalf("unexpected CLI fallback: %v", err)
+	}
+}
