@@ -8,6 +8,8 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/ryantm/drvgo/internal/testutil"
 )
 
 func testProxy(t *testing.T, bad bool) string {
@@ -122,7 +124,7 @@ func TestPrepareReadOnlyCache(t *testing.T) {
 	}
 	cmd := exec.Command(goTool, "build", "-mod=mod", "-o", filepath.Join(project, "app"), ".")
 	cmd.Dir = project
-	cmd.Env = append(os.Environ(), "GOMODCACHE="+out, "GOPROXY=off", "GONOPROXY=", "GOSUMDB=off", "GOENV=off", "GOFLAGS=", "GOWORK=off", "GOTOOLCHAIN=local", "CGO_ENABLED=0")
+	cmd.Env = append(os.Environ(), "GOMODCACHE="+out, "GOPROXY=off", "GONOPROXY=", "GOSUMDB=off", "GOENV=off", "GOFLAGS="+testutil.GoFlags(), "GOWORK=off", "GOTOOLCHAIN=local", "CGO_ENABLED=0")
 	if b, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("read-only offline build: %v\n%s", err, b)
 	}

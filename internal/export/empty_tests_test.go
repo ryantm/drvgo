@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"runtime"
 	"testing"
+
+	"github.com/ryantm/drvgo/internal/testutil"
 )
 
 func TestEmptyTestSelection(t *testing.T) {
@@ -75,7 +77,7 @@ func TestEmptyTestSelection(t *testing.T) {
 			if tt.name == "multiple-packages" {
 				pkg = "./..."
 			}
-			env := append(append([]string{}, baseEnv...), "GOENV=off", "GOTOOLCHAIN=local", "GOPROXY=off", "GOSUMDB=off", "GOFLAGS=")
+			env := append(append([]string{}, baseEnv...), "GOENV=off", "GOTOOLCHAIN=local", "GOPROXY=off", "GOSUMDB=off", "GOFLAGS="+testutil.GoFlags())
 			if tt.cgo {
 				env = append(env, "CGO_ENABLED=1")
 			} else {
