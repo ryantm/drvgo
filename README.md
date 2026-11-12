@@ -393,6 +393,11 @@ with your actual cache configuration before enabling them. The legacy
 `nix-build` client in Nix 2.34.8 failed the multi-output content-addressed probe;
 modern `nix build` passed with both 2.34.8 and 2.35.3.
 
+When publishing content-addressed intermediates, use a derivation-aware copy
+such as `nix copy --to CACHE /nix/store/PACKAGE.drv^api` so the cache receives
+realization metadata. Copying only the raw `api` store path transfers its
+contents without publishing the derivation-to-output mapping.
+
 ### CI toolchain and output sizes
 
 The [November 11 measurements](benchmarks/ci-2026-11-11.md) show a 33.7% faster

@@ -51,7 +51,8 @@ def main():
             subprocess.run([cli, "export", "-C", source, "-out", graph, "-toolchain", tc,
                             "-module-proxy", "off", "."], stdout=log, stderr=log, check=True)
             exported = time.monotonic()
-            expression = f'(import (builtins.toPath {json.dumps(str(graph))}) {{ {modes[mode]} }}).default'
+            graph_path = json.dumps(str(graph)).replace('${', r'\${')
+            expression = f'(import (builtins.toPath {graph_path}) {{ {modes[mode]} }}).default'
             drv = subprocess.check_output(["nix-instantiate", *flags, "--expr", expression], stderr=log, text=True).strip()
             evaluated = time.monotonic()
             outputs = json.loads(subprocess.check_output(["nix", "build", *flags, "--no-link", "--json", drv + "^out"], stderr=log, text=True))

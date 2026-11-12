@@ -16,11 +16,15 @@ def main():
     parser.add_argument('--before', type=Path, required=True)
     parser.add_argument('--after', type=Path, required=True)
     parser.add_argument('--iets', type=Path, required=True)
+    parser.add_argument('--after-export-data', action='store_true')
+    parser.add_argument('--after-early-cutoff', action='store_true')
     parser.add_argument('--runs', type=int, default=7)
     parser.add_argument('--out', type=Path)
     args = parser.parse_args()
     if args.runs < 1:
         parser.error('--runs must be positive')
+    if args.after_early_cutoff and not args.after_export_data:
+        parser.error('--after-early-cutoff requires --after-export-data')
     out = (args.out or Path(tempfile.mkdtemp(prefix='drvgo-evaluation-'))).resolve()
     out.mkdir(parents=True, exist_ok=True)
     if any(out.iterdir()):
@@ -33,13 +37,20 @@ def main():
     }
     roots = {'before': args.before.resolve(), 'after': args.after.resolve()}
     report = {'scope': 'Warm graph evaluation; no builds; iets tracing cache and Nix fallback disabled',
+              'after_export_data': args.after_export_data, 'after_early_cutoff': args.after_early_cutoff,
               'roots': {k: str(v) for k, v in roots.items()}, 'records': []}
     expected = {}
     cases = [(label, client) for label in roots for client in commands]
     for trial in range(args.runs + 1):
         for label, client in (cases if trial % 2 == 0 else list(reversed(cases))):
-            expression = '(import (builtins.toPath ' + json.dumps(str(roots[label])).replace('${', r'\${') + ') {}).default.drvPath'
-            command = [*commands[client], '--option', 'allow-import-from-derivation', 'false', '-E', expression]
+            options = ''
+            if label == 'after' and args.after_export_data:
+                options += 'exportData = true;'
+            if label == 'after' and args.after_early_cutoff:
+                options += 'earlyCutoff = true;'
+            expression = '(import (builtins.toPath ' + json.dumps(str(roots[label])).replace('${', r'\${') + ') {' + options + '}).default.drvPath'
+            command = [*commands[client], '--extra-experimental-features', 'ca-derivations',
+                       '--option', 'allow-import-from-derivation', 'false', '-E', expression]
             with (out / f'{label}-{client}-{trial}.log').open('w') as log:
                 start = time.monotonic()
                 value = subprocess.check_output(command, stderr=log, env=env, text=True).strip()

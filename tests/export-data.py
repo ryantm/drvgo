@@ -67,9 +67,9 @@ def main():
         write(source, "main.go", f'package main\nimport ("fmt"; "{module}/{previous}")\nfunc main() {{ fmt.Println({previous}.Value()) }}\n')
         options = f'exportData = true; earlyCutoff = {str(cutoff).lower()};'
 
-        def exported(selected_source, label, failure=None):
+        def exported(selected_source, label, failure=None, extra=()):
             graph = out / (mode + "-" + label + "-export")
-            run([cli, "export", "-C", selected_source, "-out", graph, "-toolchain", tc, "-module-proxy", "off", "."], mode + "-" + label + "-export")
+            run([cli, "export", "-C", selected_source, "-out", graph, "-toolchain", tc, "-module-proxy", "off", *extra, "."], mode + "-" + label + "-export")
             units_expr = f'(import {graph} {{ {options} }}).units'
             drvs = json.loads(run(["nix-instantiate", *flags, "--eval", "--strict", "--json", "--expr",
                                   "builtins.mapAttrs (_: d: d.drvPath) " + units_expr], mode + "-" + label + "-eval"))
@@ -120,6 +120,19 @@ def main():
         built = json.loads(run(["nix", "build", *flags, "--impure", "--no-link", "--json", "--expr", dynamic_expr], mode + "-dynamic"))
         assert str(Path(built[0]["outputs"]["out"]).resolve()) == native_result
         report["modes"][mode]["native_standalone_dynamic"] = native_result
+
+        write(native, "main_test.go", 'package main\nimport "testing"\nfunc TestEmbeddedNative(t *testing.T) { main() }\n')
+        write(native, "external_test.go", 'package main_test\nimport ("testing"; "example.com/libnix-fixture/dep")\n'
+              'func TestExternal(t *testing.T) { if dep.Value() != "stable\\n" { t.Fatal("wrong dependency") } }\n')
+        for race in [False, True]:
+            label = "test-race" if race else "test"
+            test_result, _, test_binary = exported(native, label, extra=["-test", *(["-race"] if race else [])])
+            test_expression = dynamic_expr.replace(options, options + f" test = true; race = {str(race).lower()};")
+            built = json.loads(run(["nix", "build", *flags, "--impure", "--no-link", "--json", "--expr", test_expression], mode + "-" + label + "-dynamic"))
+            assert str(Path(built[0]["outputs"]["out"]).resolve()) == test_result
+            output = run([Path(test_result) / "bin" / test_binary, "-test.v"], mode + "-" + label + "-run")
+            assert "PASS: TestEmbeddedNative" in output and "PASS: TestExternal" in output, output
+            report["modes"][mode][label] = test_result
 
         # An inline function can carry a runtime store path through its export
         # data. Both archive outputs must retain that input when copied alone.
