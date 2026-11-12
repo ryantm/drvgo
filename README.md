@@ -555,6 +555,11 @@ planner’s explicit interactive-shell and coreutils inputs. Measured planner
 closures shrink by 3.68 MB compressed with Nix and 6.89 MB with static iets,
 with effectively unchanged warm CI and CLI bootstrap times.
 
+[Skipping discarded CLI debug data](benchmarks/ci-round22-2026-11-11.md) reduces
+fresh package builds, including tests and vet, from 6.518 s to 6.192 s (5.0%).
+The installed CLI is 7.5% smaller, and complete planner inputs lose 62 KB
+compressed. Worker toolchains are identical and cached CI latency stays flat.
+
 If your cache publishes planner outputs and CI often rebuilds an identical
 source tree on a cold worker, set `allowPlannerSubstitutes = true` in
 `mkGoPackage` to allow those hits to avoid downloading the planning toolchain.
