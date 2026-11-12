@@ -37,12 +37,14 @@ let
     link = ${outputExpr (toolchain.link or toolchain)};
     native = ${outputExpr (toolchain.native or toolchain)};
   }'';
-  # Dry-run discovery only needs the Go SDK, including for cgo. Compiler
-  # probes are emitted for native workers to replay; automatic build IDs are
-  # derived from their resolved inputs rather than discovery's compiler IDs.
+  # Dry-run discovery needs the driver, sources and tool-version metadata.
+  # Native compiler probes are emitted for workers to replay instead.
   # Empty-test validation can compile and execute a selector or compile a
-  # no-test package. Every other discovery path uses only cmd/go's dry run.
-  planningToolchain = if allowEmptyTests then toolchain.go else
+  # no-test package, including its cgo dependencies. Keep actual compilers
+  # available for that path; explicitly disabling cgo avoids native tools.
+  planningToolchain = if allowEmptyTests then
+    (if cgoEnabled == false then toolchain.go else toolchain)
+  else
     import ./planning-toolchain.nix { inherit pkgs drvgo; go = toolchain.go; };
   # These wrappers only run explicit tools; a stdenv setup and its dependency
   # closure are unnecessary on the planning and final forwarding paths.

@@ -67,6 +67,9 @@ def main():
     (empty / "go.mod").write_text("module example.com/empty-planner\ngo 1.25\n")
     empty_expr = f'{package} {{ src = builtins.path {{ path = {nix_string(empty)}; name = "source"; }}; test = true; allowEmptyTests = true; }}'
     selected = run(["nix", "eval", *flags, "--impure", "--raw", "--expr", f'({empty_expr}).planningToolchain.outPath'], "empty-sdk")
+    assert selected == str(tc), (selected, tc)
+    pure_expr = empty_expr.replace("test = true;", "test = true; cgoEnabled = false;")
+    selected = run(["nix", "eval", *flags, "--impure", "--raw", "--expr", f'({pure_expr}).planningToolchain.outPath'], "empty-pure-sdk")
     assert selected == str(sdk), (selected, sdk)
     # Listing succeeds, but actual compilation must reject this type error.
     (empty / "value.go").write_text("package sample\nvar Value int = false\n")
@@ -76,10 +79,18 @@ def main():
     marker = Path(run(["nix", "build", *flags, "--impure", "--no-link", "--print-out-paths", "--expr", empty_expr], "empty-excluded"))
     assert json.loads((marker / "nix-support/no-tests").read_text()) == {"version": 1, "status": "no-tests"}
     assert not (marker / "bin").exists()
+    # A package without tests still needs its C code compiled and validated.
+    native = 'package sample\n/* static int answer(void) { return 42; } */\nimport "C"\nfunc Value() int { return int(C.answer()) }\n'
+    (empty / "value.go").write_text(native)
+    native_marker = Path(run(["nix", "build", *flags, "--impure", "--no-link", "--print-out-paths", "--expr", empty_expr], "empty-native"))
+    assert json.loads((native_marker / "nix-support/no-tests").read_text()) == {"version": 1, "status": "no-tests"}
+    (empty / "value.go").write_text(native.replace("/* static", "/*\n#error DRVGO_CGO_VALIDATION\nstatic"))
+    run(["nix", "build", *flags, "--impure", "--no-link", "--expr", empty_expr], "empty-native-error", failure="DRVGO_CGO_VALIDATION")
     report = {"profile": str(profile), "sdk": str(sdk), "closure": closure,
               "identical_recipes": recipes["compact"], "version_metadata": "passed",
               "real_compilation_rejected": True, "empty_test_type_error_rejected": True,
-              "empty_excluded_selector": str(marker)}
+              "empty_excluded_selector": str(marker), "empty_native_validation": str(native_marker),
+              "empty_native_error_rejected": True}
     (out / "results.json").write_text(json.dumps(report, indent=2) + "\n")
     print("compact discovery/unchanged recipes/version metadata/full-SDK validation PASS", flush=True)
 
