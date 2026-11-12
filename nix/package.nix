@@ -8,6 +8,7 @@ pkgs.buildGoModule {
   };
   vendorHash = null;
   subPackages = [ "cmd/drvgo" ];
+  ldflags = [ "-s" "-w" ];
   # The packaged CLI is stripped. Skip generating compiler DWARF that will
   # be discarded; GOFLAGS also lets tests reuse the same compiled packages.
   preBuild = ''
