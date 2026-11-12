@@ -17,7 +17,7 @@ import (
 
 func inlineSnapshot(root, dest string) (string, error) {
 	var encoder sourceEncoder
-	return encoder.snapshot(root, dest)
+	return encoder.snapshot(root, dest, nil)
 }
 
 func TestCompressedSnapshotBudgetAndReuse(t *testing.T) {
@@ -32,7 +32,7 @@ func TestCompressedSnapshotBudgetAndReuse(t *testing.T) {
 	}
 	write(data)
 	var encoder sourceEncoder
-	first, err := encoder.snapshot(dir, "dest")
+	first, err := encoder.snapshot(dir, "dest", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -57,11 +57,11 @@ func TestCompressedSnapshotBudgetAndReuse(t *testing.T) {
 	noise := make([]byte, 30000)
 	rand.NewChaCha8([32]byte{1}).Read(noise)
 	write(noise)
-	if script, err := encoder.snapshot(dir, "dest"); err != nil || script != "" {
+	if script, err := encoder.snapshot(dir, "dest", nil); err != nil || script != "" {
 		t.Fatalf("oversized incompressible payload accepted: %v", err)
 	}
 	write(data)
-	if script, err := encoder.snapshot(dir, "dest"); err != nil || script != first {
+	if script, err := encoder.snapshot(dir, "dest", nil); err != nil || script != first {
 		t.Fatalf("compressor reuse changed the restored recipe: %v", err)
 	}
 	// The payload budget is shared by all files, not applied to each file.
@@ -69,7 +69,7 @@ func TestCompressedSnapshotBudgetAndReuse(t *testing.T) {
 	if err := os.WriteFile(filepath.Join(dir, "second"), noise[9000:18000], 0644); err != nil {
 		t.Fatal(err)
 	}
-	if script, err := encoder.snapshot(dir, "dest"); err != nil || script != "" {
+	if script, err := encoder.snapshot(dir, "dest", nil); err != nil || script != "" {
 		t.Fatalf("oversized aggregate payload accepted: %v", err)
 	}
 }

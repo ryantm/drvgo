@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"math/rand"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -12,6 +13,53 @@ import (
 
 	"github.com/ryantm/drvgo/internal/plan"
 )
+
+func TestStoreReferencesWithInlineFallback(t *testing.T) {
+	valid := "/nix/store/" + strings.Repeat("1", 32) + "-runtime-data"
+	invalid := valid + strings.Repeat("x", 212)
+	incompressible := make([]byte, 32*1024)
+	rand.New(rand.NewSource(1)).Read(incompressible)
+	for _, tc := range []struct {
+		name   string
+		first  string
+		inline bool
+	}{
+		{"raw", "small", true},
+		{"compressed", strings.Repeat("source\n", 3000), true},
+		{"size-limit", strings.Repeat("x", inlineSourceLimit+1), false},
+		{"payload-limit", string(incompressible), false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			dir := t.TempDir()
+			root := filepath.Join(dir, "sources", "selected")
+			if err := os.MkdirAll(root, 0755); err != nil {
+				t.Fatal(err)
+			}
+			for name, data := range map[string]string{"a-first": tc.first, "z-last": invalid + "\n" + valid} {
+				if err := os.WriteFile(filepath.Join(root, name), []byte(data), 0644); err != nil {
+					t.Fatal(err)
+				}
+			}
+			// A valid reference at EOF in the last file must survive both
+			// successful encoding and rejection before that file is read.
+			mock := filepath.Join(t.TempDir(), "nix")
+			if err := os.WriteFile(mock, []byte("#!/bin/sh\nprintf '%s\\n' '{\""+valid+"\":{}}'\n"), 0755); err != nil {
+				t.Fatal(err)
+			}
+			t.Setenv("PATH", filepath.Dir(mock))
+			units := []plan.Unit{{Sources: []string{"selected"}, Script: "compile @SRC:selected@/a-first\n"}}
+			if err := prepareSources(dir, units); err != nil {
+				t.Fatal(err)
+			}
+			if !reflect.DeepEqual(units[0].StoreReferences, []string{valid}) {
+				t.Fatalf("lost or truncated reference: %v", units[0].StoreReferences)
+			}
+			if (len(units[0].Sources) == 0) != tc.inline {
+				t.Fatalf("wrong inline selection: %v", units[0].Sources)
+			}
+		})
+	}
+}
 
 func TestStoreReferencesSurviveInlining(t *testing.T) {
 	valid := "/nix/store/" + strings.Repeat("1", 32) + "-runtime-data"
