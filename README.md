@@ -605,6 +605,13 @@ unchanged. All comparisons preserve identical Go package outputs. See the
 [nested-planner measurements](benchmarks/ci-round12-2026-11-11.md) for individual
 trials, complete input sizes and reproduction commands.
 
+The [native-query follow-up](benchmarks/ci-round13-2026-11-11.md) removes another
+40.8 MB of compressed inputs and 56 store paths from the iets planner. It also
+reduces outer evaluation work: fixture builds fall from 0.874 to 0.675 seconds,
+and UPM with prepared modules from 2.238 to 2.132 seconds, with the same iets
+package on both sides. Package outputs remain identical. The default Nix path
+has approximately unchanged timings and adds about 5 KB of compressed code.
+
 Five alternating warm evaluation trials, with iets's tracing cache disabled
 and its compiled-file cache warm, measured:
 
