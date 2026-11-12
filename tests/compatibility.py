@@ -52,6 +52,12 @@ if not required_tests.issubset(integration_tests):
 version = run([tc/'bin/go','env','GOVERSION'], go=True).stdout.decode().strip()
 report = {'go':version, 'platform':run([tc/'bin/go','env','GOOS','GOARCH'], go=True).stdout.decode().split(),
           'toolchain':str(tc), 'cases':[], 'nix':run(['nix','--version']).stdout.decode().strip()}
+for role in ['native', 'internal-link']:
+    bundle = (tc/'nix-support'/f'drvgo-{role}-toolchain').read_text().strip()
+    closure = run(['nix-store', '--query', '--requisites', bundle]).stdout.decode().splitlines()
+    nar_bytes = sum(int(size) for size in run(['nix-store', '--query', '--size', *closure]).stdout.decode().splitlines())
+    report.setdefault('toolchain_closures', {})[role] = {'path': bundle, 'paths': len(closure), 'nar_bytes': nar_bytes}
+    print(version, role, 'toolchain', len(closure), 'paths', nar_bytes, 'NAR bytes', flush=True)
 
 def case(name, source, expected, tags='', ldflags='', cgo=None, race=False):
     native = out/(name+'-native')
