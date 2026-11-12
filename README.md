@@ -377,6 +377,10 @@ both disabled by default:
   bodies and type information are part of export data, so changes to them
   invalidate consumers as usual.
 
+The [measurements and validation](benchmarks/ci-round9-2026-11-11.md) show 83.8%
+smaller compressed compiler archive closures and 15.5% faster private edits in
+a small fixture, alongside roughly 11% slower fully cached CI with early cutoff.
+
 For example, add both options to the `mkGoPackage` call above. For a standalone
 export, use the modern Nix client:
 
