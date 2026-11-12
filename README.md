@@ -550,6 +550,11 @@ reduces a fresh drvgo package build, including tests and vet, from 9.755 s to
 6.535 s (33.0%) in seven paired trials. Installed output bytes stay identical;
 this improves CLI bootstrap time, with downstream planning effectively unchanged.
 
+[Native planner orchestration](benchmarks/ci-round20-2026-11-11.md) removes the
+planner’s explicit interactive-shell and coreutils inputs. Measured planner
+closures shrink by 3.68 MB compressed with Nix and 6.89 MB with static iets,
+with effectively unchanged warm CI and CLI bootstrap times.
+
 If your cache publishes planner outputs and CI often rebuilds an identical
 source tree on a cold worker, set `allowPlannerSubstitutes = true` in
 `mkGoPackage` to allow those hits to avoid downloading the planning toolchain.
