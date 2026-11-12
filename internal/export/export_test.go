@@ -110,6 +110,6 @@ func snapshot(p Package, dest string) error {
 	if err := tree.packageFiles(p, ""); err != nil {
 		return err
 	}
-	_, err := tree.write(dest)
+	_, err := tree.write(dest, make([]byte, 32*1024))
 	return err
 }

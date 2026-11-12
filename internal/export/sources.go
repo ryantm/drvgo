@@ -25,8 +25,10 @@ func collectSources(packages []Package, staging string) ([]source, map[string]st
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
+			// Reuse one copy buffer for every package handled by this worker.
+			buffer := make([]byte, 32*1024)
 			for i := range jobs {
-				results[i].source, results[i].hash, results[i].err = snapshotPackage(packages[i], staging)
+				results[i].source, results[i].hash, results[i].err = snapshotPackage(packages[i], staging, buffer)
 			}
 		}()
 	}
@@ -51,7 +53,7 @@ func collectSources(packages []Package, staging string) ([]source, map[string]st
 	return sources, hashes, nil
 }
 
-func snapshotPackage(p Package, staging string) (source, string, error) {
+func snapshotPackage(p Package, staging string, buffer []byte) (source, string, error) {
 	if !safePath.MatchString(p.Dir) {
 		return source{}, "", fmt.Errorf("unsupported source path %q", p.Dir)
 	}
@@ -95,7 +97,7 @@ func snapshotPackage(p Package, staging string) (source, string, error) {
 			return source{}, "", fmt.Errorf("snapshot %s includes: %w", p.ImportPath, err)
 		}
 	}
-	hashString, err := tree.write(dest)
+	hashString, err := tree.write(dest, buffer)
 	if err != nil {
 		return source{}, "", fmt.Errorf("hash snapshot %s: %w", p.ImportPath, err)
 	}

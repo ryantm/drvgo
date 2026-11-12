@@ -95,13 +95,13 @@ func (t *snapshotTree) auxiliary(root, prefix string) error {
 	})
 }
 
-func (t *snapshotTree) write(dest string) (string, error) {
+func (t *snapshotTree) write(dest string, buffer []byte) (string, error) {
 	if err := os.MkdirAll(filepath.Dir(dest), 0755); err != nil {
 		return "", err
 	}
 	w := narHasher{sha256.New()}
 	w.str("nix-archive-1")
-	if err := t.node(dest, w, make([]byte, 32*1024)); err != nil {
+	if err := t.node(dest, w, buffer); err != nil {
 		return "", err
 	}
 	return hex.EncodeToString(w.Sum(nil)), nil
