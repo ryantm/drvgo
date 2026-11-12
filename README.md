@@ -362,6 +362,35 @@ its output is absent from local and remote caches. The default `prepareModules =
 extracts from the fixed proxy during each plan instead. An explicit
 `moduleCache` takes precedence over this setting.
 
+### Reusing a previous planner graph
+
+CI that retains or preloads an earlier graph can pass its `.planner` output as
+`previousPlan` to `mkGoPackage` or `nix/dynamic.nix`. The planner still discovers
+current source and creates current recipes. Declaring the earlier graph makes
+identical sources and derivations available to the restricted store immediately,
+reducing registration work. Source edits and new dependencies are still checked.
+
+```nix
+previousPlan = builtins.storePath savedPlanPath;
+```
+
+`savedPlanPath` is an existing store path restored from an earlier CI build.
+Alternatively pass `previousPackage.planner`; Nix builds that plan if it is
+missing. After a build, publish its plan separately from the executable:
+
+```sh
+plan=$(nix build .#my-package.planner --no-link --print-out-paths)
+nix copy --to "$CACHE" "$plan"
+```
+
+The [previous-plan measurements](benchmarks/ci-round16-2026-11-11.md) reduce warm
+CI medians by 16–48% across the fixture and UPM, including edits after the saved
+plan, with Nix and iets. Package outputs remain identical. The added planner
+inputs cost 1.6 MB compressed for the fixture or 12.3 MB for UPM, plus more cache
+objects. Fetching that graph on a fresh worker can offset the gain, so the default
+is `previousPlan = null`. New plan outputs drop the old plan root; history does
+not accumulate in their closures.
+
 ### Compact compiler dependencies (experimental)
 
 `mkGoPackage` and standalone generated graphs accept two independent options,
