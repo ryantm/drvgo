@@ -43,7 +43,9 @@ func (d Driver) Parse(raw, cwd string) ([]Unit, error) {
 
 // Quoting and cgo replay currently share implementations across these families.
 // Add version-specific behavior here when recorded traces require it.
-func (d Driver) quoteCommand(line string) (string, error)   { return quoteCommand(line) }
+func (d Driver) quoteCommand(line string, omitDwarf bool) (string, error) {
+	return quoteCommandWithDwarf(line, omitDwarf)
+}
 func (d Driver) normalizeCgo(script string) (string, error) { return normalizeCgo(script) }
 func (d Driver) ListArgs() []string {
 	fields := []string{"Dir", "ImportPath", "Name", "Target", "Standard", "DepOnly", "Module", "GoFiles", "CgoFiles", "CFiles", "CXXFiles", "MFiles", "HFiles", "FFiles", "SFiles", "SysoFiles", "EmbedFiles", "CgoPkgConfig", "SwigFiles", "SwigCXXFiles"}

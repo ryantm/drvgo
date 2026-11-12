@@ -35,6 +35,7 @@ def main():
     parser.add_argument("--test", action="store_true", help="export a test binary")
     parser.add_argument("--allow-empty-tests", action="store_true")
     parser.add_argument("--tags", default="")
+    parser.add_argument("--ldflags", default="", help="Go linker flags for both checkouts")
     parser.add_argument("--runs", type=int, default=5)
     parser.add_argument("--nix-option", nargs=2, action="append", default=[], metavar=("NAME", "VALUE"),
                         help="per-command Nix setting, applied equally to both revisions")
@@ -66,6 +67,8 @@ def main():
         build_options += " allowEmptyTests = true;"
     if args.tags:
         build_options += f" tags = {nix_string(args.tags)};"
+    if args.ldflags:
+        build_options += f" ldflags = {nix_string(args.ldflags)};"
     nonce = uuid.uuid4().hex[:12]
     report = {"scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
               "source": str(args.source.resolve()), "package": args.package, "vendor_hash": args.vendor_hash,
@@ -79,6 +82,7 @@ def main():
               "after_export_data": args.after_export_data,
               "after_early_cutoff": args.after_early_cutoff,
               "cgo": args.cgo, "test": args.test, "allow_empty_tests": args.allow_empty_tests, "tags": args.tags,
+              "ldflags": args.ldflags,
               "nix": subprocess.check_output(["nix", "--version"], text=True).strip(),
               "roots": {k: str(v) for k, v in roots.items()}, "flags": flags, "nonce": nonce, "records": []}
 

@@ -35,6 +35,10 @@ func Parse(raw, cwd string) ([]Unit, error) {
 }
 
 func parse(raw, cwd string, driver Driver) ([]Unit, error) {
+	lines := strings.Split(raw, "\n")
+	// A stripped executable cannot use dependency DWARF. Keep debug builds
+	// and unverified SDKs on the original compiler recipes.
+	omitDwarf := !driver.Experimental && traceOmitsDwarf(lines)
 	var units []Unit
 	var script strings.Builder
 	seen := map[string]bool{}
@@ -44,7 +48,7 @@ func parse(raw, cwd string, driver Driver) ([]Unit, error) {
 	current := -1
 	directory := cwd
 	heredoc := false
-	for _, line := range strings.Split(raw, "\n") {
+	for _, line := range lines {
 		if m := start.FindStringSubmatch(line); m != nil && (current < 0 || units[current].ID != m[1]) {
 			if current >= 0 {
 				units[current].Script = script.String()
@@ -152,7 +156,7 @@ func parse(raw, cwd string, driver Driver) ([]Unit, error) {
 		}
 		if !heredoc && (strings.HasPrefix(line, "/") || strings.HasPrefix(line, "TERM=") || strings.HasPrefix(line, "GOROOT=") || strings.HasPrefix(line, "go tool ")) {
 			var err error
-			line, err = driver.quoteCommand(line)
+			line, err = driver.quoteCommand(line, omitDwarf)
 			if err != nil {
 				return nil, fmt.Errorf("tool command: %w", err)
 			}
