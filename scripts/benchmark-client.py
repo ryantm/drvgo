@@ -60,7 +60,7 @@ def main():
         options += f'iets = builtins.storePath {nix_string(iets)};'
     nonce = uuid.uuid4().hex[:12]
     report = {
-        'scope': 'Complete frontend evaluation and realization; fresh planner per trial, warm package outputs; classic iets forwards the same daemon settings as Nix; tracing and fallback disabled',
+        'scope': 'Complete frontend evaluation and realization; fresh planner per trial, warm package outputs; classic iets forwards the same daemon settings as Nix; tracing cache, IR cache and fallback disabled',
         'source': str(args.source.resolve()), 'package': args.package, 'vendor_hash': args.vendor_hash,
         'module_cache': str(args.module_cache) if args.module_cache else None,
         'iets': str(binary), 'nested_iets': args.nested_iets, 'settings': settings, 'nonce': nonce,
