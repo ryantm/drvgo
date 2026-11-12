@@ -91,6 +91,12 @@ def main():
         return outputs[0]
 
     original = compare('unchanged', expected)
+    # Changing linker flags must rediscover compiler recipes even when the
+    # previous graph is visible. A stripped archive cannot seed a debug build.
+    stripped = compare('strip-after-debug', expected, extra='ldflags = "-s -w";')
+    assert stripped != original
+    stripped_plan = plan('stripped-plan', extra='ldflags = "-s -w";')
+    assert compare('debug-after-strip', expected, stripped_plan) == original
     for cutoff in [False, True]:
         mode = 'cutoff' if cutoff else 'interfaces'
         extra = f'exportData = true; earlyCutoff = {str(cutoff).lower()};'
