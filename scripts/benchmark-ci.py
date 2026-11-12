@@ -23,6 +23,7 @@ def main():
     parser.add_argument("--vendor-hash", help="module proxy hash for sources with external dependencies")
     parser.add_argument("--module-cache", type=Path, help="prepared cache for both checkouts")
     parser.add_argument("--after-module-cache", type=Path, help="prepared cache for the modified checkout")
+    parser.add_argument("--before-iets", type=Path, help="iets store output for nested planning in the baseline checkout")
     parser.add_argument("--after-iets", type=Path, help="iets store output for nested planning in the modified checkout")
     parser.add_argument("--after-prepare-modules", action="store_true", help="enable automatic cache preparation in the modified checkout")
     parser.add_argument("--after-export-data", action="store_true", help="enable compiler export archives in the modified checkout")
@@ -68,6 +69,7 @@ def main():
               "source": str(args.source.resolve()), "package": args.package, "vendor_hash": args.vendor_hash,
               "after_module_cache": str(args.after_module_cache) if args.after_module_cache else None,
               "module_cache": str(args.module_cache) if args.module_cache else None,
+              "before_iets": str(args.before_iets) if args.before_iets else None,
               "after_iets": str(args.after_iets) if args.after_iets else None,
               "after_prepare_modules": args.after_prepare_modules,
               "after_export_data": args.after_export_data,
@@ -82,8 +84,9 @@ def main():
         name = f"drvgo-ci-{nonce}-{label}-{trial}"
         module_cache = (args.after_module_cache if label == "after" else None) or args.module_cache
         extra = f" moduleCache = builtins.storePath {nix_string(module_cache)};" if module_cache else ""
-        if label == "after" and args.after_iets:
-            extra += f" iets = builtins.storePath {nix_string(args.after_iets)};"
+        iets = args.after_iets if label == "after" else args.before_iets
+        if iets:
+            extra += f" iets = builtins.storePath {nix_string(iets)};"
         if label == "after" and args.after_prepare_modules:
             extra += " prepareModules = true;"
         if label == "after" and args.after_export_data:
