@@ -493,6 +493,10 @@ fresh CI workers fetch the smaller bundle directly:
 nix build .#my-package.planningToolchain --no-link --print-out-paths
 ```
 
+The [compact discovery measurements](benchmarks/ci-round10-2026-11-11.md) save
+26.9 MB of compressed planner inputs for both the fixture and UPM. Warm CI and
+iets evaluation remain approximately unchanged; package outputs are identical.
+
 If your cache publishes planner outputs and CI often rebuilds an identical
 source tree on a cold worker, set `allowPlannerSubstitutes = true` in
 `mkGoPackage` to allow those hits to avoid downloading the planning toolchain.
