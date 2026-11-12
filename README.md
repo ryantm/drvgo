@@ -383,10 +383,11 @@ Pure Go and Go assembly package actions receive only the compiler, assembler,
 and native replay runner. Selected standard-library sources and
 quoted native headers are snapshotted per package, so workers no longer need the
 full Go SDK. Pure Go links add the linker; cgo, race, native objects, and explicit
-external-link flags select the native compiler bundle. Planning uses the full
-SDK and native tools by default. With `cgoEnabled = false`, dynamic planning
-needs only the SDK plus worker derivation recipes; the generated graph retains
-the original worker dependencies. All bundles use the same pinned Go release.
+external-link flags select the native compiler bundle. Dynamic planning needs
+only the Go SDK plus worker derivation recipes, including when cgo is enabled.
+Dry-run compiler probes are replayed by native workers, and their build IDs
+describe the actual resolved inputs. The generated graph retains the original
+worker dependencies. All bundles use the same pinned Go release.
 
 In the [third CI optimization round](benchmarks/ci-round3-2026-11-11.md), this
 reduced the pure-Go planner's compressed input closure from 235 to 118 MiB.

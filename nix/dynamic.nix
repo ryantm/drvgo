@@ -34,9 +34,10 @@ let
     link = ${outputExpr (toolchain.link or toolchain)};
     native = ${outputExpr (toolchain.native or toolchain)};
   }'';
-  # With cgo explicitly disabled, discovery needs only the Go SDK. Worker
-  # tools are selected independently by the generated package graph.
-  planningToolchain = if cgoEnabled == false then toolchain.go else toolchain;
+  # Dry-run discovery only needs the Go SDK, including for cgo. Compiler
+  # probes are emitted for native workers to replay; automatic build IDs are
+  # derived from their resolved inputs rather than discovery's compiler IDs.
+  planningToolchain = toolchain.go;
   # These wrappers only run explicit tools; a stdenv setup and its dependency
   # closure are unnecessary on the planning and final forwarding paths.
   planner = builtins.derivation ({
