@@ -1,0 +1,3969 @@
+{
+  "before": "dc3f6e077ac933893bbc1c40cd7e46e43a4184a9",
+  "after": "2594aff8e9ad9d5a37437bde94b73dcf0494bdcd",
+  "renderer": {
+    "scope": "Isolated rendering of a prepared UPM graph with GOMAXPROCS=4. Each benchmark invocation first verifies exact expected scripts.nix bytes. Seven alternating trials plus warmups; twenty iterations per invocation. Excludes Go discovery, Nix evaluation and builds.",
+    "environment": {
+      "GOMAXPROCS": "4",
+      "DRVGO_BENCH_GRAPH": "/tmp/drvgo-snapshot-buffers-probe/4-before",
+      "DRVGO_BENCH_DIR": "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+      "DRVGO_BENCH_PACKAGE": "./cmd/upm",
+      "DRVGO_BENCH_TOOLCHAIN": "/nix/store/6sr2aa5kl6qr5rh4grj9mkrdq6y8y3fn-go-libnix-planning-toolchain",
+      "DRVGO_BENCH_MODULE_CACHE": "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache"
+    },
+    "benchmark_source": "package export\n\nimport (\n\t\"encoding/json\"\n\t\"os\"\n\t\"path/filepath\"\n\t\"testing\"\n)\n\n// BenchmarkGenerate profiles the exporter against a caller-provided checkout.\n// Exported snapshots live in the benchmark temp directory.\nfunc BenchmarkGenerate(b *testing.B) {\n\tdir := os.Getenv(\"DRVGO_BENCH_DIR\")\n\tif dir == \"\" {\n\t\tb.Skip(\"set DRVGO_BENCH_DIR and optionally DRVGO_BENCH_PACKAGE\")\n\t}\n\ttc := os.Getenv(\"DRVGO_BENCH_TOOLCHAIN\")\n\tif tc == \"\" {\n\t\tvar err error\n\t\ttc, err = Toolchain()\n\t\tif err != nil {\n\t\t\tb.Fatal(err)\n\t\t}\n\t}\n\to := Options{Dir: dir, Out: filepath.Join(b.TempDir(), \"export\"), Package: os.Getenv(\"DRVGO_BENCH_PACKAGE\"), Toolchain: tc, ModuleCache: os.Getenv(\"DRVGO_BENCH_MODULE_CACHE\")}\n\tb.ResetTimer()\n\tfor i := 0; i < b.N; i++ {\n\t\tif _, err := Generate(o); err != nil {\n\t\t\tb.Fatal(err)\n\t\t}\n\t}\n}\n\nvar renderedScripts string\n\nfunc BenchmarkRenderScripts(b *testing.B) {\n\tpath := os.Getenv(\"DRVGO_BENCH_GRAPH\")\n\tif path == \"\" {\n\t\tb.Skip(\"set DRVGO_BENCH_GRAPH\")\n\t}\n\tdata, err := os.ReadFile(filepath.Join(path, \"graph.json\"))\n\tif err != nil {\n\t\tb.Fatal(err)\n\t}\n\tvar graph Graph\n\tif err := json.Unmarshal(data, &graph); err != nil {\n\t\tb.Fatal(err)\n\t}\n\twant, err := os.ReadFile(filepath.Join(path, \"scripts.nix\"))\n\tif err != nil {\n\t\tb.Fatal(err)\n\t}\n\tif nixScripts(graph.Units) != string(want) {\n\t\tb.Fatal(\"rendered script bytes changed\")\n\t}\n\tb.ReportAllocs()\n\tb.ResetTimer()\n\tfor i := 0; i < b.N; i++ {\n\t\trenderedScripts = nixScripts(graph.Units)\n\t}\n}\n",
+    "records": [
+      {
+        "label": "before",
+        "trial": 0,
+        "warmup": true,
+        "ns_per_op": 15735362,
+        "bytes_per_op": 38269065,
+        "allocations_per_op": 48018,
+        "command": [
+          "/tmp/drvgo-script-rendering-before.test",
+          "-test.run=^$",
+          "-test.bench=^BenchmarkRenderScripts$",
+          "-test.benchtime=20x",
+          "-test.benchmem"
+        ]
+      },
+      {
+        "label": "after",
+        "trial": 0,
+        "warmup": true,
+        "ns_per_op": 15351441,
+        "bytes_per_op": 22907031,
+        "allocations_per_op": 45534,
+        "command": [
+          "/tmp/drvgo-script-rendering-after.test",
+          "-test.run=^$",
+          "-test.bench=^BenchmarkRenderScripts$",
+          "-test.benchtime=20x",
+          "-test.benchmem"
+        ]
+      },
+      {
+        "label": "after",
+        "trial": 1,
+        "warmup": false,
+        "ns_per_op": 14719357,
+        "bytes_per_op": 22907019,
+        "allocations_per_op": 45534,
+        "command": [
+          "/tmp/drvgo-script-rendering-after.test",
+          "-test.run=^$",
+          "-test.bench=^BenchmarkRenderScripts$",
+          "-test.benchtime=20x",
+          "-test.benchmem"
+        ]
+      },
+      {
+        "label": "before",
+        "trial": 1,
+        "warmup": false,
+        "ns_per_op": 15599144,
+        "bytes_per_op": 38269068,
+        "allocations_per_op": 48018,
+        "command": [
+          "/tmp/drvgo-script-rendering-before.test",
+          "-test.run=^$",
+          "-test.bench=^BenchmarkRenderScripts$",
+          "-test.benchtime=20x",
+          "-test.benchmem"
+        ]
+      },
+      {
+        "label": "before",
+        "trial": 2,
+        "warmup": false,
+        "ns_per_op": 15704004,
+        "bytes_per_op": 38269065,
+        "allocations_per_op": 48018,
+        "command": [
+          "/tmp/drvgo-script-rendering-before.test",
+          "-test.run=^$",
+          "-test.bench=^BenchmarkRenderScripts$",
+          "-test.benchtime=20x",
+          "-test.benchmem"
+        ]
+      },
+      {
+        "label": "after",
+        "trial": 2,
+        "warmup": false,
+        "ns_per_op": 14901658,
+        "bytes_per_op": 22907024,
+        "allocations_per_op": 45534,
+        "command": [
+          "/tmp/drvgo-script-rendering-after.test",
+          "-test.run=^$",
+          "-test.bench=^BenchmarkRenderScripts$",
+          "-test.benchtime=20x",
+          "-test.benchmem"
+        ]
+      },
+      {
+        "label": "after",
+        "trial": 3,
+        "warmup": false,
+        "ns_per_op": 15232083,
+        "bytes_per_op": 22907290,
+        "allocations_per_op": 45534,
+        "command": [
+          "/tmp/drvgo-script-rendering-after.test",
+          "-test.run=^$",
+          "-test.bench=^BenchmarkRenderScripts$",
+          "-test.benchtime=20x",
+          "-test.benchmem"
+        ]
+      },
+      {
+        "label": "before",
+        "trial": 3,
+        "warmup": false,
+        "ns_per_op": 16495836,
+        "bytes_per_op": 38269328,
+        "allocations_per_op": 48018,
+        "command": [
+          "/tmp/drvgo-script-rendering-before.test",
+          "-test.run=^$",
+          "-test.bench=^BenchmarkRenderScripts$",
+          "-test.benchtime=20x",
+          "-test.benchmem"
+        ]
+      },
+      {
+        "label": "before",
+        "trial": 4,
+        "warmup": false,
+        "ns_per_op": 15750833,
+        "bytes_per_op": 38269065,
+        "allocations_per_op": 48018,
+        "command": [
+          "/tmp/drvgo-script-rendering-before.test",
+          "-test.run=^$",
+          "-test.bench=^BenchmarkRenderScripts$",
+          "-test.benchtime=20x",
+          "-test.benchmem"
+        ]
+      },
+      {
+        "label": "after",
+        "trial": 4,
+        "warmup": false,
+        "ns_per_op": 15219122,
+        "bytes_per_op": 22907288,
+        "allocations_per_op": 45534,
+        "command": [
+          "/tmp/drvgo-script-rendering-after.test",
+          "-test.run=^$",
+          "-test.bench=^BenchmarkRenderScripts$",
+          "-test.benchtime=20x",
+          "-test.benchmem"
+        ]
+      },
+      {
+        "label": "after",
+        "trial": 5,
+        "warmup": false,
+        "ns_per_op": 15069180,
+        "bytes_per_op": 22907295,
+        "allocations_per_op": 45534,
+        "command": [
+          "/tmp/drvgo-script-rendering-after.test",
+          "-test.run=^$",
+          "-test.bench=^BenchmarkRenderScripts$",
+          "-test.benchtime=20x",
+          "-test.benchmem"
+        ]
+      },
+      {
+        "label": "before",
+        "trial": 5,
+        "warmup": false,
+        "ns_per_op": 15204010,
+        "bytes_per_op": 38269072,
+        "allocations_per_op": 48018,
+        "command": [
+          "/tmp/drvgo-script-rendering-before.test",
+          "-test.run=^$",
+          "-test.bench=^BenchmarkRenderScripts$",
+          "-test.benchtime=20x",
+          "-test.benchmem"
+        ]
+      },
+      {
+        "label": "before",
+        "trial": 6,
+        "warmup": false,
+        "ns_per_op": 16034008,
+        "bytes_per_op": 38269071,
+        "allocations_per_op": 48018,
+        "command": [
+          "/tmp/drvgo-script-rendering-before.test",
+          "-test.run=^$",
+          "-test.bench=^BenchmarkRenderScripts$",
+          "-test.benchtime=20x",
+          "-test.benchmem"
+        ]
+      },
+      {
+        "label": "after",
+        "trial": 6,
+        "warmup": false,
+        "ns_per_op": 15043614,
+        "bytes_per_op": 22907303,
+        "allocations_per_op": 45534,
+        "command": [
+          "/tmp/drvgo-script-rendering-after.test",
+          "-test.run=^$",
+          "-test.bench=^BenchmarkRenderScripts$",
+          "-test.benchtime=20x",
+          "-test.benchmem"
+        ]
+      },
+      {
+        "label": "after",
+        "trial": 7,
+        "warmup": false,
+        "ns_per_op": 14842671,
+        "bytes_per_op": 22907021,
+        "allocations_per_op": 45534,
+        "command": [
+          "/tmp/drvgo-script-rendering-after.test",
+          "-test.run=^$",
+          "-test.bench=^BenchmarkRenderScripts$",
+          "-test.benchtime=20x",
+          "-test.benchmem"
+        ]
+      },
+      {
+        "label": "before",
+        "trial": 7,
+        "warmup": false,
+        "ns_per_op": 15776075,
+        "bytes_per_op": 38269342,
+        "allocations_per_op": 48018,
+        "command": [
+          "/tmp/drvgo-script-rendering-before.test",
+          "-test.run=^$",
+          "-test.bench=^BenchmarkRenderScripts$",
+          "-test.benchtime=20x",
+          "-test.benchmem"
+        ]
+      }
+    ],
+    "allocation_measurements": {
+      "before": {
+        "label": "before",
+        "trial": 1,
+        "warmup": false,
+        "ns_per_op": 437069368,
+        "bytes_per_op": 140965538,
+        "allocations_per_op": 498204,
+        "command": [
+          "/tmp/drvgo-script-rendering-before.test",
+          "-test.run=^$",
+          "-test.bench=^BenchmarkGenerate$",
+          "-test.benchtime=10x",
+          "-test.benchmem"
+        ]
+      },
+      "after": {
+        "label": "after",
+        "trial": 1,
+        "warmup": false,
+        "ns_per_op": 435438431,
+        "bytes_per_op": 125764888,
+        "allocations_per_op": 495722,
+        "command": [
+          "/tmp/drvgo-script-rendering-after.test",
+          "-test.run=^$",
+          "-test.bench=^BenchmarkGenerate$",
+          "-test.benchtime=10x",
+          "-test.benchmem"
+        ]
+      }
+    },
+    "medians": {
+      "before": {
+        "ns_per_op": 15750833,
+        "bytes_per_op": 38269071,
+        "allocations_per_op": 48018
+      },
+      "after": {
+        "ns_per_op": 15043614,
+        "bytes_per_op": 22907288,
+        "allocations_per_op": 45534
+      }
+    },
+    "allocation_measurement_scope": "Fixed-order ten-iteration full exporter benchmark with compact planning toolchain and prepared modules; allocation counters only, not a latency comparison or peak-memory measurement."
+  },
+  "standalone": {
+    "scope": "Warm standalone UPM export, prepared modules, explicit full toolchain; output replacement is included; GOMAXPROCS controls both exporter and Go subprocesses. No realization.",
+    "records": [
+      {
+        "workers": 1,
+        "trial": 0,
+        "warmup": true,
+        "label": "before",
+        "seconds": 0.6048767429310828,
+        "maxrss_kib": 47260,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/1-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 1,
+        "trial": 0,
+        "warmup": true,
+        "label": "after",
+        "seconds": 0.593299676082097,
+        "maxrss_kib": 57476,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/1-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 1,
+        "trial": 1,
+        "warmup": false,
+        "label": "after",
+        "seconds": 0.6050185539061204,
+        "maxrss_kib": 56596,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/1-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 1,
+        "trial": 1,
+        "warmup": false,
+        "label": "before",
+        "seconds": 0.6395862740464509,
+        "maxrss_kib": 50348,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/1-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 1,
+        "trial": 2,
+        "warmup": false,
+        "label": "before",
+        "seconds": 0.6379837640561163,
+        "maxrss_kib": 46700,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/1-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 1,
+        "trial": 2,
+        "warmup": false,
+        "label": "after",
+        "seconds": 0.6400786469457671,
+        "maxrss_kib": 51292,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/1-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 1,
+        "trial": 3,
+        "warmup": false,
+        "label": "after",
+        "seconds": 0.6101744590559974,
+        "maxrss_kib": 58148,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/1-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 1,
+        "trial": 3,
+        "warmup": false,
+        "label": "before",
+        "seconds": 0.639538228046149,
+        "maxrss_kib": 46732,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/1-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 1,
+        "trial": 4,
+        "warmup": false,
+        "label": "before",
+        "seconds": 0.6403483479516581,
+        "maxrss_kib": 49388,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/1-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 1,
+        "trial": 4,
+        "warmup": false,
+        "label": "after",
+        "seconds": 0.6287309629842639,
+        "maxrss_kib": 48048,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/1-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 1,
+        "trial": 5,
+        "warmup": false,
+        "label": "after",
+        "seconds": 0.6276657399721444,
+        "maxrss_kib": 50948,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/1-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 1,
+        "trial": 5,
+        "warmup": false,
+        "label": "before",
+        "seconds": 0.6365616749972105,
+        "maxrss_kib": 47968,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/1-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 1,
+        "trial": 6,
+        "warmup": false,
+        "label": "before",
+        "seconds": 0.624132381984964,
+        "maxrss_kib": 53440,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/1-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 1,
+        "trial": 6,
+        "warmup": false,
+        "label": "after",
+        "seconds": 0.6323639620095491,
+        "maxrss_kib": 48932,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/1-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 1,
+        "trial": 7,
+        "warmup": false,
+        "label": "after",
+        "seconds": 0.6273991669295356,
+        "maxrss_kib": 57936,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/1-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 1,
+        "trial": 7,
+        "warmup": false,
+        "label": "before",
+        "seconds": 0.6456032280111685,
+        "maxrss_kib": 46516,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/1-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 2,
+        "trial": 0,
+        "warmup": true,
+        "label": "before",
+        "seconds": 0.46268369804602116,
+        "maxrss_kib": 45180,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/2-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 2,
+        "trial": 0,
+        "warmup": true,
+        "label": "after",
+        "seconds": 0.4642081529600546,
+        "maxrss_kib": 46168,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/2-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 2,
+        "trial": 1,
+        "warmup": false,
+        "label": "after",
+        "seconds": 0.5159811460180208,
+        "maxrss_kib": 45168,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/2-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 2,
+        "trial": 1,
+        "warmup": false,
+        "label": "before",
+        "seconds": 0.5008854330517352,
+        "maxrss_kib": 45228,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/2-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 2,
+        "trial": 2,
+        "warmup": false,
+        "label": "before",
+        "seconds": 0.5066294659627602,
+        "maxrss_kib": 45516,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/2-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 2,
+        "trial": 2,
+        "warmup": false,
+        "label": "after",
+        "seconds": 0.49758750200271606,
+        "maxrss_kib": 45692,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/2-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 2,
+        "trial": 3,
+        "warmup": false,
+        "label": "after",
+        "seconds": 0.5049150920240209,
+        "maxrss_kib": 46012,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/2-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 2,
+        "trial": 3,
+        "warmup": false,
+        "label": "before",
+        "seconds": 0.4942071120021865,
+        "maxrss_kib": 45812,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/2-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 2,
+        "trial": 4,
+        "warmup": false,
+        "label": "before",
+        "seconds": 0.4909911820432171,
+        "maxrss_kib": 45212,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/2-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 2,
+        "trial": 4,
+        "warmup": false,
+        "label": "after",
+        "seconds": 0.4967321890871972,
+        "maxrss_kib": 44996,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/2-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 2,
+        "trial": 5,
+        "warmup": false,
+        "label": "after",
+        "seconds": 0.505833207978867,
+        "maxrss_kib": 45368,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/2-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 2,
+        "trial": 5,
+        "warmup": false,
+        "label": "before",
+        "seconds": 0.509698937064968,
+        "maxrss_kib": 45960,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/2-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 2,
+        "trial": 6,
+        "warmup": false,
+        "label": "before",
+        "seconds": 0.48839151801075786,
+        "maxrss_kib": 44956,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/2-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 2,
+        "trial": 6,
+        "warmup": false,
+        "label": "after",
+        "seconds": 0.5038893739692867,
+        "maxrss_kib": 46412,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/2-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 2,
+        "trial": 7,
+        "warmup": false,
+        "label": "after",
+        "seconds": 0.5002022080589086,
+        "maxrss_kib": 45672,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/2-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 2,
+        "trial": 7,
+        "warmup": false,
+        "label": "before",
+        "seconds": 0.5078165489248931,
+        "maxrss_kib": 45420,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/2-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 4,
+        "trial": 0,
+        "warmup": true,
+        "label": "before",
+        "seconds": 0.41264039499219507,
+        "maxrss_kib": 42816,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/4-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 4,
+        "trial": 0,
+        "warmup": true,
+        "label": "after",
+        "seconds": 0.408797173993662,
+        "maxrss_kib": 42288,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/4-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 4,
+        "trial": 1,
+        "warmup": false,
+        "label": "after",
+        "seconds": 0.4445870410418138,
+        "maxrss_kib": 41796,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/4-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 4,
+        "trial": 1,
+        "warmup": false,
+        "label": "before",
+        "seconds": 0.45185017806943506,
+        "maxrss_kib": 42504,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/4-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 4,
+        "trial": 2,
+        "warmup": false,
+        "label": "before",
+        "seconds": 0.4473956220317632,
+        "maxrss_kib": 42680,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/4-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 4,
+        "trial": 2,
+        "warmup": false,
+        "label": "after",
+        "seconds": 0.4506251000566408,
+        "maxrss_kib": 42008,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/4-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 4,
+        "trial": 3,
+        "warmup": false,
+        "label": "after",
+        "seconds": 0.44877351203467697,
+        "maxrss_kib": 42740,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/4-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 4,
+        "trial": 3,
+        "warmup": false,
+        "label": "before",
+        "seconds": 0.45628363301511854,
+        "maxrss_kib": 42972,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/4-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 4,
+        "trial": 4,
+        "warmup": false,
+        "label": "before",
+        "seconds": 0.4450936360517517,
+        "maxrss_kib": 42664,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/4-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 4,
+        "trial": 4,
+        "warmup": false,
+        "label": "after",
+        "seconds": 0.4440141780069098,
+        "maxrss_kib": 42876,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/4-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 4,
+        "trial": 5,
+        "warmup": false,
+        "label": "after",
+        "seconds": 0.4584614550694823,
+        "maxrss_kib": 43380,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/4-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 4,
+        "trial": 5,
+        "warmup": false,
+        "label": "before",
+        "seconds": 0.4503901260904968,
+        "maxrss_kib": 42936,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/4-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 4,
+        "trial": 6,
+        "warmup": false,
+        "label": "before",
+        "seconds": 0.44517860701307654,
+        "maxrss_kib": 42256,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/4-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 4,
+        "trial": 6,
+        "warmup": false,
+        "label": "after",
+        "seconds": 0.44218113110400736,
+        "maxrss_kib": 43596,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/4-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 4,
+        "trial": 7,
+        "warmup": false,
+        "label": "after",
+        "seconds": 0.4360888950759545,
+        "maxrss_kib": 50676,
+        "command": [
+          "/tmp/drvgo-script-rendering-after",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/4-after",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      },
+      {
+        "workers": 4,
+        "trial": 7,
+        "warmup": false,
+        "label": "before",
+        "seconds": 0.448863364988938,
+        "maxrss_kib": 42432,
+        "command": [
+          "/tmp/drvgo-script-rendering-before",
+          "export",
+          "-C",
+          "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+          "-out",
+          "/tmp/drvgo-script-rendering-probe/4-before",
+          "-toolchain",
+          "/nix/store/c4ahgnpq68bgd3vzd4asb5rmx1104h0p-go-libnix-toolchain",
+          "-module-cache",
+          "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+          "./cmd/upm"
+        ],
+        "hashes": {
+          "graph.json": "a2583455984fef3bd3773c434564b7331959a6e4f9a58627409175e7cbbe5f8e",
+          "evaluation.json": "5502b193f37233b89c38c93871274984ac21dd41022dcc03266ba3279a042cbc",
+          "scripts.nix": "42bcc2c4fbc231d0b8297a51fb0e65e52a882b40cdf478ccc8c112483bc9c68a",
+          "resolved-toolchain.nix": "6e016b876f334d9a0199f00c80da3d617f75cb4ec4d18f181f0d4e34a4535e71"
+        }
+      }
+    ],
+    "medians": {
+      "1": {
+        "before": {
+          "seconds": 0.639538228046149,
+          "maxrss_kib": 47968
+        },
+        "after": {
+          "seconds": 0.6276657399721444,
+          "maxrss_kib": 51292
+        }
+      },
+      "2": {
+        "before": {
+          "seconds": 0.5008854330517352,
+          "maxrss_kib": 45420
+        },
+        "after": {
+          "seconds": 0.5038893739692867,
+          "maxrss_kib": 45672
+        }
+      },
+      "4": {
+        "before": {
+          "seconds": 0.448863364988938,
+          "maxrss_kib": 42664
+        },
+        "after": {
+          "seconds": 0.4445870410418138,
+          "maxrss_kib": 42876
+        }
+      }
+    }
+  },
+  "ci": [
+    {
+      "workload": "fixture",
+      "evaluator": "nix",
+      "command": [
+        "python3",
+        "/tmp/drvgo-ci-script-rendering/scripts/benchmark-ci.py",
+        "--before",
+        "/tmp/drvgo-ci-snapshot-buffers",
+        "--after",
+        "/tmp/drvgo-ci-script-rendering",
+        "--runs",
+        "7",
+        "--nix-option",
+        "sandbox",
+        "true",
+        "--nix-option",
+        "sandbox-fallback",
+        "false",
+        "--nix-option",
+        "substituters",
+        "",
+        "--nix-option",
+        "always-allow-substitutes",
+        "false",
+        "--source",
+        "/tmp/drvgo-ci-snapshot-buffers/tests/fixture",
+        "--out",
+        "/tmp/drvgo-script-rendering-ci-fixture-nix"
+      ],
+      "result": "/tmp/drvgo-script-rendering-ci-fixture-nix/results.json",
+      "data": {
+        "scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
+        "source": "/tmp/drvgo-ci-snapshot-buffers/tests/fixture",
+        "package": ".",
+        "vendor_hash": null,
+        "after_module_cache": null,
+        "module_cache": null,
+        "previous_plan": null,
+        "after_previous_plan": null,
+        "before_iets": null,
+        "after_iets": null,
+        "after_prepare_modules": false,
+        "after_export_data": false,
+        "after_early_cutoff": false,
+        "cgo": null,
+        "test": false,
+        "allow_empty_tests": false,
+        "tags": "",
+        "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+        "roots": {
+          "before": "/tmp/drvgo-ci-snapshot-buffers",
+          "after": "/tmp/drvgo-ci-script-rendering"
+        },
+        "flags": [
+          "--extra-experimental-features",
+          "ca-derivations dynamic-derivations recursive-nix",
+          "--option",
+          "allow-import-from-derivation",
+          "false",
+          "--max-jobs",
+          "4",
+          "--cores",
+          "2",
+          "--option",
+          "sandbox",
+          "true",
+          "--option",
+          "sandbox-fallback",
+          "false",
+          "--option",
+          "substituters",
+          "",
+          "--option",
+          "always-allow-substitutes",
+          "false"
+        ],
+        "nonce": "7cf887c8b129",
+        "records": [
+          {
+            "label": "before",
+            "trial": 0,
+            "warmup": true,
+            "evaluation": 0.4032973670400679,
+            "realization": 0.46512640605214983,
+            "total": 0.8684237730922177,
+            "derivation": "/nix/store/b3cfccslfj6kp8qmmjprn0mdkbb9pvav-drvgo-ci-7cf887c8b129-before-0.drv",
+            "result": "/nix/store/0brr2b5kbr9pg813j04xcwqccvqyk498-drvgo-ci-7cf887c8b129-before-0",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "after",
+            "trial": 0,
+            "warmup": true,
+            "evaluation": 0.4010286829434335,
+            "realization": 10.175953070051037,
+            "total": 10.57698175299447,
+            "derivation": "/nix/store/pwsx5bzy1r42rww19b896yfdss9z96py-drvgo-ci-7cf887c8b129-after-0.drv",
+            "result": "/nix/store/mb2y44bp2kwabfc48cyxhvmnlxn3zsj9-drvgo-ci-7cf887c8b129-after-0",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "after",
+            "trial": 1,
+            "warmup": false,
+            "evaluation": 0.39161582302767783,
+            "realization": 0.4626500899903476,
+            "total": 0.8542659130180255,
+            "derivation": "/nix/store/14ak75vmdragrl60f204s2jw75bagkcp-drvgo-ci-7cf887c8b129-after-1.drv",
+            "result": "/nix/store/nic39ads3pq3qhjywn68fwxv0ksg4v70-drvgo-ci-7cf887c8b129-after-1",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "before",
+            "trial": 1,
+            "warmup": false,
+            "evaluation": 0.4037102209404111,
+            "realization": 0.4643443980021402,
+            "total": 0.8680546189425513,
+            "derivation": "/nix/store/76pd675cna7l562r1iknaiwyznk6l49r-drvgo-ci-7cf887c8b129-before-1.drv",
+            "result": "/nix/store/brkv31wnprqwfa5b72wzd13aaw7vpjr2-drvgo-ci-7cf887c8b129-before-1",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "before",
+            "trial": 2,
+            "warmup": false,
+            "evaluation": 0.3767117620445788,
+            "realization": 0.45681527198757976,
+            "total": 0.8335270340321586,
+            "derivation": "/nix/store/v5gp4fyms0f8zw2v4wycnj1i86pv1hpn-drvgo-ci-7cf887c8b129-before-2.drv",
+            "result": "/nix/store/716y8ym5m7jbvr8p1ag9h186708xka23-drvgo-ci-7cf887c8b129-before-2",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "after",
+            "trial": 2,
+            "warmup": false,
+            "evaluation": 0.3992248170543462,
+            "realization": 0.4611255619674921,
+            "total": 0.8603503790218383,
+            "derivation": "/nix/store/a6irqmzvc84c4vl83xb5d5n2ll0ln8j5-drvgo-ci-7cf887c8b129-after-2.drv",
+            "result": "/nix/store/qdmr6gd6rdsg84rb0w6xhrks6yppmm06-drvgo-ci-7cf887c8b129-after-2",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "after",
+            "trial": 3,
+            "warmup": false,
+            "evaluation": 0.39740570599678904,
+            "realization": 0.4587829160736874,
+            "total": 0.8561886220704764,
+            "derivation": "/nix/store/7b1lhp5w272wvj9206hiljkw42yvy9yc-drvgo-ci-7cf887c8b129-after-3.drv",
+            "result": "/nix/store/1bapj9g0i44pbdj3jr949ni7ch4nis90-drvgo-ci-7cf887c8b129-after-3",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "before",
+            "trial": 3,
+            "warmup": false,
+            "evaluation": 0.38933034299407154,
+            "realization": 0.4680865529226139,
+            "total": 0.8574168959166855,
+            "derivation": "/nix/store/j187q66z139zqpmwzfac5whg4p1g3y41-drvgo-ci-7cf887c8b129-before-3.drv",
+            "result": "/nix/store/qzxzrghkbx2d7pdvn9kb809li9jpb1cl-drvgo-ci-7cf887c8b129-before-3",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "before",
+            "trial": 4,
+            "warmup": false,
+            "evaluation": 0.41327194194309413,
+            "realization": 0.4649648910854012,
+            "total": 0.8782368330284953,
+            "derivation": "/nix/store/5nzg5g8ikl2pq6bxjw3d6gyl30c4bj8s-drvgo-ci-7cf887c8b129-before-4.drv",
+            "result": "/nix/store/hi08ck2xrrsvzwypsa25fi3y5px9pa5d-drvgo-ci-7cf887c8b129-before-4",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "after",
+            "trial": 4,
+            "warmup": false,
+            "evaluation": 0.3845645090332255,
+            "realization": 0.45946641999762505,
+            "total": 0.8440309290308505,
+            "derivation": "/nix/store/6176za8cl3a4p6xqnkisrdjh628qlh2b-drvgo-ci-7cf887c8b129-after-4.drv",
+            "result": "/nix/store/hi186zm9nmm4zywlmd5vgjrqmcbdw78r-drvgo-ci-7cf887c8b129-after-4",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "after",
+            "trial": 5,
+            "warmup": false,
+            "evaluation": 0.4253773019881919,
+            "realization": 0.45638803904876113,
+            "total": 0.881765341036953,
+            "derivation": "/nix/store/7g169z6irlkwbaygb6i22d8rpffsf6dd-drvgo-ci-7cf887c8b129-after-5.drv",
+            "result": "/nix/store/g0vw6226wy6j0vm5bdm8662fpnr6njra-drvgo-ci-7cf887c8b129-after-5",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "before",
+            "trial": 5,
+            "warmup": false,
+            "evaluation": 0.39186087099369615,
+            "realization": 0.4601406289730221,
+            "total": 0.8520014999667183,
+            "derivation": "/nix/store/r2k749qkxpra8rffacc7c789hj35cigh-drvgo-ci-7cf887c8b129-before-5.drv",
+            "result": "/nix/store/b3xchhfa1pc0hxgyqmhpdng9fbkhv7vn-drvgo-ci-7cf887c8b129-before-5",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "before",
+            "trial": 6,
+            "warmup": false,
+            "evaluation": 0.38509832008276135,
+            "realization": 0.46052787092048675,
+            "total": 0.8456261910032481,
+            "derivation": "/nix/store/688z8l0ay135dk1v7wdapdnsq54x7yvc-drvgo-ci-7cf887c8b129-before-6.drv",
+            "result": "/nix/store/z10gfg3mj6v01brgxb98b6nxfswmwrap-drvgo-ci-7cf887c8b129-before-6",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "after",
+            "trial": 6,
+            "warmup": false,
+            "evaluation": 0.40592156909406185,
+            "realization": 0.45113548799417913,
+            "total": 0.857057057088241,
+            "derivation": "/nix/store/y2daaqkw3b3x3l8h0qh2p358kl1kv28s-drvgo-ci-7cf887c8b129-after-6.drv",
+            "result": "/nix/store/33li6ynb5bx37spdnxari0c0chc922aj-drvgo-ci-7cf887c8b129-after-6",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "after",
+            "trial": 7,
+            "warmup": false,
+            "evaluation": 0.41327391006052494,
+            "realization": 0.47754987294320017,
+            "total": 0.8908237830037251,
+            "derivation": "/nix/store/n0f00l47hhaiynb26i400mks42brcf93-drvgo-ci-7cf887c8b129-after-7.drv",
+            "result": "/nix/store/dqskl2hp0armyk6hrd6cgarcaw7zyg5l-drvgo-ci-7cf887c8b129-after-7",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "before",
+            "trial": 7,
+            "warmup": false,
+            "evaluation": 0.4241028060205281,
+            "realization": 0.46370995498728007,
+            "total": 0.8878127610078081,
+            "derivation": "/nix/store/jv9dxkrpd43dxdyam6x5nmw66slk720f-drvgo-ci-7cf887c8b129-before-7.drv",
+            "result": "/nix/store/inxg3n486lhhpl60l15xpq9ldblr8rys-drvgo-ci-7cf887c8b129-before-7",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          }
+        ],
+        "medians": {
+          "before": {
+            "evaluation": 0.39186087099369615,
+            "realization": 0.46370995498728007,
+            "total": 0.8574168959166855
+          },
+          "after": {
+            "evaluation": 0.3992248170543462,
+            "realization": 0.45946641999762505,
+            "total": 0.857057057088241
+          }
+        }
+      }
+    },
+    {
+      "workload": "fixture",
+      "evaluator": "iets",
+      "command": [
+        "python3",
+        "/tmp/drvgo-ci-script-rendering/scripts/benchmark-ci.py",
+        "--before",
+        "/tmp/drvgo-ci-snapshot-buffers",
+        "--after",
+        "/tmp/drvgo-ci-script-rendering",
+        "--runs",
+        "7",
+        "--nix-option",
+        "sandbox",
+        "true",
+        "--nix-option",
+        "sandbox-fallback",
+        "false",
+        "--nix-option",
+        "substituters",
+        "",
+        "--nix-option",
+        "always-allow-substitutes",
+        "false",
+        "--source",
+        "/tmp/drvgo-ci-snapshot-buffers/tests/fixture",
+        "--before-iets",
+        "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+        "--after-iets",
+        "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+        "--out",
+        "/tmp/drvgo-script-rendering-ci-fixture-iets"
+      ],
+      "result": "/tmp/drvgo-script-rendering-ci-fixture-iets/results.json",
+      "data": {
+        "scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
+        "source": "/tmp/drvgo-ci-snapshot-buffers/tests/fixture",
+        "package": ".",
+        "vendor_hash": null,
+        "after_module_cache": null,
+        "module_cache": null,
+        "previous_plan": null,
+        "after_previous_plan": null,
+        "before_iets": "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+        "after_iets": "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+        "after_prepare_modules": false,
+        "after_export_data": false,
+        "after_early_cutoff": false,
+        "cgo": null,
+        "test": false,
+        "allow_empty_tests": false,
+        "tags": "",
+        "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+        "roots": {
+          "before": "/tmp/drvgo-ci-snapshot-buffers",
+          "after": "/tmp/drvgo-ci-script-rendering"
+        },
+        "flags": [
+          "--extra-experimental-features",
+          "ca-derivations dynamic-derivations recursive-nix",
+          "--option",
+          "allow-import-from-derivation",
+          "false",
+          "--max-jobs",
+          "4",
+          "--cores",
+          "2",
+          "--option",
+          "sandbox",
+          "true",
+          "--option",
+          "sandbox-fallback",
+          "false",
+          "--option",
+          "substituters",
+          "",
+          "--option",
+          "always-allow-substitutes",
+          "false"
+        ],
+        "nonce": "df580b25b6d3",
+        "records": [
+          {
+            "label": "before",
+            "trial": 0,
+            "warmup": true,
+            "evaluation": 0.20710855699144304,
+            "realization": 0.44148131599649787,
+            "total": 0.6485898729879409,
+            "derivation": "/nix/store/2c8d07wh42hpgc3cla7n5bzhpdkigwqr-drvgo-ci-df580b25b6d3-before-0.drv",
+            "result": "/nix/store/ba9k6wz72lj44jv04r084h5p52rrp0p1-drvgo-ci-df580b25b6d3-before-0",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "after",
+            "trial": 0,
+            "warmup": true,
+            "evaluation": 0.226669566007331,
+            "realization": 0.45028960600029677,
+            "total": 0.6769591720076278,
+            "derivation": "/nix/store/7fak1qk2vm93px6170dbvby8pzchsa0f-drvgo-ci-df580b25b6d3-after-0.drv",
+            "result": "/nix/store/ay9gqdz7m4dbshld59b2v940436d1m85-drvgo-ci-df580b25b6d3-after-0",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "after",
+            "trial": 1,
+            "warmup": false,
+            "evaluation": 0.20583189802709967,
+            "realization": 0.4443373129470274,
+            "total": 0.650169210974127,
+            "derivation": "/nix/store/1f3rxx1szymk003h1rvwrr0xsn7jiq7g-drvgo-ci-df580b25b6d3-after-1.drv",
+            "result": "/nix/store/6haq9rsp4aghavnc6mkwr5yy4in58492-drvgo-ci-df580b25b6d3-after-1",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "before",
+            "trial": 1,
+            "warmup": false,
+            "evaluation": 0.2055899309925735,
+            "realization": 0.44952735293190926,
+            "total": 0.6551172839244828,
+            "derivation": "/nix/store/fhsfbprmgjagxzrwplca60m7qvghaxn8-drvgo-ci-df580b25b6d3-before-1.drv",
+            "result": "/nix/store/x7k9gfj53svwlkq6zlcfc76qzcpm3xzn-drvgo-ci-df580b25b6d3-before-1",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "before",
+            "trial": 2,
+            "warmup": false,
+            "evaluation": 0.2035500240745023,
+            "realization": 0.4540500519797206,
+            "total": 0.6576000760542229,
+            "derivation": "/nix/store/2nib9jnj5is68ihhkc0fsg0bpzhpkbwc-drvgo-ci-df580b25b6d3-before-2.drv",
+            "result": "/nix/store/1nmxbvb0s2bmlxywiy5z4ir9dd4vh2cv-drvgo-ci-df580b25b6d3-before-2",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "after",
+            "trial": 2,
+            "warmup": false,
+            "evaluation": 0.21075008297339082,
+            "realization": 0.46254242304712534,
+            "total": 0.6732925060205162,
+            "derivation": "/nix/store/jvxwrrav0iah1q348f84z0x6xwb8qs1k-drvgo-ci-df580b25b6d3-after-2.drv",
+            "result": "/nix/store/q6qvjn78f83dzdr817gy8rf1jb3n2c6q-drvgo-ci-df580b25b6d3-after-2",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "after",
+            "trial": 3,
+            "warmup": false,
+            "evaluation": 0.21598369907587767,
+            "realization": 0.44797947199549526,
+            "total": 0.6639631710713729,
+            "derivation": "/nix/store/zbi2mdip1j8cpzp5cblr9p0j05la5s4j-drvgo-ci-df580b25b6d3-after-3.drv",
+            "result": "/nix/store/w9dmddf6mqfzg44bb0qiajbzxsiv6skc-drvgo-ci-df580b25b6d3-after-3",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "before",
+            "trial": 3,
+            "warmup": false,
+            "evaluation": 0.19528687908314168,
+            "realization": 0.4391645659925416,
+            "total": 0.6344514450756833,
+            "derivation": "/nix/store/kv2msnyndkf1qzinzjza7hsl3flqa4qk-drvgo-ci-df580b25b6d3-before-3.drv",
+            "result": "/nix/store/5v6fba656yhccjxsam4zfvrggpjpff4b-drvgo-ci-df580b25b6d3-before-3",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "before",
+            "trial": 4,
+            "warmup": false,
+            "evaluation": 0.21780799201224,
+            "realization": 0.4652672589290887,
+            "total": 0.6830752509413287,
+            "derivation": "/nix/store/v754nzj2w44fpr2jw9adcgz799s31603-drvgo-ci-df580b25b6d3-before-4.drv",
+            "result": "/nix/store/mv1idgc94yskrgvb7mmdw3vb04kiad9b-drvgo-ci-df580b25b6d3-before-4",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "after",
+            "trial": 4,
+            "warmup": false,
+            "evaluation": 0.21161845594178885,
+            "realization": 0.443763604038395,
+            "total": 0.6553820599801838,
+            "derivation": "/nix/store/21n45mgkgzjikb4adifd3bai59lhyrk1-drvgo-ci-df580b25b6d3-after-4.drv",
+            "result": "/nix/store/sbl5m4lik6hy3i8ivd5czp70qyms1b2w-drvgo-ci-df580b25b6d3-after-4",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "after",
+            "trial": 5,
+            "warmup": false,
+            "evaluation": 0.22619667102117091,
+            "realization": 0.454750616918318,
+            "total": 0.6809472879394889,
+            "derivation": "/nix/store/l59qq1g47f3kdaa3mbiyzy9v67kq073d-drvgo-ci-df580b25b6d3-after-5.drv",
+            "result": "/nix/store/fcs789hklwxsfiaac3xfy3v227s5bc7b-drvgo-ci-df580b25b6d3-after-5",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "before",
+            "trial": 5,
+            "warmup": false,
+            "evaluation": 0.21223133604507893,
+            "realization": 0.4502496219938621,
+            "total": 0.662480958038941,
+            "derivation": "/nix/store/vn4basjwmjzzqizvvzp55gik4my9i99l-drvgo-ci-df580b25b6d3-before-5.drv",
+            "result": "/nix/store/4xm4wnvs8z44038gqd1jz75pmdjdxgh5-drvgo-ci-df580b25b6d3-before-5",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "before",
+            "trial": 6,
+            "warmup": false,
+            "evaluation": 0.20376907906029373,
+            "realization": 0.43728105491027236,
+            "total": 0.6410501339705661,
+            "derivation": "/nix/store/sswrm8pyb9b7d95f07x1m07isrc22y4q-drvgo-ci-df580b25b6d3-before-6.drv",
+            "result": "/nix/store/lx6f7hzigqbbq5nazajgbdpgk06qsi39-drvgo-ci-df580b25b6d3-before-6",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "after",
+            "trial": 6,
+            "warmup": false,
+            "evaluation": 0.20781122893095016,
+            "realization": 0.44726947403978556,
+            "total": 0.6550807029707357,
+            "derivation": "/nix/store/gpy7ibsdf8ax77imlnp2pc9c2lq6pqqy-drvgo-ci-df580b25b6d3-after-6.drv",
+            "result": "/nix/store/88vcqzq8bgmdw8xdfq93l5i95wz9rxys-drvgo-ci-df580b25b6d3-after-6",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "after",
+            "trial": 7,
+            "warmup": false,
+            "evaluation": 0.2127858289750293,
+            "realization": 0.4539477509679273,
+            "total": 0.6667335799429566,
+            "derivation": "/nix/store/bxmz0x7p6rxbmc4q83px4aj9ghrg3d29-drvgo-ci-df580b25b6d3-after-7.drv",
+            "result": "/nix/store/v2llriv4cfj4spsl3pi8mzl5hfvydr86-drvgo-ci-df580b25b6d3-after-7",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          },
+          {
+            "label": "before",
+            "trial": 7,
+            "warmup": false,
+            "evaluation": 0.21145622490439564,
+            "realization": 0.4491183930076659,
+            "total": 0.6605746179120615,
+            "derivation": "/nix/store/agcw0vlz2rp23i7qjvvm264sh6bhjvrl-drvgo-ci-df580b25b6d3-before-7.drv",
+            "result": "/nix/store/bk8pc8fp1csw6a7dkd08hnch54zjff2h-drvgo-ci-df580b25b6d3-before-7",
+            "command_output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+          }
+        ],
+        "medians": {
+          "before": {
+            "evaluation": 0.2055899309925735,
+            "realization": 0.44952735293190926,
+            "total": 0.6576000760542229
+          },
+          "after": {
+            "evaluation": 0.21161845594178885,
+            "realization": 0.44797947199549526,
+            "total": 0.6639631710713729
+          }
+        }
+      }
+    },
+    {
+      "workload": "upm-proxy",
+      "evaluator": "nix",
+      "command": [
+        "python3",
+        "/tmp/drvgo-ci-script-rendering/scripts/benchmark-ci.py",
+        "--before",
+        "/tmp/drvgo-ci-snapshot-buffers",
+        "--after",
+        "/tmp/drvgo-ci-script-rendering",
+        "--runs",
+        "7",
+        "--nix-option",
+        "sandbox",
+        "true",
+        "--nix-option",
+        "sandbox-fallback",
+        "false",
+        "--nix-option",
+        "substituters",
+        "",
+        "--nix-option",
+        "always-allow-substitutes",
+        "false",
+        "--source",
+        "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+        "--package",
+        "./cmd/upm",
+        "--vendor-hash",
+        "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+        "--out",
+        "/tmp/drvgo-script-rendering-ci-upm-proxy-nix"
+      ],
+      "result": "/tmp/drvgo-script-rendering-ci-upm-proxy-nix/results.json",
+      "data": {
+        "scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
+        "source": "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+        "package": "./cmd/upm",
+        "vendor_hash": "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+        "after_module_cache": null,
+        "module_cache": null,
+        "previous_plan": null,
+        "after_previous_plan": null,
+        "before_iets": null,
+        "after_iets": null,
+        "after_prepare_modules": false,
+        "after_export_data": false,
+        "after_early_cutoff": false,
+        "cgo": null,
+        "test": false,
+        "allow_empty_tests": false,
+        "tags": "",
+        "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+        "roots": {
+          "before": "/tmp/drvgo-ci-snapshot-buffers",
+          "after": "/tmp/drvgo-ci-script-rendering"
+        },
+        "flags": [
+          "--extra-experimental-features",
+          "ca-derivations dynamic-derivations recursive-nix",
+          "--option",
+          "allow-import-from-derivation",
+          "false",
+          "--max-jobs",
+          "4",
+          "--cores",
+          "2",
+          "--option",
+          "sandbox",
+          "true",
+          "--option",
+          "sandbox-fallback",
+          "false",
+          "--option",
+          "substituters",
+          "",
+          "--option",
+          "always-allow-substitutes",
+          "false"
+        ],
+        "nonce": "0d4a0ccedd05",
+        "records": [
+          {
+            "label": "before",
+            "trial": 0,
+            "warmup": true,
+            "evaluation": 0.4179075009888038,
+            "realization": 2.990145739982836,
+            "total": 3.4080532409716398,
+            "derivation": "/nix/store/r5c7347fy5n1qzcw80ki3r3grfm9rmwf-drvgo-ci-0d4a0ccedd05-before-0.drv",
+            "result": "/nix/store/v5hki45p5mbyjj87nljqv6wvh9acx887-drvgo-ci-0d4a0ccedd05-before-0",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 0,
+            "warmup": true,
+            "evaluation": 0.40484885894693434,
+            "realization": 2.928496430045925,
+            "total": 3.3333452889928594,
+            "derivation": "/nix/store/9idbhbc5j6yd8qd9vh3d14wips0i3qp5-drvgo-ci-0d4a0ccedd05-after-0.drv",
+            "result": "/nix/store/zn36s2kifw2y8gsznc8kk2g6ra74bwkw-drvgo-ci-0d4a0ccedd05-after-0",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 1,
+            "warmup": false,
+            "evaluation": 0.40412523795384914,
+            "realization": 2.935594064067118,
+            "total": 3.339719302020967,
+            "derivation": "/nix/store/h6c3f827sc1y9jpcplsfsxcck0dvxjmd-drvgo-ci-0d4a0ccedd05-after-1.drv",
+            "result": "/nix/store/7xk4g25kpwg0wsxcjkxqs87hmmxczkcc-drvgo-ci-0d4a0ccedd05-after-1",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 1,
+            "warmup": false,
+            "evaluation": 0.40016557194758207,
+            "realization": 2.9372359990375116,
+            "total": 3.3374015709850937,
+            "derivation": "/nix/store/zr7yazihvj3j8qlj6l97p261z0in2bwb-drvgo-ci-0d4a0ccedd05-before-1.drv",
+            "result": "/nix/store/dsg4y12gsnc3ri3d5i997wfv1xk3ibra-drvgo-ci-0d4a0ccedd05-before-1",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 2,
+            "warmup": false,
+            "evaluation": 0.42011571500916034,
+            "realization": 2.9435656359419227,
+            "total": 3.363681350951083,
+            "derivation": "/nix/store/xdbgplgz59xkm2gs3gwgpp5yyi4z7c8d-drvgo-ci-0d4a0ccedd05-before-2.drv",
+            "result": "/nix/store/03hgk559dmxazd24xy83ki5ifwzjfghz-drvgo-ci-0d4a0ccedd05-before-2",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 2,
+            "warmup": false,
+            "evaluation": 0.4282839730149135,
+            "realization": 2.9332063540350646,
+            "total": 3.361490327049978,
+            "derivation": "/nix/store/mz6hkl0bdzc0wd3k5jlpbd9x0l8nx0pk-drvgo-ci-0d4a0ccedd05-after-2.drv",
+            "result": "/nix/store/fdzkcbnj5kwxlgl52iibf16qpry3pv7i-drvgo-ci-0d4a0ccedd05-after-2",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 3,
+            "warmup": false,
+            "evaluation": 0.42041340796276927,
+            "realization": 2.9490007649874315,
+            "total": 3.3694141729502007,
+            "derivation": "/nix/store/9g1vp0r6i9pn7i9amh1vyh21m448dp64-drvgo-ci-0d4a0ccedd05-after-3.drv",
+            "result": "/nix/store/17zzkfjzma8fr7iar3vm8bmqf9k9x30i-drvgo-ci-0d4a0ccedd05-after-3",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 3,
+            "warmup": false,
+            "evaluation": 0.4250628149602562,
+            "realization": 2.937718042987399,
+            "total": 3.362780857947655,
+            "derivation": "/nix/store/hgbq1gn2my18g4wl18cpbk65i19n0g22-drvgo-ci-0d4a0ccedd05-before-3.drv",
+            "result": "/nix/store/9zi2qhn5jw9smfk6aq0hc22dax354i76-drvgo-ci-0d4a0ccedd05-before-3",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 4,
+            "warmup": false,
+            "evaluation": 0.42103948595467955,
+            "realization": 2.936230820021592,
+            "total": 3.3572703059762716,
+            "derivation": "/nix/store/7mwdp01bxambbg9yzdlc0gcfz7fz5kz9-drvgo-ci-0d4a0ccedd05-before-4.drv",
+            "result": "/nix/store/mdi1c13mwgc3xnhk493c1z3qcqx35i88-drvgo-ci-0d4a0ccedd05-before-4",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 4,
+            "warmup": false,
+            "evaluation": 0.4229114829795435,
+            "realization": 2.947315155994147,
+            "total": 3.3702266389736906,
+            "derivation": "/nix/store/nlvqvw4rhq8wbqbj5b7f8ziknhp7v879-drvgo-ci-0d4a0ccedd05-after-4.drv",
+            "result": "/nix/store/3isdnc6bhjkvairyrxp0ivvmrbcjp56q-drvgo-ci-0d4a0ccedd05-after-4",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 5,
+            "warmup": false,
+            "evaluation": 0.41841493803076446,
+            "realization": 2.9670084869721904,
+            "total": 3.385423425002955,
+            "derivation": "/nix/store/2k0j7n10mq67ylr538sfbj4jfjfmqrpr-drvgo-ci-0d4a0ccedd05-after-5.drv",
+            "result": "/nix/store/wn8hyw9ylqxh94c5nmmzg0rw5wwyxhm2-drvgo-ci-0d4a0ccedd05-after-5",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 5,
+            "warmup": false,
+            "evaluation": 0.40883839793968946,
+            "realization": 2.989766249083914,
+            "total": 3.3986046470236033,
+            "derivation": "/nix/store/9qx0hjdd8z44dv88w5l83qp15zv8cw6a-drvgo-ci-0d4a0ccedd05-before-5.drv",
+            "result": "/nix/store/jkkgry9cx4hidh9r3qn5rxffyhmy6i2j-drvgo-ci-0d4a0ccedd05-before-5",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 6,
+            "warmup": false,
+            "evaluation": 0.41316969704348594,
+            "realization": 2.995988550945185,
+            "total": 3.409158247988671,
+            "derivation": "/nix/store/3kzqfy1w4s14jigjjrwb7sycqnr86hm4-drvgo-ci-0d4a0ccedd05-before-6.drv",
+            "result": "/nix/store/6zfdmdqsw8cdcmhwfc32x0xa9bachfg9-drvgo-ci-0d4a0ccedd05-before-6",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 6,
+            "warmup": false,
+            "evaluation": 0.4994618530618027,
+            "realization": 2.974626273033209,
+            "total": 3.474088126095012,
+            "derivation": "/nix/store/wwxj41b5f3iqi3xridwjkmw554n8lmkf-drvgo-ci-0d4a0ccedd05-after-6.drv",
+            "result": "/nix/store/ya1xlnh668pf6bx5jadapldrfli3hk3j-drvgo-ci-0d4a0ccedd05-after-6",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 7,
+            "warmup": false,
+            "evaluation": 0.43025059101637453,
+            "realization": 2.9327518310165033,
+            "total": 3.363002422032878,
+            "derivation": "/nix/store/n203y2g1n1k1bqshlk0rgvz2s6ikjx57-drvgo-ci-0d4a0ccedd05-after-7.drv",
+            "result": "/nix/store/wmxhsi86v162as9x5wvbwg82ax21r8rc-drvgo-ci-0d4a0ccedd05-after-7",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 7,
+            "warmup": false,
+            "evaluation": 0.4171258059795946,
+            "realization": 3.040365283959545,
+            "total": 3.45749108993914,
+            "derivation": "/nix/store/lwj6gzz2qs2sir7vci5x6nvbgnvi90p5-drvgo-ci-0d4a0ccedd05-before-7.drv",
+            "result": "/nix/store/cfism220rm7sqyrfw4bbqf9afi7yz4a4-drvgo-ci-0d4a0ccedd05-before-7",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          }
+        ],
+        "medians": {
+          "before": {
+            "evaluation": 0.4171258059795946,
+            "realization": 2.9435656359419227,
+            "total": 3.363681350951083
+          },
+          "after": {
+            "evaluation": 0.4229114829795435,
+            "realization": 2.947315155994147,
+            "total": 3.3694141729502007
+          }
+        }
+      }
+    },
+    {
+      "workload": "upm-proxy",
+      "evaluator": "iets",
+      "command": [
+        "python3",
+        "/tmp/drvgo-ci-script-rendering/scripts/benchmark-ci.py",
+        "--before",
+        "/tmp/drvgo-ci-snapshot-buffers",
+        "--after",
+        "/tmp/drvgo-ci-script-rendering",
+        "--runs",
+        "7",
+        "--nix-option",
+        "sandbox",
+        "true",
+        "--nix-option",
+        "sandbox-fallback",
+        "false",
+        "--nix-option",
+        "substituters",
+        "",
+        "--nix-option",
+        "always-allow-substitutes",
+        "false",
+        "--source",
+        "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+        "--package",
+        "./cmd/upm",
+        "--vendor-hash",
+        "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+        "--before-iets",
+        "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+        "--after-iets",
+        "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+        "--out",
+        "/tmp/drvgo-script-rendering-ci-upm-proxy-iets"
+      ],
+      "result": "/tmp/drvgo-script-rendering-ci-upm-proxy-iets/results.json",
+      "data": {
+        "scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
+        "source": "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+        "package": "./cmd/upm",
+        "vendor_hash": "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+        "after_module_cache": null,
+        "module_cache": null,
+        "previous_plan": null,
+        "after_previous_plan": null,
+        "before_iets": "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+        "after_iets": "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+        "after_prepare_modules": false,
+        "after_export_data": false,
+        "after_early_cutoff": false,
+        "cgo": null,
+        "test": false,
+        "allow_empty_tests": false,
+        "tags": "",
+        "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+        "roots": {
+          "before": "/tmp/drvgo-ci-snapshot-buffers",
+          "after": "/tmp/drvgo-ci-script-rendering"
+        },
+        "flags": [
+          "--extra-experimental-features",
+          "ca-derivations dynamic-derivations recursive-nix",
+          "--option",
+          "allow-import-from-derivation",
+          "false",
+          "--max-jobs",
+          "4",
+          "--cores",
+          "2",
+          "--option",
+          "sandbox",
+          "true",
+          "--option",
+          "sandbox-fallback",
+          "false",
+          "--option",
+          "substituters",
+          "",
+          "--option",
+          "always-allow-substitutes",
+          "false"
+        ],
+        "nonce": "2d0eb5369f34",
+        "records": [
+          {
+            "label": "before",
+            "trial": 0,
+            "warmup": true,
+            "evaluation": 0.3434415759984404,
+            "realization": 2.588629535981454,
+            "total": 2.9320711119798943,
+            "derivation": "/nix/store/pncsia890xwfrd8wc91117101a5hc2sy-drvgo-ci-2d0eb5369f34-before-0.drv",
+            "result": "/nix/store/55qxka18m4287nv8viin4qksd5r4d4n7-drvgo-ci-2d0eb5369f34-before-0",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 0,
+            "warmup": true,
+            "evaluation": 0.35607907094527036,
+            "realization": 2.552950886078179,
+            "total": 2.9090299570234492,
+            "derivation": "/nix/store/s1ym6jmvnk236bvkqj1fs38lad62ja5v-drvgo-ci-2d0eb5369f34-after-0.drv",
+            "result": "/nix/store/gp09ibd4gw8ivqyyp4hs5vvcaxx0s0pg-drvgo-ci-2d0eb5369f34-after-0",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 1,
+            "warmup": false,
+            "evaluation": 0.35238378401845694,
+            "realization": 2.6411349299596623,
+            "total": 2.993518713978119,
+            "derivation": "/nix/store/gwccbf3pkzyx67jbhzn2x2kdh5bf8z5l-drvgo-ci-2d0eb5369f34-after-1.drv",
+            "result": "/nix/store/8jiizbq1im3priz7jwhwsipysk5q118a-drvgo-ci-2d0eb5369f34-after-1",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 1,
+            "warmup": false,
+            "evaluation": 0.34812191198579967,
+            "realization": 2.574334503035061,
+            "total": 2.9224564150208607,
+            "derivation": "/nix/store/kkjbi359ps0k2937bai5k1qqrbm802h6-drvgo-ci-2d0eb5369f34-before-1.drv",
+            "result": "/nix/store/k3828gp0m53yfld4wqs20kn9vjdvqx3x-drvgo-ci-2d0eb5369f34-before-1",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 2,
+            "warmup": false,
+            "evaluation": 0.34608041192404926,
+            "realization": 2.6112535630818456,
+            "total": 2.957333975005895,
+            "derivation": "/nix/store/s2cd7ixh20z0sdny58ldic7b9zsdy61i-drvgo-ci-2d0eb5369f34-before-2.drv",
+            "result": "/nix/store/bl7fncnnyzian62afil45530qyyg3pvg-drvgo-ci-2d0eb5369f34-before-2",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 2,
+            "warmup": false,
+            "evaluation": 0.3495337259955704,
+            "realization": 2.6132712539983913,
+            "total": 2.9628049799939618,
+            "derivation": "/nix/store/vdi13ivawgg7sy2xbc9g07shia8kv98j-drvgo-ci-2d0eb5369f34-after-2.drv",
+            "result": "/nix/store/grgvv6m1hxj7hb9g3hiaylw2rhfjpy5v-drvgo-ci-2d0eb5369f34-after-2",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 3,
+            "warmup": false,
+            "evaluation": 0.36266507499385625,
+            "realization": 2.640035426011309,
+            "total": 3.0027005010051653,
+            "derivation": "/nix/store/p4x0x2hmqqkniiy90ysgdcl54sb3d9cq-drvgo-ci-2d0eb5369f34-after-3.drv",
+            "result": "/nix/store/b3gwi80mzg8rsyc4msa227bxs10nnsik-drvgo-ci-2d0eb5369f34-after-3",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 3,
+            "warmup": false,
+            "evaluation": 0.3365992250619456,
+            "realization": 2.6238930649124086,
+            "total": 2.960492289974354,
+            "derivation": "/nix/store/a2zmnivqflphlxvxns78akk380nlbxdd-drvgo-ci-2d0eb5369f34-before-3.drv",
+            "result": "/nix/store/h7m4wvc5sg6g8p8z2xf20d89ymzlk8km-drvgo-ci-2d0eb5369f34-before-3",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 4,
+            "warmup": false,
+            "evaluation": 0.37868054199498147,
+            "realization": 2.6139179839519784,
+            "total": 2.99259852594696,
+            "derivation": "/nix/store/6yxaxy8a5dcphv4f6yn5kjzrfbb1ycca-drvgo-ci-2d0eb5369f34-before-4.drv",
+            "result": "/nix/store/qlqw2hjvkgmrvdzm203zhabd9ws6yph4-drvgo-ci-2d0eb5369f34-before-4",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 4,
+            "warmup": false,
+            "evaluation": 0.3613792189862579,
+            "realization": 2.632947043981403,
+            "total": 2.994326262967661,
+            "derivation": "/nix/store/qwwn12v7hg1v4jpxfv5qx8w1grlga1ks-drvgo-ci-2d0eb5369f34-after-4.drv",
+            "result": "/nix/store/3w5rx0k22fii57qgl784wb38ijykss7c-drvgo-ci-2d0eb5369f34-after-4",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 5,
+            "warmup": false,
+            "evaluation": 0.35889796598348767,
+            "realization": 2.6337974150665104,
+            "total": 2.992695381049998,
+            "derivation": "/nix/store/psmmirc6yap15savk7lr291l89wqrfy4-drvgo-ci-2d0eb5369f34-after-5.drv",
+            "result": "/nix/store/f1p2na3yxi6c6rxalp01da9fj87ma4rk-drvgo-ci-2d0eb5369f34-after-5",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 5,
+            "warmup": false,
+            "evaluation": 0.3400474271038547,
+            "realization": 2.6444491259753704,
+            "total": 2.984496553079225,
+            "derivation": "/nix/store/dwxykwmnl4gsb4pnkqdaja3kvwx67r02-drvgo-ci-2d0eb5369f34-before-5.drv",
+            "result": "/nix/store/98gw88k9b42injrpvmb04gk6plq5rl7x-drvgo-ci-2d0eb5369f34-before-5",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 6,
+            "warmup": false,
+            "evaluation": 0.3529449369525537,
+            "realization": 2.6181576170492917,
+            "total": 2.9711025540018454,
+            "derivation": "/nix/store/kn0723942qlhqqkdcnay58ig2ri3ay2q-drvgo-ci-2d0eb5369f34-before-6.drv",
+            "result": "/nix/store/5yfqgi4daq9bw3y3fv13199pmxybwray-drvgo-ci-2d0eb5369f34-before-6",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 6,
+            "warmup": false,
+            "evaluation": 0.34215273591689765,
+            "realization": 2.6147784889908507,
+            "total": 2.9569312249077484,
+            "derivation": "/nix/store/f5ny3fpqlmi8x8bfgr75726a92aafcs8-drvgo-ci-2d0eb5369f34-after-6.drv",
+            "result": "/nix/store/5sx0zkpkszv76y5blrvm0vzcd0a5qkjk-drvgo-ci-2d0eb5369f34-after-6",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 7,
+            "warmup": false,
+            "evaluation": 0.34517104201950133,
+            "realization": 2.6106012150412425,
+            "total": 2.955772257060744,
+            "derivation": "/nix/store/n339lin7wahpkqfzcjrgg8c1l1p857rq-drvgo-ci-2d0eb5369f34-after-7.drv",
+            "result": "/nix/store/0a05kfl6bhrskmcabz6dirs0j32b9n3y-drvgo-ci-2d0eb5369f34-after-7",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 7,
+            "warmup": false,
+            "evaluation": 0.3607684699818492,
+            "realization": 2.6307919550454244,
+            "total": 2.9915604250272736,
+            "derivation": "/nix/store/hmy4z808w8zczh73wm1gxfhgxfj5jimx-drvgo-ci-2d0eb5369f34-before-7.drv",
+            "result": "/nix/store/f0hc37z17xcj2wc0sfzadwf4s5d5xiqq-drvgo-ci-2d0eb5369f34-before-7",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          }
+        ],
+        "medians": {
+          "before": {
+            "evaluation": 0.34812191198579967,
+            "realization": 2.6181576170492917,
+            "total": 2.9711025540018454
+          },
+          "after": {
+            "evaluation": 0.35238378401845694,
+            "realization": 2.632947043981403,
+            "total": 2.992695381049998
+          }
+        }
+      }
+    },
+    {
+      "workload": "upm-prepared",
+      "evaluator": "nix",
+      "command": [
+        "python3",
+        "/tmp/drvgo-ci-script-rendering/scripts/benchmark-ci.py",
+        "--before",
+        "/tmp/drvgo-ci-snapshot-buffers",
+        "--after",
+        "/tmp/drvgo-ci-script-rendering",
+        "--runs",
+        "7",
+        "--nix-option",
+        "sandbox",
+        "true",
+        "--nix-option",
+        "sandbox-fallback",
+        "false",
+        "--nix-option",
+        "substituters",
+        "",
+        "--nix-option",
+        "always-allow-substitutes",
+        "false",
+        "--source",
+        "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+        "--package",
+        "./cmd/upm",
+        "--vendor-hash",
+        "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+        "--module-cache",
+        "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+        "--out",
+        "/tmp/drvgo-script-rendering-ci-upm-prepared-nix"
+      ],
+      "result": "/tmp/drvgo-script-rendering-ci-upm-prepared-nix/results.json",
+      "data": {
+        "scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
+        "source": "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+        "package": "./cmd/upm",
+        "vendor_hash": "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+        "after_module_cache": null,
+        "module_cache": "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+        "previous_plan": null,
+        "after_previous_plan": null,
+        "before_iets": null,
+        "after_iets": null,
+        "after_prepare_modules": false,
+        "after_export_data": false,
+        "after_early_cutoff": false,
+        "cgo": null,
+        "test": false,
+        "allow_empty_tests": false,
+        "tags": "",
+        "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+        "roots": {
+          "before": "/tmp/drvgo-ci-snapshot-buffers",
+          "after": "/tmp/drvgo-ci-script-rendering"
+        },
+        "flags": [
+          "--extra-experimental-features",
+          "ca-derivations dynamic-derivations recursive-nix",
+          "--option",
+          "allow-import-from-derivation",
+          "false",
+          "--max-jobs",
+          "4",
+          "--cores",
+          "2",
+          "--option",
+          "sandbox",
+          "true",
+          "--option",
+          "sandbox-fallback",
+          "false",
+          "--option",
+          "substituters",
+          "",
+          "--option",
+          "always-allow-substitutes",
+          "false"
+        ],
+        "nonce": "9194e8468773",
+        "records": [
+          {
+            "label": "before",
+            "trial": 0,
+            "warmup": true,
+            "evaluation": 0.41045185492839664,
+            "realization": 2.1019858500221744,
+            "total": 2.512437704950571,
+            "derivation": "/nix/store/69jvv29k52bzvg3cglrfbc2z28z5iz3g-drvgo-ci-9194e8468773-before-0.drv",
+            "result": "/nix/store/bmwnyg1b2pnsd4cw7yanx6fngpv345zx-drvgo-ci-9194e8468773-before-0",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 0,
+            "warmup": true,
+            "evaluation": 0.4142242600210011,
+            "realization": 2.030247819959186,
+            "total": 2.444472079980187,
+            "derivation": "/nix/store/dj998j5gmr564l1l6wh0v2m6a1h7jnbs-drvgo-ci-9194e8468773-after-0.drv",
+            "result": "/nix/store/b2aiib77d7a0lmzg53wq3xahgayx0jyz-drvgo-ci-9194e8468773-after-0",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 1,
+            "warmup": false,
+            "evaluation": 0.4230400510132313,
+            "realization": 2.1137281589908525,
+            "total": 2.536768210004084,
+            "derivation": "/nix/store/m10sqvf5vk9mk6fffmgssy9v7kv0ih0p-drvgo-ci-9194e8468773-after-1.drv",
+            "result": "/nix/store/fk0m5v8zlql5szs3w1gvwgv0c1aswcq0-drvgo-ci-9194e8468773-after-1",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 1,
+            "warmup": false,
+            "evaluation": 0.409290287992917,
+            "realization": 2.0572376750642434,
+            "total": 2.4665279630571604,
+            "derivation": "/nix/store/r1ag7bnc5kj40qxh0018yzb5xpm13090-drvgo-ci-9194e8468773-before-1.drv",
+            "result": "/nix/store/vhnbjgra1dfbm19ydgi18jfq8mdq8sk1-drvgo-ci-9194e8468773-before-1",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 2,
+            "warmup": false,
+            "evaluation": 0.3894317139638588,
+            "realization": 2.096200191997923,
+            "total": 2.4856319059617817,
+            "derivation": "/nix/store/z1vyli5jhix58hnkcisymh89hwvgm10h-drvgo-ci-9194e8468773-before-2.drv",
+            "result": "/nix/store/1959djijxj86d05kjcdsb7rn0y4miq35-drvgo-ci-9194e8468773-before-2",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 2,
+            "warmup": false,
+            "evaluation": 0.4114266289398074,
+            "realization": 2.0655383670236915,
+            "total": 2.476964995963499,
+            "derivation": "/nix/store/kxdz56zb787kwfzirbn79vgxf31y83mz-drvgo-ci-9194e8468773-after-2.drv",
+            "result": "/nix/store/mjp1yj33ms0rsgdcfkc710x09zdyi8f1-drvgo-ci-9194e8468773-after-2",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 3,
+            "warmup": false,
+            "evaluation": 0.4284760169684887,
+            "realization": 2.0491186919389293,
+            "total": 2.477594708907418,
+            "derivation": "/nix/store/sg4nq6cn09b66y4za92xla3yj8yl7rbx-drvgo-ci-9194e8468773-after-3.drv",
+            "result": "/nix/store/xf79h589h7bcw14fgzc21q31f1xvi41n-drvgo-ci-9194e8468773-after-3",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 3,
+            "warmup": false,
+            "evaluation": 0.41316082095727324,
+            "realization": 2.05555272300262,
+            "total": 2.4687135439598933,
+            "derivation": "/nix/store/wy327bk2i401s61j4fjbrnyhi0d9y41x-drvgo-ci-9194e8468773-before-3.drv",
+            "result": "/nix/store/2b2x0w24vd53vpkqyg8kh5p4ay1d8s5s-drvgo-ci-9194e8468773-before-3",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 4,
+            "warmup": false,
+            "evaluation": 0.41864004905801266,
+            "realization": 2.0513907339191064,
+            "total": 2.470030782977119,
+            "derivation": "/nix/store/friwimfwhib8p2xnxrjnashn0cg4iyci-drvgo-ci-9194e8468773-before-4.drv",
+            "result": "/nix/store/0025cg44k9ky71xkbv0l7ymsnkwdmncc-drvgo-ci-9194e8468773-before-4",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 4,
+            "warmup": false,
+            "evaluation": 0.4135325850220397,
+            "realization": 2.1019936320371926,
+            "total": 2.5155262170592323,
+            "derivation": "/nix/store/24b0kmisdynllnymj6w14234gw8g0g7r-drvgo-ci-9194e8468773-after-4.drv",
+            "result": "/nix/store/747gv715np4f3hi76bzlyas9alq411pr-drvgo-ci-9194e8468773-after-4",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 5,
+            "warmup": false,
+            "evaluation": 0.40184891992248595,
+            "realization": 2.0646055079996586,
+            "total": 2.4664544279221445,
+            "derivation": "/nix/store/qm1p57mhyljjih7zkd5z6bvm7x8xl5xj-drvgo-ci-9194e8468773-after-5.drv",
+            "result": "/nix/store/b6ijvk447659djvmdb0s74gxlipk00pb-drvgo-ci-9194e8468773-after-5",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 5,
+            "warmup": false,
+            "evaluation": 0.40474869892932475,
+            "realization": 2.055065283086151,
+            "total": 2.4598139820154756,
+            "derivation": "/nix/store/b9vhks4vqr5a0w066zk3a7bp4k1vfpqy-drvgo-ci-9194e8468773-before-5.drv",
+            "result": "/nix/store/ynwkmnn888nmxj8v0ks0w96ph8k6qaap-drvgo-ci-9194e8468773-before-5",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 6,
+            "warmup": false,
+            "evaluation": 0.407221668981947,
+            "realization": 2.033628404024057,
+            "total": 2.440850073006004,
+            "derivation": "/nix/store/sjqd4cfd25ps42yamjff1pvcyjq5h46w-drvgo-ci-9194e8468773-before-6.drv",
+            "result": "/nix/store/4qzh8jwx9ijd81z7m2nrsf92ahfhi0dr-drvgo-ci-9194e8468773-before-6",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 6,
+            "warmup": false,
+            "evaluation": 0.4230098860571161,
+            "realization": 2.013715729000978,
+            "total": 2.4367256150580943,
+            "derivation": "/nix/store/30rchy6dipkfg1id84ar1vzq4hzsjdra-drvgo-ci-9194e8468773-after-6.drv",
+            "result": "/nix/store/yrn8flhdj7lg8wlp9z2rnd6pm2m0f42f-drvgo-ci-9194e8468773-after-6",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 7,
+            "warmup": false,
+            "evaluation": 0.4174040440702811,
+            "realization": 2.0499156769365072,
+            "total": 2.4673197210067883,
+            "derivation": "/nix/store/c65ffqg6r5swyjy9n84g3qqfykfrk6rj-drvgo-ci-9194e8468773-after-7.drv",
+            "result": "/nix/store/vkhwrcljsgkgxdqa0fh8690gb0p7af4l-drvgo-ci-9194e8468773-after-7",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 7,
+            "warmup": false,
+            "evaluation": 0.40771467005833983,
+            "realization": 2.0496922129532322,
+            "total": 2.457406883011572,
+            "derivation": "/nix/store/jcq5x4bq3aylp697afig6zz8nhqy3yfz-drvgo-ci-9194e8468773-before-7.drv",
+            "result": "/nix/store/48kn0sn74mxskky8ppksg1hq7m7rssws-drvgo-ci-9194e8468773-before-7",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          }
+        ],
+        "medians": {
+          "before": {
+            "evaluation": 0.40771467005833983,
+            "realization": 2.055065283086151,
+            "total": 2.4665279630571604
+          },
+          "after": {
+            "evaluation": 0.4174040440702811,
+            "realization": 2.0646055079996586,
+            "total": 2.476964995963499
+          }
+        }
+      }
+    },
+    {
+      "workload": "upm-prepared",
+      "evaluator": "iets",
+      "command": [
+        "python3",
+        "/tmp/drvgo-ci-script-rendering/scripts/benchmark-ci.py",
+        "--before",
+        "/tmp/drvgo-ci-snapshot-buffers",
+        "--after",
+        "/tmp/drvgo-ci-script-rendering",
+        "--runs",
+        "7",
+        "--nix-option",
+        "sandbox",
+        "true",
+        "--nix-option",
+        "sandbox-fallback",
+        "false",
+        "--nix-option",
+        "substituters",
+        "",
+        "--nix-option",
+        "always-allow-substitutes",
+        "false",
+        "--source",
+        "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+        "--package",
+        "./cmd/upm",
+        "--vendor-hash",
+        "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+        "--module-cache",
+        "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+        "--before-iets",
+        "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+        "--after-iets",
+        "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+        "--out",
+        "/tmp/drvgo-script-rendering-ci-upm-prepared-iets"
+      ],
+      "result": "/tmp/drvgo-script-rendering-ci-upm-prepared-iets/results.json",
+      "data": {
+        "scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
+        "source": "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+        "package": "./cmd/upm",
+        "vendor_hash": "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+        "after_module_cache": null,
+        "module_cache": "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+        "previous_plan": null,
+        "after_previous_plan": null,
+        "before_iets": "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+        "after_iets": "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+        "after_prepare_modules": false,
+        "after_export_data": false,
+        "after_early_cutoff": false,
+        "cgo": null,
+        "test": false,
+        "allow_empty_tests": false,
+        "tags": "",
+        "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+        "roots": {
+          "before": "/tmp/drvgo-ci-snapshot-buffers",
+          "after": "/tmp/drvgo-ci-script-rendering"
+        },
+        "flags": [
+          "--extra-experimental-features",
+          "ca-derivations dynamic-derivations recursive-nix",
+          "--option",
+          "allow-import-from-derivation",
+          "false",
+          "--max-jobs",
+          "4",
+          "--cores",
+          "2",
+          "--option",
+          "sandbox",
+          "true",
+          "--option",
+          "sandbox-fallback",
+          "false",
+          "--option",
+          "substituters",
+          "",
+          "--option",
+          "always-allow-substitutes",
+          "false"
+        ],
+        "nonce": "1b04be893a36",
+        "records": [
+          {
+            "label": "before",
+            "trial": 0,
+            "warmup": true,
+            "evaluation": 0.32485432701651007,
+            "realization": 1.7238782279891893,
+            "total": 2.0487325550056994,
+            "derivation": "/nix/store/yczls1cf3sj1s7why5shblz2z8wjmh7a-drvgo-ci-1b04be893a36-before-0.drv",
+            "result": "/nix/store/50zi3y0hdfpx06n90nkzl0q27kh5mp4h-drvgo-ci-1b04be893a36-before-0",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 0,
+            "warmup": true,
+            "evaluation": 0.322855263017118,
+            "realization": 1.7227489380165935,
+            "total": 2.0456042010337114,
+            "derivation": "/nix/store/d8sns7jlv3r60pv615qkf6p9s8rhl4qj-drvgo-ci-1b04be893a36-after-0.drv",
+            "result": "/nix/store/8a0x2pjixg6d7v9k79v3pbzd2p6ql27n-drvgo-ci-1b04be893a36-after-0",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 1,
+            "warmup": false,
+            "evaluation": 0.32655342598445714,
+            "realization": 1.7148019740125164,
+            "total": 2.0413553999969736,
+            "derivation": "/nix/store/k0azv2d8rsnnzsfz42ghigrs6hccfim5-drvgo-ci-1b04be893a36-after-1.drv",
+            "result": "/nix/store/iy0cabpmk8rafh2aajnc8za92pli4vaq-drvgo-ci-1b04be893a36-after-1",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 1,
+            "warmup": false,
+            "evaluation": 0.31777402106672525,
+            "realization": 1.7416952179046348,
+            "total": 2.05946923897136,
+            "derivation": "/nix/store/b2144n9wp6qvn811z4k33ysixcz0djnv-drvgo-ci-1b04be893a36-before-1.drv",
+            "result": "/nix/store/d2vfz2cbvjjjyss1hydkxyc7m3f58msj-drvgo-ci-1b04be893a36-before-1",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 2,
+            "warmup": false,
+            "evaluation": 0.3331593790790066,
+            "realization": 1.7196796889184043,
+            "total": 2.052839067997411,
+            "derivation": "/nix/store/yvk2qj3mmx5srnlndhfm7jfs10y63a0h-drvgo-ci-1b04be893a36-before-2.drv",
+            "result": "/nix/store/4l1varn2ff39dh9gfwgv118lxxxwvqvv-drvgo-ci-1b04be893a36-before-2",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 2,
+            "warmup": false,
+            "evaluation": 0.3227901851059869,
+            "realization": 1.7595667039277032,
+            "total": 2.08235688903369,
+            "derivation": "/nix/store/r3knj0zxbr48zm4yk23s588mmiclhkg6-drvgo-ci-1b04be893a36-after-2.drv",
+            "result": "/nix/store/zgshxb8jnih3fiyp4wvx86yi9g6a061b-drvgo-ci-1b04be893a36-after-2",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 3,
+            "warmup": false,
+            "evaluation": 0.3373828229960054,
+            "realization": 1.7025897530838847,
+            "total": 2.03997257607989,
+            "derivation": "/nix/store/p5r8fq90bmzpvd8kb5fma0zywdisicvx-drvgo-ci-1b04be893a36-after-3.drv",
+            "result": "/nix/store/nrz47h0lqn51jifihyyaqyix6xrpzk3l-drvgo-ci-1b04be893a36-after-3",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 3,
+            "warmup": false,
+            "evaluation": 0.3269887489732355,
+            "realization": 1.720032368088141,
+            "total": 2.0470211170613766,
+            "derivation": "/nix/store/r6w0bh3748372fz14x5zwmy8hvc1vbmx-drvgo-ci-1b04be893a36-before-3.drv",
+            "result": "/nix/store/wnyzbhy19w7xdwkzp5jbrmf7cwgfl284-drvgo-ci-1b04be893a36-before-3",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 4,
+            "warmup": false,
+            "evaluation": 0.32037000509444624,
+            "realization": 1.7129628629190847,
+            "total": 2.033332868013531,
+            "derivation": "/nix/store/6jhjbjl15017j08ryz02mya059py3d4p-drvgo-ci-1b04be893a36-before-4.drv",
+            "result": "/nix/store/lbxly9l4nw42g0glpljih04qv25ilknx-drvgo-ci-1b04be893a36-before-4",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 4,
+            "warmup": false,
+            "evaluation": 0.32751106994692236,
+            "realization": 1.7239617930026725,
+            "total": 2.051472862949595,
+            "derivation": "/nix/store/9byg4q0wf35w919s6h126fygwq83b7qi-drvgo-ci-1b04be893a36-after-4.drv",
+            "result": "/nix/store/bxw04sr002bccxap3mpi2mx27cw6y11j-drvgo-ci-1b04be893a36-after-4",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 5,
+            "warmup": false,
+            "evaluation": 0.3265649490058422,
+            "realization": 1.7360769539372995,
+            "total": 2.0626419029431418,
+            "derivation": "/nix/store/rhspqhgkqj4f47pbky4b22sz8iicrmb7-drvgo-ci-1b04be893a36-after-5.drv",
+            "result": "/nix/store/ri930w27kn18mxx8ckp6xp6nb8v8nbbr-drvgo-ci-1b04be893a36-after-5",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 5,
+            "warmup": false,
+            "evaluation": 0.32787782000377774,
+            "realization": 1.7205879689427093,
+            "total": 2.048465788946487,
+            "derivation": "/nix/store/lk0y59h94bsca59mrr8wi2p4wnqwxcy8-drvgo-ci-1b04be893a36-before-5.drv",
+            "result": "/nix/store/3jfam7c1hx1hlldjjqlvfpipljh00if2-drvgo-ci-1b04be893a36-before-5",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 6,
+            "warmup": false,
+            "evaluation": 0.3348889769986272,
+            "realization": 1.7040364179993048,
+            "total": 2.038925394997932,
+            "derivation": "/nix/store/kp3jpl39pca0yjfnjhf59q229yzrhbha-drvgo-ci-1b04be893a36-before-6.drv",
+            "result": "/nix/store/qpq75sfdd7vl1csm0w45gsp1ik8xf4a9-drvgo-ci-1b04be893a36-before-6",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 6,
+            "warmup": false,
+            "evaluation": 0.3234977020183578,
+            "realization": 1.7249139900086448,
+            "total": 2.0484116920270026,
+            "derivation": "/nix/store/wczfv1dv7nm1f6i2sz82w8vravavnmrp-drvgo-ci-1b04be893a36-after-6.drv",
+            "result": "/nix/store/8rpb7vmfk3jgp90qar4fcbxbpms2fhcj-drvgo-ci-1b04be893a36-after-6",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 7,
+            "warmup": false,
+            "evaluation": 0.32795026001986116,
+            "realization": 1.7231956840259954,
+            "total": 2.0511459440458566,
+            "derivation": "/nix/store/fgl338sw3lwzxylf8hi60sn1di1qx7ag-drvgo-ci-1b04be893a36-after-7.drv",
+            "result": "/nix/store/6yvf22r91yn4bp8l8628g63gc19xs9sh-drvgo-ci-1b04be893a36-after-7",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 7,
+            "warmup": false,
+            "evaluation": 0.3391374369384721,
+            "realization": 1.7330306260846555,
+            "total": 2.0721680630231276,
+            "derivation": "/nix/store/g7csdfiy86dk25anffbv9img75p9wb2d-drvgo-ci-1b04be893a36-before-7.drv",
+            "result": "/nix/store/ikggnjsmv8qwysg0ghxjsyj71bghpsaq-drvgo-ci-1b04be893a36-before-7",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          }
+        ],
+        "medians": {
+          "before": {
+            "evaluation": 0.32787782000377774,
+            "realization": 1.720032368088141,
+            "total": 2.048465788946487
+          },
+          "after": {
+            "evaluation": 0.3265649490058422,
+            "realization": 1.7239617930026725,
+            "total": 2.0511459440458566
+          }
+        }
+      }
+    },
+    {
+      "workload": "upm-previous",
+      "evaluator": "nix",
+      "command": [
+        "python3",
+        "/tmp/drvgo-ci-script-rendering/scripts/benchmark-ci.py",
+        "--before",
+        "/tmp/drvgo-ci-snapshot-buffers",
+        "--after",
+        "/tmp/drvgo-ci-script-rendering",
+        "--runs",
+        "7",
+        "--nix-option",
+        "sandbox",
+        "true",
+        "--nix-option",
+        "sandbox-fallback",
+        "false",
+        "--nix-option",
+        "substituters",
+        "",
+        "--nix-option",
+        "always-allow-substitutes",
+        "false",
+        "--source",
+        "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+        "--package",
+        "./cmd/upm",
+        "--vendor-hash",
+        "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+        "--module-cache",
+        "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+        "--previous-plan",
+        "/nix/store/kaynyc0x4fvi7a3zdw0yr38xjfqvmqjb-drvgo-seed-probe-595346d69da7-result.drv",
+        "--out",
+        "/tmp/drvgo-script-rendering-ci-upm-previous-nix"
+      ],
+      "result": "/tmp/drvgo-script-rendering-ci-upm-previous-nix/results.json",
+      "data": {
+        "scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
+        "source": "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+        "package": "./cmd/upm",
+        "vendor_hash": "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+        "after_module_cache": null,
+        "module_cache": "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+        "previous_plan": "/nix/store/kaynyc0x4fvi7a3zdw0yr38xjfqvmqjb-drvgo-seed-probe-595346d69da7-result.drv",
+        "after_previous_plan": null,
+        "before_iets": null,
+        "after_iets": null,
+        "after_prepare_modules": false,
+        "after_export_data": false,
+        "after_early_cutoff": false,
+        "cgo": null,
+        "test": false,
+        "allow_empty_tests": false,
+        "tags": "",
+        "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+        "roots": {
+          "before": "/tmp/drvgo-ci-snapshot-buffers",
+          "after": "/tmp/drvgo-ci-script-rendering"
+        },
+        "flags": [
+          "--extra-experimental-features",
+          "ca-derivations dynamic-derivations recursive-nix",
+          "--option",
+          "allow-import-from-derivation",
+          "false",
+          "--max-jobs",
+          "4",
+          "--cores",
+          "2",
+          "--option",
+          "sandbox",
+          "true",
+          "--option",
+          "sandbox-fallback",
+          "false",
+          "--option",
+          "substituters",
+          "",
+          "--option",
+          "always-allow-substitutes",
+          "false"
+        ],
+        "nonce": "d993e8082b51",
+        "records": [
+          {
+            "label": "before",
+            "trial": 0,
+            "warmup": true,
+            "evaluation": 0.4071120040025562,
+            "realization": 0.873149263090454,
+            "total": 1.2802612670930102,
+            "derivation": "/nix/store/rs9f5054i7j087l1npc841f9rz4a1abb-drvgo-ci-d993e8082b51-before-0.drv",
+            "result": "/nix/store/ygp7v5vfcr729pap5hg3a6ixvvi7rd7h-drvgo-ci-d993e8082b51-before-0",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 0,
+            "warmup": true,
+            "evaluation": 0.4046017279615626,
+            "realization": 0.8502553231082857,
+            "total": 1.2548570510698482,
+            "derivation": "/nix/store/cybhl792n3qw3rna4dp2gxiy8cgi9v1z-drvgo-ci-d993e8082b51-after-0.drv",
+            "result": "/nix/store/cx7p2rzsd8fniqq6phjjrmq2nnj4vb83-drvgo-ci-d993e8082b51-after-0",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 1,
+            "warmup": false,
+            "evaluation": 0.40850663708988577,
+            "realization": 0.8859171759104356,
+            "total": 1.2944238130003214,
+            "derivation": "/nix/store/mk2afrg6sjvgccgw0bdjqldh134ngy2d-drvgo-ci-d993e8082b51-after-1.drv",
+            "result": "/nix/store/0q6flyflqi8b52cqyzdrrfak1zw7lkdz-drvgo-ci-d993e8082b51-after-1",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 1,
+            "warmup": false,
+            "evaluation": 0.4064950159518048,
+            "realization": 0.8857329511083663,
+            "total": 1.292227967060171,
+            "derivation": "/nix/store/0i9s68ncgl9lryav9da74s650s85zxr6-drvgo-ci-d993e8082b51-before-1.drv",
+            "result": "/nix/store/20dsyaghq0fygzdpx2dksks1j4raxq7g-drvgo-ci-d993e8082b51-before-1",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 2,
+            "warmup": false,
+            "evaluation": 0.421346963965334,
+            "realization": 0.887372791999951,
+            "total": 1.308719755965285,
+            "derivation": "/nix/store/7s1k2l3287rz6j7hibb85yypmd42ymqi-drvgo-ci-d993e8082b51-before-2.drv",
+            "result": "/nix/store/j4zv72flnsmfimqhx04kn6s27qw4dyk6-drvgo-ci-d993e8082b51-before-2",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 2,
+            "warmup": false,
+            "evaluation": 0.4012538359966129,
+            "realization": 0.869337345007807,
+            "total": 1.27059118100442,
+            "derivation": "/nix/store/wla2m80h1581z57b92sj63fivjaqbgw5-drvgo-ci-d993e8082b51-after-2.drv",
+            "result": "/nix/store/8s3lbm740y8020wz2cnsf5rswwgrb053-drvgo-ci-d993e8082b51-after-2",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 3,
+            "warmup": false,
+            "evaluation": 0.4078076590085402,
+            "realization": 0.8822916060453281,
+            "total": 1.2900992650538683,
+            "derivation": "/nix/store/n67kmhsri7lmvkwfvqhxw6yawib45kkk-drvgo-ci-d993e8082b51-after-3.drv",
+            "result": "/nix/store/3jli4w18b0xn3gwnz27rj5cp86r90gv1-drvgo-ci-d993e8082b51-after-3",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 3,
+            "warmup": false,
+            "evaluation": 0.4202107950113714,
+            "realization": 0.880462231929414,
+            "total": 1.3006730269407853,
+            "derivation": "/nix/store/2gbbi62p0b5dqc3xxsvy3691m8y9rj1c-drvgo-ci-d993e8082b51-before-3.drv",
+            "result": "/nix/store/b15lx499bbxx4qbn1f8qm6mwmpmc6g8h-drvgo-ci-d993e8082b51-before-3",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 4,
+            "warmup": false,
+            "evaluation": 0.42001889704260975,
+            "realization": 0.898985871928744,
+            "total": 1.3190047689713538,
+            "derivation": "/nix/store/hlw0naczacf5z579aiay6v9whpqg1r7j-drvgo-ci-d993e8082b51-before-4.drv",
+            "result": "/nix/store/q9psr9v0yzz8fw2f34ixw9344i68fd68-drvgo-ci-d993e8082b51-before-4",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 4,
+            "warmup": false,
+            "evaluation": 0.40787494101095945,
+            "realization": 0.8816428260179237,
+            "total": 1.289517767028883,
+            "derivation": "/nix/store/nvcb1rkamn7nnhaqinh8miyxllqxyra7-drvgo-ci-d993e8082b51-after-4.drv",
+            "result": "/nix/store/sannzyp5322frm1pivjr1jywcz1fsmb2-drvgo-ci-d993e8082b51-after-4",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 5,
+            "warmup": false,
+            "evaluation": 0.43106449907645583,
+            "realization": 0.8853308279067278,
+            "total": 1.3163953269831836,
+            "derivation": "/nix/store/yfcyzqpwlc24zw7mwcxpyn4kyrd6nc7d-drvgo-ci-d993e8082b51-after-5.drv",
+            "result": "/nix/store/hznkwkr2j2c2g965pygqq0rmdvsysywa-drvgo-ci-d993e8082b51-after-5",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 5,
+            "warmup": false,
+            "evaluation": 0.4176732109626755,
+            "realization": 0.8766699910629541,
+            "total": 1.2943432020256296,
+            "derivation": "/nix/store/pryh3ry67r8ivp99yrgggh1f3bn9y3gx-drvgo-ci-d993e8082b51-before-5.drv",
+            "result": "/nix/store/iwh1p34v282df21j2v7wpywqnhlffjwb-drvgo-ci-d993e8082b51-before-5",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 6,
+            "warmup": false,
+            "evaluation": 0.4130020879674703,
+            "realization": 0.8852103810058907,
+            "total": 1.298212468973361,
+            "derivation": "/nix/store/gl1dnc0vdkg6yycm7rwc699qjhqcpcaa-drvgo-ci-d993e8082b51-before-6.drv",
+            "result": "/nix/store/aibr3c222l82vrrrw4lv36sw1v7rvqmn-drvgo-ci-d993e8082b51-before-6",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 6,
+            "warmup": false,
+            "evaluation": 0.4105949690565467,
+            "realization": 0.8829765939153731,
+            "total": 1.2935715629719198,
+            "derivation": "/nix/store/sg20c3kwv26x8hjndvr2q5b9y21k85x2-drvgo-ci-d993e8082b51-after-6.drv",
+            "result": "/nix/store/zafxwmx8k8wyqcp5fikcqws3vh8qx07y-drvgo-ci-d993e8082b51-after-6",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 7,
+            "warmup": false,
+            "evaluation": 0.4396526529453695,
+            "realization": 0.8867585280677304,
+            "total": 1.3264111810130998,
+            "derivation": "/nix/store/jxx4vxiwpy4jjhj1l7slz3ianxnx5dkr-drvgo-ci-d993e8082b51-after-7.drv",
+            "result": "/nix/store/ay0y0bc1ifmxzja04zfigsm5c2yn913f-drvgo-ci-d993e8082b51-after-7",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 7,
+            "warmup": false,
+            "evaluation": 0.40330119302961975,
+            "realization": 0.8929485050030053,
+            "total": 1.296249698032625,
+            "derivation": "/nix/store/1vd0wk73w1mqlyam35h4fkqdp8v4yb46-drvgo-ci-d993e8082b51-before-7.drv",
+            "result": "/nix/store/vw146gcdhia7hfd5isngnymbvsw6pvac-drvgo-ci-d993e8082b51-before-7",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          }
+        ],
+        "medians": {
+          "before": {
+            "evaluation": 0.4176732109626755,
+            "realization": 0.8857329511083663,
+            "total": 1.298212468973361
+          },
+          "after": {
+            "evaluation": 0.40850663708988577,
+            "realization": 0.8829765939153731,
+            "total": 1.2935715629719198
+          }
+        }
+      }
+    },
+    {
+      "workload": "upm-previous",
+      "evaluator": "iets",
+      "command": [
+        "python3",
+        "/tmp/drvgo-ci-script-rendering/scripts/benchmark-ci.py",
+        "--before",
+        "/tmp/drvgo-ci-snapshot-buffers",
+        "--after",
+        "/tmp/drvgo-ci-script-rendering",
+        "--runs",
+        "7",
+        "--nix-option",
+        "sandbox",
+        "true",
+        "--nix-option",
+        "sandbox-fallback",
+        "false",
+        "--nix-option",
+        "substituters",
+        "",
+        "--nix-option",
+        "always-allow-substitutes",
+        "false",
+        "--source",
+        "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+        "--package",
+        "./cmd/upm",
+        "--vendor-hash",
+        "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+        "--module-cache",
+        "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+        "--previous-plan",
+        "/nix/store/kaynyc0x4fvi7a3zdw0yr38xjfqvmqjb-drvgo-seed-probe-595346d69da7-result.drv",
+        "--before-iets",
+        "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+        "--after-iets",
+        "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+        "--out",
+        "/tmp/drvgo-script-rendering-ci-upm-previous-iets"
+      ],
+      "result": "/tmp/drvgo-script-rendering-ci-upm-previous-iets/results.json",
+      "data": {
+        "scope": "dynamic evaluation + realization; fresh planner, warm tools and Go package outputs; cache metadata queries follow the selected Nix settings",
+        "source": "/nix/store/r3azknj8cz74gnw86kdq2jcjvg4vc1wd-source",
+        "package": "./cmd/upm",
+        "vendor_hash": "sha256-A4CU4C5SmEZP6Q+CVHjp+Jy4UxRXAnpvhzrsdq4NlsM=",
+        "after_module_cache": null,
+        "module_cache": "/nix/store/vcal7z7fvgv4gi7vxnhj3002vc4klsaq-drvgo-module-cache",
+        "previous_plan": "/nix/store/kaynyc0x4fvi7a3zdw0yr38xjfqvmqjb-drvgo-seed-probe-595346d69da7-result.drv",
+        "after_previous_plan": null,
+        "before_iets": "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+        "after_iets": "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+        "after_prepare_modules": false,
+        "after_export_data": false,
+        "after_early_cutoff": false,
+        "cgo": null,
+        "test": false,
+        "allow_empty_tests": false,
+        "tags": "",
+        "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+        "roots": {
+          "before": "/tmp/drvgo-ci-snapshot-buffers",
+          "after": "/tmp/drvgo-ci-script-rendering"
+        },
+        "flags": [
+          "--extra-experimental-features",
+          "ca-derivations dynamic-derivations recursive-nix",
+          "--option",
+          "allow-import-from-derivation",
+          "false",
+          "--max-jobs",
+          "4",
+          "--cores",
+          "2",
+          "--option",
+          "sandbox",
+          "true",
+          "--option",
+          "sandbox-fallback",
+          "false",
+          "--option",
+          "substituters",
+          "",
+          "--option",
+          "always-allow-substitutes",
+          "false"
+        ],
+        "nonce": "d828155cc0e2",
+        "records": [
+          {
+            "label": "before",
+            "trial": 0,
+            "warmup": true,
+            "evaluation": 0.31581217201892287,
+            "realization": 0.8361941539915279,
+            "total": 1.1520063260104507,
+            "derivation": "/nix/store/acmsj12h67fbhp2dq22j15wqh3z06vm5-drvgo-ci-d828155cc0e2-before-0.drv",
+            "result": "/nix/store/kdkfgm5k00cnicmsn1kbddncyynq976p-drvgo-ci-d828155cc0e2-before-0",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 0,
+            "warmup": true,
+            "evaluation": 0.31825798307545483,
+            "realization": 0.8358869450166821,
+            "total": 1.154144928092137,
+            "derivation": "/nix/store/911q6sbqxg4cldr4jfmdbh30865qj9dw-drvgo-ci-d828155cc0e2-after-0.drv",
+            "result": "/nix/store/m38n418xm0m641y77pd152y4xds5qd2q-drvgo-ci-d828155cc0e2-after-0",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 1,
+            "warmup": false,
+            "evaluation": 0.3323566410690546,
+            "realization": 0.8328898570034653,
+            "total": 1.16524649807252,
+            "derivation": "/nix/store/53milqzm3ikkp1ilhyzqyvyqmprfy3x6-drvgo-ci-d828155cc0e2-after-1.drv",
+            "result": "/nix/store/jv720jhvrh0liaq5r1hcdn21pfpqsxk2-drvgo-ci-d828155cc0e2-after-1",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 1,
+            "warmup": false,
+            "evaluation": 0.3282952200388536,
+            "realization": 0.8248879930470139,
+            "total": 1.1531832130858675,
+            "derivation": "/nix/store/k3k7x62x16ygjnhh7ydmh98i64gc3gkv-drvgo-ci-d828155cc0e2-before-1.drv",
+            "result": "/nix/store/j4gcwvr0x906r01bm6ra23phk12plpr1-drvgo-ci-d828155cc0e2-before-1",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 2,
+            "warmup": false,
+            "evaluation": 0.3192410479532555,
+            "realization": 0.8406889770412818,
+            "total": 1.1599300249945372,
+            "derivation": "/nix/store/2p23131g1b5n3cchwprpl2180vz29pz3-drvgo-ci-d828155cc0e2-before-2.drv",
+            "result": "/nix/store/qk12jzdsdg6v6bacp4hh0a15c1da4pks-drvgo-ci-d828155cc0e2-before-2",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 2,
+            "warmup": false,
+            "evaluation": 0.339340731035918,
+            "realization": 0.8513154200045392,
+            "total": 1.1906561510404572,
+            "derivation": "/nix/store/cs9gw2ryhmc29w2bnjd5kzlzrxhpcmf0-drvgo-ci-d828155cc0e2-after-2.drv",
+            "result": "/nix/store/gfzm2852316n5kn1ngm8qa0z8ixi7piy-drvgo-ci-d828155cc0e2-after-2",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 3,
+            "warmup": false,
+            "evaluation": 0.32343619607854635,
+            "realization": 0.825213028001599,
+            "total": 1.1486492240801454,
+            "derivation": "/nix/store/3y7zlxaxaw0mjr0f9ssdqq91zqyjzrbp-drvgo-ci-d828155cc0e2-after-3.drv",
+            "result": "/nix/store/a7aj2a6c9ajz5b7zk5wfbjznga3hhzc5-drvgo-ci-d828155cc0e2-after-3",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 3,
+            "warmup": false,
+            "evaluation": 0.3293147289659828,
+            "realization": 0.8145834320457652,
+            "total": 1.143898161011748,
+            "derivation": "/nix/store/lrblrma6qfppa0rqmvs0any5lja7cv8b-drvgo-ci-d828155cc0e2-before-3.drv",
+            "result": "/nix/store/994m4cmd42j8nqzy63vxz9sxp320v8jp-drvgo-ci-d828155cc0e2-before-3",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 4,
+            "warmup": false,
+            "evaluation": 0.32611514593008906,
+            "realization": 0.8591882550390437,
+            "total": 1.1853034009691328,
+            "derivation": "/nix/store/9g48kcpsjwjrkhpi1vigvp34qz89pfdc-drvgo-ci-d828155cc0e2-before-4.drv",
+            "result": "/nix/store/c4ndp6rbfvnj207z9ph2x1677d9pvnjr-drvgo-ci-d828155cc0e2-before-4",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 4,
+            "warmup": false,
+            "evaluation": 0.33002999797463417,
+            "realization": 0.8452283170772716,
+            "total": 1.1752583150519058,
+            "derivation": "/nix/store/xgz8wn1a0k6kgymf4d4hf1bsnjagrwq4-drvgo-ci-d828155cc0e2-after-4.drv",
+            "result": "/nix/store/pcyl01q3hn9y76f2gfg30dynng9j1sib-drvgo-ci-d828155cc0e2-after-4",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 5,
+            "warmup": false,
+            "evaluation": 0.33407539792824537,
+            "realization": 0.8494273490505293,
+            "total": 1.1835027469787747,
+            "derivation": "/nix/store/bvsarl1pkl24120hzqiyrvjanbxvi1y7-drvgo-ci-d828155cc0e2-after-5.drv",
+            "result": "/nix/store/af4kg60mvdfq5mq326r692i361z57ajv-drvgo-ci-d828155cc0e2-after-5",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 5,
+            "warmup": false,
+            "evaluation": 0.3229468280915171,
+            "realization": 0.8659770739031956,
+            "total": 1.1889239019947127,
+            "derivation": "/nix/store/0mqlg53vb4hkk4k4gdv9m32bs5l5vsls-drvgo-ci-d828155cc0e2-before-5.drv",
+            "result": "/nix/store/hcvdywwz71bh5v3kv35w11zknpb6wx22-drvgo-ci-d828155cc0e2-before-5",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 6,
+            "warmup": false,
+            "evaluation": 0.32366003503557295,
+            "realization": 0.8371404589852318,
+            "total": 1.1608004940208048,
+            "derivation": "/nix/store/qrfngffq23cbhrzh7swvaybaqjrp0q2z-drvgo-ci-d828155cc0e2-before-6.drv",
+            "result": "/nix/store/6kqjgdvdczg17403zd9dkn6fy6i6322m-drvgo-ci-d828155cc0e2-before-6",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 6,
+            "warmup": false,
+            "evaluation": 0.33763015107251704,
+            "realization": 0.8196927359094843,
+            "total": 1.1573228869820014,
+            "derivation": "/nix/store/gbcmrhy8zjzlvrp1pg5n053sh93mikca-drvgo-ci-d828155cc0e2-after-6.drv",
+            "result": "/nix/store/91ni2cf6iy18wldgi9pfbfp1kak3jzxa-drvgo-ci-d828155cc0e2-after-6",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "after",
+            "trial": 7,
+            "warmup": false,
+            "evaluation": 0.33103841193951666,
+            "realization": 0.8496544180670753,
+            "total": 1.180692830006592,
+            "derivation": "/nix/store/rj66y3qx66n9q7drxjkyk4xi63y1ghnn-drvgo-ci-d828155cc0e2-after-7.drv",
+            "result": "/nix/store/g3lp76pfabgn9mw0amb295xqfrc66lsi-drvgo-ci-d828155cc0e2-after-7",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          },
+          {
+            "label": "before",
+            "trial": 7,
+            "warmup": false,
+            "evaluation": 0.323091828962788,
+            "realization": 0.8352962119970471,
+            "total": 1.158388040959835,
+            "derivation": "/nix/store/jnbz9fkii19qm4wl700v6kyxpbrip5bc-drvgo-ci-d828155cc0e2-before-7.drv",
+            "result": "/nix/store/cyia0dndm0xijka145dc2skjbks3hgs9-drvgo-ci-d828155cc0e2-before-7",
+            "command_output": "/nix/store/lmbjrc2yk3i6n8g8k0ia6ap8k22vhy0g-go-github.com-replit-upm-cmd-upm"
+          }
+        ],
+        "medians": {
+          "before": {
+            "evaluation": 0.32366003503557295,
+            "realization": 0.8371404589852318,
+            "total": 1.1599300249945372
+          },
+          "after": {
+            "evaluation": 0.3323566410690546,
+            "realization": 0.8452283170772716,
+            "total": 1.1752583150519058
+          }
+        }
+      }
+    }
+  ],
+  "closures": {
+    "nix": {
+      "scope": "Planner input closures, including raw derivation metadata; local zstd level 3 cache; no network timing",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "planners": {
+        "before": {
+          "derivation": "/nix/store/0mabcik3j2ap72h27ja6a6m77ydmkklk-drvgo-script-rendering-closure-result.drv.drv",
+          "roots": [
+            "/nix/store/30nsyykw4l7wfjps1kzr14pg0p4kdfpc-go-libnix-toolchain.drv",
+            "/nix/store/3c2knj1p6gsadavbcb76wbbpy6cw06ws-go-libnix-compile-toolchain.drv",
+            "/nix/store/90nk33c4fkyg4x4dfk5cykqiryf2nlqq-bash-interactive-5.3p15",
+            "/nix/store/97d5ygrvqj55f4nx1x34wfdcc7qn11c0-coreutils-9.11",
+            "/nix/store/hgf6ai3vmxmammq2jgpkkkwkl7vrc29v-go-libnix-native-toolchain.drv",
+            "/nix/store/llp597bmi25shj2hsmwa9jk5369mlm0b-drvgo-0.1.0",
+            "/nix/store/r4yd7hpfwpx5s8ily1ipwjc17cl087mn-nix-2.34.8",
+            "/nix/store/vj59q6l3c9p9d41c8sjalghgav6zqwg7-fixture",
+            "/nix/store/x5qm09z0hiwz5dxrrkfw5rw8n6zb3zsh-drvgo-0.1.0.drv",
+            "/nix/store/ykr85haahf4pgvd54hmdkijf11yqrq8z-go-libnix-planning-toolchain",
+            "/nix/store/yqmbc5la2lpf7arxnzdd4bd6n677fyh4-go-libnix-link-toolchain.drv"
+          ],
+          "paths": 964,
+          "nar_bytes": 339230928,
+          "zstd_bytes": 97474972
+        },
+        "after": {
+          "derivation": "/nix/store/vr74jib69ahl5n06f93mfaysjks0affm-drvgo-script-rendering-closure-result.drv.drv",
+          "roots": [
+            "/nix/store/30nsyykw4l7wfjps1kzr14pg0p4kdfpc-go-libnix-toolchain.drv",
+            "/nix/store/3c2knj1p6gsadavbcb76wbbpy6cw06ws-go-libnix-compile-toolchain.drv",
+            "/nix/store/80b03ml8mm1cm106swnvpij9v0rxx2jp-go-libnix-planning-toolchain",
+            "/nix/store/90nk33c4fkyg4x4dfk5cykqiryf2nlqq-bash-interactive-5.3p15",
+            "/nix/store/97d5ygrvqj55f4nx1x34wfdcc7qn11c0-coreutils-9.11",
+            "/nix/store/g0cf6dbyjd0kakbcl5l1fj3f4xicpgq9-drvgo-0.1.0.drv",
+            "/nix/store/hgf6ai3vmxmammq2jgpkkkwkl7vrc29v-go-libnix-native-toolchain.drv",
+            "/nix/store/lrlm8nzv7yc2pkjm787axhmasrvjl7rr-drvgo-0.1.0",
+            "/nix/store/r4yd7hpfwpx5s8ily1ipwjc17cl087mn-nix-2.34.8",
+            "/nix/store/vj59q6l3c9p9d41c8sjalghgav6zqwg7-fixture",
+            "/nix/store/yqmbc5la2lpf7arxnzdd4bd6n677fyh4-go-libnix-link-toolchain.drv"
+          ],
+          "paths": 964,
+          "nar_bytes": 339231544,
+          "zstd_bytes": 97478705
+        }
+      }
+    },
+    "iets": {
+      "scope": "Planner input closures, including raw derivation metadata; local zstd level 3 cache; no network timing",
+      "nix": "nix (Determinate Nix 3.24.1) 2.35.3",
+      "planners": {
+        "before": {
+          "derivation": "/nix/store/s6s9yw3x9bwjmy76fi1af8f0fa126lzs-drvgo-script-rendering-closure-result.drv.drv",
+          "roots": [
+            "/nix/store/30nsyykw4l7wfjps1kzr14pg0p4kdfpc-go-libnix-toolchain.drv",
+            "/nix/store/3c2knj1p6gsadavbcb76wbbpy6cw06ws-go-libnix-compile-toolchain.drv",
+            "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+            "/nix/store/90nk33c4fkyg4x4dfk5cykqiryf2nlqq-bash-interactive-5.3p15",
+            "/nix/store/97d5ygrvqj55f4nx1x34wfdcc7qn11c0-coreutils-9.11",
+            "/nix/store/hgf6ai3vmxmammq2jgpkkkwkl7vrc29v-go-libnix-native-toolchain.drv",
+            "/nix/store/llp597bmi25shj2hsmwa9jk5369mlm0b-drvgo-0.1.0",
+            "/nix/store/vj59q6l3c9p9d41c8sjalghgav6zqwg7-fixture",
+            "/nix/store/x5qm09z0hiwz5dxrrkfw5rw8n6zb3zsh-drvgo-0.1.0.drv",
+            "/nix/store/ykr85haahf4pgvd54hmdkijf11yqrq8z-go-libnix-planning-toolchain",
+            "/nix/store/yqmbc5la2lpf7arxnzdd4bd6n677fyh4-go-libnix-link-toolchain.drv"
+          ],
+          "paths": 909,
+          "nar_bytes": 235726336,
+          "zstd_bytes": 61772717
+        },
+        "after": {
+          "derivation": "/nix/store/87fipxzmvdj3vray1l12h7c8h698jcws-drvgo-script-rendering-closure-result.drv.drv",
+          "roots": [
+            "/nix/store/30nsyykw4l7wfjps1kzr14pg0p4kdfpc-go-libnix-toolchain.drv",
+            "/nix/store/3c2knj1p6gsadavbcb76wbbpy6cw06ws-go-libnix-compile-toolchain.drv",
+            "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0",
+            "/nix/store/80b03ml8mm1cm106swnvpij9v0rxx2jp-go-libnix-planning-toolchain",
+            "/nix/store/90nk33c4fkyg4x4dfk5cykqiryf2nlqq-bash-interactive-5.3p15",
+            "/nix/store/97d5ygrvqj55f4nx1x34wfdcc7qn11c0-coreutils-9.11",
+            "/nix/store/g0cf6dbyjd0kakbcl5l1fj3f4xicpgq9-drvgo-0.1.0.drv",
+            "/nix/store/hgf6ai3vmxmammq2jgpkkkwkl7vrc29v-go-libnix-native-toolchain.drv",
+            "/nix/store/lrlm8nzv7yc2pkjm787axhmasrvjl7rr-drvgo-0.1.0",
+            "/nix/store/vj59q6l3c9p9d41c8sjalghgav6zqwg7-fixture",
+            "/nix/store/yqmbc5la2lpf7arxnzdd4bd6n677fyh4-go-libnix-link-toolchain.drv"
+          ],
+          "paths": 909,
+          "nar_bytes": 235726952,
+          "zstd_bytes": 61776450
+        }
+      }
+    }
+  },
+  "validation": {
+    "unit_tests": "passed",
+    "vet": "passed",
+    "standalone_graph_identity": "all 48 runs byte-identical",
+    "renderer_identity": "every microbenchmark invocation checks exact expected scripts.nix bytes",
+    "ci_output_identity": "all 128 runs preserve their workload output",
+    "iets_previous_plan": {
+      "toolchain": "toolchain-go1_26",
+      "iets": "/nix/store/5ljnxv23w4cffw8fh9cpzawdiqyq2pnr-iets-static-x86_64-unknown-linux-musl-0.2.0/bin/iets",
+      "checks": [
+        {
+          "case": "unchanged",
+          "output": "/nix/store/nm4by0pn18c7nlc394c1yna0azqgxcjp-go-example.com-libnix-fixture"
+        },
+        {
+          "case": "interfaces",
+          "output": "/nix/store/pnw4bg7kkxm67wa8cfz272dfa303b08x-go-example.com-libnix-fixture"
+        },
+        {
+          "case": "cutoff",
+          "output": "/nix/store/d89kn2psd98kk1ys89ziywz0nhl9gj1d-go-example.com-libnix-fixture"
+        },
+        {
+          "case": "embed-edit",
+          "output": "/nix/store/886cr0zcfxj3vm0qs91zqifmngckds9k-go-example.com-libnix-fixture"
+        },
+        {
+          "case": "new-dependency",
+          "output": "/nix/store/rkr2mhg1kvmgh17abmizlja5dgwirsi9-go-example.com-libnix-fixture"
+        }
+      ],
+      "previous_plan_not_retained": true,
+      "invalid_after_previous_plan": "passed",
+      "empty_test_validation_after_previous_plan": "passed"
+    },
+    "platform_matrix": "merge gate"
+  }
+}
