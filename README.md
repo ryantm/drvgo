@@ -535,6 +535,11 @@ trials reduced warm CI medians by 1.8–3.2% across the fixture and UPM with eit
 nested evaluator. Package recipes and outputs remain identical. The planner
 input closure adds about 3.6 KB compressed and no store paths.
 
+[Reusing snapshot copy buffers](benchmarks/ci-round17-2026-11-11.md) reduces
+allocated bytes per UPM export by 11.4%, with identical graph files and package
+outputs. Full CI latency and compressed dependency size are effectively unchanged;
+this measures allocation volume, not peak memory.
+
 If your cache publishes planner outputs and CI often rebuilds an identical
 source tree on a cold worker, set `allowPlannerSubstitutes = true` in
 `mkGoPackage` to allow those hits to avoid downloading the planning toolchain.
