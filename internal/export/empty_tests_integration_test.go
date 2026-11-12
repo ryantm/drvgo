@@ -41,6 +41,11 @@ func TestEmptyTestResult(t *testing.T) {
 	if _, err := os.Stat(filepath.Join(result, "bin")); !os.IsNotExist(err) {
 		t.Fatalf("empty result has bin: %v", err)
 	}
+	// A portable export must contain all sources needed to recreate its default
+	// toolchain, even while the selected toolchain happens to exist locally.
+	if b, err := exec.Command("nix-instantiate", "--eval", "--strict", "--expr", "(import "+out+"/toolchain.nix).drvPath").CombinedOutput(); err != nil {
+		t.Fatalf("portable empty-test toolchain: %s (%v)", b, err)
+	}
 	g, err = Generate(Options{Dir: root, Out: out, Package: ".", Toolchain: tc, Test: true, AllowEmptyTests: true, Tags: "'special'"})
 	if err != nil {
 		t.Fatal(err)

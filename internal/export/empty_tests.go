@@ -117,7 +117,7 @@ emptyTests = "1";
 			return nil, err
 		}
 	}
-	for _, name := range []string{"toolchain.nix", "toolchain-builder.nix", "runner.go", "buildid.go"} {
+	for _, name := range []string{"toolchain.nix", "toolchain-builder.nix", "runner.go", "buildid.go", "pack.go", "pack.patch", "cc-query.c.in"} {
 		data, err := templates.ReadFile("templates/" + name)
 		if err != nil {
 			return nil, err

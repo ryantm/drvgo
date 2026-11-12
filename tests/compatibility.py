@@ -40,12 +40,12 @@ def write(path, content):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content)
 
-integration_pattern = '^(TestEmbeddedAssetsAndCacheIsolation|TestNestedCommandWithoutOriginalSource|TestNativeObjectWithoutOriginalSource|TestNativePackMatchesGo|TestCompressedNativeSources|TestCustomBuildID|TestCanonicalBuildIDRelocation|TestStrippedCompilerDwarf|TestNativeCompilerDwarf|TestRuntimeStoreReferences|TestEmptyTest.*|TestTestBinary.*)$'
+integration_pattern = '^(TestEmbeddedAssetsAndCacheIsolation|TestNestedCommandWithoutOriginalSource|TestNativeObjectWithoutOriginalSource|TestNativePackMatchesGo|TestCompressedNativeSources|TestCustomBuildID|TestCanonicalBuildIDRelocation|TestStrippedCompilerDwarf|TestNativeCompilerDwarf|TestInternalLinkToolchain|TestRuntimeStoreReferences|TestEmptyTest.*|TestTestBinary.*)$'
 integration_tests = run([a.integration_test.resolve(), '-test.list='+integration_pattern]).stdout.decode().splitlines()
 required_tests = {'TestEmbeddedAssetsAndCacheIsolation', 'TestTestBinaryInternalExternalAndFailure',
                   'TestTestBinaryMainPackage', 'TestTestBinaryRaceAndCGO', 'TestTestBinaryRejectsPackageWithoutTests',
                   'TestNestedCommandWithoutOriginalSource', 'TestNativeObjectWithoutOriginalSource', 'TestNativePackMatchesGo', 'TestCompressedNativeSources', 'TestCustomBuildID',
-                  'TestEmptyTestSelection', 'TestEmptyTestResult', 'TestEmptyTestsRequireTestMode', 'TestRuntimeStoreReferences', 'TestCanonicalBuildIDRelocation', 'TestStrippedCompilerDwarf', 'TestNativeCompilerDwarf'}
+                  'TestEmptyTestSelection', 'TestEmptyTestResult', 'TestEmptyTestsRequireTestMode', 'TestRuntimeStoreReferences', 'TestCanonicalBuildIDRelocation', 'TestStrippedCompilerDwarf', 'TestNativeCompilerDwarf', 'TestInternalLinkToolchain'}
 if not required_tests.issubset(integration_tests):
     raise RuntimeError('Integration binary lacks required tests; compile it with go test -c -tags integration ./internal/export')
 
@@ -116,6 +116,10 @@ case('assembly',assembly,'42 default dev\n')
 case('tags-ldflags',assembly,'42 tagged matrix\n',tags='compat',ldflags='-X main.release=matrix')
 case('external-link',assembly,'42 default dev\n',ldflags='-linkmode=external')
 case('stripped-assembly-external',assembly,'42 default dev\n',ldflags='-s -w -linkmode=external')
+case('internal-assembly',assembly,'42 default dev\n',ldflags='-linkmode=internal')
+internal_link = repo/'tests/internal-link'
+case('internal-link',internal_link,'native lookups work\n',ldflags='-linkmode=internal')
+case('internal-link-race',internal_link,'native lookups work\n',ldflags='-linkmode=internal',race=True)
 workspace=out/'workspace'
 write(workspace/'go.work','go 1.23.0\nuse (\n ./app\n ./dep\n)\n')
 write(workspace/'app/go.mod','module example.com/app\ngo 1.23.0\nrequire example.com/dep v0.0.0\n')
@@ -198,13 +202,17 @@ if a.flake_toolchain:
     assert Path(result).resolve() == Path(report['cases'][0]['store_path']), 'dynamic and standalone builds must share package outputs'
     report['dynamic_ifd_disabled']='passed'
     print(version,'dynamic/IFD-disabled PASS',flush=True)
-    native_modes = [('cxx', cxx, ''), ('stripped-cxx', cxx, '-s -w'), ('external-link', assembly, '-linkmode=external'),
-                    ('stripped-assembly-external', assembly, '-s -w -linkmode=external')]
+    native_modes = [('cxx', cxx, '', False), ('stripped-cxx', cxx, '-s -w', False), ('external-link', assembly, '-linkmode=external', False),
+                    ('stripped-assembly-external', assembly, '-s -w -linkmode=external', False),
+                    ('internal-assembly', assembly, '-linkmode=internal', False),
+                    ('internal-link', internal_link, '-linkmode=internal', False),
+                    ('internal-link-race', internal_link, '-linkmode=internal', True)]
     if report['platform'] == ['darwin', 'arm64']:
-        native_modes.append(('darwin-framework', framework, ''))
-    for name, source, ldflags in native_modes:
+        native_modes.append(('darwin-framework', framework, '', False))
+    for name, source, ldflags, race in native_modes:
         dynamic_native = run(['nix-build', repo/'tests/dynamic-compatibility.nix', '--argstr', 'system', system,
             '--argstr', 'toolchainAttr', a.flake_toolchain, '--argstr', 'ldflags', ldflags,
+            '--arg', 'race', str(race).lower(),
             '--arg', 'src', f'builtins.path {{ path = {json.dumps(str(source))}; name = "source"; }}',
             '--option', 'allow-import-from-derivation', 'false', '--no-out-link',
             '--max-jobs', '4', '--cores', '2']).stdout.decode().strip()

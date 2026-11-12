@@ -21,9 +21,10 @@ def main():
     roots = {}
     for label, root in [('before', args.before.resolve()), ('after', args.after.resolve())]:
         roots[label] = {'planning': str(root)}
-        for role in ['compile', 'link', 'native']:
+        for role in ['compile', 'link', 'native', 'internal-link']:
             file = root / 'nix-support' / f'drvgo-{role}-toolchain'
-            roots[label][role] = file.read_text().strip() if file.exists() else str(root)
+            fallback = roots[label]['native'] if role == 'internal-link' else str(root)
+            roots[label][role] = file.read_text().strip() if file.exists() else fallback
     paths = sorted({p for roles in roots.values() for p in roles.values()})
     cache = out / 'cache'
     with (out / 'copy.log').open('w') as log:

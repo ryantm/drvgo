@@ -17,7 +17,7 @@ import (
 	"github.com/ryantm/drvgo/internal/plan"
 )
 
-//go:embed templates/*.nix templates/runner.go templates/buildid.go templates/pack.go templates/pack.patch templates/test-selection.go
+//go:embed templates/*.nix templates/runner.go templates/buildid.go templates/pack.go templates/pack.patch templates/test-selection.go templates/cc-query.c.in
 var templates embed.FS
 
 type Options struct {
@@ -49,6 +49,7 @@ type Graph struct {
 	GoArch         string            `json:"goarch"`
 	CGO            string            `json:"cgo"`
 	NativeLink     bool              `json:"nativeLink,omitempty"`
+	InternalLink   bool              `json:"internalLink,omitempty"`
 	GoVersion      string            `json:"goVersion"`
 	BinaryName     string            `json:"binaryName"`
 	Root           string            `json:"root"`
@@ -71,7 +72,7 @@ func run(dir string, env []string, name string, args ...string) ([]byte, error) 
 func Toolchain() (string, error) {
 	b, _ := templates.ReadFile("templates/toolchain.nix")
 	builder, _ := templates.ReadFile("templates/toolchain-builder.nix")
-	for _, name := range []string{"runner.go", "buildid.go", "pack.go", "pack.patch"} {
+	for _, name := range []string{"runner.go", "buildid.go", "pack.go", "pack.patch", "cc-query.c.in"} {
 		data, _ := templates.ReadFile("templates/" + name)
 		builder = []byte(strings.Replace(string(builder), "builtins.readFile ./"+name, nixString(string(data)), 1))
 	}
@@ -233,6 +234,7 @@ func Generate(o Options) (*Graph, error) {
 	// Ordinary Go links can use a much smaller bundle, even with cgo enabled
 	// globally when no selected dependency actually uses it.
 	nativeLink := o.Race || strings.Contains(o.LDFlags, "-linkmode") || strings.Contains(o.LDFlags, "-extld")
+	nativeObjects := o.Race
 	dec := json.NewDecoder(bytes.NewReader(data))
 	var target *Package
 	for {
@@ -252,6 +254,7 @@ func Generate(o Options) (*Graph, error) {
 		}
 		packages = append(packages, p)
 		nativeLink = nativeLink || len(p.CgoFiles)+len(p.SysoFiles) > 0
+		nativeObjects = nativeObjects || len(p.CgoFiles)+len(p.SysoFiles) > 0
 		if !p.DepOnly && (!o.Test || isTestMain(p)) {
 			if target != nil {
 				if o.Test {
@@ -359,10 +362,18 @@ func Generate(o Options) (*Graph, error) {
 	}
 	graph.SourceHashes = sourceHashes
 	graph.NativeLink = nativeLink
+	compiler := "gcc"
+	if graph.GoOS == "darwin" {
+		compiler = "clang"
+	}
+	if strings.Contains(o.LDFlags, "linkmode") && driver.InternalLink(string(trace), tc+"/bin/"+compiler) {
+		graph.NativeLink = false
+		graph.InternalLink = nativeObjects
+	}
 	graph.BinaryName = binaryName
 	graph.Root = root
 	graph.Units = units
-	for _, name := range []string{"default.nix", "toolchain.nix", "toolchain-builder.nix", "runner.go", "buildid.go", "pack.go", "pack.patch"} {
+	for _, name := range []string{"default.nix", "toolchain.nix", "toolchain-builder.nix", "runner.go", "buildid.go", "pack.go", "pack.patch", "cc-query.c.in"} {
 		b, _ := templates.ReadFile("templates/" + name)
 		if err = os.WriteFile(filepath.Join(staging, name), b, 0644); err != nil {
 			return nil, err

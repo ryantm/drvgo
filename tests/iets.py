@@ -122,6 +122,23 @@ def main():
             report["checks"].append(dict(case=label, command_output=resolved))
             print(label, "build/output identity/behavior PASS", flush=True)
     assert len(set(stripped_outputs.values())) == 2, "strip flags must use separate package recipes"
+    internal_outputs = {}
+    for race in [False, True]:
+        for nested in [False, True]:
+            label = f"internal-link-race-{race}-nested-{nested}"
+            internal_expr = (f"import ./tests/iets.nix {{ iets = builtins.storePath {nix_string(package)}; "
+                             "src = ./tests/internal-link; ldflags = \"-linkmode=internal\"; "
+                             f"race = {str(race).lower()}; nested = {str(nested).lower()}; "
+                             f"name = \"drvgo-iets-{nonce}-{label}\"; }}")
+            result = run([binary, "build", "--impure", *flags, "--no-tracing-cache", "-E", internal_expr], label + "-build")[0]
+            assert result == run(["nix-build", *features, *flags, "--no-out-link", "-E", internal_expr], label + "-reference")[0]
+            assert run([Path(result) / "bin/internallink"], label + "-run")[0] == "native lookups work"
+            resolved = str(Path(result).resolve())
+            if race in internal_outputs:
+                assert resolved == internal_outputs[race], "nested evaluator changed internal-link recipes"
+            internal_outputs[race] = resolved
+            report["checks"].append(dict(case=label, command_output=resolved))
+            print(label, "build/output identity/behavior PASS", flush=True)
     (source / "message/assets/message.txt").write_text("iets changed embed\n")
     changed = run(build, "changed-build")[0]
     assert Path(changed).resolve() != results[-1]

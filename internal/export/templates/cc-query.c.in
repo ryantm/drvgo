@@ -1,0 +1,40 @@
+/* Go's internal linker only needs these compiler-runtime discovery queries. */
+#include <stdio.h>
+#include <string.h>
+
+int main(int argc, char **argv) {
+    static const char *const arch_args[] = { @ARCH_ARGS@ NULL };
+    static const struct { const char *query; const char *file; } queries[] = {
+        { "--print-libgcc-file-name", "@QUERY_ROOT@/libgcc" },
+        { "--print-file-name=libc_nonshared.a", "@QUERY_ROOT@/libc_nonshared" },
+        { "--print-file-name=libssp_nonshared.a", "@QUERY_ROOT@/libssp_nonshared" },
+    };
+    int arg = 1;
+    for (size_t i = 0; arch_args[i]; ++i, ++arg) {
+        if (arg >= argc || strcmp(argv[arg], arch_args[i]) != 0) {
+            fputs("drvgo: unsupported compiler query architecture\n", stderr);
+            return 1;
+        }
+    }
+    if (arg + 1 != argc) {
+        fputs("drvgo: expected one compiler-runtime query\n", stderr);
+        return 1;
+    }
+    for (size_t i = 0; i < sizeof(queries) / sizeof(queries[0]); ++i) {
+        if (strcmp(argv[arg], queries[i].query) != 0) continue;
+        FILE *input = fopen(queries[i].file, "rb");
+        if (!input) { perror(queries[i].file); return 1; }
+        char buffer[4096];
+        size_t count;
+        int failed = 0;
+        while ((count = fread(buffer, 1, sizeof(buffer), input)) != 0) {
+            if (fwrite(buffer, 1, count, stdout) != count) { failed = 1; break; }
+        }
+        if (ferror(input)) failed = 1;
+        if (fclose(input) != 0) failed = 1;
+        if (fflush(stdout) != 0) failed = 1;
+        return failed;
+    }
+    fputs("drvgo: unsupported compiler-runtime query\n", stderr);
+    return 1;
+}
