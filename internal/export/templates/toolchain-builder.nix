@@ -60,7 +60,9 @@ let
   else pkgs.stdenv.cc;
   native = pkgs.symlinkJoin {
     name = "go-libnix-native-toolchain";
-    paths = [ link (tools [ "cgo" ]) cc pkgs.bash pkgs.coreutils pkgs.gnused pkgs.findutils pkgs.pkg-config ];
+    # Replay handles file operations itself. The compiler wrappers retain their
+    # own runtime utilities; pkg-config dependencies are unsupported.
+    paths = [ link (tools [ "cgo" ]) cc ];
     postBuild = pkgs.lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
       ln -s ${pkgs.lib.getBin pkgs.stdenv.cc.bintools.bintools}/bin/dsymutil $out/bin/dsymutil
     '';

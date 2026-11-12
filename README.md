@@ -583,6 +583,12 @@ UPM dependency rebuilds improve by 16.7%; compressed package data shrinks by
 and CLI bootstrap stay effectively flat. Planner inputs add 3 KB compressed;
 default debug builds and custom native debug formats retain their recipes.
 
+[Removing unused native utilities](benchmarks/ci-round26-2026-11-12.md) saves
+another 3.56 MB compressed and nine paths in the native worker closure. Compiler
+executables and pure Go cache keys stay unchanged; native packages and their
+dependents receive new cache keys. Planner inputs lose 43 KB compressed, with
+cached CI and CLI bootstrap timings effectively flat.
+
 If your cache publishes planner outputs and CI often rebuilds an identical
 source tree on a cold worker, set `allowPlannerSubstitutes = true` in
 `mkGoPackage` to allow those hits to avoid downloading the planning toolchain.
