@@ -600,6 +600,13 @@ linking and cannot use this mode. Existing dependency cache keys stay unchanged;
 only eligible final links change. The complete discovery toolchain adds
 1.48 MB compressed, while dynamic planner inputs add about 10 KB.
 
+[Removing GCC's unused LTO inspector](benchmarks/ci-round28-2026-11-12.md)
+saves 16.26 MB compressed (11.8%) from Linux native worker tools while retaining
+C/C++ compilation and LTO. Preparing an uncached compact compiler and wrapper
+adds about 0.98 seconds with cached inputs. Planner inputs add 6.4 KB compressed;
+cached CI is unchanged to 2.2% slower. Pure-Go recipes stay unchanged, while
+native packages and their dependents receive new cache keys.
+
 If your cache publishes planner outputs and CI often rebuilds an identical
 source tree on a cold worker, set `allowPlannerSubstitutes = true` in
 `mkGoPackage` to allow those hits to avoid downloading the planning toolchain.
