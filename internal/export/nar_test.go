@@ -83,7 +83,7 @@ func TestCopyAndHashSnapshot(t *testing.T) {
 			}
 		}
 	}
-	got, err := tree.write(dest)
+	got, err := tree.write(dest, make([]byte, 32*1024))
 	if err != nil {
 		t.Fatal(err)
 	}
