@@ -40,7 +40,10 @@ let
   # Dry-run discovery only needs the Go SDK, including for cgo. Compiler
   # probes are emitted for native workers to replay; automatic build IDs are
   # derived from their resolved inputs rather than discovery's compiler IDs.
-  planningToolchain = toolchain.go;
+  # Empty-test validation can compile and execute a selector or compile a
+  # no-test package. Every other discovery path uses only cmd/go's dry run.
+  planningToolchain = if allowEmptyTests then toolchain.go else
+    import ./planning-toolchain.nix { inherit pkgs drvgo; go = toolchain.go; };
   # These wrappers only run explicit tools; a stdenv setup and its dependency
   # closure are unnecessary on the planning and final forwarding paths.
   planner = builtins.derivation ({
@@ -127,5 +130,5 @@ let
     builder = "${pkgs.coreutils}/bin/ln";
     args = [ "-s" (builtins.outputOf planner.outPath "out") (builtins.placeholder "out") ];
   };
-in result // { inherit planner modules; moduleCache = preparedModules;
-  passthru = { inherit planner modules; moduleCache = preparedModules; }; }
+in result // { inherit planner modules planningToolchain; moduleCache = preparedModules;
+  passthru = { inherit planner modules planningToolchain; moduleCache = preparedModules; }; }
