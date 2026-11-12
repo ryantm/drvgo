@@ -571,6 +571,11 @@ reduces package rebuild time by 7.5% for the fixture and 5.4% for UPM when linki
 with `-s -w`. Compressed package outputs shrink by 1.90 MB and 14.20 MB,
 respectively. Default debug exports retain their existing recipes.
 
+[Reusing inline source reads](benchmarks/ci-round24-2026-11-12.md) improves
+standalone UPM export by about 2%, with unchanged package recipes. Full cached
+CI and CLI bootstrap timings remain effectively flat; complete planner inputs
+add 609 compressed bytes.
+
 If your cache publishes planner outputs and CI often rebuilds an identical
 source tree on a cold worker, set `allowPlannerSubstitutes = true` in
 `mkGoPackage` to allow those hits to avoid downloading the planning toolchain.
