@@ -595,6 +595,13 @@ avoid compiling the evaluator on cold CI machines. Nested iets is opt-in and
 has been validated on x86_64-linux; the default Nix path remains tested on all
 supported platforms.
 
+With warm package outputs and a fresh planner, nested static iets reduced UPM
+builds from 3.48 to 3.13 seconds using the module proxy, and from 2.53 to 2.23
+seconds with prepared modules. The small fixture remained approximately
+unchanged. All comparisons preserve identical Go package outputs. See the
+[nested-planner measurements](benchmarks/ci-round12-2026-11-11.md) for individual
+trials, complete input sizes and reproduction commands.
+
 Five alternating warm evaluation trials, with iets's tracing cache disabled
 and its compiled-file cache warm, measured:
 
