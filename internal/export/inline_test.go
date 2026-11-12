@@ -93,7 +93,7 @@ func TestInlineSourceSelectionAndInvalidation(t *testing.T) {
 	generate := func() plan.Unit {
 		t.Helper()
 		units := []plan.Unit{{Sources: []string{"large", "small"}, Script: "tool @SRC:small@/asset @SRC:large@/z\n"}}
-		if err := inlineSources(dir, units); err != nil {
+		if err := prepareSources(dir, units); err != nil {
 			t.Fatal(err)
 		}
 		return units[0]

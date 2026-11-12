@@ -41,10 +41,7 @@ func TestStoreReferencesSurviveInlining(t *testing.T) {
 		{Script: "link -X data=" + valid + "/file"},
 		{Script: "compile unrelated"},
 	}
-	if err := collectStoreReferences(dir, units); err != nil {
-		t.Fatal(err)
-	}
-	if err := inlineSources(dir, units); err != nil {
+	if err := prepareSources(dir, units); err != nil {
 		t.Fatal(err)
 	}
 	for _, unit := range units[:2] {
@@ -75,7 +72,7 @@ func TestStoreReferenceQueryFailsClosed(t *testing.T) {
 			}
 			t.Setenv("PATH", filepath.Dir(mock))
 			units := []plan.Unit{{Script: path}}
-			if err := collectStoreReferences(t.TempDir(), units); err == nil || !strings.Contains(err.Error(), tc.want) {
+			if err := prepareSources(t.TempDir(), units); err == nil || !strings.Contains(err.Error(), tc.want) {
 				t.Fatalf("expected %q error, got %v", tc.want, err)
 			}
 		})
@@ -103,7 +100,7 @@ printf '}'
 	}
 	t.Setenv("PATH", filepath.Dir(mock))
 	units := []plan.Unit{{Script: script.String()}}
-	if err := collectStoreReferences(t.TempDir(), units); err != nil {
+	if err := prepareSources(t.TempDir(), units); err != nil {
 		t.Fatal(err)
 	}
 	if len(units[0].StoreReferences) != count {
@@ -127,7 +124,7 @@ printf '%s' '{"`+path+`":{}}'
 	}
 	t.Setenv("PATH", filepath.Dir(mock))
 	units := []plan.Unit{{Script: path}}
-	if err := collectStoreReferences(t.TempDir(), units); err != nil {
+	if err := prepareSources(t.TempDir(), units); err != nil {
 		t.Fatal(err)
 	}
 	if !reflect.DeepEqual(units[0].StoreReferences, []string{path}) {
@@ -169,7 +166,7 @@ func TestStoreReferenceDaemonFailureDoesNotFallBack(t *testing.T) {
 	t.Setenv("PATH", dir)
 	t.Setenv("NIX_REMOTE", "unix://"+filepath.Join(dir, "missing-socket"))
 	units := []plan.Unit{{Script: "/nix/store/11111111111111111111111111111111-runtime-data"}}
-	if err := collectStoreReferences(dir, units); err == nil || !strings.Contains(err.Error(), "query runtime references") {
+	if err := prepareSources(dir, units); err == nil || !strings.Contains(err.Error(), "query runtime references") {
 		t.Fatalf("expected daemon failure, got %v", err)
 	}
 	if _, err := os.Stat(marker); !errors.Is(err, os.ErrNotExist) {
