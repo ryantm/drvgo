@@ -158,6 +158,8 @@ func quoteWordsWithDwarf(words []string, omitDwarf bool) (string, error) {
 				}
 			}
 			words = args
+		} else if omitDwarf {
+			words = omitNativeDwarf(words, i)
 		}
 		break
 	}

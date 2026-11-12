@@ -40,12 +40,12 @@ def write(path, content):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content)
 
-integration_pattern = '^(TestEmbeddedAssetsAndCacheIsolation|TestNestedCommandWithoutOriginalSource|TestNativeObjectWithoutOriginalSource|TestNativePackMatchesGo|TestCompressedNativeSources|TestCustomBuildID|TestCanonicalBuildIDRelocation|TestStrippedCompilerDwarf|TestRuntimeStoreReferences|TestEmptyTest.*|TestTestBinary.*)$'
+integration_pattern = '^(TestEmbeddedAssetsAndCacheIsolation|TestNestedCommandWithoutOriginalSource|TestNativeObjectWithoutOriginalSource|TestNativePackMatchesGo|TestCompressedNativeSources|TestCustomBuildID|TestCanonicalBuildIDRelocation|TestStrippedCompilerDwarf|TestNativeCompilerDwarf|TestRuntimeStoreReferences|TestEmptyTest.*|TestTestBinary.*)$'
 integration_tests = run([a.integration_test.resolve(), '-test.list='+integration_pattern]).stdout.decode().splitlines()
 required_tests = {'TestEmbeddedAssetsAndCacheIsolation', 'TestTestBinaryInternalExternalAndFailure',
                   'TestTestBinaryMainPackage', 'TestTestBinaryRaceAndCGO', 'TestTestBinaryRejectsPackageWithoutTests',
                   'TestNestedCommandWithoutOriginalSource', 'TestNativeObjectWithoutOriginalSource', 'TestNativePackMatchesGo', 'TestCompressedNativeSources', 'TestCustomBuildID',
-                  'TestEmptyTestSelection', 'TestEmptyTestResult', 'TestEmptyTestsRequireTestMode', 'TestRuntimeStoreReferences', 'TestCanonicalBuildIDRelocation', 'TestStrippedCompilerDwarf'}
+                  'TestEmptyTestSelection', 'TestEmptyTestResult', 'TestEmptyTestsRequireTestMode', 'TestRuntimeStoreReferences', 'TestCanonicalBuildIDRelocation', 'TestStrippedCompilerDwarf', 'TestNativeCompilerDwarf'}
 if not required_tests.issubset(integration_tests):
     raise RuntimeError('Integration binary lacks required tests; compile it with go test -c -tags integration ./internal/export')
 
@@ -140,8 +140,9 @@ case('stripped-race-cgo',modes,'42\n',cgo='1',race=True,ldflags='-s -w')
 cxx = out/'cxx'
 write(cxx/'go.mod','module example.com/cxx\ngo 1.23.0\n')
 write(cxx/'main.go','package main\n/* int answer(void); */\nimport "C"\nimport "fmt"\nfunc main(){fmt.Println(C.answer())}\n')
-write(cxx/'answer.cc','#include <vector>\nextern "C" int answer(void) { std::vector<int> values{20, 22}; return values[0] + values[1]; }\n')
+write(cxx/'answer.cc','#include <vector>\nextern "C" int answer(void) { std::vector<int> values{20, 22}; try { throw values[0] + values[1]; } catch (int answer) { return answer; } }\n')
 case('cxx',cxx,'42\n')
+case('stripped-cxx',cxx,'42\n',ldflags='-s -w')
 syso = out/'native-object'
 write(syso/'go.mod','module example.com/nativeobject\ngo 1.25\n')
 write(syso/'main.go','package main\nimport "fmt"\nfunc main(){fmt.Println("native object")}\n')
@@ -197,7 +198,7 @@ if a.flake_toolchain:
     assert Path(result).resolve() == Path(report['cases'][0]['store_path']), 'dynamic and standalone builds must share package outputs'
     report['dynamic_ifd_disabled']='passed'
     print(version,'dynamic/IFD-disabled PASS',flush=True)
-    native_modes = [('cxx', cxx, ''), ('external-link', assembly, '-linkmode=external'),
+    native_modes = [('cxx', cxx, ''), ('stripped-cxx', cxx, '-s -w'), ('external-link', assembly, '-linkmode=external'),
                     ('stripped-assembly-external', assembly, '-s -w -linkmode=external')]
     if report['platform'] == ['darwin', 'arm64']:
         native_modes.append(('darwin-framework', framework, ''))
