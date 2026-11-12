@@ -5,10 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/fs"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"regexp"
 	"sort"
 
@@ -30,10 +28,8 @@ func validStoreReference(path string) bool {
 	return len(path) <= maxStoreReference && name != "." && name != ".."
 }
 
-func collectStoreReferences(dir string, units []plan.Unit) error {
-	snapshots := make(map[string][]string)
+func collectStoreReferences(units []plan.Unit, snapshots map[string]preparedSource) error {
 	candidates := make(map[string]bool)
-	buffer := make([]byte, 64*1024+maxStoreReference)
 	for i := range units {
 		u := &units[i]
 		refs := make(map[string]bool)
@@ -47,33 +43,7 @@ func collectStoreReferences(dir string, units []plan.Unit) error {
 			add(path)
 		}
 		for _, id := range u.Sources {
-			paths, ok := snapshots[id]
-			if !ok {
-				found := make(map[string]bool)
-				err := filepath.WalkDir(filepath.Join(dir, "sources", id), func(path string, d fs.DirEntry, err error) error {
-					if err != nil || d.IsDir() {
-						return err
-					}
-					file, err := os.Open(path)
-					if err != nil {
-						return err
-					}
-					err = scanStoreReferences(file, buffer, func(path string) { found[path] = true })
-					closeErr := file.Close()
-					if err != nil {
-						return err
-					}
-					return closeErr
-				})
-				if err != nil {
-					return err
-				}
-				for path := range found {
-					paths = append(paths, path)
-				}
-				snapshots[id] = paths
-			}
-			for _, path := range paths {
+			for _, path := range snapshots[id].references {
 				add(path)
 			}
 		}

@@ -26,27 +26,13 @@ type sourceEncoder struct {
 	writer     *zlib.Writer
 }
 
-func inlineSources(dir string, units []plan.Unit) error {
-	type snapshot struct{ script, path string }
-	snapshots := make(map[string]snapshot)
-	var encoder sourceEncoder
+func inlineSources(units []plan.Unit, snapshots map[string]preparedSource) {
 	for i := range units {
 		u := &units[i]
 		var prefix strings.Builder
 		var sources []string
 		for _, id := range u.Sources {
-			s, ok := snapshots[id]
-			if !ok {
-				path := "@WORK@/sources/" + id
-				script, err := encoder.snapshot(filepath.Join(dir, "sources", id), path)
-				if err != nil {
-					return fmt.Errorf("inline source %s: %w", id, err)
-				}
-				if script != "" {
-					s = snapshot{script, path}
-				}
-				snapshots[id] = s
-			}
+			s := snapshots[id]
 			if s.path == "" {
 				sources = append(sources, id)
 				continue
@@ -57,7 +43,6 @@ func inlineSources(dir string, units []plan.Unit) error {
 		u.Script = prefix.String() + u.Script
 		u.Sources = sources
 	}
-	return nil
 }
 
 // Return an empty script for an oversized snapshot; never inline just a prefix
