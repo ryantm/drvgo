@@ -11,7 +11,7 @@ import (
 
 func IsTool(path string) bool {
 	switch filepath.Base(path) {
-	case "asm", "cgo", "compile", "link", "preprofile":
+	case "asm", "cgo", "compile", "link", "preprofile", "vet":
 		return true
 	}
 	return false

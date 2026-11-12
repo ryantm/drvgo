@@ -16,7 +16,8 @@ in pkgs.runCommand "go-libnix-planning-toolchain" {
       cp -r "$entry" $out/share/go/pkg/
     fi
   done
-  for tool in asm cgo compile link preprofile; do
+  # Go 1.26 checks the vet tool path even for go test -vet=off -n.
+  for tool in asm cgo compile link preprofile vet; do
     ${go}/share/go/pkg/tool/${target}/$tool -V=full > $out/share/go/pkg/tool/${target}/$tool.version
     ln -s ${drvgo}/bin/drvgo $out/share/go/pkg/tool/${target}/$tool
   done
