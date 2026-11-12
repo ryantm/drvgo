@@ -638,6 +638,38 @@ iets=$(nix build github:replit/iets/69883a64bfb0d9a95dce253dae304878e07b076e \
 python3 tests/iets.py --iets "$iets/bin/iets" --runs 5
 ```
 
+For CI with this iets pin, use its classic `nix-build` command when supplying
+per-command daemon settings. The regular `iets build` command warns that it
+ignores cache and scheduling options. In particular, a daemon with
+`always-allow-substitutes = true` can query remote caches even for drvgo's
+planners and forwarding helpers. Classic mode honors the per-command override:
+
+```sh
+IETS_NIX_FALLBACK=never IETS_CACHE=false IETS_WORKERS=1 \
+  "$iets/bin/iets" nix-build /path/to/project.nix --no-out-link --store daemon \
+  --option allow-import-from-derivation false \
+  --option always-allow-substitutes false
+```
+
+Use the dynamic feature configuration documented above. At this pin, classic
+mode does not accept `--extra-experimental-features` or `--no-tracing-cache`;
+`IETS_CACHE=false` disables both tracing and compiled-file caches. The setting
+above still permits fetching reusable package outputs from binary caches.
+
+Compare complete frontend builds with identical daemon controls using:
+
+```sh
+python3 scripts/benchmark-client.py --iets "$iets/bin/iets" \
+  --source tests/fixture --nested-iets --runs 5 \
+  --nix-option always-allow-substitutes false --nix-option substituters ''
+```
+
+This benchmark uses fresh planners and warm Go package outputs, with both iets
+evaluator caches disabled. `substituters = ""` is only for isolating local costs
+when all inputs are already available. See the
+[full-client measurements](benchmarks/ci-round14-2026-11-11.md) for the fixture,
+UPM, and the daemon-policy comparison.
+
 ## Planning performance and CPU budgets
 
 The exporter indexes source directories once and rewrites each command script
